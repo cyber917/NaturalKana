@@ -25,6 +25,8 @@ Mac 默认使用 Control + 1 / 2 采用前两条候选。
 需要 Xcode、Git 和 Git LFS。
 
 ```sh
+git clone https://github.com/cyber917/NaturalKana.git
+cd NaturalKana
 python3 tools/bootstrap.py --weights
 open NaturalKana.xcworkspace
 ```
