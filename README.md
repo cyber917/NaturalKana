@@ -15,6 +15,17 @@
 
 当前为开发版。源码已在 macOS 与 iPhone 上构建和使用；不同应用、设备和系统版本仍需测试。目前提供源码，自行构建安装。
 
+## 首次安装
+
+第一次使用请按教程完成安装，再配置 API。没有现成的 App Store 或一键安装包。
+
+- [安装教程：工具准备、下载源码和应用标识](docs/INSTALLATION.md#准备工具并下载源码)
+- [Mac：签名构建、安装和添加输入源](docs/INSTALLATION.md#mac-安装)
+- [iPhone：开发者模式、Xcode 签名和添加键盘](docs/INSTALLATION.md#iphone-安装)
+- [API 配置与使用：服务商、模型 ID、快捷键和设置](docs/USAGE.md)
+- [没有建议或连接报错的排查](docs/USAGE.md#没有建议时按这个顺序排查)
+- [SNS 词库导入](docs/SNS词库使用说明.md)
+
 ## 使用
 
 在应用设置中填写服务商、模型和 API 密钥，允许发送当前句子并开启建议。
@@ -27,7 +38,7 @@ Mac 默认使用 Control + 1 / 2 采用前两条候选，Esc 关闭建议。
 
 ## 构建
 
-需要 Xcode、Git 和 Git LFS。
+需要完整 Xcode、Python 3、Git 和 Git LFS。下面只准备源码，不会完成安装；完整签名与安装步骤见[安装教程](docs/INSTALLATION.md)。
 
 ```sh
 git clone https://github.com/cyber917/NaturalKana.git
