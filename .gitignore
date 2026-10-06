@@ -1,0 +1,25 @@
+.DS_Store
+.env
+.env.*
+!.env.example
+.build/
+.build-local/
+.swiftpm/
+__pycache__/
+*.pyc
+xcuserdata/
+upstream/
+*.app/
+
+# Local configuration, user content and signed artifacts
+Config/Local*.json
+*.local.xcconfig
+imports/
+installed-backups/
+*.ipa
+*.xcarchive/
+*.dSYM/
+*.mobileprovision
+*.p12
+*.key
+*.log

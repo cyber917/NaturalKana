@@ -1,0 +1,4 @@
+* text=auto
+# Preserve upstream diff context and original license formatting.
+patches/*.patch -whitespace linguist-generated=true
+licenses/* -whitespace
