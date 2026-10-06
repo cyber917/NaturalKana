@@ -1,0 +1,1857 @@
+[
+  {
+    "gate": true,
+    "suggestions": [],
+    "id": "ja-001",
+    "negative": false,
+    "tags": [
+      "particle",
+      "statement"
+    ],
+    "latency_ms": 3920.2
+  },
+  {
+    "gate": true,
+    "suggestions": [],
+    "id": "ja-002",
+    "negative": false,
+    "tags": [
+      "particle",
+      "request"
+    ],
+    "latency_ms": 1.5
+  },
+  {
+    "gate": true,
+    "suggestions": [],
+    "id": "ja-003",
+    "negative": false,
+    "tags": [
+      "tense",
+      "learner"
+    ],
+    "latency_ms": 1.3
+  },
+  {
+    "gate": true,
+    "suggestions": [],
+    "id": "ja-004",
+    "negative": false,
+    "tags": [
+      "invitation",
+      "particle"
+    ],
+    "latency_ms": 1.2
+  },
+  {
+    "gate": true,
+    "suggestions": [],
+    "id": "ja-005",
+    "negative": false,
+    "tags": [
+      "particle",
+      "statement"
+    ],
+    "latency_ms": 1.0
+  },
+  {
+    "gate": true,
+    "suggestions": [],
+    "id": "ja-006",
+    "negative": false,
+    "tags": [
+      "particle",
+      "request"
+    ],
+    "latency_ms": 0.9
+  },
+  {
+    "gate": true,
+    "suggestions": [],
+    "id": "ja-007",
+    "negative": false,
+    "tags": [
+      "tense",
+      "learner"
+    ],
+    "latency_ms": 0.9
+  },
+  {
+    "gate": true,
+    "suggestions": [],
+    "id": "ja-008",
+    "negative": false,
+    "tags": [
+      "invitation",
+      "particle"
+    ],
+    "latency_ms": 0.8
+  },
+  {
+    "gate": true,
+    "suggestions": [],
+    "id": "ja-009",
+    "negative": false,
+    "tags": [
+      "particle",
+      "statement"
+    ],
+    "latency_ms": 0.8
+  },
+  {
+    "gate": true,
+    "suggestions": [],
+    "id": "ja-010",
+    "negative": false,
+    "tags": [
+      "particle",
+      "request"
+    ],
+    "latency_ms": 0.7
+  },
+  {
+    "gate": true,
+    "suggestions": [],
+    "id": "ja-011",
+    "negative": false,
+    "tags": [
+      "tense",
+      "learner"
+    ],
+    "latency_ms": 0.7
+  },
+  {
+    "gate": true,
+    "suggestions": [],
+    "id": "ja-012",
+    "negative": false,
+    "tags": [
+      "invitation",
+      "particle"
+    ],
+    "latency_ms": 0.7
+  },
+  {
+    "gate": true,
+    "suggestions": [],
+    "id": "ja-013",
+    "negative": false,
+    "tags": [
+      "particle",
+      "statement"
+    ],
+    "latency_ms": 0.7
+  },
+  {
+    "gate": true,
+    "suggestions": [],
+    "id": "ja-014",
+    "negative": false,
+    "tags": [
+      "particle",
+      "request"
+    ],
+    "latency_ms": 0.7
+  },
+  {
+    "gate": true,
+    "suggestions": [],
+    "id": "ja-015",
+    "negative": false,
+    "tags": [
+      "tense",
+      "learner"
+    ],
+    "latency_ms": 0.7
+  },
+  {
+    "gate": true,
+    "suggestions": [],
+    "id": "ja-016",
+    "negative": false,
+    "tags": [
+      "invitation",
+      "particle"
+    ],
+    "latency_ms": 0.8
+  },
+  {
+    "gate": true,
+    "suggestions": [],
+    "id": "ja-017",
+    "negative": false,
+    "tags": [
+      "particle",
+      "statement"
+    ],
+    "latency_ms": 0.7
+  },
+  {
+    "gate": true,
+    "suggestions": [],
+    "id": "ja-018",
+    "negative": false,
+    "tags": [
+      "particle",
+      "request"
+    ],
+    "latency_ms": 0.7
+  },
+  {
+    "gate": true,
+    "suggestions": [],
+    "id": "ja-019",
+    "negative": false,
+    "tags": [
+      "tense",
+      "learner"
+    ],
+    "latency_ms": 0.7
+  },
+  {
+    "gate": true,
+    "suggestions": [],
+    "id": "ja-020",
+    "negative": false,
+    "tags": [
+      "invitation",
+      "particle"
+    ],
+    "latency_ms": 0.7
+  },
+  {
+    "gate": true,
+    "suggestions": [],
+    "id": "ja-021",
+    "negative": false,
+    "tags": [
+      "particle",
+      "statement"
+    ],
+    "latency_ms": 0.6
+  },
+  {
+    "gate": true,
+    "suggestions": [],
+    "id": "ja-022",
+    "negative": false,
+    "tags": [
+      "particle",
+      "request"
+    ],
+    "latency_ms": 0.7
+  },
+  {
+    "gate": true,
+    "suggestions": [],
+    "id": "ja-023",
+    "negative": false,
+    "tags": [
+      "tense",
+      "learner"
+    ],
+    "latency_ms": 0.6
+  },
+  {
+    "gate": true,
+    "suggestions": [],
+    "id": "ja-024",
+    "negative": false,
+    "tags": [
+      "invitation",
+      "particle"
+    ],
+    "latency_ms": 0.7
+  },
+  {
+    "gate": true,
+    "suggestions": [],
+    "id": "ja-025",
+    "negative": false,
+    "tags": [
+      "particle",
+      "statement"
+    ],
+    "latency_ms": 0.7
+  },
+  {
+    "gate": true,
+    "suggestions": [],
+    "id": "ja-026",
+    "negative": false,
+    "tags": [
+      "particle",
+      "request"
+    ],
+    "latency_ms": 0.7
+  },
+  {
+    "gate": true,
+    "suggestions": [],
+    "id": "ja-027",
+    "negative": false,
+    "tags": [
+      "tense",
+      "learner"
+    ],
+    "latency_ms": 0.6
+  },
+  {
+    "gate": true,
+    "suggestions": [],
+    "id": "ja-028",
+    "negative": false,
+    "tags": [
+      "invitation",
+      "particle"
+    ],
+    "latency_ms": 0.6
+  },
+  {
+    "gate": true,
+    "suggestions": [],
+    "id": "ja-029",
+    "negative": false,
+    "tags": [
+      "particle",
+      "statement"
+    ],
+    "latency_ms": 0.6
+  },
+  {
+    "gate": true,
+    "suggestions": [],
+    "id": "ja-030",
+    "negative": false,
+    "tags": [
+      "particle",
+      "request"
+    ],
+    "latency_ms": 0.6
+  },
+  {
+    "gate": true,
+    "suggestions": [],
+    "id": "ja-031",
+    "negative": false,
+    "tags": [
+      "tense",
+      "learner"
+    ],
+    "latency_ms": 0.6
+  },
+  {
+    "gate": true,
+    "suggestions": [],
+    "id": "ja-032",
+    "negative": false,
+    "tags": [
+      "invitation",
+      "particle"
+    ],
+    "latency_ms": 0.6
+  },
+  {
+    "gate": true,
+    "suggestions": [],
+    "id": "ja-033",
+    "negative": false,
+    "tags": [
+      "particle",
+      "statement"
+    ],
+    "latency_ms": 0.6
+  },
+  {
+    "gate": true,
+    "suggestions": [],
+    "id": "ja-034",
+    "negative": false,
+    "tags": [
+      "particle",
+      "request"
+    ],
+    "latency_ms": 0.6
+  },
+  {
+    "gate": true,
+    "suggestions": [],
+    "id": "ja-035",
+    "negative": false,
+    "tags": [
+      "tense",
+      "learner"
+    ],
+    "latency_ms": 0.6
+  },
+  {
+    "gate": true,
+    "suggestions": [],
+    "id": "ja-036",
+    "negative": false,
+    "tags": [
+      "invitation",
+      "particle"
+    ],
+    "latency_ms": 0.6
+  },
+  {
+    "gate": true,
+    "suggestions": [],
+    "id": "ja-037",
+    "negative": false,
+    "tags": [
+      "particle",
+      "statement"
+    ],
+    "latency_ms": 0.5
+  },
+  {
+    "gate": true,
+    "suggestions": [],
+    "id": "ja-038",
+    "negative": false,
+    "tags": [
+      "particle",
+      "request"
+    ],
+    "latency_ms": 0.5
+  },
+  {
+    "gate": true,
+    "suggestions": [],
+    "id": "ja-039",
+    "negative": false,
+    "tags": [
+      "tense",
+      "learner"
+    ],
+    "latency_ms": 0.5
+  },
+  {
+    "gate": true,
+    "suggestions": [],
+    "id": "ja-040",
+    "negative": false,
+    "tags": [
+      "invitation",
+      "particle"
+    ],
+    "latency_ms": 0.5
+  },
+  {
+    "gate": true,
+    "suggestions": [],
+    "id": "ja-041",
+    "negative": false,
+    "tags": [
+      "particle",
+      "statement"
+    ],
+    "latency_ms": 0.5
+  },
+  {
+    "gate": true,
+    "suggestions": [],
+    "id": "ja-042",
+    "negative": false,
+    "tags": [
+      "particle",
+      "request"
+    ],
+    "latency_ms": 0.5
+  },
+  {
+    "gate": true,
+    "suggestions": [],
+    "id": "ja-043",
+    "negative": false,
+    "tags": [
+      "tense",
+      "learner"
+    ],
+    "latency_ms": 0.7
+  },
+  {
+    "gate": true,
+    "suggestions": [],
+    "id": "ja-044",
+    "negative": false,
+    "tags": [
+      "invitation",
+      "particle"
+    ],
+    "latency_ms": 0.6
+  },
+  {
+    "gate": true,
+    "suggestions": [],
+    "id": "ja-045",
+    "negative": false,
+    "tags": [
+      "particle",
+      "statement"
+    ],
+    "latency_ms": 0.6
+  },
+  {
+    "gate": true,
+    "suggestions": [],
+    "id": "ja-046",
+    "negative": false,
+    "tags": [
+      "particle",
+      "request"
+    ],
+    "latency_ms": 0.6
+  },
+  {
+    "gate": true,
+    "suggestions": [],
+    "id": "ja-047",
+    "negative": false,
+    "tags": [
+      "tense",
+      "learner"
+    ],
+    "latency_ms": 0.5
+  },
+  {
+    "gate": true,
+    "suggestions": [],
+    "id": "ja-048",
+    "negative": false,
+    "tags": [
+      "invitation",
+      "particle"
+    ],
+    "latency_ms": 0.5
+  },
+  {
+    "gate": true,
+    "suggestions": [],
+    "id": "ja-049",
+    "negative": false,
+    "tags": [
+      "particle",
+      "tense"
+    ],
+    "latency_ms": 0.5
+  },
+  {
+    "gate": true,
+    "suggestions": [],
+    "id": "ja-050",
+    "negative": false,
+    "tags": [
+      "particle",
+      "subject"
+    ],
+    "latency_ms": 0.5
+  },
+  {
+    "gate": true,
+    "suggestions": [],
+    "id": "ja-051",
+    "negative": false,
+    "tags": [
+      "chinese_influence",
+      "particle"
+    ],
+    "latency_ms": 0.5
+  },
+  {
+    "gate": true,
+    "suggestions": [],
+    "id": "ja-052",
+    "negative": false,
+    "tags": [
+      "particle",
+      "tense"
+    ],
+    "latency_ms": 0.5
+  },
+  {
+    "gate": true,
+    "suggestions": [],
+    "id": "ja-053",
+    "negative": false,
+    "tags": [
+      "particle",
+      "subject"
+    ],
+    "latency_ms": 0.5
+  },
+  {
+    "gate": true,
+    "suggestions": [],
+    "id": "ja-054",
+    "negative": false,
+    "tags": [
+      "chinese_influence",
+      "particle"
+    ],
+    "latency_ms": 0.5
+  },
+  {
+    "gate": true,
+    "suggestions": [],
+    "id": "ja-055",
+    "negative": false,
+    "tags": [
+      "particle",
+      "tense"
+    ],
+    "latency_ms": 0.5
+  },
+  {
+    "gate": true,
+    "suggestions": [],
+    "id": "ja-056",
+    "negative": false,
+    "tags": [
+      "particle",
+      "subject"
+    ],
+    "latency_ms": 0.5
+  },
+  {
+    "gate": true,
+    "suggestions": [],
+    "id": "ja-057",
+    "negative": false,
+    "tags": [
+      "chinese_influence",
+      "particle"
+    ],
+    "latency_ms": 0.5
+  },
+  {
+    "gate": true,
+    "suggestions": [],
+    "id": "ja-058",
+    "negative": false,
+    "tags": [
+      "particle",
+      "tense"
+    ],
+    "latency_ms": 0.5
+  },
+  {
+    "gate": true,
+    "suggestions": [],
+    "id": "ja-059",
+    "negative": false,
+    "tags": [
+      "particle",
+      "subject"
+    ],
+    "latency_ms": 0.5
+  },
+  {
+    "gate": true,
+    "suggestions": [],
+    "id": "ja-060",
+    "negative": false,
+    "tags": [
+      "chinese_influence",
+      "particle"
+    ],
+    "latency_ms": 0.5
+  },
+  {
+    "gate": true,
+    "suggestions": [],
+    "id": "ja-061",
+    "negative": false,
+    "tags": [
+      "particle",
+      "tense"
+    ],
+    "latency_ms": 0.5
+  },
+  {
+    "gate": true,
+    "suggestions": [],
+    "id": "ja-062",
+    "negative": false,
+    "tags": [
+      "particle",
+      "subject"
+    ],
+    "latency_ms": 0.4
+  },
+  {
+    "gate": true,
+    "suggestions": [],
+    "id": "ja-063",
+    "negative": false,
+    "tags": [
+      "chinese_influence",
+      "particle"
+    ],
+    "latency_ms": 0.4
+  },
+  {
+    "gate": true,
+    "suggestions": [],
+    "id": "ja-064",
+    "negative": false,
+    "tags": [
+      "particle",
+      "tense"
+    ],
+    "latency_ms": 0.4
+  },
+  {
+    "gate": true,
+    "suggestions": [],
+    "id": "ja-065",
+    "negative": false,
+    "tags": [
+      "particle",
+      "subject"
+    ],
+    "latency_ms": 0.4
+  },
+  {
+    "gate": true,
+    "suggestions": [],
+    "id": "ja-066",
+    "negative": false,
+    "tags": [
+      "chinese_influence",
+      "particle"
+    ],
+    "latency_ms": 0.5
+  },
+  {
+    "gate": true,
+    "suggestions": [],
+    "id": "ja-067",
+    "negative": false,
+    "tags": [
+      "particle",
+      "tense"
+    ],
+    "latency_ms": 0.4
+  },
+  {
+    "gate": true,
+    "suggestions": [],
+    "id": "ja-068",
+    "negative": false,
+    "tags": [
+      "particle",
+      "subject"
+    ],
+    "latency_ms": 0.4
+  },
+  {
+    "gate": true,
+    "suggestions": [],
+    "id": "ja-069",
+    "negative": false,
+    "tags": [
+      "chinese_influence",
+      "particle"
+    ],
+    "latency_ms": 0.4
+  },
+  {
+    "gate": true,
+    "suggestions": [],
+    "id": "ja-070",
+    "negative": false,
+    "tags": [
+      "particle",
+      "tense"
+    ],
+    "latency_ms": 0.4
+  },
+  {
+    "gate": true,
+    "suggestions": [],
+    "id": "ja-071",
+    "negative": false,
+    "tags": [
+      "particle",
+      "subject"
+    ],
+    "latency_ms": 0.4
+  },
+  {
+    "gate": true,
+    "suggestions": [],
+    "id": "ja-072",
+    "negative": false,
+    "tags": [
+      "chinese_influence",
+      "particle"
+    ],
+    "latency_ms": 0.4
+  },
+  {
+    "gate": true,
+    "suggestions": [],
+    "id": "ja-073",
+    "negative": false,
+    "tags": [
+      "particle",
+      "tense"
+    ],
+    "latency_ms": 0.4
+  },
+  {
+    "gate": true,
+    "suggestions": [],
+    "id": "ja-074",
+    "negative": false,
+    "tags": [
+      "particle",
+      "subject"
+    ],
+    "latency_ms": 0.5
+  },
+  {
+    "gate": true,
+    "suggestions": [],
+    "id": "ja-075",
+    "negative": false,
+    "tags": [
+      "chinese_influence",
+      "particle"
+    ],
+    "latency_ms": 0.4
+  },
+  {
+    "gate": true,
+    "suggestions": [],
+    "id": "ja-076",
+    "negative": false,
+    "tags": [
+      "particle",
+      "tense"
+    ],
+    "latency_ms": 0.5
+  },
+  {
+    "gate": true,
+    "suggestions": [],
+    "id": "ja-077",
+    "negative": false,
+    "tags": [
+      "particle",
+      "subject"
+    ],
+    "latency_ms": 0.5
+  },
+  {
+    "gate": true,
+    "suggestions": [],
+    "id": "ja-078",
+    "negative": false,
+    "tags": [
+      "chinese_influence",
+      "particle"
+    ],
+    "latency_ms": 0.4
+  },
+  {
+    "gate": true,
+    "suggestions": [],
+    "id": "ja-079",
+    "negative": false,
+    "tags": [
+      "particle",
+      "statement"
+    ],
+    "latency_ms": 0.4
+  },
+  {
+    "gate": true,
+    "suggestions": [],
+    "id": "ja-080",
+    "negative": false,
+    "tags": [
+      "negation",
+      "tense"
+    ],
+    "latency_ms": 0.4
+  },
+  {
+    "gate": true,
+    "suggestions": [],
+    "id": "ja-081",
+    "negative": false,
+    "tags": [
+      "particle",
+      "statement"
+    ],
+    "latency_ms": 0.4
+  },
+  {
+    "gate": true,
+    "suggestions": [],
+    "id": "ja-082",
+    "negative": false,
+    "tags": [
+      "negation",
+      "tense"
+    ],
+    "latency_ms": 0.4
+  },
+  {
+    "gate": true,
+    "suggestions": [],
+    "id": "ja-083",
+    "negative": false,
+    "tags": [
+      "particle",
+      "statement"
+    ],
+    "latency_ms": 0.4
+  },
+  {
+    "gate": true,
+    "suggestions": [],
+    "id": "ja-084",
+    "negative": false,
+    "tags": [
+      "negation",
+      "tense"
+    ],
+    "latency_ms": 0.4
+  },
+  {
+    "gate": true,
+    "suggestions": [],
+    "id": "ja-085",
+    "negative": false,
+    "tags": [
+      "particle",
+      "statement"
+    ],
+    "latency_ms": 0.4
+  },
+  {
+    "gate": true,
+    "suggestions": [],
+    "id": "ja-086",
+    "negative": false,
+    "tags": [
+      "negation",
+      "tense"
+    ],
+    "latency_ms": 0.4
+  },
+  {
+    "gate": true,
+    "suggestions": [],
+    "id": "ja-087",
+    "negative": false,
+    "tags": [
+      "particle",
+      "statement"
+    ],
+    "latency_ms": 0.4
+  },
+  {
+    "gate": true,
+    "suggestions": [],
+    "id": "ja-088",
+    "negative": false,
+    "tags": [
+      "negation",
+      "tense"
+    ],
+    "latency_ms": 0.5
+  },
+  {
+    "gate": true,
+    "suggestions": [],
+    "id": "ja-089",
+    "negative": false,
+    "tags": [
+      "particle",
+      "statement"
+    ],
+    "latency_ms": 0.4
+  },
+  {
+    "gate": true,
+    "suggestions": [],
+    "id": "ja-090",
+    "negative": false,
+    "tags": [
+      "negation",
+      "tense"
+    ],
+    "latency_ms": 0.4
+  },
+  {
+    "gate": true,
+    "suggestions": [],
+    "id": "ja-091",
+    "negative": false,
+    "tags": [
+      "particle",
+      "statement"
+    ],
+    "latency_ms": 0.4
+  },
+  {
+    "gate": true,
+    "suggestions": [],
+    "id": "ja-092",
+    "negative": false,
+    "tags": [
+      "negation",
+      "tense"
+    ],
+    "latency_ms": 0.4
+  },
+  {
+    "gate": true,
+    "suggestions": [],
+    "id": "ja-093",
+    "negative": false,
+    "tags": [
+      "particle",
+      "statement"
+    ],
+    "latency_ms": 0.4
+  },
+  {
+    "gate": true,
+    "suggestions": [],
+    "id": "ja-094",
+    "negative": false,
+    "tags": [
+      "negation",
+      "tense"
+    ],
+    "latency_ms": 0.4
+  },
+  {
+    "gate": true,
+    "suggestions": [],
+    "id": "ja-095",
+    "negative": false,
+    "tags": [
+      "particle"
+    ],
+    "latency_ms": 0.4
+  },
+  {
+    "gate": true,
+    "suggestions": [],
+    "id": "ja-096",
+    "negative": false,
+    "tags": [
+      "particle"
+    ],
+    "latency_ms": 0.4
+  },
+  {
+    "gate": true,
+    "suggestions": [],
+    "id": "ja-097",
+    "negative": false,
+    "tags": [
+      "apology"
+    ],
+    "latency_ms": 0.4
+  },
+  {
+    "gate": true,
+    "suggestions": [],
+    "id": "ja-098",
+    "negative": false,
+    "tags": [
+      "thanks"
+    ],
+    "latency_ms": 0.4
+  },
+  {
+    "gate": true,
+    "suggestions": [],
+    "id": "ja-099",
+    "negative": false,
+    "tags": [
+      "refusal"
+    ],
+    "latency_ms": 0.4
+  },
+  {
+    "gate": true,
+    "suggestions": [],
+    "id": "ja-100",
+    "negative": false,
+    "tags": [
+      "aspect"
+    ],
+    "latency_ms": 0.4
+  },
+  {
+    "gate": true,
+    "suggestions": [],
+    "id": "ja-101",
+    "negative": false,
+    "tags": [
+      "aspect"
+    ],
+    "latency_ms": 0.4
+  },
+  {
+    "gate": true,
+    "suggestions": [],
+    "id": "ja-102",
+    "negative": false,
+    "tags": [
+      "request"
+    ],
+    "latency_ms": 0.4
+  },
+  {
+    "gate": true,
+    "suggestions": [],
+    "id": "ja-103",
+    "negative": false,
+    "tags": [
+      "request"
+    ],
+    "latency_ms": 0.4
+  },
+  {
+    "gate": true,
+    "suggestions": [],
+    "id": "ja-104",
+    "negative": false,
+    "tags": [
+      "question"
+    ],
+    "latency_ms": 0.4
+  },
+  {
+    "gate": true,
+    "suggestions": [],
+    "id": "ja-105",
+    "negative": false,
+    "tags": [
+      "tense"
+    ],
+    "latency_ms": 0.4
+  },
+  {
+    "gate": true,
+    "suggestions": [],
+    "id": "ja-106",
+    "negative": false,
+    "tags": [
+      "collocation"
+    ],
+    "latency_ms": 0.4
+  },
+  {
+    "gate": true,
+    "suggestions": [],
+    "id": "ja-107",
+    "negative": false,
+    "tags": [
+      "thanks"
+    ],
+    "latency_ms": 0.4
+  },
+  {
+    "gate": true,
+    "suggestions": [],
+    "id": "ja-108",
+    "negative": false,
+    "tags": [
+      "apology"
+    ],
+    "latency_ms": 0.4
+  },
+  {
+    "gate": true,
+    "suggestions": [],
+    "id": "ja-109",
+    "negative": false,
+    "tags": [
+      "request"
+    ],
+    "latency_ms": 0.4
+  },
+  {
+    "gate": true,
+    "suggestions": [],
+    "id": "ja-110",
+    "negative": true,
+    "tags": [
+      "negative",
+      "already_natural"
+    ],
+    "latency_ms": 0.4
+  },
+  {
+    "gate": true,
+    "suggestions": [],
+    "id": "ja-111",
+    "negative": true,
+    "tags": [
+      "negative",
+      "already_natural"
+    ],
+    "latency_ms": 0.6
+  },
+  {
+    "gate": true,
+    "suggestions": [],
+    "id": "ja-112",
+    "negative": true,
+    "tags": [
+      "negative",
+      "already_natural"
+    ],
+    "latency_ms": 0.5
+  },
+  {
+    "gate": true,
+    "suggestions": [],
+    "id": "ja-113",
+    "negative": true,
+    "tags": [
+      "negative",
+      "already_natural"
+    ],
+    "latency_ms": 0.5
+  },
+  {
+    "gate": true,
+    "suggestions": [],
+    "id": "ja-114",
+    "negative": true,
+    "tags": [
+      "negative",
+      "already_natural"
+    ],
+    "latency_ms": 0.5
+  },
+  {
+    "gate": true,
+    "suggestions": [],
+    "id": "ja-115",
+    "negative": true,
+    "tags": [
+      "negative",
+      "already_natural"
+    ],
+    "latency_ms": 0.4
+  },
+  {
+    "gate": false,
+    "suggestions": [],
+    "id": "ja-116",
+    "negative": true,
+    "tags": [
+      "negative",
+      "already_natural"
+    ],
+    "latency_ms": 0.4
+  },
+  {
+    "gate": false,
+    "suggestions": [],
+    "id": "ja-117",
+    "negative": true,
+    "tags": [
+      "negative",
+      "already_natural"
+    ],
+    "latency_ms": 0.4
+  },
+  {
+    "gate": false,
+    "suggestions": [],
+    "id": "ja-118",
+    "negative": true,
+    "tags": [
+      "negative",
+      "already_natural"
+    ],
+    "latency_ms": 0.4
+  },
+  {
+    "gate": false,
+    "suggestions": [],
+    "id": "ja-119",
+    "negative": true,
+    "tags": [
+      "negative",
+      "already_natural"
+    ],
+    "latency_ms": 0.4
+  },
+  {
+    "gate": false,
+    "suggestions": [],
+    "id": "ja-120",
+    "negative": true,
+    "tags": [
+      "negative",
+      "already_natural"
+    ],
+    "latency_ms": 0.4
+  },
+  {
+    "gate": true,
+    "suggestions": [],
+    "id": "ja-121",
+    "negative": true,
+    "tags": [
+      "negative",
+      "already_natural"
+    ],
+    "latency_ms": 0.4
+  },
+  {
+    "gate": true,
+    "suggestions": [],
+    "id": "ja-122",
+    "negative": true,
+    "tags": [
+      "negative",
+      "already_natural"
+    ],
+    "latency_ms": 0.4
+  },
+  {
+    "gate": true,
+    "suggestions": [],
+    "id": "ja-123",
+    "negative": true,
+    "tags": [
+      "negative",
+      "already_natural"
+    ],
+    "latency_ms": 0.4
+  },
+  {
+    "gate": true,
+    "suggestions": [],
+    "id": "ja-124",
+    "negative": true,
+    "tags": [
+      "negative",
+      "already_natural"
+    ],
+    "latency_ms": 0.4
+  },
+  {
+    "gate": true,
+    "suggestions": [],
+    "id": "ja-125",
+    "negative": true,
+    "tags": [
+      "negative",
+      "already_natural"
+    ],
+    "latency_ms": 0.4
+  },
+  {
+    "gate": true,
+    "suggestions": [],
+    "id": "ja-126",
+    "negative": true,
+    "tags": [
+      "negative",
+      "already_natural"
+    ],
+    "latency_ms": 0.4
+  },
+  {
+    "gate": true,
+    "suggestions": [],
+    "id": "ja-127",
+    "negative": true,
+    "tags": [
+      "negative",
+      "already_natural"
+    ],
+    "latency_ms": 0.4
+  },
+  {
+    "gate": true,
+    "suggestions": [],
+    "id": "ja-128",
+    "negative": true,
+    "tags": [
+      "negative",
+      "already_natural"
+    ],
+    "latency_ms": 0.4
+  },
+  {
+    "gate": true,
+    "suggestions": [],
+    "id": "ja-129",
+    "negative": true,
+    "tags": [
+      "negative",
+      "already_natural"
+    ],
+    "latency_ms": 0.4
+  },
+  {
+    "gate": true,
+    "suggestions": [],
+    "id": "ja-130",
+    "negative": true,
+    "tags": [
+      "negative",
+      "already_natural"
+    ],
+    "latency_ms": 0.4
+  },
+  {
+    "gate": true,
+    "suggestions": [],
+    "id": "ja-131",
+    "negative": true,
+    "tags": [
+      "negative",
+      "already_natural"
+    ],
+    "latency_ms": 0.4
+  },
+  {
+    "gate": true,
+    "suggestions": [],
+    "id": "ja-132",
+    "negative": true,
+    "tags": [
+      "negative",
+      "already_natural"
+    ],
+    "latency_ms": 0.4
+  },
+  {
+    "gate": true,
+    "suggestions": [],
+    "id": "ja-133",
+    "negative": true,
+    "tags": [
+      "negative",
+      "already_natural"
+    ],
+    "latency_ms": 0.4
+  },
+  {
+    "gate": true,
+    "suggestions": [],
+    "id": "ja-134",
+    "negative": true,
+    "tags": [
+      "negative",
+      "already_natural"
+    ],
+    "latency_ms": 0.4
+  },
+  {
+    "gate": true,
+    "suggestions": [],
+    "id": "ja-135",
+    "negative": true,
+    "tags": [
+      "negative",
+      "already_natural"
+    ],
+    "latency_ms": 0.4
+  },
+  {
+    "gate": true,
+    "suggestions": [],
+    "id": "ja-136",
+    "negative": true,
+    "tags": [
+      "negative",
+      "already_natural"
+    ],
+    "latency_ms": 0.4
+  },
+  {
+    "gate": false,
+    "suggestions": [],
+    "id": "ja-137",
+    "negative": true,
+    "tags": [
+      "negative",
+      "already_natural"
+    ],
+    "latency_ms": 0.1
+  },
+  {
+    "gate": true,
+    "suggestions": [],
+    "id": "ja-138",
+    "negative": true,
+    "tags": [
+      "negative",
+      "already_natural"
+    ],
+    "latency_ms": 0.4
+  },
+  {
+    "gate": true,
+    "suggestions": [],
+    "id": "ja-139",
+    "negative": true,
+    "tags": [
+      "negative",
+      "already_natural"
+    ],
+    "latency_ms": 0.4
+  },
+  {
+    "gate": false,
+    "suggestions": [],
+    "id": "ja-140",
+    "negative": true,
+    "tags": [
+      "negative",
+      "non_japanese"
+    ],
+    "latency_ms": 0.1
+  },
+  {
+    "gate": false,
+    "suggestions": [],
+    "id": "ja-141",
+    "negative": true,
+    "tags": [
+      "negative",
+      "non_japanese"
+    ],
+    "latency_ms": 0.0
+  },
+  {
+    "gate": false,
+    "suggestions": [],
+    "id": "ja-142",
+    "negative": true,
+    "tags": [
+      "negative",
+      "non_japanese"
+    ],
+    "latency_ms": 0.0
+  },
+  {
+    "gate": false,
+    "suggestions": [],
+    "id": "ja-143",
+    "negative": true,
+    "tags": [
+      "negative",
+      "non_japanese"
+    ],
+    "latency_ms": 0.0
+  },
+  {
+    "gate": false,
+    "suggestions": [],
+    "id": "ja-144",
+    "negative": true,
+    "tags": [
+      "negative",
+      "non_japanese"
+    ],
+    "latency_ms": 0.1
+  },
+  {
+    "gate": false,
+    "suggestions": [],
+    "id": "ja-145",
+    "negative": true,
+    "tags": [
+      "negative",
+      "non_japanese"
+    ],
+    "latency_ms": 0.1
+  },
+  {
+    "gate": false,
+    "suggestions": [],
+    "id": "ja-146",
+    "negative": true,
+    "tags": [
+      "negative",
+      "non_japanese"
+    ],
+    "latency_ms": 0.1
+  },
+  {
+    "gate": false,
+    "suggestions": [],
+    "id": "ja-147",
+    "negative": true,
+    "tags": [
+      "negative",
+      "non_japanese"
+    ],
+    "latency_ms": 0.1
+  },
+  {
+    "gate": false,
+    "suggestions": [],
+    "id": "ja-148",
+    "negative": true,
+    "tags": [
+      "negative",
+      "non_japanese"
+    ],
+    "latency_ms": 0.1
+  },
+  {
+    "gate": false,
+    "suggestions": [],
+    "id": "ja-149",
+    "negative": true,
+    "tags": [
+      "negative",
+      "non_japanese"
+    ],
+    "latency_ms": 0.0
+  },
+  {
+    "gate": false,
+    "suggestions": [],
+    "id": "ja-150",
+    "negative": true,
+    "tags": [
+      "negative",
+      "non_japanese"
+    ],
+    "latency_ms": 0.1
+  },
+  {
+    "gate": false,
+    "suggestions": [],
+    "id": "ja-151",
+    "negative": true,
+    "tags": [
+      "negative",
+      "non_japanese"
+    ],
+    "latency_ms": 0.0
+  },
+  {
+    "gate": false,
+    "suggestions": [],
+    "id": "ja-152",
+    "negative": true,
+    "tags": [
+      "negative",
+      "non_japanese"
+    ],
+    "latency_ms": 0.0
+  },
+  {
+    "gate": false,
+    "suggestions": [],
+    "id": "ja-153",
+    "negative": true,
+    "tags": [
+      "negative",
+      "non_japanese"
+    ],
+    "latency_ms": 0.1
+  },
+  {
+    "gate": false,
+    "suggestions": [],
+    "id": "ja-154",
+    "negative": true,
+    "tags": [
+      "negative",
+      "translation"
+    ],
+    "latency_ms": 0.1
+  },
+  {
+    "gate": false,
+    "suggestions": [],
+    "id": "ja-155",
+    "negative": true,
+    "tags": [
+      "negative",
+      "translation"
+    ],
+    "latency_ms": 0.1
+  },
+  {
+    "gate": false,
+    "suggestions": [],
+    "id": "ja-156",
+    "negative": true,
+    "tags": [
+      "negative",
+      "translation"
+    ],
+    "latency_ms": 0.0
+  },
+  {
+    "gate": false,
+    "suggestions": [],
+    "id": "ja-157",
+    "negative": true,
+    "tags": [
+      "negative",
+      "injection"
+    ],
+    "latency_ms": 0.1
+  },
+  {
+    "gate": false,
+    "suggestions": [],
+    "id": "ja-158",
+    "negative": true,
+    "tags": [
+      "negative",
+      "injection"
+    ],
+    "latency_ms": 0.1
+  },
+  {
+    "gate": false,
+    "suggestions": [],
+    "id": "ja-159",
+    "negative": true,
+    "tags": [
+      "negative",
+      "injection"
+    ],
+    "latency_ms": 0.1
+  },
+  {
+    "gate": false,
+    "suggestions": [],
+    "id": "ja-160",
+    "negative": true,
+    "tags": [
+      "negative",
+      "gibberish"
+    ],
+    "latency_ms": 0.1
+  },
+  {
+    "gate": true,
+    "suggestions": [],
+    "id": "ja-161",
+    "negative": true,
+    "tags": [
+      "negative",
+      "gibberish"
+    ],
+    "latency_ms": 0.4
+  },
+  {
+    "gate": false,
+    "suggestions": [],
+    "id": "ja-162",
+    "negative": true,
+    "tags": [
+      "negative",
+      "non_japanese"
+    ],
+    "latency_ms": 0.1
+  },
+  {
+    "gate": false,
+    "suggestions": [],
+    "id": "ja-163",
+    "negative": true,
+    "tags": [
+      "negative",
+      "non_japanese"
+    ],
+    "latency_ms": 0.1
+  },
+  {
+    "gate": false,
+    "suggestions": [],
+    "id": "ja-164",
+    "negative": true,
+    "tags": [
+      "negative",
+      "non_japanese"
+    ],
+    "latency_ms": 0.1
+  },
+  {
+    "gate": false,
+    "suggestions": [],
+    "id": "ja-165",
+    "negative": true,
+    "tags": [
+      "negative",
+      "non_japanese"
+    ],
+    "latency_ms": 0.1
+  },
+  {
+    "gate": false,
+    "suggestions": [],
+    "id": "ja-166",
+    "negative": true,
+    "tags": [
+      "negative",
+      "non_japanese"
+    ],
+    "latency_ms": 0.1
+  },
+  {
+    "gate": false,
+    "suggestions": [],
+    "id": "ja-167",
+    "negative": true,
+    "tags": [
+      "negative",
+      "non_japanese"
+    ],
+    "latency_ms": 0.1
+  },
+  {
+    "gate": false,
+    "suggestions": [],
+    "id": "ja-168",
+    "negative": true,
+    "tags": [
+      "negative",
+      "non_japanese"
+    ],
+    "latency_ms": 0.0
+  },
+  {
+    "gate": false,
+    "suggestions": [],
+    "id": "ja-169",
+    "negative": true,
+    "tags": [
+      "negative",
+      "non_japanese"
+    ],
+    "latency_ms": 0.1
+  },
+  {
+    "gate": false,
+    "suggestions": [],
+    "id": "ja-170",
+    "negative": true,
+    "tags": [
+      "negative",
+      "non_japanese"
+    ],
+    "latency_ms": 0.0
+  }
+]

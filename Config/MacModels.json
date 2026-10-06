@@ -1,0 +1,27 @@
+[
+  {
+    "path": "azooKeyMac/Resources/gguf/ggml-model-Q5_K_M.gguf",
+    "sha256": "29c223d4c23327b80fd13ebb5ab2555057a46317997d5da391584ffbef0db673",
+    "size": 73871936
+  },
+  {
+    "path": "azooKeyMac/Resources/base_n5_lm/lm_c_abc.marisa",
+    "sha256": "ab9cfb9b4231b1187934109776339001a9cb089a9d0fa8ed160c79508c8783a3",
+    "size": 20680344
+  },
+  {
+    "path": "azooKeyMac/Resources/base_n5_lm/lm_r_xbx.marisa",
+    "sha256": "f9594d23e2f15a8e6d51811f15b23e23bfc7cefd24b8b1c06f3f0366ce5bf555",
+    "size": 3585808
+  },
+  {
+    "path": "azooKeyMac/Resources/base_n5_lm/lm_u_abx.marisa",
+    "sha256": "6656bb6bea01f75a2156009b7b104adbd6bf897cff47635fd907215f2bc727e9",
+    "size": 9820096
+  },
+  {
+    "path": "azooKeyMac/Resources/base_n5_lm/lm_u_xbc.marisa",
+    "sha256": "69f43384dc45fd16f45e19cbdf242e67f5f8433168dadfe2012abb7657d38041",
+    "size": 10551760
+  }
+]

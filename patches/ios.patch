@@ -1,0 +1,1716 @@
+diff --git a/AzooKeyCore/Sources/AzooKeyUtils/KeyboardSetting/LanguageLayoutKeyboardSetting.swift b/AzooKeyCore/Sources/AzooKeyUtils/KeyboardSetting/LanguageLayoutKeyboardSetting.swift
+index 2cd085c..edad55f 100644
+--- a/AzooKeyCore/Sources/AzooKeyUtils/KeyboardSetting/LanguageLayoutKeyboardSetting.swift
++++ b/AzooKeyCore/Sources/AzooKeyUtils/KeyboardSetting/LanguageLayoutKeyboardSetting.swift
+@@ -62,7 +62,7 @@ public extension LanguageLayoutKeyboardSetting {
+ public struct JapaneseKeyboardLayout: LanguageLayoutKeyboardSetting {
+     public static let title: LocalizedStringKey = "日本語キーボードの種類"
+     public static let explanation: LocalizedStringKey = "日本語の入力方法をフリック入力とローマ字入力から選択できます。"
+-    public static let defaultValue: LanguageLayout = .flick
++    public static let defaultValue: LanguageLayout = .qwerty
+     public static let key: String = "keyboard_type"
+ }
+ 
+diff --git a/AzooKeyCore/Sources/AzooKeyUtils/SharedStore.swift b/AzooKeyCore/Sources/AzooKeyUtils/SharedStore.swift
+index 5ccfa08..f131447 100644
+--- a/AzooKeyCore/Sources/AzooKeyUtils/SharedStore.swift
++++ b/AzooKeyCore/Sources/AzooKeyUtils/SharedStore.swift
+@@ -12,8 +12,8 @@ import SwiftUtils
+ 
+ public enum SharedStore {
+     @MainActor public static let userDefaults = UserDefaults(suiteName: Self.appGroupKey)!
+-    public static let bundleName = "DevEn3.azooKey.keyboard"
+-    public static let appGroupKey = "group.com.azooKey.keyboard"
++    public static let bundleName = "org.naturalkana.keyboard"
++    public static let appGroupKey = "group.org.naturalkana"
+ 
+     private static var appVersionString: String? {
+         Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String
+diff --git a/AzooKeyCore/Sources/KeyboardViews/View/KeyboardBar/KeyboardBarView.swift b/AzooKeyCore/Sources/KeyboardViews/View/KeyboardBar/KeyboardBarView.swift
+index 201a3b6..183b5c9 100644
+--- a/AzooKeyCore/Sources/KeyboardViews/View/KeyboardBar/KeyboardBarView.swift
++++ b/AzooKeyCore/Sources/KeyboardViews/View/KeyboardBar/KeyboardBarView.swift
+@@ -99,6 +99,7 @@ struct KeyboardBarButton<Extension: ApplicationSpecificKeyboardViewExtension>: V
+     enum LabelType {
+         case azooKeyIcon(AzooKeyIcon.Looks = .normal)
+         case systemImage(String)
++        case text(String)
+     }
+     @Environment(Extension.Theme.self) private var theme
+     @EnvironmentObject private var variableStates: VariableStates
+@@ -135,9 +136,11 @@ struct KeyboardBarButton<Extension: ApplicationSpecificKeyboardViewExtension>: V
+     var body: some View {
+         Button(action: self.action) {
+             ZStack {
+-                Circle()
+-                    .strokeAndFill(fillContent: buttonBackgroundColor, strokeContent: theme.borderColor.color, lineWidth: theme.borderWidth)
+-                    .frame(width: circleSize, height: circleSize)
++                if case .text = label {} else {
++                    Circle()
++                        .strokeAndFill(fillContent: buttonBackgroundColor, strokeContent: theme.borderColor.color, lineWidth: theme.borderWidth)
++                        .frame(width: circleSize, height: circleSize)
++                }
+                 switch label {
+                 case let .azooKeyIcon(looks):
+                     AzooKeyIcon(fixedSize: iconSize, color: .color(buttonLabelColor), looks: looks)
+@@ -145,6 +148,12 @@ struct KeyboardBarButton<Extension: ApplicationSpecificKeyboardViewExtension>: V
+                     Image(systemName: name)
+                         .frame(width: iconSize, height: iconSize)
+                         .foregroundStyle(buttonLabelColor)
++                case let .text(text):
++                    Text(text)
++                        .font(.system(size: 20, weight: .medium))
++                        .foregroundStyle(buttonLabelColor)
++                        .frame(minWidth: 54, minHeight: 44)
++                        .contentShape(Rectangle())
+                 }
+             }
+         }
+diff --git a/AzooKeyCore/Sources/KeyboardViews/View/KeyboardBar/TabBarButton.swift b/AzooKeyCore/Sources/KeyboardViews/View/KeyboardBar/TabBarButton.swift
+index 6517a13..8df98e2 100644
+--- a/AzooKeyCore/Sources/KeyboardViews/View/KeyboardBar/TabBarButton.swift
++++ b/AzooKeyCore/Sources/KeyboardViews/View/KeyboardBar/TabBarButton.swift
+@@ -10,22 +10,8 @@ import SwiftUI
+ struct TabBarButton<Extension: ApplicationSpecificKeyboardViewExtension>: View {
+     @Environment(\.userActionManager) private var action
+     @EnvironmentObject private var variableStates: VariableStates
+-    @State private var calendar = Calendar.current
+-
+-    // クリスマスには専用アイコンを表示する
+-    var isXmas: Bool {
+-        let values = calendar.dateComponents([.month, .day], from: .now)
+-        return values.month == 12 && values.day == 25
+-    }
+-
+-    // 8/1には夏アイコンを表示する
+-    var isSummerDay: Bool {
+-        let values = calendar.dateComponents([.month, .day], from: .now)
+-        return values.month == 8 && values.day == 1
+-    }
+-
+     var body: some View {
+-        KeyboardBarButton<Extension>(label: .azooKeyIcon(isXmas ? .santaClaus : isSummerDay ? .strawHat : .normal)) {
++        KeyboardBarButton<Extension>(label: .text("(⁰▿⁰)")) {
+             self.action.registerAction(.setTabBar(.toggle), variableStates: variableStates)
+         }
+     }
+diff --git a/Keyboard/Display/KeyboardActionManager.swift b/Keyboard/Display/KeyboardActionManager.swift
+index 5f55651..f669ad3 100644
+--- a/Keyboard/Display/KeyboardActionManager.swift
++++ b/Keyboard/Display/KeyboardActionManager.swift
+@@ -68,6 +68,8 @@ final class KeyboardActionManager: UserActionManager, @unchecked Sendable {
+     ///   - candidate: 確定された候補。
+     ///   - variableStates: 状態。
+     override func notifyComplete(_ candidate: any ResultViewItemData, variableStates: VariableStates) {
++        delegate?.naturalKeystroke()
++        defer { delegate?.naturalDraftDidChange() }
+         if let candidate = candidate as? Candidate {
+             self.inputManager.complete(candidate: candidate)
+             self.registerActions(candidate.actions.map(\.action), variableStates: variableStates)
+@@ -148,6 +150,8 @@ final class KeyboardActionManager: UserActionManager, @unchecked Sendable {
+     }
+ 
+     @MainActor private func doAction(_ action: ActionType, requireSetResult: Bool = true, variableStates: VariableStates) {
++        delegate?.naturalKeystroke()
++        defer { delegate?.naturalDraftDidChange() }
+         debug("doAction", action)
+         var undoAction: ActionType?
+         switch action {
+diff --git a/Keyboard/Display/KeyboardViewController.swift b/Keyboard/Display/KeyboardViewController.swift
+index e6038af..07ed18a 100644
+--- a/Keyboard/Display/KeyboardViewController.swift
++++ b/Keyboard/Display/KeyboardViewController.swift
+@@ -14,6 +14,8 @@ import KeyboardViews
+ import SwiftUI
+ import SwiftUtils
+ import UIKit
++import NaturalSuggestCore
++import NaturalSuggestUI
+ 
+ final private class KeyboardHostingController<Content: View>: UIHostingController<Content> {
+     override var preferredScreenEdgesDeferringSystemGestures: UIRectEdge {
+@@ -49,6 +51,10 @@ extension UIKeyboardType: @retroactive CustomDebugStringConvertible {
+ }
+ 
+ final class KeyboardViewController: UIInputViewController {
++    static let naturalModel = SuggestionModel()
++    private static weak var naturalController: KeyboardViewController?
++    private var naturalGeneration = UUID().uuidString
++    private var naturalReplacing = false
+     private static var keyboardViewHost: KeyboardHostingController<Keyboard>?
+     private static var loadedInstanceCount: Int = 0
+     private static let action = KeyboardActionManager()
+@@ -61,11 +67,21 @@ final class KeyboardViewController: UIInputViewController {
+ 
+     struct Keyboard: View {
+         var theme: AzooKeyTheme
++        @ObservedObject private var naturalModel = KeyboardViewController.naturalModel
+         var body: some View {
++            VStack(spacing: 0) {
++                if !naturalModel.suggestions.isEmpty {
++                    IOSSuggestionPanel(suggestions: naturalModel.suggestions, accept: { index in
++                        KeyboardViewController.naturalController?.acceptNaturalSuggestion(index)
++                    }, dismiss: { naturalModel.invalidate() })
++                }
+             KeyboardView<AzooKeyKeyboardViewExtension>()
+                 .themeEnvironment(theme)
+                 .environment(\.userActionManager, KeyboardViewController.action)
+                 .environmentObject(KeyboardViewController.variableStates)
++                .fixedSize(horizontal: false, vertical: true)
++            }
++            .ignoresSafeArea(.container)
+         }
+     }
+ 
+@@ -136,6 +152,10 @@ final class KeyboardViewController: UIInputViewController {
+     override func viewDidLoad() {
+         debug(#function, "loadedInstanceCount:", KeyboardViewController.loadedInstanceCount)
+         super.viewDidLoad()
++        Self.naturalController = self
++        Self.naturalModel.$suggestions.dropFirst().sink { [weak self] _ in
++            DispatchQueue.main.async { self?.updateScreenHeight() }
++        }.store(in: &cancellables)
+         SemiStaticStates.shared.setup()
+         KeyboardViewController.loadedInstanceCount += 1
+         // 初期化の順序としてこの位置に置くこと
+@@ -322,6 +342,7 @@ final class KeyboardViewController: UIInputViewController {
+         // キーボードタイプはviewDidAppearのタイミングで取得できる
+         KeyboardViewController.variableStates.setKeyboardType(self.textDocumentProxy.keyboardType)
+         KeyboardViewController.variableStates.setTextContentType(self.textDocumentProxy.textContentType)
++        naturalDraftDidChange()
+ 
+         // クリップボード履歴を更新する
+         KeyboardViewController.variableStates.clipboardHistoryManager.reload()
+@@ -416,6 +437,8 @@ final class KeyboardViewController: UIInputViewController {
+         KeyboardViewController.action.closeKeyboard()
+         KeyboardViewController.variableStates.closeKeyboard()
+         KeyboardViewController.loadedInstanceCount -= 1
++        Self.naturalModel.cancel()
++        naturalGeneration = UUID().uuidString
+         super.viewWillDisappear(animated)
+     }
+ 
+@@ -480,7 +503,7 @@ final class KeyboardViewController: UIInputViewController {
+ 
+     private func setKeyboardHeight(to height: CGFloat) {
+         self.keyboardHeightConstraint?.isActive = true
+-        self.keyboardHeightConstraint?.constant = height
++        self.keyboardHeightConstraint?.constant = height + (Self.naturalModel.suggestions.isEmpty ? 0 : IOSSuggestionPanel.height)
+         if self.view.window != nil {
+             UIView.performWithoutAnimation {
+                 self.view.layoutIfNeeded()
+@@ -506,6 +529,8 @@ final class KeyboardViewController: UIInputViewController {
+     /// 引数の`textInput`は常に`nil`
+     override func textWillChange(_ textInput: (any UITextInput)?) {
+         super.textWillChange(textInput)
++        Self.naturalModel.invalidate()
++        naturalGeneration = UUID().uuidString
+ 
+         let left = self.textDocumentProxy.documentContextBeforeInput ?? ""
+         let center = self.textDocumentProxy.selectedText ?? ""
+@@ -558,4 +583,42 @@ final class KeyboardViewController: UIInputViewController {
+         }
+         self.openURL(url)
+     }
++    func naturalKeystroke() { Self.naturalModel.invalidate() }
++
++    private func naturalSnapshot() -> DraftSnapshot? {
++        let proxy = textDocumentProxy
++        let denied: Set<UIKeyboardType> = [.URL, .emailAddress, .numberPad, .phonePad, .namePhonePad, .decimalPad, .asciiCapableNumberPad, .numbersAndPunctuation]
++        guard hasFullAccess, proxy.isSecureTextEntry != true,
++              !denied.contains(proxy.keyboardType ?? .default),
++              (proxy.selectedText ?? "").isEmpty,
++              (proxy.documentContextAfterInput ?? "").isEmpty,
++              proxy.documentContextBeforeInput != nil else { return nil }
++        let manager = Self.action.inputManager
++        let composing = manager.composingText.convertTarget
++        guard manager.composingText.convertTargetCursorPosition == composing.count else { return nil }
++        let base = manager.displayedTextManager.documentContextBeforeInput(ignoreComposition: true) ?? ""
++        let best = manager.displayedTextManager.displayedLiveConversionText ?? composing
++        let text = DraftSnapshot.currentLine(before: base + best, after: "")
++        let latin = !composing.isEmpty && composing.unicodeScalars.contains { (65...90).contains($0.value) || (97...122).contains($0.value) }
++        return DraftSnapshot(text: text, fieldID: proxy.documentIdentifier.uuidString + naturalGeneration, composingLatin: latin)
++    }
++
++    func naturalDraftDidChange() {
++        guard !naturalReplacing, let snapshot = naturalSnapshot() else { Self.naturalModel.invalidate(); return }
++        Self.naturalModel.update(snapshot)
++    }
++
++    private func acceptNaturalSuggestion(_ index: Int) {
++        guard let snapshot = naturalSnapshot(), let text = Self.naturalModel.accept(index, snapshot: snapshot) else { return }
++        naturalReplacing = true
++        defer { naturalReplacing = false }
++        // Unmark before inspecting the actual host text. Unknown context never triggers deletion.
++        Self.action.inputManager.stopComposition()
++        let proxy = textDocumentProxy
++        guard let before = proxy.documentContextBeforeInput, before.hasSuffix(snapshot.text),
++              (proxy.documentContextAfterInput ?? "").isEmpty else { return }
++        for _ in snapshot.text { proxy.deleteBackward() }
++        proxy.insertText(text)
++    }
++
+ }
+diff --git a/Keyboard/Display/ReportSubmissionHelper.swift b/Keyboard/Display/ReportSubmissionHelper.swift
+index 8462a66..ae80808 100644
+--- a/Keyboard/Display/ReportSubmissionHelper.swift
++++ b/Keyboard/Display/ReportSubmissionHelper.swift
+@@ -16,23 +16,7 @@ struct ReportSubmissionHelper {
+         variableStates: VariableStates,
+         inputManager: InputManager
+     ) async -> Bool {
+-        guard SemiStaticStates.shared.hasFullAccess else { return false }
+-        let url = URL(string: "https://docs.google.com/forms/d/e/1FAIpQLSeTdOtFZfuFHurrDMIIzLyX-Z84Y3IKHflewNZ8dPOFgCTOtw/formResponse")!
+-        var request = URLRequest(url: url)
+-        request.httpMethod = "POST"
+-        request.setValue("no-cors", forHTTPHeaderField: "mode")
+-        request.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
+-        let entries = reportFormEntries(for: content, variableStates: variableStates, inputManager: inputManager)
+-        request.httpBody = buildFormBody(from: entries)
+-
+-        do {
+-            let (_, response) = try await URLSession.shared.data(for: request)
+-            debug("reportSuggestion response", response)
+-            return true
+-        } catch {
+-            debug("reportSuggestion error", error)
+-            return false
+-        }
++        return false // NaturalKana disables upstream remote reporting.
+     }
+ 
+     @MainActor
+@@ -42,35 +26,7 @@ struct ReportSubmissionHelper {
+         variableStates: VariableStates,
+         inputManager: InputManager
+     ) async {
+-        let url = URL(string: "https://docs.google.com/forms/d/e/1FAIpQLSfpYQqbX8u5SgGVfXjNzCPtKAH_5Mp7PCkUiCiUceEaevb8pQ/formResponse")!
+-        var request = URLRequest(url: url)
+-        request.httpMethod = "POST"
+-        request.setValue("no-cors", forHTTPHeaderField: "mode")
+-        request.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
+-        let surfaceCandidate = switch candidate.label {
+-        case .text(let text): text
+-        case .systemImage: "System Image"
+-        }
+-        let ruby = makeRubyDescription(candidate: candidate, inputManager: inputManager)
+-        let indexString = index?.description ?? "nil"
+-        let version = SharedStore.currentAppVersion?.description ?? "Unknown Version"
+-        @KeyboardSetting(.learningType) var learningType
+-        let learning = learningType.needUsingMemory ? "有効" : "無効"
+-        request.httpBody = buildFormBody(from: [
+-            ("entry.134904003", surfaceCandidate),
+-            ("entry.869464972", ruby),
+-            ("entry.1459534202", indexString),
+-            ("entry.571429448", version),
+-            ("entry.524189292", learning),
+-        ])
+-
+-        do {
+-            let (_, response) = try await URLSession.shared.data(for: request)
+-            debug("notifyReportWrongConversion response", response)
+-            variableStates.temporalMessage = .doneReportWrongConversion
+-        } catch {
+-            debug("notifyReportWrongConversion error", error)
+-        }
++        return // NaturalKana disables upstream remote reporting.
+     }
+ 
+     @MainActor
+diff --git a/Keyboard/Info.plist b/Keyboard/Info.plist
+index f38855f..86f7e91 100644
+--- a/Keyboard/Info.plist
++++ b/Keyboard/Info.plist
+@@ -5,7 +5,7 @@
+ 	<key>CFBundleDevelopmentRegion</key>
+ 	<string>$(DEVELOPMENT_LANGUAGE)</string>
+ 	<key>CFBundleDisplayName</key>
+-	<string>azooKey</string>
++	<string>NaturalKana</string>
+ 	<key>CFBundleExecutable</key>
+ 	<string>$(EXECUTABLE_NAME)</string>
+ 	<key>CFBundleIdentifier</key>
+@@ -13,7 +13,7 @@
+ 	<key>CFBundleInfoDictionaryVersion</key>
+ 	<string>6.0</string>
+ 	<key>CFBundleName</key>
+-	<string>$(PRODUCT_NAME)</string>
++	<string>NaturalKana</string>
+ 	<key>CFBundlePackageType</key>
+ 	<string>$(PRODUCT_BUNDLE_PACKAGE_TYPE)</string>
+ 	<key>CFBundleShortVersionString</key>
+@@ -38,6 +38,10 @@
+ 		<key>NSExtensionPrincipalClass</key>
+ 		<string>$(PRODUCT_MODULE_NAME).KeyboardViewController</string>
+ 	</dict>
++	<key>NaturalKanaAppGroup</key>
++	<string>group.org.naturalkana</string>
++	<key>NaturalKanaKeychainGroup</key>
++	<string>$(AppIdentifierPrefix)org.naturalkana</string>
+ 	<key>UIAppFonts</key>
+ 	<array>
+ 		<string>AzooKeyIcon-Regular.otf</string>
+diff --git a/Keyboard/Keyboard.entitlements b/Keyboard/Keyboard.entitlements
+index 56d1663..d0c0c69 100644
+--- a/Keyboard/Keyboard.entitlements
++++ b/Keyboard/Keyboard.entitlements
+@@ -4,7 +4,11 @@
+ <dict>
+ 	<key>com.apple.security.application-groups</key>
+ 	<array>
+-		<string>group.com.azooKey.keyboard</string>
++		<string>group.org.naturalkana</string>
++	</array>
++	<key>keychain-access-groups</key>
++	<array>
++		<string>$(AppIdentifierPrefix)org.naturalkana</string>
+ 	</array>
+ </dict>
+ </plist>
+diff --git a/MainApp/App/AppTabView.swift b/MainApp/App/AppTabView.swift
+index 6937861..e07e61b 100644
+--- a/MainApp/App/AppTabView.swift
++++ b/MainApp/App/AppTabView.swift
+@@ -5,24 +5,24 @@ struct AppTabView: View {
+ 
+     var body: some View {
+         TabView(selection: $router.selectedTab) {
+-            TipsHomeView()
++            KeyboardTryView()
+                 .tabItem {
+-                    AppTabItem(title: "使い方", systemImage: "lightbulb.fill")
++                    AppTabItem(title: "试写", systemImage: "square.and.pencil")
+                 }
+                 .tag(AppRouter.Tab.tips)
+             ThemeHomeView()
+                 .tabItem {
+-                    AppTabItem(title: "着せ替え", systemImage: "photo")
++                    AppTabItem(title: "主题", systemImage: "photo")
+                 }
+                 .tag(AppRouter.Tab.theme)
+             CustomizationHomeView()
+                 .tabItem {
+-                    AppTabItem(title: "拡張", systemImage: "gearshape.2.fill")
++                    AppTabItem(title: "扩展", systemImage: "gearshape.2.fill")
+                 }
+                 .tag(AppRouter.Tab.customization)
+             SettingsHomeView()
+                 .tabItem {
+-                    AppTabItem(title: "設定", systemImage: "wrench.fill")
++                    AppTabItem(title: "设置", systemImage: "wrench.fill")
+                 }
+                 .tag(AppRouter.Tab.settings)
+         }
+@@ -42,3 +42,18 @@ private struct AppTabItem: View {
+         }
+     }
+ }
++
++private struct KeyboardTryView: View {
++    @State private var draft = ""
++    var body: some View {
++        NavigationStack {
++            VStack(alignment: .leading, spacing: 12) {
++                Text("切换到 NaturalKana，写一句日语。").font(.subheadline).foregroundStyle(.secondary)
++                TextEditor(text: $draft).font(.title3).scrollContentBackground(.hidden)
++                    .accessibilityLabel("试写日语")
++            }.padding(.horizontal, 16).padding(.top, 8)
++                .navigationTitle("NaturalKana")
++                .navigationBarTitleDisplayMode(.inline)
++        }
++    }
++}
+diff --git a/MainApp/Features/Customization/CustomizationHomeView.swift b/MainApp/Features/Customization/CustomizationHomeView.swift
+index ddac5d6..b116e6b 100644
+--- a/MainApp/Features/Customization/CustomizationHomeView.swift
++++ b/MainApp/Features/Customization/CustomizationHomeView.swift
+@@ -68,7 +68,7 @@ struct CustomizationHomeView: View {
+                         CustomKeysSettingView()
+                     }
+                 }
+-                .navigationBarTitle(Text("拡張"), displayMode: .large)
++                .navigationBarTitle(Text("扩展"), displayMode: .inline)
+                 .onAppear {
+                     if reviewPrompt.shouldTryRequestReview, reviewPrompt.shouldRequestReview() {
+                         requestReview()
+diff --git a/MainApp/Features/Onboarding/EnableAzooKeyView.swift b/MainApp/Features/Onboarding/EnableAzooKeyView.swift
+index 8a49728..1c740a1 100644
+--- a/MainApp/Features/Onboarding/EnableAzooKeyView.swift
++++ b/MainApp/Features/Onboarding/EnableAzooKeyView.swift
+@@ -42,11 +42,13 @@ struct EnableAzooKeyView: View {
+                     switch self.step {
+                     case .menu:
+                         VStack(alignment: .leading, spacing: 20) {
++                            Text("自然表达建议开启后，当前草稿会发送给你配置的服务商，需要允许完全访问。请在设置中阅读隐私说明并填写 API 密钥。")
++                                .font(.callout)
+                             Spacer()
+                             CenterAlignedView {
+                                 HeaderLogoView()
+                             }
+-                            EnableAzooKeyViewText("azooKeyを使う前に、iPhoneのキーボードのリストにazooKeyを追加する必要があります", with: "exclamationmark.triangle.fill")
++                            EnableAzooKeyViewText("NaturalKanaを使う前に、iPhoneのキーボードのリストにNaturalKanaを追加する必要があります", with: "exclamationmark.triangle.fill")
+                             CenterAlignedView {
+                                 EnableAzooKeyViewButton("手順を見る", systemName: "arrowtriangle.right.fill") {
+                                     self.step = .append
+@@ -65,7 +67,7 @@ struct EnableAzooKeyView: View {
+                             CenterAlignedView {
+                                 EnableAzooKeyViewImage(.initSettingKeyboardImageHand)
+                             }
+-                            EnableAzooKeyViewText("azooKeyをオンにして", with: "square.and.line.vertical.and.square.fill")
++                            EnableAzooKeyViewText("NaturalKanaをオンにして", with: "square.and.line.vertical.and.square.fill")
+                             CenterAlignedView {
+                                 EnableAzooKeyViewImage(.initSettingAzooKeySwitchImageHand)
+                             }
+@@ -119,17 +121,17 @@ struct EnableAzooKeyView: View {
+ 
+                     case .finish:
+                         VStack(alignment: .leading, spacing: 20) {
+-                            EnableAzooKeyViewHeader("azooKeyが使えます！")
++                            EnableAzooKeyViewHeader("NaturalKanaが使えます！")
+                             EnableAzooKeyViewText("準備は完了です！", with: "checkmark")
+                             if showDoneMessage {
+-                                EnableAzooKeyViewText("azooKeyが開かれました！", with: "checkmark")
++                                EnableAzooKeyViewText("NaturalKanaが開かれました！", with: "checkmark")
+                                 CenterAlignedView {
+                                     EnableAzooKeyViewButton("始める", systemName: "arrowshape.turn.up.right.fill") {
+                                         onboarding.dismiss()
+                                     }
+                                 }
+                             } else {
+-                                EnableAzooKeyViewText("キーボードの地球儀ボタンを長押しし、azooKeyを選択してください", with: "globe")
++                                EnableAzooKeyViewText("キーボードの地球儀ボタンを長押しし、NaturalKanaを選択してください", with: "globe")
+                             }
+                             TextField("キーボードを開く", text: $text)
+                                 .textFieldStyle(.roundedBorder)
+@@ -142,7 +144,7 @@ struct EnableAzooKeyView: View {
+                                     EnableAzooKeyViewImage(.initSettingGlobeTap)
+                                 }
+                             }
+-                            EnableAzooKeyViewText("azooKeyをお楽しみください！", with: "star.fill")
++                            EnableAzooKeyViewText("NaturalKanaをお楽しみください！", with: "star.fill")
+                             if !showDoneMessage {
+                                 CenterAlignedView {
+                                     EnableAzooKeyViewButton("始める", systemName: "arrowshape.turn.up.right.fill") {
+diff --git a/MainApp/Features/Settings/Components/BoolSettingView.swift b/MainApp/Features/Settings/Components/BoolSettingView.swift
+index 11aaf69..c8e5c0b 100644
+--- a/MainApp/Features/Settings/Components/BoolSettingView.swift
++++ b/MainApp/Features/Settings/Components/BoolSettingView.swift
+@@ -12,12 +12,14 @@ import SwiftUI
+ import SwiftUIUtils
+ 
+ struct BoolSettingView<SettingKey: BoolKeyboardSettingKey>: View {
++    private var title: LocalizedStringKey?
+     @State private var showRequireFullAccessAlert = false
+     @State private var showOnEnabledMessageAlert = false
+     @State private var onEnabledAlertMessage: LocalizedStringKey?
+     @State private var setting: SettingUpdater<SettingKey>
+ 
+-    @MainActor init(_ key: SettingKey) {
++    @MainActor init(_ key: SettingKey, title: LocalizedStringKey? = nil) {
++        self.title = title
+         self._setting = .init(initialValue: .init())
+     }
+ 
+@@ -25,8 +27,8 @@ struct BoolSettingView<SettingKey: BoolKeyboardSettingKey>: View {
+         VStack(alignment: .leading, spacing: 6) {
+             Toggle(isOn: $setting.value) {
+                 HStack {
+-                    Text(SettingKey.title)
+-                    HelpAlertButton(title: SettingKey.title, explanation: SettingKey.explanation)
++                    Text(title ?? SettingKey.title)
++                    if title == nil { HelpAlertButton(title: SettingKey.title, explanation: SettingKey.explanation) }
+                     if SettingKey.requireFullAccess {
+                         Image(systemName: "f.circle.fill")
+                             .foregroundStyle(.purple)
+@@ -63,17 +65,17 @@ struct BoolSettingView<SettingKey: BoolKeyboardSettingKey>: View {
+             }
+         }
+         .alert(SettingKey.explanation, isPresented: $showRequireFullAccessAlert) {
+-            Button("キャンセル", role: .cancel) {
++            Button("取消", role: .cancel) {
+                 showRequireFullAccessAlert = false
+             }
+             if let url = URL(string: UIApplication.openSettingsURLString) {
+-                Button("「設定」アプリを開く") {
++                Button("打开系统设置") {
+                     UIApplication.shared.open(url, options: [:], completionHandler: nil)
+                     showRequireFullAccessAlert = false
+                 }
+             }
+         } message: {
+-            Text("この機能にはフルアクセスが必要です。この機能を使いたい場合は、「設定」>「キーボード」でフルアクセスを有効にしてください。")
++            Text("请在系统设置中允许键盘完全访问。")
+         }
+         .alert(onEnabledAlertMessage ?? "", isPresented: $showOnEnabledMessageAlert) {
+             Button("OK") {
+diff --git a/MainApp/Features/Settings/Dictionary/UserDictionary/AzooKeyUserDictionary.swift b/MainApp/Features/Settings/Dictionary/UserDictionary/AzooKeyUserDictionary.swift
+index b014c89..97bae6f 100644
+--- a/MainApp/Features/Settings/Dictionary/UserDictionary/AzooKeyUserDictionary.swift
++++ b/MainApp/Features/Settings/Dictionary/UserDictionary/AzooKeyUserDictionary.swift
+@@ -19,7 +19,7 @@ import SwiftUtils
+ 
+ private final class UserDictManagerVariables: ObservableObject {
+     @Published var items: [UserDictionaryData] = [
+-        UserDictionaryData(ruby: "あずーきー", word: "azooKey", isVerb: false, isPersonName: true, isPlaceName: false, id: 0)
++        UserDictionaryData(ruby: "あずーきー", word: "NaturalKana", isVerb: false, isPersonName: true, isPlaceName: false, id: 0)
+     ]
+     @Published var mode: Mode = .list
+     @Published var selectedItem: EditableUserDictionaryData?
+diff --git a/MainApp/Features/Settings/SettingsHomeView.swift b/MainApp/Features/Settings/SettingsHomeView.swift
+index ea60613..ce2d69f 100644
+--- a/MainApp/Features/Settings/SettingsHomeView.swift
++++ b/MainApp/Features/Settings/SettingsHomeView.swift
+@@ -1,266 +1,62 @@
+-//
+-//  SettingTab.swift
+-//  MainApp
+-//
+-//  Created by ensan on 2020/09/16.
+-//  Copyright © 2020 ensan. All rights reserved.
+-//
+-
+ import AzooKeyUtils
+ import KeyboardViews
+-import StoreKit
+ import SwiftUI
++import NaturalSuggestUI
+ 
+ struct SettingsHomeView: View {
+-    @State private var searchQuery: String = ""
+-    @Environment(\.requestReview) var requestReview
++    @StateObject private var naturalModel = SuggestionModel()
+     @EnvironmentObject private var router: AppRouter
+     @EnvironmentObject private var keyboardConfiguration: KeyboardConfigurationState
+-    @EnvironmentObject private var reviewPrompt: RequestReviewManager
+-    private func canFlickLayout(_ layout: LanguageLayout) -> Bool {
+-        if layout == .flick {
+-            return true
+-        }
+-        if case .custard = layout {
+-            return true
+-        }
+-        return false
+-    }
+-
+-    private func canQwertyLayout(_ layout: LanguageLayout) -> Bool {
+-        if layout == .qwerty {
+-            return true
+-        }
+-        return false
+-    }
+-
+-    private func isCustard(_ layout: LanguageLayout) -> Bool {
+-        if case .custard = layout {
+-            return true
+-        }
+-        return false
+-    }
+ 
+     var body: some View {
+         NavigationStack(path: $router.settingsPath) {
+             Form {
+-                Section("キーボードの種類") {
+-                    NavigationLink("キーボードの種類を設定する") {
+-                        KeyboardLayoutTypeDetailsView()
+-                    }
+-                }
+-                .searchKeys("キーボードの種類", "レイアウト", "フリック", "ローマ字")
+-
+-                Section("ライブ変換") {
+-                    BoolSettingView(.liveConversion)
+-                    NavigationLink("詳しい設定") {
+-                        LiveConversionSettingView()
++                Section {
++                    NavigationLink("日语建议") {
++                        NaturalSettingsView(model: naturalModel).navigationTitle("日语建议").navigationBarTitleDisplayMode(.inline)
+                     }
+                 }
+-                .searchKeys("ライブ変換", "自動変換", "自動確定")
+-
+-                Section("カスタムキー") {
+-                    CustomKeysSettingView(settingAdaptive: true)
+-                        .searchKeys("カスタムキー", "カスタマイズ")
+-                    if !self.isCustard(keyboardConfiguration.japaneseLayout) || !self.isCustard(keyboardConfiguration.englishLayout) {
+-                        BoolSettingView(.useNextCandidateKey)
+-                            .searchKeys("次候補キー")
+-                    }
+-                    if self.canQwertyLayout(keyboardConfiguration.englishLayout) {
+-                        BoolSettingView(.useShiftKey)
+-                            .searchKeys("シフトキー")
+-                        // Version 2.2.2以前にインストールしており、UseShiftKey.valueがtrueの人にのみこのオプションを表示する
+-                        if #unavailable(iOS 18), let initialVersion = SharedStore.initialAppVersion, initialVersion <= .azooKey_v2_2_2, UseShiftKey.value == true {
+-                            BoolSettingView(.keepDeprecatedShiftKeyBehavior)
+-                                .searchKeys("シフトキー")
+-                        }
+-                    }
+-                    if !SemiStaticStates.shared.needsInputModeSwitchKey, self.canFlickLayout(keyboardConfiguration.japaneseLayout) {
+-                        BoolSettingView(.enablePasteButton)
+-                            .searchKeys("ペーストボタン", "ペーストキー", "貼り付け")
++                Section("键盘") {
++                    NavigationLink("输入布局") { KeyboardLayoutTypeDetailsView() }
++                    BoolSettingView(.liveConversion, title: "实时转换")
++                    BoolSettingView(.enableKeySound, title: "按键声音")
++                    if SemiStaticStates.shared.hapticsAvailable {
++                        BoolSettingView(.enableKeyHaptics, title: "按键振动")
+                     }
++                    NavigationLink("自定义按键") { Form { CustomKeysSettingView(settingAdaptive: true) }.navigationTitle("自定义按键") }
+                 }
+-                .inheritSearchKeys()
+-
+-                Section("バー") {
+-                    BoolSettingView(.useReflectStyleCursorBar)
+-                        .searchKeys("カーソルバー", "バー")
+-                    BoolSettingView(.enableClipboardHistoryManagerTab)
+-                        .searchKeys("コピー履歴", "クリップボード履歴", "履歴")
+-                    if SemiStaticStates.shared.hasFullAccess {
+-                        NavigationLink("「ペーストを許可」のダイアログについて") {
+-                            PasteFromOtherAppsPermissionTipsView()
+-                        }
+-                        .searchKeys("ペースト", "コピー履歴", "クリップボード履歴", "履歴")
+-                    }
+-                    NavigationLink("タブバーを編集") {
+-                        EditingTabBarView(manager: $keyboardConfiguration.custardManager)
+-                    }
+-                    .searchKeys("タブバー", "バー")
++                Section("词典") {
++                    BoolSettingView(.useOSUserDict, title: "使用系统词典")
++                    NavigationLink("用户词典") { AzooKeyUserDictionaryView() }
++                    NavigationLink("表情与符号") { AdditionalDictManageView() }
+                 }
+-                .inheritSearchKeys()
+-
+-                // デバイスが触覚フィードバックをサポートしている場合のみ表示する
+-                if SemiStaticStates.shared.hapticsAvailable {
+-                    Section("サウンドと振動") {
+-                        BoolSettingView(.enableKeySound)
+-                            .searchKeys("サウンド", "音")
+-                        BoolSettingView(.enableKeyHaptics)
+-                            .searchKeys("サウンド", "振動")
++                Section {
++                    DisclosureGroup("高级设置") {
++                        BoolSettingView(.englishCandidate, title: "英文候选")
++                        BoolSettingView(.useShiftKey, title: "显示 Shift 键")
++                        BoolSettingView(.enableClipboardHistoryManagerTab, title: "剪贴板历史")
++                        BoolSettingView(.zenzaiEnable, title: "本地神经转换")
++                        NavigationLink("本地转换设置") { ZenzaiSettingView() }
++                        NavigationLink("学习与记录") { Form { LearningTypeSettingView(); MemoryResetSettingItemView() }.navigationTitle("学习与记录") }
++                        NavigationLink("菜单栏") { EditingTabBarView(manager: $keyboardConfiguration.custardManager) }
+                     }
+-                    .inheritSearchKeys()
+-                } else {
+-                    Section("サウンド") {
+-                        BoolSettingView(.enableKeySound)
+-                    }
+-                    .searchKeys("サウンド", "音")
+-                }
+-
+-                Section("表示") {
+-                    FontSizeSettingView(.keyViewFontSize, .key, availableValueRange: 15 ... 28)
+-                        .searchKeys("フォント", "サイズ", "文字サイズ")
+-                    FontSizeSettingView(.resultViewFontSize, .result, availableValueRange: 12...24)
+-                        .searchKeys("フォント", "サイズ", "文字サイズ")
+                 }
+-                .inheritSearchKeys()
+-
+-                Section("操作性") {
+-                    BoolSettingView(.hideResetButtonInOneHandedMode)
+-                        .searchKeys("片手モード", "解除ボタン")
+-                    if self.canFlickLayout(keyboardConfiguration.japaneseLayout) {
+-                        FlickSensitivitySettingView(.flickSensitivity)
+-                            .searchKeys("フリックの感度", "感度")
+-                    }
++                Section {
++                    NavigationLink("开源许可") { OpenSourceSoftwaresLicenseView() }
++                    LabeledContent("版本", value: Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "")
+                 }
+-                .inheritSearchKeys()
+-
+-                Section("変換") {
+-                    BoolSettingView(.zenzaiEnable)
+-                        .searchKeys("Zenzai")
+-                    NavigationLink("Zenzaiについて") {
+-                        ZenzaiSettingView()
+-                    }
+-                    .searchKeys("Zenzai", "エフォート", "詳細設定")
+-                    BoolSettingView(.englishCandidate)
+-                        .searchKeys("英単語変換", "変換", "英語", "英語変換")
+-                    BoolSettingView(.typographyLetter)
+-                        .searchKeys("太字", "フォント", "タイポグラフィ", "装飾文字")
+-                    MarkedTextSettingView(.markedTextSetting)
+-                        .searchKeys("入力中のテキストを保護", "下線", "テキストを保護")
+-                    ContactImportSettingView()
+-                        .searchKeys("連絡先変換", "氏名", "知り合い")
+-                    NavigationLink("絵文字と顔文字") {
+-                        AdditionalDictManageView()
+-                    }
+-                    .searchKeys("絵文字", "顔文字", "特殊文字")
+-                }
+-                .inheritSearchKeys()
+-
+-                Section("ユーザ辞書") {
+-                    BoolSettingView(.useOSUserDict)
+-                        .searchKeys("ユーザ辞書", "追加辞書")
+-                    NavigationLink("azooKeyユーザ辞書") {
+-                        AzooKeyUserDictionaryView()
+-                    }
+-                    .searchKeys("ユーザ辞書", "追加辞書")
+-                    // MARK: ホットフィックスの項目はデバッグ版のみで表示
+-                    #if DEBUG
+-                    if let cachedTag = HotfixDictionaryV1.cachedTag {
+-                        LabeledContent("ホットフィックス") {
+-                            Text(cachedTag)
+-                                .monospaced()
+-                        }
+-                        .onTapGesture {
+-                            Task {
+-                                // タッチされたらアップデートをトリガーする（隠し機能）
+-                                try await HotfixDictionaryV1.updateIfRequired(ignoreFrequency: true)
+-                            }
+-                        }
+-                    } else {
+-                        Text("Hotfix not found")
+-                    }
+-                    #endif
+-                }
+-                .inheritSearchKeys()
+-
+-                Section("学習機能") {
+-                    LearningTypeSettingView()
+-                        .searchKeys("学習", "履歴")
+-                    MemoryResetSettingItemView()
+-                        .searchKeys("リセット", "学習", "履歴")
+-                }
+-                .inheritSearchKeys()
+-
+-                ContributionSettingsSection()
+-                    .searchKeys("協力", "レポート", "誤変換")
+-
+-                Section("カスタムタブ") {
+-                    NavigationLink("カスタムタブの管理") {
+-                        ManageCustardView(manager: $keyboardConfiguration.custardManager) {
+-                            router.settingsPath.append(.custardInformation($0))
+-                        }
+-                    }
+-                }
+-                .searchKeys("カスタムタブ", "タブ", "カスタマイズ")
+-
+-                Section("オープンソースソフトウェア") {
+-                    Text("azooKeyはオープンソースソフトウェアであり、GitHubでソースコードを公開しています。")
+-                    FallbackLink("View azooKey on GitHub", destination: URL(string: "https://github.com/azooKey/azooKey")!)
+-                    NavigationLink("Acknowledgements") {
+-                        OpenSourceSoftwaresLicenseView()
+-                    }
+-                }
+-                .searchKeys("オープンソース", "ライセンス", "謝辞", "OSS", "ソフトウェア")
+-
+-                Section("このアプリについて") {
+-                    NavigationLink("お問い合わせ") {
+-                        ContactView()
+-                    }
+-                    .searchKeys("お問い合わせ", "質問", "連絡", "メール")
+-                    FallbackLink("プライバシーポリシー", destination: URL(string: "https://azookey.netlify.app/PrivacyPolicy")!)
+-                        .foregroundStyle(.primary)
+-                        .searchKeys("プライバシーポリシー", "個人情報", "ライセンス")
+-                    FallbackLink("利用規約", destination: URL(string: "https://azookey.netlify.app/TermsOfService")!)
+-                        .foregroundStyle(.primary)
+-                        .searchKeys("利用規約", "規約", "ライセンス")
+-                    NavigationLink("更新履歴") {
+-                        UpdateHistoryView()
+-                    }
+-                    .searchKeys("更新履歴", "アップデート情報", "変更", "バージョン")
+-                    LabeledContent("URL Scheme") {
+-                        Text(verbatim: "azooKey://")
+-                            .monospaced()
+-                    }
+-                    .searchKeys("URLスキーム")
+-                    LabeledContent("バージョン") {
+-                        Text(verbatim: SharedStore.currentAppVersion?.description ?? "取得中です")
+-                    }
+-                    .searchKeys("バージョン")
+-                }
+-                .inheritSearchKeys()
+-
+             }
+-            .searchQuery(searchQuery.isEmpty ? nil : searchQuery.toKatakana())
+-            .navigationTitle("設定")
+-            .navigationBarTitleDisplayMode(.large)
++            .navigationTitle("设置")
++            .navigationBarTitleDisplayMode(.inline)
+             .navigationDestination(for: SettingsRoute.self) { destination in
+                 switch destination {
+                 case let .custardInformation(identifier):
+                     if let custard = try? keyboardConfiguration.custardManager.custard(identifier: identifier) {
+-                        CustardInformationView(custard: custard) {
+-                            router.settingsPath.append(.custardInformation($0))
+-                        }
++                        CustardInformationView(custard: custard) { router.settingsPath.append(.custardInformation($0)) }
+                     }
+-                case .zenzai:
+-                    ZenzaiSettingView()
+-                }
+-            }
+-            .onAppear {
+-                if reviewPrompt.shouldTryRequestReview, reviewPrompt.shouldRequestReview() {
+-                    requestReview()
++                case .zenzai: ZenzaiSettingView()
+                 }
+             }
+         }
+-        .searchable(text: $searchQuery, prompt: Text("検索"))
+     }
+ }
+diff --git a/MainApp/Features/Theme/Sharing/ThemeShareView.swift b/MainApp/Features/Theme/Sharing/ThemeShareView.swift
+index c9c5ad1..3bac953 100644
+--- a/MainApp/Features/Theme/Sharing/ThemeShareView.swift
++++ b/MainApp/Features/Theme/Sharing/ThemeShareView.swift
+@@ -96,7 +96,7 @@ struct ThemeShareView: View {
+         let parameters = [
+             "text": "azooKeyで着せ替えました！",
+             "url": "https://apps.apple.com/jp/app/azookey/id1542709230",
+-            "hashtags": "azooKey",
++            "hashtags": "NaturalKana",
+             "related": "azooKey_dev",
+         ]
+         // 作成したテキストをエンコード
+diff --git a/MainApp/Features/Theme/ThemeHomeView.swift b/MainApp/Features/Theme/ThemeHomeView.swift
+index f7ffa0f..30e074c 100644
+--- a/MainApp/Features/Theme/ThemeHomeView.swift
++++ b/MainApp/Features/Theme/ThemeHomeView.swift
+@@ -259,7 +259,7 @@ struct ThemeHomeView: View {
+                     listSection
+                 }
+             }
+-            .navigationBarTitle(Text("着せ替え"), displayMode: .large)
++            .navigationBarTitle(Text("主题"), displayMode: .inline)
+             .navigationDestination(for: Path.self) { destination in
+                 switch destination {
+                 case let .edit(index: index):
+diff --git a/MainApp/Features/Tips/Articles/FullAccessTipsView.swift b/MainApp/Features/Tips/Articles/FullAccessTipsView.swift
+index 6bad68a..75a57bb 100644
+--- a/MainApp/Features/Tips/Articles/FullAccessTipsView.swift
++++ b/MainApp/Features/Tips/Articles/FullAccessTipsView.swift
+@@ -1,72 +1,11 @@
+-//
+-//  FullAccessTipsView.swift
+-//  azooKey
+-//
+-//  Created by ensan on 2023/03/06.
+-//  Copyright © 2023 ensan. All rights reserved.
+-//
+-
+-import KeyboardViews
+ import SwiftUI
+-
+ struct FullAccessTipsView: View {
+-    @EnvironmentObject private var keyboardConfiguration: KeyboardConfigurationState
+-    private func canFlickLayout(_ layout: LanguageLayout) -> Bool {
+-        if layout == .flick {
+-            return true
+-        }
+-        if case .custard = layout {
+-            return true
+-        }
+-        return false
+-    }
+-
+     var body: some View {
+-        TipsContentView("フルアクセスについて") {
+-            TipsContentParagraph {
+-                Text("azooKeyは、キーボードの振動フィードバックや、キーボードからのペーストを実現するために、フルアクセスの許可が必要です。フルアクセスを許可していただくことで、これらの機能が使用できます。")
+-            }
+-            TipsContentParagraph {
+-                Text("以下は、フルアクセスをオンにすることで利用できる設定項目です。フルアクセスを必要とする設定は、すべてデフォルトで無効になっているため、フルアクセスを許可しただけでキーボードの振る舞いが変わることはありません。")
+-                Text("また、フルアクセスをオンにしたあとでも、いつでもフルアクセスをオフにすることができます。")
+-            }
+-            // デバイスが触覚フィードバックをサポートしている場合のみ表示する
+-            if SemiStaticStates.shared.hapticsAvailable {
+-                BoolSettingView(.enableKeyHaptics)
+-            }
+-            if !SemiStaticStates.shared.needsInputModeSwitchKey, self.canFlickLayout(keyboardConfiguration.japaneseLayout) {
+-                BoolSettingView(.enablePasteButton)
+-            }
+-            BoolSettingView(.enableClipboardHistoryManagerTab)
+-            ContactImportSettingView()
+-
+-            TipsContentParagraph {
+-                Text("フルアクセスをオンにすると、変換候補を長押しすることでキーボード上で誤変換を報告できるようになります。")
+-                Text("報告の際には、「アプリのバージョン」「変換候補と読みと順位」「ローマ字入力かフリック入力か」「学習のあり/なし」の情報がサーバに送信されます。")
+-                Text("変換精度向上のため、報告をいただけると大変助かります。")
+-            }
+-
+-            TipsContentParagraph {
+-                Text("フルアクセスを許可しなくても、キーボードは完全に動作します。上記の機能を使わない場合は、オンにしないことを強くおすすめします。")
+-            }
+-
+-            TipsContentParagraph {
+-                Text("フルアクセスを有効化する際、以下のような警告が表示されますが、すべてのキーボードアプリで共通して表示されている警告です。")
+-                TipsImage(.fullAccessAlert)
+-                Text("azooKeyは安全なキーボードアプリであり、ユーザの明示的な同意なく、個人情報を外部に送信したり、保存したりすることはありません。")
+-                Text("なお、azooKeyはオープンソースであり、誰もが実装を確認することができます。")
+-            }
+-            if let url = URL(string: UIApplication.openSettingsURLString) {
+-                Button(SemiStaticStates.shared.hasFullAccess
+-                        ? "フルアクセスをオフにする（設定アプリが開きます）"
+-                        : "フルアクセスをオンにする（設定アプリが開きます）") {
+-                    UIApplication.shared.open(url, options: [:], completionHandler: nil)
+-                }
+-            }
+-            Section("参考情報") {
+-                FallbackLink("azooKeyのソースコードを閲覧する", destination: URL(string: "https://github.com/azooKey/azooKey")!)
+-                FallbackLink("Configuring open access for a custom keyboard | Apple Developer Documentation (英語)", destination: URL(string: "https://developer.apple.com/documentation/uikit/keyboards_and_input/creating_a_custom_keyboard/configuring_open_access_for_a_custom_keyboard")!)
+-            }
++        TipsContentView("完全访问与隐私") {
++            Text("NaturalKana 的日语自然表达建议需要联网。启用后，你正在写的当前草稿（最多 200 字）会发送给设置中配置的 OpenAI 或 Qwen 服务商。高质量模式会发送给两家服务商。")
++            Text("iOS 键盘必须开启允许完全访问才能联网。仅开启完全访问不会自动启用建议；你还需要在 NaturalKana 设置中同意发送草稿并开启功能。")
++            Text("不会发送聊天记录，不记录草稿，不收集遥测。服务商自己的数据政策仍适用。关闭功能或撤销完全访问可停止建议请求。")
++            Text("普通假名汉字转换可以离线使用。密钥存入系统钥匙串。")
+         }
+     }
+ }
+diff --git a/MainApp/Info.plist b/MainApp/Info.plist
+index 32ff583..6e9663e 100644
+--- a/MainApp/Info.plist
++++ b/MainApp/Info.plist
+@@ -2,15 +2,10 @@
+ <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+ <plist version="1.0">
+ <dict>
+-	<key>UILaunchScreen</key>
+-	<dict>
+-		<key>UIColorName</key>
+-		<string></string>
+-	</dict>
+ 	<key>CFBundleDevelopmentRegion</key>
+ 	<string>$(DEVELOPMENT_LANGUAGE)</string>
+ 	<key>CFBundleDisplayName</key>
+-	<string>azooKey</string>
++	<string>NaturalKana</string>
+ 	<key>CFBundleDocumentTypes</key>
+ 	<array>
+ 		<dict>
+@@ -41,7 +36,7 @@
+ 	<key>CFBundleInfoDictionaryVersion</key>
+ 	<string>6.0</string>
+ 	<key>CFBundleName</key>
+-	<string>$(PRODUCT_NAME)</string>
++	<string>NaturalKana</string>
+ 	<key>CFBundlePackageType</key>
+ 	<string>$(PRODUCT_BUNDLE_PACKAGE_TYPE)</string>
+ 	<key>CFBundleShortVersionString</key>
+@@ -52,7 +47,7 @@
+ 			<key>CFBundleTypeRole</key>
+ 			<string>Editor</string>
+ 			<key>CFBundleURLName</key>
+-			<string>DevEn3.azooKey</string>
++			<string>org.naturalkana</string>
+ 			<key>CFBundleURLSchemes</key>
+ 			<array>
+ 				<string>azooKey</string>
+@@ -72,6 +67,10 @@
+ 	<true/>
+ 	<key>NSContactsUsageDescription</key>
+ 	<string>Use contacts to better conversion using name data</string>
++	<key>NaturalKanaAppGroup</key>
++	<string>group.org.naturalkana</string>
++	<key>NaturalKanaKeychainGroup</key>
++	<string>$(AppIdentifierPrefix)org.naturalkana</string>
+ 	<key>UIAppFonts</key>
+ 	<array>
+ 		<string>AzooKeyIcon-Regular.otf</string>
+@@ -83,6 +82,11 @@
+ 		<key>UISceneConfigurations</key>
+ 		<dict/>
+ 	</dict>
++	<key>UILaunchScreen</key>
++	<dict>
++		<key>UIColorName</key>
++		<string></string>
++	</dict>
+ 	<key>UIRequiredDeviceCapabilities</key>
+ 	<array>
+ 		<string>armv7</string>
+diff --git a/MainApp/Shared/UI/Components/HeaderLogoView.swift b/MainApp/Shared/UI/Components/HeaderLogoView.swift
+index cb859a2..9963fae 100644
+--- a/MainApp/Shared/UI/Components/HeaderLogoView.swift
++++ b/MainApp/Shared/UI/Components/HeaderLogoView.swift
+@@ -1,41 +1,4 @@
+-//
+-//  HeaderIconView.swift
+-//  MainApp
+-//
+-//  Created by ensan on 2020/10/03.
+-//  Copyright © 2020 ensan. All rights reserved.
+-//
+-
+-import KeyboardViews
+ import SwiftUI
+-
+ struct HeaderLogoView: View {
+-    @Environment(\.colorScheme) private var colorScheme
+-    private var iconColor: Color {
+-        Color("IconColor")
+-    }
+-    private var iconSize: CGFloat = 40
+-
+-    var body: some View {
+-        Group {
+-            switch colorScheme {
+-            case .light:
+-                Text(verbatim: "A")
+-                    .font(Design.fonts.azooKeyIconFont(iconSize * 0.75))
+-                    .accessibilityLabel("azooKeyのロゴ")
+-            case .dark:
+-                Text(verbatim: "B")
+-                    .font(Design.fonts.azooKeyIconFont(iconSize * 0.75))
+-                    .accessibilityLabel("azooKeyのロゴ")
+-            @unknown default:
+-                Text(verbatim: "azooKey")
+-                    .font(Font(UIFont.systemFont(ofSize: iconSize)))
+-            }
+-        }
+-        .foregroundStyle(iconColor)
+-    }
+-}
+-
+-#Preview {
+-    HeaderLogoView()
++    var body: some View { Text("NaturalKana").font(.title.bold()) }
+ }
+diff --git a/MainApp/Shared/UI/Components/KeyboardPreview.swift b/MainApp/Shared/UI/Components/KeyboardPreview.swift
+index 0ccf144..4c98d47 100644
+--- a/MainApp/Shared/UI/Components/KeyboardPreview.swift
++++ b/MainApp/Shared/UI/Components/KeyboardPreview.swift
+@@ -131,7 +131,7 @@ struct KeyboardPreview: View {
+             variableStates.setTabForPreview(defaultTab)
+         }
+         variableStates.resultModel.setResults([
+-            CandidateMock(text: "azooKey"),
++            CandidateMock(text: "NaturalKana"),
+             CandidateMock(text: "あずーきー"),
+             CandidateMock(text: "アズーキー"),
+         ])
+diff --git a/MainApp/azooKey.entitlements b/MainApp/azooKey.entitlements
+index ac48973..d0c0c69 100644
+--- a/MainApp/azooKey.entitlements
++++ b/MainApp/azooKey.entitlements
+@@ -2,14 +2,13 @@
+ <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+ <plist version="1.0">
+ <dict>
+-	<key>com.apple.developer.associated-domains</key>
++	<key>com.apple.security.application-groups</key>
+ 	<array>
+-		<string>applinks:custard.azookey.com</string>
+-		<string>applinks:custard-share.miwa-keita-dev.workers.dev</string>
++		<string>group.org.naturalkana</string>
+ 	</array>
+-	<key>com.apple.security.application-groups</key>
++	<key>keychain-access-groups</key>
+ 	<array>
+-		<string>group.com.azooKey.keyboard</string>
++		<string>$(AppIdentifierPrefix)org.naturalkana</string>
+ 	</array>
+ </dict>
+ </plist>
+diff --git a/Resources/Localizable.xcstrings b/Resources/Localizable.xcstrings
+index d910e06..892c79d 100644
+--- a/Resources/Localizable.xcstrings
++++ b/Resources/Localizable.xcstrings
+@@ -1005,6 +1005,7 @@
+       }
+     },
+     "azooKeyが使えます！" : {
++      "extractionState" : "stale",
+       "localizations" : {
+         "en" : {
+           "stringUnit" : {
+@@ -1021,6 +1022,7 @@
+       }
+     },
+     "azooKeyが開かれました！" : {
++      "extractionState" : "stale",
+       "localizations" : {
+         "en" : {
+           "stringUnit" : {
+@@ -1101,6 +1103,7 @@
+       }
+     },
+     "azooKeyのソースコードを閲覧する" : {
++      "extractionState" : "stale",
+       "localizations" : {
+         "en" : {
+           "stringUnit" : {
+@@ -1117,6 +1120,7 @@
+       }
+     },
+     "azooKeyのロゴ" : {
++      "extractionState" : "stale",
+       "localizations" : {
+         "en" : {
+           "stringUnit" : {
+@@ -1149,6 +1153,7 @@
+       }
+     },
+     "azooKeyは、キーボードの振動フィードバックや、キーボードからのペーストを実現するために、フルアクセスの許可が必要です。フルアクセスを許可していただくことで、これらの機能が使用できます。" : {
++      "extractionState" : "stale",
+       "localizations" : {
+         "en" : {
+           "stringUnit" : {
+@@ -1197,6 +1202,7 @@
+       }
+     },
+     "azooKeyは安全なキーボードアプリであり、ユーザの明示的な同意なく、個人情報を外部に送信したり、保存したりすることはありません。" : {
++      "extractionState" : "stale",
+       "localizations" : {
+         "en" : {
+           "stringUnit" : {
+@@ -1245,6 +1251,7 @@
+       }
+     },
+     "azooKeyをオンにして" : {
++      "extractionState" : "stale",
+       "localizations" : {
+         "en" : {
+           "stringUnit" : {
+@@ -1261,6 +1268,7 @@
+       }
+     },
+     "azooKeyをお楽しみください！" : {
++      "extractionState" : "stale",
+       "localizations" : {
+         "en" : {
+           "stringUnit" : {
+@@ -1278,6 +1286,7 @@
+     },
+     "azooKeyを使う前に、iPhoneのキーボードのリストにazooKeyを追加する必要があります" : {
+       "comment" : "Localizable.strings\n  azooKey\n\n  Created by ensan on 2021/02/14.\n  Copyright © 2021 ensan. All rights reserved.",
++      "extractionState" : "stale",
+       "localizations" : {
+         "en" : {
+           "stringUnit" : {
+@@ -1384,6 +1393,7 @@
+       }
+     },
+     "Configuring open access for a custom keyboard | Apple Developer Documentation (英語)" : {
++      "extractionState" : "stale",
+       "localizations" : {
+         "en" : {
+           "stringUnit" : {
+@@ -1444,6 +1454,9 @@
+           }
+         }
+       }
++    },
++    "iOS 键盘必须开启允许完全访问才能联网。仅开启完全访问不会自动启用建议；你还需要在 NaturalKana 设置中同意发送草稿并开启功能。" : {
++
+     },
+     "iPhone 15 Proより上位の端末では「中」「高」程度のエフォートでも快適に利用できます。" : {
+       "localizations" : {
+@@ -1496,6 +1509,27 @@
+           }
+         }
+       }
++    },
++    "NaturalKana" : {
++
++    },
++    "NaturalKana 的日语自然表达建议需要联网。启用后，你正在写的当前草稿（最多 200 字）会发送给设置中配置的 OpenAI 或 Qwen 服务商。高质量模式会发送给两家服务商。" : {
++
++    },
++    "NaturalKanaが使えます！" : {
++
++    },
++    "NaturalKanaが開かれました！" : {
++
++    },
++    "NaturalKanaをオンにして" : {
++
++    },
++    "NaturalKanaをお楽しみください！" : {
++
++    },
++    "NaturalKanaを使う前に、iPhoneのキーボードのリストにNaturalKanaを追加する必要があります" : {
++
+     },
+     "OK" : {
+       "localizations" : {
+@@ -1587,6 +1621,12 @@
+           }
+         }
+       }
++    },
++    "QWERTY専用キーとフリックは併用できません" : {
++
++    },
++    "QWERTY専用キーを使用する場合はレイアウトスタイルをQWERTYにしてください。フリックに変更する場合は、QWERTY専用キーを削除してください。" : {
++
+     },
+     "QWERTY空白・次候補キー" : {
+       "localizations" : {
+@@ -2821,6 +2861,7 @@
+       }
+     },
+     "キーボードの地球儀ボタンを長押しし、azooKeyを選択してください" : {
++      "extractionState" : "stale",
+       "localizations" : {
+         "en" : {
+           "stringUnit" : {
+@@ -2835,6 +2876,9 @@
+           }
+         }
+       }
++    },
++    "キーボードの地球儀ボタンを長押しし、NaturalKanaを選択してください" : {
++
+     },
+     "キーボードの種類" : {
+       "localizations" : {
+@@ -4703,6 +4747,7 @@
+       }
+     },
+     "なお、azooKeyはオープンソースであり、誰もが実装を確認することができます。" : {
++      "extractionState" : "stale",
+       "localizations" : {
+         "en" : {
+           "stringUnit" : {
+@@ -5229,6 +5274,7 @@
+       }
+     },
+     "フルアクセスをオフにする（設定アプリが開きます）" : {
++      "extractionState" : "stale",
+       "localizations" : {
+         "en" : {
+           "stringUnit" : {
+@@ -5245,6 +5291,7 @@
+       }
+     },
+     "フルアクセスをオンにする（設定アプリが開きます）" : {
++      "extractionState" : "stale",
+       "localizations" : {
+         "en" : {
+           "stringUnit" : {
+@@ -5261,6 +5308,7 @@
+       }
+     },
+     "フルアクセスをオンにすると、変換候補を長押しすることでキーボード上で誤変換を報告できるようになります。" : {
++      "extractionState" : "stale",
+       "localizations" : {
+         "en" : {
+           "stringUnit" : {
+@@ -5277,6 +5325,7 @@
+       }
+     },
+     "フルアクセスを有効化する際、以下のような警告が表示されますが、すべてのキーボードアプリで共通して表示されている警告です。" : {
++      "extractionState" : "stale",
+       "localizations" : {
+         "en" : {
+           "stringUnit" : {
+@@ -5293,6 +5342,7 @@
+       }
+     },
+     "フルアクセスを許可しなくても、キーボードは完全に動作します。上記の機能を使わない場合は、オンにしないことを強くおすすめします。" : {
++      "extractionState" : "stale",
+       "localizations" : {
+         "en" : {
+           "stringUnit" : {
+@@ -5437,6 +5487,7 @@
+       }
+     },
+     "また、フルアクセスをオンにしたあとでも、いつでもフルアクセスをオフにすることができます。" : {
++      "extractionState" : "stale",
+       "localizations" : {
+         "en" : {
+           "stringUnit" : {
+@@ -6175,6 +6226,9 @@
+           }
+         }
+       }
++    },
++    "不会发送聊天记录，不记录草稿，不收集遥测。服务商自己的数据政策仍适用。关闭功能或撤销完全访问可停止建议请求。" : {
++
+     },
+     "不具合報告" : {
+       "localizations" : {
+@@ -6289,6 +6343,7 @@
+       }
+     },
+     "以下は、フルアクセスをオンにすることで利用できる設定項目です。フルアクセスを必要とする設定は、すべてデフォルトで無効になっているため、フルアクセスを許可しただけでキーボードの振る舞いが変わることはありません。" : {
++      "extractionState" : "stale",
+       "localizations" : {
+         "en" : {
+           "stringUnit" : {
+@@ -6443,6 +6498,9 @@
+           }
+         }
+       }
++    },
++    "保存できませんでした" : {
++
+     },
+     "候補を選択" : {
+       "localizations" : {
+@@ -7182,6 +7240,7 @@
+       }
+     },
+     "参考情報" : {
++      "extractionState" : "stale",
+       "localizations" : {
+         "en" : {
+           "stringUnit" : {
+@@ -7434,6 +7493,7 @@
+       }
+     },
+     "報告の際には、「アプリのバージョン」「変換候補と読みと順位」「ローマ字入力かフリック入力か」「学習のあり/なし」の情報がサーバに送信されます。" : {
++      "extractionState" : "stale",
+       "localizations" : {
+         "en" : {
+           "stringUnit" : {
+@@ -7656,6 +7716,7 @@
+       }
+     },
+     "変換精度向上のため、報告をいただけると大変助かります。" : {
++      "extractionState" : "stale",
+       "localizations" : {
+         "en" : {
+           "stringUnit" : {
+@@ -7895,6 +7956,9 @@
+           }
+         }
+       }
++    },
++    "完全访问与隐私" : {
++
+     },
+     "定型文タブの作成" : {
+       "localizations" : {
+@@ -8848,6 +8912,9 @@
+           }
+         }
+       }
++    },
++    "日语自然表达 · API 与隐私设置" : {
++
+     },
+     "時刻" : {
+       "localizations" : {
+@@ -8926,6 +8993,9 @@
+           }
+         }
+       }
++    },
++    "普通假名汉字转换可以离线使用。密钥存入系统钥匙串。" : {
++
+     },
+     "暦の種類" : {
+       "localizations" : {
+@@ -10306,6 +10376,9 @@
+           }
+         }
+       }
++    },
++    "編集内容は保持されています。設定を確認して、もう一度保存してください。" : {
++
+     },
+     "縦" : {
+       "localizations" : {
+@@ -10511,6 +10584,9 @@
+           }
+         }
+       }
++    },
++    "自然表达建议开启后，当前草稿会发送给你配置的服务商，需要允许完全访问。请在设置中阅读隐私说明并填写 API 密钥。" : {
++
+     },
+     "英字入力の際に\\n「𝕥𝕪𝕡𝕠𝕘𝕣𝕒𝕡𝕙𝕪」のような装飾字体を候補に表示します。" : {
+       "extractionState" : "manual",
+@@ -11710,4 +11786,4 @@
+     }
+   },
+   "version" : "1.0"
+-}
++}
+\ No newline at end of file
+diff --git a/azooKey.xcodeproj/project.pbxproj b/azooKey.xcodeproj/project.pbxproj
+index 5d265e1..647245f 100644
+--- a/azooKey.xcodeproj/project.pbxproj
++++ b/azooKey.xcodeproj/project.pbxproj
+@@ -7,7 +7,6 @@
+ 	objects = {
+ 
+ /* Begin PBXBuildFile section */
+-		AA2700012026091700000001 /* KeyboardViews in Frameworks */ = {isa = PBXBuildFile; productRef = AA2700012026091700000002 /* KeyboardViews */; };
+ 		1A2E58542951EC87004F959B /* (null) in Sources */ = {isa = PBXBuildFile; };
+ 		1A2E58592951EC87004F959B /* (null) in Sources */ = {isa = PBXBuildFile; };
+ 		1A2E585A2951EC87004F959B /* (null) in Sources */ = {isa = PBXBuildFile; };
+@@ -40,6 +39,13 @@
+ 		55EE424B2B8091B400C75B3D /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 55EE424A2B8091B400C75B3D /* PrivacyInfo.xcprivacy */; };
+ 		55FBA8982E68851700DA8EC0 /* zenz-v3.2-xsmall-gguf in Resources */ = {isa = PBXBuildFile; fileRef = 55FBA8962E6884A000DA8EC0 /* zenz-v3.2-xsmall-gguf */; };
+ 		55FBA8992E68851B00DA8EC0 /* zenz-v3.2-small-gguf in Resources */ = {isa = PBXBuildFile; fileRef = 55FBA8972E6884A300DA8EC0 /* zenz-v3.2-small-gguf */; };
++		AA2700012026091700000001 /* KeyboardViews in Frameworks */ = {isa = PBXBuildFile; productRef = AA2700012026091700000002 /* KeyboardViews */; };
++		FAD000000000000000000100 /* NaturalSuggestCore in Frameworks */ = {isa = PBXBuildFile; productRef = FAC000000000000000000100 /* NaturalSuggestCore */; };
++		FAD000000000000000000101 /* NaturalSuggestUI in Frameworks */ = {isa = PBXBuildFile; productRef = FAC000000000000000000101 /* NaturalSuggestUI */; };
++		FAD000000000000000000200 /* NaturalSuggestCore in Frameworks */ = {isa = PBXBuildFile; productRef = FAC000000000000000000200 /* NaturalSuggestCore */; };
++		FAD000000000000000000201 /* NaturalSuggestUI in Frameworks */ = {isa = PBXBuildFile; productRef = FAC000000000000000000201 /* NaturalSuggestUI */; };
++		FAD000000000000000000300 /* NaturalSuggestCore in Frameworks */ = {isa = PBXBuildFile; productRef = FAC000000000000000000300 /* NaturalSuggestCore */; };
++		FAD000000000000000000301 /* NaturalSuggestUI in Frameworks */ = {isa = PBXBuildFile; productRef = FAC000000000000000000301 /* NaturalSuggestUI */; };
+ /* End PBXBuildFile section */
+ 
+ /* Begin PBXContainerItemProxy section */
+@@ -174,6 +180,8 @@
+ 			isa = PBXFrameworksBuildPhase;
+ 			buildActionMask = 2147483647;
+ 			files = (
++				FAD000000000000000000201 /* NaturalSuggestUI in Frameworks */,
++				FAD000000000000000000200 /* NaturalSuggestCore in Frameworks */,
+ 				1A7F37832A69874C009AC382 /* KeyboardThemes in Frameworks */,
+ 				1A7F37742A683428009AC382 /* SwiftUIUtils in Frameworks */,
+ 				1AF306022A00070000B4DAC3 /* KanaKanjiConverterModule in Frameworks */,
+@@ -186,6 +194,8 @@
+ 			isa = PBXFrameworksBuildPhase;
+ 			buildActionMask = 2147483647;
+ 			files = (
++				FAD000000000000000000301 /* NaturalSuggestUI in Frameworks */,
++				FAD000000000000000000300 /* NaturalSuggestCore in Frameworks */,
+ 				1ABDFC352A18C60A00CED3A3 /* KanaKanjiConverterModuleWithDefaultDictionary in Frameworks */,
+ 				AA2700012026091700000001 /* KeyboardViews in Frameworks */,
+ 			);
+@@ -202,6 +212,8 @@
+ 			isa = PBXFrameworksBuildPhase;
+ 			buildActionMask = 2147483647;
+ 			files = (
++				FAD000000000000000000101 /* NaturalSuggestUI in Frameworks */,
++				FAD000000000000000000100 /* NaturalSuggestCore in Frameworks */,
+ 				1A7F378A2A6A1A99009AC382 /* KeyboardViews in Frameworks */,
+ 				1A7F37812A698741009AC382 /* KeyboardThemes in Frameworks */,
+ 				1AD96FB82A22F9C800FD4EA4 /* SwiftUIUtils in Frameworks */,
+@@ -328,6 +340,8 @@
+ 			);
+ 			name = azooKey;
+ 			packageProductDependencies = (
++				FAC000000000000000000201 /* NaturalSuggestUI */,
++				FAC000000000000000000200 /* NaturalSuggestCore */,
+ 				1AF306012A00070000B4DAC3 /* KanaKanjiConverterModule */,
+ 				1A7F37732A683428009AC382 /* SwiftUIUtils */,
+ 				1A7F37822A69874C009AC382 /* KeyboardThemes */,
+@@ -357,6 +371,8 @@
+ 			);
+ 			name = azooKeyTests;
+ 			packageProductDependencies = (
++				FAC000000000000000000301 /* NaturalSuggestUI */,
++				FAC000000000000000000300 /* NaturalSuggestCore */,
+ 				1ABDFC342A18C60A00CED3A3 /* KanaKanjiConverterModuleWithDefaultDictionary */,
+ 				AA2700012026091700000002 /* KeyboardViews */,
+ 			);
+@@ -401,6 +417,8 @@
+ 			);
+ 			name = Keyboard;
+ 			packageProductDependencies = (
++				FAC000000000000000000101 /* NaturalSuggestUI */,
++				FAC000000000000000000100 /* NaturalSuggestCore */,
+ 				1AD96FB72A22F9C800FD4EA4 /* SwiftUIUtils */,
+ 				1A7F37802A698741009AC382 /* KeyboardThemes */,
+ 				1A7F37892A6A1A99009AC382 /* KeyboardViews */,
+@@ -450,6 +468,7 @@
+ 			);
+ 			mainGroup = 1A3DC1B92500D44A002CAA93;
+ 			packageReferences = (
++				FAC000000000000000000001 /* XCLocalSwiftPackageReference "../../NaturalSuggestCore" */,
+ 			);
+ 			productRefGroup = 1A3DC1C32500D44A002CAA93 /* Products */;
+ 			projectDirPath = "";
+@@ -640,7 +659,7 @@
+ 				COPY_PHASE_STRIP = NO;
+ 				CURRENT_PROJECT_VERSION = 1;
+ 				DEBUG_INFORMATION_FORMAT = dwarf;
+-				DEVELOPMENT_TEAM = 9S3UXHYP65;
++				DEVELOPMENT_TEAM = "";
+ 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+ 				ENABLE_TESTABILITY = YES;
+ 				GCC_C_LANGUAGE_STANDARD = gnu11;
+@@ -712,7 +731,7 @@
+ 				COPY_PHASE_STRIP = NO;
+ 				CURRENT_PROJECT_VERSION = 1;
+ 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+-				DEVELOPMENT_TEAM = 9S3UXHYP65;
++				DEVELOPMENT_TEAM = "";
+ 				ENABLE_NS_ASSERTIONS = NO;
+ 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+ 				ENABLE_TESTABILITY = NO;
+@@ -746,12 +765,13 @@
+ 		1A3DC1ED2500D44E002CAA93 /* Debug */ = {
+ 			isa = XCBuildConfiguration;
+ 			buildSettings = {
+-				ASSETCATALOG_COMPILER_APPICON_NAME = azooKey;
++				ASSETCATALOG_COMPILER_APPICON_NAME = "";
+ 				CLANG_USE_OPTIMIZATION_PROFILE = YES;
+ 				CODE_SIGN_ENTITLEMENTS = MainApp/azooKey.entitlements;
+ 				CODE_SIGN_IDENTITY = "Apple Development";
+ 				CODE_SIGN_STYLE = Automatic;
+ 				DEVELOPMENT_ASSET_PATHS = "\"MainApp/Preview Content\"";
++				DEVELOPMENT_TEAM = "";
+ 				ENABLE_PREVIEWS = YES;
+ 				INFOPLIST_FILE = MainApp/Info.plist;
+ 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
+@@ -762,7 +782,7 @@
+ 				);
+ 				MARKETING_VERSION = 3.1.2;
+ 				OTHER_SWIFT_FLAGS = "";
+-				PRODUCT_BUNDLE_IDENTIFIER = DevEn3.azooKey;
++				PRODUCT_BUNDLE_IDENTIFIER = org.naturalkana;
+ 				PRODUCT_NAME = azooKey;
+ 				PROVISIONING_PROFILE_SPECIFIER = "";
+ 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+@@ -779,12 +799,13 @@
+ 		1A3DC1EE2500D44E002CAA93 /* Release */ = {
+ 			isa = XCBuildConfiguration;
+ 			buildSettings = {
+-				ASSETCATALOG_COMPILER_APPICON_NAME = azooKey;
++				ASSETCATALOG_COMPILER_APPICON_NAME = "";
+ 				CLANG_USE_OPTIMIZATION_PROFILE = YES;
+ 				CODE_SIGN_ENTITLEMENTS = MainApp/azooKey.entitlements;
+ 				CODE_SIGN_IDENTITY = "Apple Development";
+ 				CODE_SIGN_STYLE = Automatic;
+ 				DEVELOPMENT_ASSET_PATHS = "\"MainApp/Preview Content\"";
++				DEVELOPMENT_TEAM = "";
+ 				ENABLE_PREVIEWS = YES;
+ 				"GCC_OPTIMIZATION_LEVEL[arch=*]" = s;
+ 				INFOPLIST_FILE = MainApp/Info.plist;
+@@ -797,7 +818,7 @@
+ 				LLVM_LTO = YES_THIN;
+ 				MARKETING_VERSION = 3.1.2;
+ 				OTHER_SWIFT_FLAGS = "";
+-				PRODUCT_BUNDLE_IDENTIFIER = DevEn3.azooKey;
++				PRODUCT_BUNDLE_IDENTIFIER = org.naturalkana;
+ 				PRODUCT_NAME = azooKey;
+ 				PROVISIONING_PROFILE_SPECIFIER = "";
+ 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+@@ -824,7 +845,7 @@
+ 					"@loader_path/Frameworks",
+ 				);
+ 				LLVM_LTO = NO;
+-				PRODUCT_BUNDLE_IDENTIFIER = DevEn3.azooKeyTests;
++				PRODUCT_BUNDLE_IDENTIFIER = org.naturalkana.tests;
+ 				PRODUCT_NAME = "$(TARGET_NAME)";
+ 				SWIFT_OPTIMIZATION_LEVEL = "-O";
+ 				SWIFT_VERSION = 6.0;
+@@ -846,7 +867,7 @@
+ 					"@loader_path/Frameworks",
+ 				);
+ 				LLVM_LTO = YES_THIN;
+-				PRODUCT_BUNDLE_IDENTIFIER = DevEn3.azooKeyTests;
++				PRODUCT_BUNDLE_IDENTIFIER = org.naturalkana.tests;
+ 				PRODUCT_NAME = "$(TARGET_NAME)";
+ 				PROVISIONING_PROFILE_SPECIFIER = "";
+ 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "";
+@@ -869,7 +890,7 @@
+ 					"@executable_path/Frameworks",
+ 					"@loader_path/Frameworks",
+ 				);
+-				PRODUCT_BUNDLE_IDENTIFIER = DevEn3.MainAppUITests;
++				PRODUCT_BUNDLE_IDENTIFIER = org.naturalkana.uitests;
+ 				PRODUCT_NAME = "$(TARGET_NAME)";
+ 				PROVISIONING_PROFILE_SPECIFIER = "";
+ 				"PROVISIONING_PROFILE_SPECIFIER[sdk=macosx*]" = "";
+@@ -892,7 +913,7 @@
+ 					"@executable_path/Frameworks",
+ 					"@loader_path/Frameworks",
+ 				);
+-				PRODUCT_BUNDLE_IDENTIFIER = DevEn3.MainAppUITests;
++				PRODUCT_BUNDLE_IDENTIFIER = org.naturalkana.uitests;
+ 				PRODUCT_NAME = "$(TARGET_NAME)";
+ 				PROVISIONING_PROFILE_SPECIFIER = "";
+ 				"PROVISIONING_PROFILE_SPECIFIER[sdk=macosx*]" = "";
+@@ -910,6 +931,7 @@
+ 				CODE_SIGN_ENTITLEMENTS = Keyboard/Keyboard.entitlements;
+ 				CODE_SIGN_IDENTITY = "Apple Development";
+ 				CODE_SIGN_STYLE = Automatic;
++				DEVELOPMENT_TEAM = "";
+ 				GCC_OPTIMIZATION_LEVEL = fast;
+ 				GCC_WARN_UNUSED_PARAMETER = YES;
+ 				INFOPLIST_FILE = Keyboard/Info.plist;
+@@ -921,7 +943,7 @@
+ 				);
+ 				MARKETING_VERSION = 3.1.2;
+ 				OTHER_SWIFT_FLAGS = "";
+-				PRODUCT_BUNDLE_IDENTIFIER = DevEn3.azooKey.keyboard;
++				PRODUCT_BUNDLE_IDENTIFIER = org.naturalkana.keyboard;
+ 				PRODUCT_NAME = Keyboard;
+ 				PROVISIONING_PROFILE_SPECIFIER = "";
+ 				SKIP_INSTALL = YES;
+@@ -943,6 +965,7 @@
+ 				CODE_SIGN_ENTITLEMENTS = Keyboard/Keyboard.entitlements;
+ 				CODE_SIGN_IDENTITY = "Apple Development";
+ 				CODE_SIGN_STYLE = Automatic;
++				DEVELOPMENT_TEAM = "";
+ 				GCC_OPTIMIZATION_LEVEL = fast;
+ 				GCC_WARN_UNUSED_PARAMETER = YES;
+ 				INFOPLIST_FILE = Keyboard/Info.plist;
+@@ -955,7 +978,7 @@
+ 				LLVM_LTO = YES_THIN;
+ 				MARKETING_VERSION = 3.1.2;
+ 				OTHER_SWIFT_FLAGS = "";
+-				PRODUCT_BUNDLE_IDENTIFIER = DevEn3.azooKey.keyboard;
++				PRODUCT_BUNDLE_IDENTIFIER = org.naturalkana.keyboard;
+ 				PRODUCT_NAME = Keyboard;
+ 				PROVISIONING_PROFILE_SPECIFIER = "";
+ 				SKIP_INSTALL = YES;
+@@ -1019,11 +1042,14 @@
+ 		};
+ /* End XCConfigurationList section */
+ 
+-/* Begin XCSwiftPackageProductDependency section */
+-		AA2700012026091700000002 /* KeyboardViews */ = {
+-			isa = XCSwiftPackageProductDependency;
+-			productName = KeyboardViews;
++/* Begin XCLocalSwiftPackageReference section */
++		FAC000000000000000000001 /* XCLocalSwiftPackageReference "../../NaturalSuggestCore" */ = {
++			isa = XCLocalSwiftPackageReference;
++			relativePath = ../../NaturalSuggestCore;
+ 		};
++/* End XCLocalSwiftPackageReference section */
++
++/* Begin XCSwiftPackageProductDependency section */
+ 		1A7F37732A683428009AC382 /* SwiftUIUtils */ = {
+ 			isa = XCSwiftPackageProductDependency;
+ 			productName = SwiftUIUtils;
+@@ -1072,6 +1098,40 @@
+ 			isa = XCSwiftPackageProductDependency;
+ 			productName = KanaKanjiConverterModuleWithDefaultDictionary;
+ 		};
++		AA2700012026091700000002 /* KeyboardViews */ = {
++			isa = XCSwiftPackageProductDependency;
++			productName = KeyboardViews;
++		};
++		FAC000000000000000000100 /* NaturalSuggestCore */ = {
++			isa = XCSwiftPackageProductDependency;
++			package = FAC000000000000000000001 /* XCLocalSwiftPackageReference "../../NaturalSuggestCore" */;
++			productName = NaturalSuggestCore;
++		};
++		FAC000000000000000000101 /* NaturalSuggestUI */ = {
++			isa = XCSwiftPackageProductDependency;
++			package = FAC000000000000000000001 /* XCLocalSwiftPackageReference "../../NaturalSuggestCore" */;
++			productName = NaturalSuggestUI;
++		};
++		FAC000000000000000000200 /* NaturalSuggestCore */ = {
++			isa = XCSwiftPackageProductDependency;
++			package = FAC000000000000000000001 /* XCLocalSwiftPackageReference "../../NaturalSuggestCore" */;
++			productName = NaturalSuggestCore;
++		};
++		FAC000000000000000000201 /* NaturalSuggestUI */ = {
++			isa = XCSwiftPackageProductDependency;
++			package = FAC000000000000000000001 /* XCLocalSwiftPackageReference "../../NaturalSuggestCore" */;
++			productName = NaturalSuggestUI;
++		};
++		FAC000000000000000000300 /* NaturalSuggestCore */ = {
++			isa = XCSwiftPackageProductDependency;
++			package = FAC000000000000000000001 /* XCLocalSwiftPackageReference "../../NaturalSuggestCore" */;
++			productName = NaturalSuggestCore;
++		};
++		FAC000000000000000000301 /* NaturalSuggestUI */ = {
++			isa = XCSwiftPackageProductDependency;
++			package = FAC000000000000000000001 /* XCLocalSwiftPackageReference "../../NaturalSuggestCore" */;
++			productName = NaturalSuggestUI;
++		};
+ /* End XCSwiftPackageProductDependency section */
+ 	};
+ 	rootObject = 1A3DC1BA2500D44A002CAA93 /* Project object */;

@@ -1,0 +1,8 @@
+{
+  "providers": {
+    "openAI": {"baseURL": "https://api.openai.com/v1", "fastModel": "gpt-4.1-mini", "qualityModel": "gpt-4.1"},
+    "qwen": {"baseURL": "https://dashscope-intl.aliyuncs.com/compatible-mode/v1", "fastModel": "", "qualityModel": "qwen3.8-max"}
+  },
+  "judge": {"provider": "openAI", "model": "", "baseURL": "https://api.openai.com/v1"},
+  "prices_per_million": {}
+}

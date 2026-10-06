@@ -1,0 +1,20 @@
+# API documentation checked 2026-10-06
+
+The implementation uses `POST <baseURL>/chat/completions`, bearer credentials, `response_format.type=json_schema`, a strict object schema, no streaming, and bounded output. OpenAI adds `store=false`; this disables optional response storage, not every provider-side retention mechanism. Each request has a 20-second timeout and an output-token cap of max(2,048, selected candidate count × 768); quality mode has parallel generation followed by a serial judge.
+
+References actually read:
+
+- [OpenAI structured outputs](https://developers.openai.com/api/docs/guides/structured-outputs): JSON Schema with strict mode; refusals/truncation still require handling. The client rejects refusals, non-stop finish reasons and malformed payloads.
+- [GPT-4.1 mini](https://developers.openai.com/api/docs/models/gpt-4.1-mini) and [GPT-4.1](https://developers.openai.com/api/docs/models/gpt-4.1): documented comparison candidates, not measured defaults. Runtime settings leave IDs empty. Some newer models do not accept temperature; `ProviderConfiguration.temperature=nil` omits it.
+- [OpenAI web search](https://developers.openai.com/api/docs/guides/tools-web-search): refresh uses the Responses API and hosted `web_search`, not scraping.
+- [Qwen OpenAI compatibility](https://www.alibabacloud.com/help/en/model-studio/compatibility-of-openai-with-dashscope): account region/workspace determines credentials and endpoint. Retrieved international and mainland pages contain inconsistent region examples. Use the exact endpoint shown by the user's console; do not guess a workspace ID.
+- [Qwen structured output](https://help.aliyun.com/en/model-studio/qwen-structured-output): strict schema is limited to selected models/series; JSON-object support alone does not satisfy this project. The retrieved page lists Qwen3.8 Flash/Max and Qwen3.7 families for JSON Schema; examples use `qwen3.8-max`. Check account access before choosing a live model.
+- [Qwen web search](https://www.alibabacloud.com/help/en/model-studio/web-search): official search can be enabled with `enable_search`; native DashScope search results expose sources with `enable_source`. The refresh tool uses the native text-generation API for Qwen and requires an `/api/v1` base URL, while the app requires the OpenAI-compatible `/compatible-mode/v1` URL.
+
+Traditional compatible examples are `https://dashscope-intl.aliyuncs.com/compatible-mode/v1` (international) and `https://dashscope.aliyuncs.com/compatible-mode/v1` (mainland). Current docs also show workspace-specific Singapore (`https://{WorkspaceId}.ap-southeast-1.maas.aliyuncs.com/compatible-mode/v1`) and Beijing (`https://{WorkspaceId}.cn-beijing.maas.aliyuncs.com/compatible-mode/v1`) endpoints. The app's international URL is an editable starting value, not an assertion of account compatibility. Unexpanded placeholders are rejected.
+
+Qwen has been exercised in native development tests. Automated HTTP/error handling is verified with mocked transport; this does not establish production reliability or model quality. Unsupported schema/model/temperature errors remain silent in the typing UI and are surfaced as status; the client never silently falls back to non-structured generation.
+
+Stability update: identical in-flight requests are coalesced, and the preview request button is disabled while a request is running. Changed drafts/settings still cancel stale requests. Empty candidate results are not cached. No automatic paid retries or model switching are performed. Status distinguishes timeout, network failure, HTTP status, known provider-quota errors, truncation, refusal, malformed JSON and a valid response with no acceptable suggestions. Raw provider error messages, drafts and keys are never logged or displayed as diagnostics.
+
+Native macOS installation uses a separate sandboxed application; verify its opt-in and provider settings in the input-method menu before testing AI suggestions. A successful converter-service probe does not test Qwen or host text replacement.
