@@ -29,7 +29,6 @@ jobs:
                   destination.write_bytes(bundle.read(item))
                   destination.chmod((item.external_attr >> 16) & 0o777 or 0o644)
           archive.unlink()
-          Path('.github/workflows/import-source.yml').unlink()
           PYTHON
       - name: Commit imported project
         run: |
