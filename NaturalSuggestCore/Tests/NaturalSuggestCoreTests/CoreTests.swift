@@ -128,6 +128,47 @@ struct ProviderTests {
         try await Task.sleep(for: .milliseconds(20)); engine.cancel()
         try await Task.sleep(for: .milliseconds(130)); XCTAssertTrue(engine.suggestions.isEmpty)
     }
+    @Test func testDismissedDraftStaysHiddenUntilEditedOrExplicitlyRequested() async throws {
+        let engine = try engine(); let provider = MockProvider()
+        let snapshot = DraftSnapshot(text: "今何にしていますか", fieldID: "a")
+        engine.update(snapshot, settings: settings, provider: provider, explicit: true)
+        let deadline = ContinuousClock.now + .seconds(2)
+        while engine.status != .ready && ContinuousClock.now < deadline {
+            try await Task.sleep(for: .milliseconds(10))
+        }
+        try #require(engine.status == .ready)
+        engine.dismiss(); engine.dismiss()
+        engine.cancel() // Normal key invalidation must preserve dismissal.
+        engine.update(snapshot, settings: settings, provider: provider)
+        #expect(engine.suggestions.isEmpty)
+        #expect(engine.status == .idle)
+        #expect(await provider.count() == 1)
+        engine.update(snapshot, settings: settings, provider: provider, explicit: true)
+        #expect(engine.status == .ready) // Explicit requests can reuse the cached result.
+        engine.dismiss()
+        engine.update(.init(text: "今何にしていますか？", fieldID: "a"), settings: settings, provider: provider)
+        #expect(engine.status == .waiting)
+        engine.cancel()
+    }
+    @Test func testDismissCancelsInFlightResponseAndAllowsAnotherField() async throws {
+        let engine = try engine(); let provider = MockProvider(delay: 150)
+        let snapshot = DraftSnapshot(text: "今何にしていますか", fieldID: "a")
+        engine.update(snapshot, settings: settings, provider: provider, explicit: true)
+        let deadline = ContinuousClock.now + .seconds(2)
+        while await provider.count() == 0 && ContinuousClock.now < deadline {
+            try await Task.sleep(for: .milliseconds(10))
+        }
+        try #require(await provider.count() == 1)
+        engine.dismiss()
+        engine.update(snapshot, settings: settings, provider: provider)
+        try await Task.sleep(for: .milliseconds(180))
+        #expect(engine.suggestions.isEmpty)
+        #expect(engine.status == .idle)
+        #expect(await provider.count() == 1)
+        engine.update(.init(text: snapshot.text, fieldID: "b"), settings: settings, provider: provider)
+        #expect(engine.status == .waiting)
+        engine.cancel()
+    }
     @Test func testAcceptanceRequiresExactSnapshot() async throws {
         let engine = try engine(); let provider = MockProvider(); let snapshot = DraftSnapshot(text: "今何にしていますか", fieldID: "a")
         engine.update(snapshot, settings: settings, provider: provider, explicit: true)

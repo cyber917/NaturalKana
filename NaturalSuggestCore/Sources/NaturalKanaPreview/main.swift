@@ -21,7 +21,7 @@ struct PreviewView: View {
                     .font(.callout).foregroundStyle(.secondary)
                 TextEditor(text: $draft).font(.title3).frame(height: 180).border(.quaternary)
                     .onChange(of: draft) { _ in model.update(snapshot) }
-                SuggestionStrip(suggestions: model.suggestions) { index in
+                SuggestionStrip(suggestions: model.suggestions, original: model.suggestionDraft, highlightChanges: model.settings.highlightChanges) { index in
                     let current = snapshot
                     if let replacement = model.accept(index, snapshot: current), draft.hasSuffix(current.text) {
                         draft = String(draft.dropLast(current.text.count)) + replacement

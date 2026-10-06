@@ -25,7 +25,7 @@ struct CandidateCountTests {
             let properties = try #require(schema["properties"] as? [String: Any])
             let rows = try #require(properties["suggestions"] as? [String: Any])
             #expect(rows["maxItems"] as? Int == limit)
-            #expect(body["max_completion_tokens"] as? Int == max(2048, limit * 768))
+            #expect(body["max_tokens"] as? Int == max(2048, limit * 768))
         }
     }
     @Test func validatorKeepsRequestedCountAndRejectsBeyondHardLimit() throws {

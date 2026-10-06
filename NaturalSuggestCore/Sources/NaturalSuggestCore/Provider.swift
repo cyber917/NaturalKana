@@ -39,47 +39,84 @@ public struct CompatibleProvider: SuggestionProvider {
     public static func schema(maximumSuggestions: Int) -> [String: Any] {
         let item: [String: Any] = ["type": "object", "additionalProperties": false, "required": ["text", "register"],
                                   "properties": ["text": ["type": "string"], "register": ["type": "string", "enum": ["casual", "polite"]]]]
-        return ["type": "object", "additionalProperties": false, "required": ["suggestions"],
-                "properties": ["suggestions": ["type": "array", "maxItems": min(10, max(1, maximumSuggestions)), "items": item]]]
+        return ["type": "object", "additionalProperties": false, "required": ["assessment", "suggestions"],
+                "properties": ["assessment": ["type": "string", "enum": ["natural", "rewrite", "unsupported"]],
+                               "suggestions": ["type": "array", "maxItems": min(10, max(1, maximumSuggestions)), "items": item]]]
     }
     public func suggest(_ prompt: Prompt, quality: Bool = false) async throws -> ProviderResult {
         guard !key.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else { throw SuggestionError.missingKey }
-        let model = quality ? configuration.qualityModel : configuration.fastModel
-        guard !model.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else { throw SuggestionError.configuration }
-        var request = URLRequest(url: try configuration.endpoint("chat/completions"), timeoutInterval: 20)
+        let selected = quality && !configuration.qualityModel.isEmpty ? configuration.qualityModel : configuration.fastModel
+        let model = selected.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !model.isEmpty else { throw SuggestionError.configuration }
+        guard !model.contains(where: { $0.isWhitespace || $0.isNewline }) else { throw SuggestionError.invalidModelID }
+        let native = configuration.apiProtocol == .anthropicMessages
+        var request = URLRequest(url: try configuration.endpoint(native ? "messages" : "chat/completions"), timeoutInterval: 20)
         request.httpMethod = "POST"
-        request.setValue("Bearer " + key, forHTTPHeaderField: "Authorization")
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        var body: [String: Any] = ["model": model, "messages": [["role": "system", "content": prompt.system], ["role": "user", "content": prompt.user]],
-                                 "response_format": ["type": "json_schema", "json_schema": ["name": "natural_suggestions", "strict": true, "schema": Self.schema(maximumSuggestions: prompt.maximumSuggestions)]],
-                                 "max_completion_tokens": max(2048, prompt.maximumSuggestions * 768), "stream": false]
-        if kind == .openAI { body["store"] = false }
-        if let temperature = configuration.temperature { body["temperature"] = min(0.4, max(0.2, temperature)) }
-        if kind == .qwen && configuration.disableThinking { body["enable_thinking"] = false }
+        if native {
+            request.setValue(key, forHTTPHeaderField: "x-api-key")
+            request.setValue("2023-06-01", forHTTPHeaderField: "anthropic-version")
+        } else { request.setValue("Bearer " + key, forHTTPHeaderField: "Authorization") }
+        let tokenLimit = max(2048, prompt.maximumSuggestions * 768)
+        var body: [String: Any] = ["model": model, "stream": false]
+        if native {
+            body["system"] = prompt.system
+            body["messages"] = [["role": "user", "content": prompt.user]]
+            body["max_tokens"] = tokenLimit
+        } else {
+            body["messages"] = [["role": "system", "content": prompt.system], ["role": "user", "content": prompt.user]]
+            let completionTokens = configuration.tokenParameter == .maxCompletionTokens ||
+                (configuration.tokenParameter == .automatic && kind == .openAI)
+            body[completionTokens ? "max_completion_tokens" : "max_tokens"] = tokenLimit
+            let mode = configuration.responseMode == .automatic ?
+                ([ProviderKind.openAI, .qwen, .gemini].contains(kind) ? JSONResponseMode.schema : (kind == .custom ? .prompt : .object)) : configuration.responseMode
+            switch mode {
+            case .schema: body["response_format"] = ["type": "json_schema", "json_schema": ["name": "natural_suggestions", "strict": true, "schema": Self.schema(maximumSuggestions: prompt.maximumSuggestions)]]
+            case .object: body["response_format"] = ["type": "json_object"]
+            case .prompt, .automatic: break
+            }
+            if kind == .openAI { body["store"] = false }
+            if kind == .qwen && configuration.disableThinking { body["enable_thinking"] = false }
+        }
+        if let temperature = configuration.temperature { body["temperature"] = min(1, max(0, temperature)) }
         request.httpBody = try JSONSerialization.data(withJSONObject: body, options: .sortedKeys)
         try Task.checkCancellation()
         let (data, code) = try await transport.send(request)
         try Task.checkCancellation()
         let object = (try? JSONSerialization.jsonObject(with: data)) as? [String: Any]
         guard (200..<300).contains(code) else {
-            // Classify known codes without retaining or displaying untrusted error messages.
+            // Only classify allowlisted codes and parameter names; never expose raw bodies.
             let error = object?["error"] as? [String: Any]
             let errorCode = (error?["code"] as? String ?? object?["code"] as? String ?? "").lowercased()
-            if ["insufficient_quota", "arrearage", "allocationquota.freetieronly"].contains(errorCode) {
-                throw SuggestionError.providerQuota
-            }
+            if ["insufficient_quota", "arrearage", "allocationquota.freetieronly"].contains(errorCode) { throw SuggestionError.providerQuota }
+            if ["model_not_found", "invalid_model", "model_not_supported"].contains(errorCode) { throw SuggestionError.modelUnavailable }
+            let parameter = error?["param"] as? String ?? ""
+            if [400, 422].contains(code) && (errorCode == "unsupported_parameter" || ["temperature", "response_format", "max_tokens", "max_completion_tokens", "enable_thinking"].contains(parameter)) { throw SuggestionError.unsupportedParameter }
             throw SuggestionError.httpStatus(code)
         }
-        guard let object,
-              let choices = object["choices"] as? [[String: Any]], let choice = choices.first,
-              let message = choice["message"] as? [String: Any] else { throw SuggestionError.invalidResponse }
-        if choice["finish_reason"] as? String == "length" { throw SuggestionError.truncated }
-        if choice["finish_reason"] as? String == "content_filter" ||
-            (message["refusal"] != nil && !(message["refusal"] is NSNull)) { throw SuggestionError.refused }
-        guard choice["finish_reason"] as? String == "stop",
-              let content = message["content"] as? String else { throw SuggestionError.invalidResponse }
+        guard let object else { throw SuggestionError.invalidResponse }
+        let content: String
         let usage = object["usage"] as? [String: Any] ?? [:]
-        return ProviderResult(json: Data(content.utf8), inputTokens: usage["prompt_tokens"] as? Int ?? 0, outputTokens: usage["completion_tokens"] as? Int ?? 0)
+        if native {
+            if object["stop_reason"] as? String == "max_tokens" { throw SuggestionError.truncated }
+            if object["stop_reason"] as? String == "refusal" { throw SuggestionError.refused }
+            guard object["stop_reason"] as? String == "end_turn", let blocks = object["content"] as? [[String: Any]] else { throw SuggestionError.invalidResponse }
+            content = blocks.filter { $0["type"] as? String == "text" }.compactMap { $0["text"] as? String }.joined()
+        } else {
+            guard let choices = object["choices"] as? [[String: Any]], let choice = choices.first,
+                  let message = choice["message"] as? [String: Any] else { throw SuggestionError.invalidResponse }
+            if choice["finish_reason"] as? String == "length" { throw SuggestionError.truncated }
+            if choice["finish_reason"] as? String == "content_filter" ||
+                (message["refusal"] != nil && !(message["refusal"] is NSNull)) { throw SuggestionError.refused }
+            guard choice["finish_reason"] as? String == "stop", let text = message["content"] as? String else { throw SuggestionError.invalidResponse }
+            content = text
+        }
+        // Accept a single JSON code fence, never extract JSON from explanatory prose.
+        var json = content.trimmingCharacters(in: .whitespacesAndNewlines)
+        if json.hasPrefix("```json\n"), json.hasSuffix("\n```") { json = String(json.dropFirst(8).dropLast(4)) }
+        else if json.hasPrefix("```\n"), json.hasSuffix("\n```") { json = String(json.dropFirst(4).dropLast(4)) }
+        return ProviderResult(json: Data(json.utf8), inputTokens: usage[native ? "input_tokens" : "prompt_tokens"] as? Int ?? 0,
+                              outputTokens: usage[native ? "output_tokens" : "completion_tokens"] as? Int ?? 0)
     }
 }
 public struct OpenAIProvider: SuggestionProvider {

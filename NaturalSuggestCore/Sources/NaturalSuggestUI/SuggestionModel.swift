@@ -8,6 +8,7 @@ import NaturalSuggestCore
     @Published public var settingsMessage = ""
     @Published public private(set) var personalEntries: [PersonalLexiconEntry] = []
     @Published public private(set) var timingText = ""
+    @Published public private(set) var suggestionDraft = ""
     private var personalData: Data?
     public var onStatusChange: ((Diagnostics) -> Void)?
     private let defaults: UserDefaults
@@ -23,6 +24,7 @@ import NaturalSuggestCore
         engine?.onChange = { [weak self] items, state in
             guard let self else { return }
             suggestions = items; status = state
+            suggestionDraft = engine?.suggestionDraft ?? ""
             timingText = engine?.cacheHit == true ? "缓存命中，无需联网" : engine?.requestSeconds.map { String(format: "本次联网耗时 %.2f 秒", $0) } ?? ""
             onStatusChange?(state)
         }
@@ -58,10 +60,11 @@ import NaturalSuggestCore
             engine?.cancel(clearCache: true); settings = new
         }
     }
-    @discardableResult public func save(openAIKey: String = "", qwenKey: String = "") -> Bool {
+    @discardableResult public func save(openAIKey: String = "", qwenKey: String = "", providerKeys: [ProviderKind: String] = [:]) -> Bool {
         do {
             if !openAIKey.isEmpty { try keychain.write(openAIKey, account: ProviderKind.openAI.rawValue) }
             if !qwenKey.isEmpty { try keychain.write(qwenKey, account: ProviderKind.qwen.rawValue) }
+            for (kind, key) in providerKeys where !key.isEmpty { try keychain.write(key, account: kind.rawValue) }
             defaults.set(try JSONEncoder().encode(settings), forKey: "nk.settings")
             engine?.cancel(clearCache: true); settingsMessage = "已保存。密钥保存在系统钥匙串。"
             return true
@@ -76,13 +79,19 @@ import NaturalSuggestCore
     }
     public func cancel() { engine?.cancel(clearCache: true) }
     public func invalidate() { engine?.cancel() }
+    public func dismiss() { engine?.dismiss() }
+    public func reportHostLimitation(fullAccess: Bool) {
+        engine?.cancel()
+        status = fullAccess ? .contextUnavailable : .requiresFullAccess
+        onStatusChange?(status)
+    }
     public func update(_ snapshot: DraftSnapshot, explicit: Bool = false) {
         reload()
         func client(_ kind: ProviderKind) -> CompatibleProvider {
             CompatibleProvider(kind: kind, configuration: settings.configuration(for: kind), key: (try? keychain.read(kind.rawValue)) ?? "")
         }
         let provider: any SuggestionProvider
-        if settings.qualityMode { provider = QualityProvider(first: client(.openAI), second: client(.qwen), judge: client(settings.provider)) }
+        if settings.qualityMode { provider = QualityProvider(first: client(settings.provider), second: client(settings.comparisonProvider), judge: client(settings.provider)) }
         else { provider = client(settings.provider) }
         guard let engine else {
             status = .unavailable; onStatusChange?(.unavailable); return
@@ -101,12 +110,26 @@ public struct SuggestionStrip: View {
     public let suggestions: [Suggestion]
     public let accept: (Int) -> Void
     public let copiesOnly: Bool
-    public init(suggestions: [Suggestion], copiesOnly: Bool = false, accept: @escaping (Int) -> Void) {
+    public let original: String
+    public let highlightChanges: Bool
+    public let dismiss: (() -> Void)?
+    public init(suggestions: [Suggestion], copiesOnly: Bool = false, original: String = "", highlightChanges: Bool = true, dismiss: (() -> Void)? = nil, accept: @escaping (Int) -> Void) {
+        self.original = original; self.highlightChanges = highlightChanges
+        self.dismiss = dismiss
         self.suggestions = suggestions; self.copiesOnly = copiesOnly; self.accept = accept
     }
     public var body: some View {
         if !suggestions.isEmpty {
             VStack(spacing: 0) {
+              if let dismiss {
+                HStack {
+                    Spacer()
+                    Button(action: dismiss) {
+                        Image(systemName: "xmark").font(.system(size: 11, weight: .medium))
+                            .foregroundStyle(.secondary).frame(width: 26, height: 24).contentShape(Rectangle())
+                    }.buttonStyle(.plain).help("閉じる（Esc）").accessibilityLabel("閉じる")
+                }.padding(.horizontal, 4).padding(.top, 2)
+              }
               if copiesOnly { Text("クリックでコピー・元の文を選択して貼り付け").font(.caption).foregroundStyle(.secondary).padding(6) }
               ScrollView(.vertical) {
               VStack(alignment: .leading, spacing: 5) {
@@ -119,7 +142,7 @@ public struct SuggestionStrip: View {
                     Button { accept(index) } label: {
                         HStack(alignment: .top, spacing: 8) {
                             Text("\(index + 1)").monospacedDigit().foregroundStyle(.secondary).frame(width: 22)
-                            Text(suggestion.text).foregroundStyle(.primary)
+                            HighlightedSuggestion.text(suggestion.text, original: original, enabled: highlightChanges)
                                 .multilineTextAlignment(.leading).fixedSize(horizontal: false, vertical: true)
                                 .frame(maxWidth: .infinity, alignment: .leading)
                         }.font(.system(size: 15)).padding(8).contentShape(Rectangle())
@@ -128,6 +151,15 @@ public struct SuggestionStrip: View {
               }.padding(4)
               }.frame(height: min(300, CGFloat(suggestions.count) * 64 + CGFloat(Set(suggestions.map(\.register)).count) * 22 + 8))
             }.background(.regularMaterial).clipShape(RoundedRectangle(cornerRadius: 10))
+        }
+    }
+}
+
+public enum HighlightedSuggestion {
+    public static func text(_ candidate: String, original: String, enabled: Bool = true) -> Text {
+        guard enabled else { return Text(candidate).foregroundColor(.primary) }
+        return SuggestionDiff.spans(original: original, candidate: candidate).reduce(Text("")) { text, span in
+            text + Text(span.text).foregroundColor(span.changed ? .accentColor : .primary)
         }
     }
 }

@@ -584,10 +584,10 @@ index 3c415cf..3e77017 100644
  	};
  	rootObject = 1A41E60C26E745D9009B65D7 /* Project object */;
 diff --git a/azooKeyMac/AppDelegate.swift b/azooKeyMac/AppDelegate.swift
-index 13c8752..3f69e3e 100644
+index 13c8752..c5d4936 100644
 --- a/azooKeyMac/AppDelegate.swift
 +++ b/azooKeyMac/AppDelegate.swift
-@@ -1,138 +1,97 @@
+@@ -1,138 +1,101 @@
 -//
 -//  AppDelegate.swift
 -//  AppDelegate
@@ -696,10 +696,14 @@ index 13c8752..3f69e3e 100644
 +                        }
 +                        return
 +                    }
-+                    exit(status == .ready ? 0 : 1)
++                    exit(status == .ready || status == .natural ? 0 : 1)
 +                }
 +            }
-+            if benchmark {
++            if CommandLine.arguments.contains("--natural-draft") {
++                settingsModel.update(DraftSnapshot(text: "今日は天気がいいですね。", fieldID: "natural-draft-check"), explicit: true)
++            } else if CommandLine.arguments.contains("--mixed-draft") {
++                settingsModel.update(DraftSnapshot(text: "いえいえー clickしたらpasteをできる", fieldID: "mixed-draft-check"), explicit: true)
++            } else if benchmark {
 +                settingsModel.update(DraftSnapshot(text: samples[0], fieldID: "benchmark"), explicit: true)
 +            } else if let flag = CommandLine.arguments.first(where: { $0.hasPrefix("--sample=") }),
 +               let index = Int(flag.dropFirst(9)), samples.indices.contains(index) {
@@ -1617,14 +1621,15 @@ index f5058d6..0000000
 -    }
 -}
 diff --git a/azooKeyMac/InputController/azooKeyMacInputController.swift b/azooKeyMac/InputController/azooKeyMacInputController.swift
-index f10ba35..c93232f 100644
+index f10ba35..b2cc6d1 100644
 --- a/azooKeyMac/InputController/azooKeyMacInputController.swift
 +++ b/azooKeyMac/InputController/azooKeyMacInputController.swift
-@@ -1,9 +1,11 @@
+@@ -1,9 +1,12 @@
  import Cocoa
  import Core
  import InputMethodKit
 +import NaturalSuggestUI
++import NaturalSuggestCore
  
  @objc(azooKeyMacInputController)
 -class azooKeyMacInputController: IMKInputController, NSMenuItemValidation { // swiftlint:disable:this type_name
@@ -1633,7 +1638,7 @@ index f10ba35..c93232f 100644
      let converterServerClient = ConverterServerClient()
      private var currentConverterView: ConverterSessionSnapshot?
      private(set) var inputState: InputState = .none
-@@ -18,7 +20,6 @@ class azooKeyMacInputController: IMKInputController, NSMenuItemValidation { // s
+@@ -18,7 +21,6 @@ class azooKeyMacInputController: IMKInputController, NSMenuItemValidation { // s
  
      var appMenu: NSMenu
      var liveConversionToggleMenuItem: NSMenuItem
@@ -1641,7 +1646,7 @@ index f10ba35..c93232f 100644
  
      private var candidatesWindow: NSWindow
      private var candidatesViewController: CandidatesViewController
-@@ -29,22 +30,10 @@ class azooKeyMacInputController: IMKInputController, NSMenuItemValidation { // s
+@@ -29,22 +31,10 @@ class azooKeyMacInputController: IMKInputController, NSMenuItemValidation { // s
      private var lastPredictionUpdateTime: TimeInterval = 0
      private var predictionHideWorkItem: DispatchWorkItem?
  
@@ -1665,7 +1670,7 @@ index f10ba35..c93232f 100644
      }
  
      private static func makeCandidateWindow(contentViewController: NSViewController) -> NSWindow {
-@@ -57,84 +46,31 @@ class azooKeyMacInputController: IMKInputController, NSMenuItemValidation { // s
+@@ -57,84 +47,31 @@ class azooKeyMacInputController: IMKInputController, NSMenuItemValidation { // s
          // ウィンドウは直後に orderOut されるため origin はユーザーから不可視であり、
          // 最初の候補表示時に refreshCandidateWindow() で正しい位置に再配置される。
          var frame = NSRect.zero
@@ -1752,7 +1757,7 @@ index f10ba35..c93232f 100644
          MainActor.assumeIsolated {
              self.converterServerClient.onLog = { [weak self] message in
                  self?.appendDebugMessage(message)
-@@ -145,12 +81,10 @@ class azooKeyMacInputController: IMKInputController, NSMenuItemValidation { // s
+@@ -145,12 +82,10 @@ class azooKeyMacInputController: IMKInputController, NSMenuItemValidation { // s
  
      @MainActor
      override func activateServer(_ sender: Any!) {
@@ -1766,7 +1771,7 @@ index f10ba35..c93232f 100644
          self.pendingConverterServerActivation = ConverterSessionActivation(
              config: self.converterServerSessionConfig,
              inputLanguage: self.inputLanguage
-@@ -174,6 +108,7 @@ class azooKeyMacInputController: IMKInputController, NSMenuItemValidation { // s
+@@ -174,6 +109,7 @@ class azooKeyMacInputController: IMKInputController, NSMenuItemValidation { // s
  
      @MainActor
      override func deactivateServer(_ sender: Any!) {
@@ -1774,7 +1779,7 @@ index f10ba35..c93232f 100644
          self.activationGeneration &+= 1
          self.pendingConverterServerActivation = nil
          self.converterServerClient.sendIfSessionOpen({ _ in .lifecycle(.deactivate) }, completion: { _ in })
-@@ -181,7 +116,6 @@ class azooKeyMacInputController: IMKInputController, NSMenuItemValidation { // s
+@@ -181,7 +117,6 @@ class azooKeyMacInputController: IMKInputController, NSMenuItemValidation { // s
          self.inputState = .none
          self.candidatesWindow.orderOut(nil)
          self.predictionWindow.orderOut(nil)
@@ -1782,7 +1787,7 @@ index f10ba35..c93232f 100644
          self.candidatesViewController.updateCandidatePresentations([], selectionIndex: nil, cursorLocation: .zero)
          super.deactivateServer(sender)
      }
-@@ -251,80 +185,12 @@ class azooKeyMacInputController: IMKInputController, NSMenuItemValidation { // s
+@@ -251,80 +186,12 @@ class azooKeyMacInputController: IMKInputController, NSMenuItemValidation { // s
              return false
          }
  
@@ -1856,7 +1861,7 @@ index f10ba35..c93232f 100644
 -                self.appendDebugMessage("No selected text, using normal suggest behavior")
 -            }
 -        }
-+        if naturalSession.handleAcceptance(event) { return true }
++        if naturalSession.handleDismissal(event) || naturalSession.handleAcceptance(event) { return true }
 +        naturalSession.keyChanged(event)
  
          return self.handleKeyEventWithConverterServer(
@@ -1866,7 +1871,7 @@ index f10ba35..c93232f 100644
              optionDirectInputText: event.characters(byApplyingModifiers: event.modifierFlags.subtracting(.option))
          )
      }
-@@ -394,19 +260,6 @@ class azooKeyMacInputController: IMKInputController, NSMenuItemValidation { // s
+@@ -394,19 +261,6 @@ class azooKeyMacInputController: IMKInputController, NSMenuItemValidation { // s
          return true
      }
  
@@ -1886,14 +1891,14 @@ index f10ba35..c93232f 100644
      @MainActor
      private func apply(_ response: ConverterServerResponse) {
          if let inputLanguage = response.inputLanguage {
-@@ -422,7 +275,13 @@ class azooKeyMacInputController: IMKInputController, NSMenuItemValidation { // s
+@@ -422,7 +276,13 @@ class azooKeyMacInputController: IMKInputController, NSMenuItemValidation { // s
          self.refreshMarkedText()
          self.refreshCandidateWindow()
          self.refreshPredictionWindow()
 -        self.refreshReplaceSuggestionWindow()
 +        if let client = self.client(), self.inputLanguage == .japanese {
 +            let composition = response.snapshot.markedText.elements.map(\.content).joined()
-+            let latin = response.snapshot.convertTarget.unicodeScalars.contains { (65...90).contains($0.value) || (97...122).contains($0.value) }
++            let latin = JapaneseDraftProfile.hasPendingRomaji(response.snapshot.convertTarget)
 +            naturalSession.update(client: client, composition: composition, unconvertedLatin: latin) { [weak self] in
 +                self?.discardConverterServerComposition()
 +            }
@@ -1901,7 +1906,7 @@ index f10ba35..c93232f 100644
      }
  
      @MainActor
-@@ -430,26 +289,15 @@ class azooKeyMacInputController: IMKInputController, NSMenuItemValidation { // s
+@@ -430,26 +290,15 @@ class azooKeyMacInputController: IMKInputController, NSMenuItemValidation { // s
      private func apply(_ effect: ConverterClientEffect, client: IMKTextInput) {
          switch effect {
          case .insertText(let text):
@@ -1934,7 +1939,7 @@ index f10ba35..c93232f 100644
          case .fallthroughToApplication:
              break
          }
-@@ -472,20 +320,11 @@ class azooKeyMacInputController: IMKInputController, NSMenuItemValidation { // s
+@@ -472,20 +321,11 @@ class azooKeyMacInputController: IMKInputController, NSMenuItemValidation { // s
  
      private var converterServerSessionConfig: ConverterSessionConfig {
          ConverterSessionConfig(
@@ -1960,7 +1965,7 @@ index f10ba35..c93232f 100644
          )
      }
  
-@@ -494,9 +333,9 @@ class azooKeyMacInputController: IMKInputController, NSMenuItemValidation { // s
+@@ -494,9 +334,9 @@ class azooKeyMacInputController: IMKInputController, NSMenuItemValidation { // s
          client.overrideKeyboard(withKeyboardNamed: Config.KeyboardLayout().value.layoutIdentifier)
          switch language {
          case .english:
@@ -1972,7 +1977,7 @@ index f10ba35..c93232f 100644
          }
      }
  
-@@ -548,55 +387,6 @@ class azooKeyMacInputController: IMKInputController, NSMenuItemValidation { // s
+@@ -548,55 +388,6 @@ class azooKeyMacInputController: IMKInputController, NSMenuItemValidation { // s
          }
      }
  
@@ -2028,7 +2033,7 @@ index f10ba35..c93232f 100644
      func refreshPredictionWindow() {
          guard self.inputState == .composing else {
              self.hidePredictionWindow()
-@@ -702,14 +492,6 @@ class azooKeyMacInputController: IMKInputController, NSMenuItemValidation { // s
+@@ -702,14 +493,6 @@ class azooKeyMacInputController: IMKInputController, NSMenuItemValidation { // s
          self.predictionHideWorkItem = nil
      }
  
@@ -2043,7 +2048,7 @@ index f10ba35..c93232f 100644
      func getCursorLocation() -> CGPoint {
          var rect: NSRect = .zero
          self.client()?.attributes(forCharacterIndex: 0, lineHeightRectangle: &rect)
-@@ -840,117 +622,3 @@ extension azooKeyMacInputController {
+@@ -840,117 +623,3 @@ extension azooKeyMacInputController {
          return NSRange(location: 0, length: 0)
      }
  }

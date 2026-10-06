@@ -3,12 +3,48 @@ import NaturalSuggestCore
 
 public struct NaturalSettingsView: View {
     @ObservedObject private var model: SuggestionModel
-    @State private var openAIKey = ""
-    @State private var qwenKey = ""
+    @State private var providerKeys: [ProviderKind: String] = [:]
     public init(model: SuggestionModel) { self.model = model }
     private func save() -> Bool {
-        guard model.save(openAIKey: openAIKey, qwenKey: qwenKey) else { return false }
-        openAIKey = ""; qwenKey = ""; return true
+        guard model.save(providerKeys: providerKeys) else { return false }
+        providerKeys = [:]; return true
+    }
+    private func configuration(_ kind: ProviderKind) -> Binding<ProviderConfiguration> {
+        Binding(get: { model.settings.configuration(for: kind) }, set: { model.settings.setConfiguration($0, for: kind) })
+    }
+    private func key(_ kind: ProviderKind) -> Binding<String> {
+        Binding(get: { providerKeys[kind] ?? "" }, set: { providerKeys[kind] = $0 })
+    }
+    @ViewBuilder private func providerFields(_ kind: ProviderKind) -> some View {
+        let config = configuration(kind)
+        TextField("接口地址", text: config.baseURL)
+        TextField("API 模型 ID", text: config.fastModel)
+        SecureField("\(kind.title) 密钥（留空保留）", text: key(kind))
+        if kind == .qwen { Toggle("非思考模式", isOn: config.disableThinking) }
+        if model.settings.qualityMode { TextField("评选模型 ID（留空使用上面的模型）", text: config.qualityModel) }
+        DisclosureGroup("接口兼容") {
+            Picker("协议", selection: config.apiProtocol) {
+                Text("OpenAI 兼容").tag(ProviderProtocol.chatCompletions)
+                Text("Claude Messages").tag(ProviderProtocol.anthropicMessages)
+            }
+            if config.wrappedValue.apiProtocol == .chatCompletions {
+                Picker("JSON 格式", selection: config.responseMode) {
+                    Text("自动").tag(JSONResponseMode.automatic)
+                    Text("JSON Schema").tag(JSONResponseMode.schema)
+                    Text("JSON Object").tag(JSONResponseMode.object)
+                    Text("仅提示词").tag(JSONResponseMode.prompt)
+                }
+                Picker("输出长度参数", selection: config.tokenParameter) {
+                    Text("自动").tag(TokenParameter.automatic)
+                    Text("max_tokens").tag(TokenParameter.maxTokens)
+                    Text("max_completion_tokens").tag(TokenParameter.maxCompletionTokens)
+                }
+            }
+            Toggle("设置随机度", isOn: Binding(get: { config.wrappedValue.temperature != nil }, set: { config.wrappedValue.temperature = $0 ? 0.3 : nil }))
+            if config.wrappedValue.temperature != nil {
+                Slider(value: Binding(get: { config.wrappedValue.temperature ?? 0.3 }, set: { config.wrappedValue.temperature = $0 }), in: 0...1)
+            }
+        }
     }
     public var body: some View {
         Form {
@@ -20,21 +56,14 @@ public struct NaturalSettingsView: View {
             }
             Section("服务") {
                 Picker("服务商", selection: $model.settings.provider) {
-                    Text("OpenAI").tag(ProviderKind.openAI)
-                    Text("Qwen / 百炼").tag(ProviderKind.qwen)
+                    ForEach(ProviderKind.allCases, id: \.self) { kind in Text(kind.title).tag(kind) }
                 }
-                if model.settings.provider == .openAI || model.settings.qualityMode {
-                    TextField("OpenAI 接口地址", text: $model.settings.openAI.baseURL)
-                    TextField("OpenAI 模型", text: $model.settings.openAI.fastModel)
-                    SecureField("OpenAI 密钥（留空保留）", text: $openAIKey)
-                    if model.settings.qualityMode { TextField("OpenAI 高质量模型", text: $model.settings.openAI.qualityModel) }
-                }
-                if model.settings.provider == .qwen || model.settings.qualityMode {
-                    TextField("Qwen 接口地址", text: $model.settings.qwen.baseURL)
-                    TextField("Qwen 模型", text: $model.settings.qwen.fastModel)
-                    SecureField("Qwen 密钥（留空保留）", text: $qwenKey)
-                    Toggle("非思考模式", isOn: $model.settings.qwen.disableThinking)
-                    if model.settings.qualityMode { TextField("Qwen 高质量模型", text: $model.settings.qwen.qualityModel) }
+                providerFields(model.settings.provider)
+                if model.settings.qualityMode {
+                    Picker("对比服务商", selection: Binding(get: { model.settings.comparisonProvider }, set: { model.settings.qualityPartner = $0 })) {
+                        ForEach(ProviderKind.allCases.filter { $0 != model.settings.provider }, id: \.self) { kind in Text(kind.title).tag(kind) }
+                    }
+                    DisclosureGroup(model.settings.comparisonProvider.title) { providerFields(model.settings.comparisonProvider) }
                 }
             }
             Section("表达") {
@@ -46,6 +75,7 @@ public struct NaturalSettingsView: View {
                 Picker("网络用语", selection: $model.settings.slangLevel) {
                     Text("关闭").tag(SlangLevel.off); Text("轻度").tag(SlangLevel.light); Text("流行").tag(SlangLevel.trendy)
                 }
+                Toggle("标出改动", isOn: $model.settings.highlightChanges)
                 Stepper("建议上限：\(model.settings.suggestionLimit) 条", value: $model.settings.maximumSuggestions, in: SuggestionSettings.suggestionCountRange)
                 Stepper("停顿：\(model.settings.debounceMilliseconds) 毫秒", value: $model.settings.debounceMilliseconds, in: 100...2000, step: 100)
             }
@@ -62,8 +92,7 @@ public struct NaturalSettingsView: View {
                     TextField("第一个候选：Control +", text: Binding(get: { model.settings.acceptKeys.first ?? "1" }, set: { model.settings.acceptKeys[0] = String($0.prefix(1)) }))
                     TextField("第二个候选：Control +", text: Binding(get: { model.settings.acceptKeys.count > 1 ? model.settings.acceptKeys[1] : "2" }, set: { model.settings.acceptKeys[1] = String($0.prefix(1)) }))
                     #endif
-                    Button("删除 OpenAI 密钥", role: .destructive) { model.deleteKey(.openAI) }
-                    Button("删除 Qwen 密钥", role: .destructive) { model.deleteKey(.qwen) }
+                    Button("删除当前服务商密钥", role: .destructive) { model.deleteKey(model.settings.provider) }
                 }
             }
             Section {
@@ -74,7 +103,7 @@ public struct NaturalSettingsView: View {
                 if !model.settingsMessage.isEmpty { Text(model.settingsMessage).font(.caption).foregroundStyle(.secondary) }
                 Text(model.statusText).font(.caption).foregroundStyle(.secondary)
                 if !model.timingText.isEmpty { Text(model.timingText).font(.caption).foregroundStyle(.secondary) }
-                ForEach(Array(model.suggestions.enumerated()), id: \.offset) { _, item in Text(item.text).textSelection(.enabled) }
+                ForEach(Array(model.suggestions.enumerated()), id: \.offset) { _, item in HighlightedSuggestion.text(item.text, original: model.suggestionDraft, enabled: model.settings.highlightChanges).textSelection(.enabled) }
             } footer: {
                 Text("密钥保存在设备钥匙串。测试连接会发送一条固定例句。")
             }

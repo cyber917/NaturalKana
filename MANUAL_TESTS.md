@@ -36,12 +36,15 @@ Use this checklist for each release. Unchecked items require evidence for the ta
 
 - [ ] Messages, TextEdit, Safari and Chromium-hosted inputs: panel follows caret, never becomes key/main or steals typing focus. No context reads during activation (upstream Chromium deadlock regression).
 - [ ] Mouse and Control+1/2 acceptance; custom keys; field/caret moved before click; old request must not apply.
+- [ ] Escape or the panel's × closes suggestions without changing the draft or clipboard. Escape during a request cancels it; late results and repeated updates for the same draft stay hidden. Editing resumes suggestions; Escape without suggestions retains normal composition behavior.
 - [ ] Verify UTF-16 replacementRange for emoji/combining sequences, with and without marked text. Converter state must be cleared so accepted text is not reinserted on the next key.
 - [ ] Unsupported surrounding text/replacement: candidate is copied only; pasteboard change should be documented to the tester. Full internal-line fallback remains missing.
 - [ ] Multiple screens, edges, dark/light, app switching, changing keyboard/input source and Enter reset.
 - [ ] No Accessibility permission requirement. NaturalKana provider credentials must not be exposed through unrelated upstream features.
 
 ## Real-model acceptance
+
+- [ ] A natural Japanese sentence shows a small check only after an explicit `natural` assessment. Offline, invalid credentials/model IDs, malformed/legacy empty replies and locally rejected candidates never show a check. iOS indicators leave key rows unchanged; tapping shows concise details and an explicit retry.
 
 - [ ] Run all 170 cases for OpenAI fast/quality and Qwen fast/quality, then quality-mode comparison with a distinct judge. Record model IDs, prompt version, region, date, sample counts and rates.
 - [ ] Negative pass >=95% without counting transport errors as passes; inspect positive suggestion coverage so an empty-only model cannot appear good.

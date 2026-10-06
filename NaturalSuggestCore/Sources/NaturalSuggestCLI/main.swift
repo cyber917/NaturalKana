@@ -10,7 +10,7 @@ import NaturalSuggestCore
                 var settings = SuggestionSettings(); settings.enabled = true; settings.consent = true
                 settings.slangLevel = SlangLevel(rawValue: object["slang_level"] as? String ?? "light") ?? .light
                 settings.registerPreference = RegisterPreference(rawValue: object["register_pref"] as? String ?? "both") ?? .both
-                let accepted = JapaneseProfile().accepts(draft, composingLatin: object["composingLatin"] as? Bool ?? false) && draft.count >= 4
+                let accepted = JapaneseDraftProfile().accepts(draft, composingLatin: object["composingLatin"] as? Bool ?? false) && draft.count >= 4
                 var result: [String: Any] = ["gate": accepted, "suggestions": []]
                 if let candidates = object["response"] {
                     let data = try JSONSerialization.data(withJSONObject: candidates)
@@ -22,9 +22,13 @@ import NaturalSuggestCore
                     let configs = object["providers"] as? [String: [String: String]] ?? [:]
                     func client(_ kind: ProviderKind) throws -> CompatibleProvider {
                         guard let config = configs[kind.rawValue] else { throw SuggestionError.configuration }
-                        let keyName = kind == .openAI ? "OPENAI_API_KEY" : "DASHSCOPE_API_KEY"
+                        let environments: [ProviderKind: String] = [.openAI: "OPENAI_API_KEY", .qwen: "DASHSCOPE_API_KEY", .deepSeek: "DEEPSEEK_API_KEY", .kimi: "MOONSHOT_API_KEY", .gemini: "GEMINI_API_KEY", .claude: "ANTHROPIC_API_KEY", .custom: "CUSTOM_API_KEY"]
+                        let keyName = config["keyEnvironment"] ?? environments[kind]!
                         let key = ProcessInfo.processInfo.environment[keyName] ?? ""
                         var configuration = ProviderConfiguration(baseURL: config["baseURL"] ?? "", fastModel: config["fastModel"] ?? "", qualityModel: config["qualityModel"] ?? "")
+                        configuration.apiProtocol = ProviderProtocol(rawValue: config["apiProtocol"] ?? "") ?? kind.defaultConfiguration.apiProtocol
+                        configuration.responseMode = JSONResponseMode(rawValue: config["responseMode"] ?? "") ?? .automatic
+                        configuration.tokenParameter = TokenParameter(rawValue: config["tokenParameter"] ?? "") ?? .automatic
                         if config["temperature"] == "omit" { configuration.temperature = nil }
                         configuration.disableThinking = config["disableThinking"] == "true"
                         return CompatibleProvider(kind: kind, configuration: configuration, key: key)

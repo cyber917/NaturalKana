@@ -5,12 +5,15 @@ import NaturalSuggestCore
 /// The controller reserves exactly this height, independently of the number of candidates.
 public struct IOSSuggestionPanel: View {
     public static let height: CGFloat = 132
+    private let original: String
+    private let highlightChanges: Bool
     private let suggestions: [Suggestion]
     private let accept: (Int) -> Void
     private let dismiss: () -> Void
     @State private var selection = 0
 
-    public init(suggestions: [Suggestion], accept: @escaping (Int) -> Void, dismiss: @escaping () -> Void) {
+    public init(suggestions: [Suggestion], original: String = "", highlightChanges: Bool = true, accept: @escaping (Int) -> Void, dismiss: @escaping () -> Void) {
+        self.original = original; self.highlightChanges = highlightChanges
         self.suggestions = suggestions; self.accept = accept; self.dismiss = dismiss
     }
 
@@ -33,8 +36,8 @@ public struct IOSSuggestionPanel: View {
                 ForEach(Array(suggestions.enumerated()), id: \.offset) { index, suggestion in
                     ScrollView(.vertical) {
                         Button { accept(index) } label: {
-                            Text(suggestion.text).font(.system(size: 17))
-                                .foregroundStyle(.primary).multilineTextAlignment(.leading)
+                            HighlightedSuggestion.text(suggestion.text, original: original, enabled: highlightChanges).font(.system(size: 17))
+                                .multilineTextAlignment(.leading)
                                 .fixedSize(horizontal: false, vertical: true)
                                 .frame(maxWidth: .infinity, minHeight: 52, alignment: .topLeading)
                                 .padding(.horizontal, 14).padding(.vertical, 6)
