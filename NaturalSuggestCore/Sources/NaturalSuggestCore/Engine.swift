@@ -41,20 +41,25 @@ public struct LRUCache<Key: Hashable, Value> {
     private var current: DraftSnapshot?
     private var currentSettings: String?
     private var acceptedSnapshot: DraftSnapshot?
+    private var dismissedSnapshot: DraftSnapshot?
     private var lastRequest = ContinuousClock.now - .seconds(10)
-    private var cache = LRUCache<String, [Suggestion]>()
+    private var cache = LRUCache<String, ResponseValidator.Report>()
     private let profile: any LanguageProfile
     private let budget: DailyBudget
     private let prompt: PromptBuilder
     private let lexicon: Lexicon
-    public init(profile: any LanguageProfile = JapaneseProfile(), budget: DailyBudget = DailyBudget(),
+    public init(profile: any LanguageProfile = JapaneseDraftProfile(), budget: DailyBudget = DailyBudget(),
                 prompt: PromptBuilder, lexicon: Lexicon = .bundled()) {
         self.profile = profile; self.budget = budget; self.prompt = prompt; self.lexicon = lexicon
     }
     public func cancel(clearCache: Bool = false) {
         requestSeconds = nil; cacheHit = false; receivedCandidateCount = nil
         generation += 1; task?.cancel(); task = nil; current = nil; currentSettings = nil; acceptedSnapshot = nil
-        if clearCache { cache.clear() }; publish([], .idle)
+        if clearCache { cache.clear(); dismissedSnapshot = nil }; publish([], .idle)
+    }
+    public func dismiss() {
+        dismissedSnapshot = current ?? dismissedSnapshot
+        cancel()
     }
     public func setPersonalLexicon(_ entries: [PersonalLexiconEntry]) {
         guard entries != personalEntries else { return }
@@ -62,10 +67,14 @@ public struct LRUCache<Key: Hashable, Value> {
     }
     private func publish(_ items: [Suggestion], _ state: Diagnostics) { suggestions = items; status = state; onChange?(items, state) }
     public func update(_ snapshot: DraftSnapshot, settings: SuggestionSettings, provider: any SuggestionProvider, explicit: Bool = false) {
+        // A late host update must not reopen a palette dismissed for this draft.
+        // Editing the draft, changing fields, or an explicit request resumes suggestions.
+        if dismissedSnapshot == snapshot, !explicit { return }
+        dismissedSnapshot = nil
         // Repeated clicks must not cancel a valid in-flight response. Changed text/settings still cancel it.
         let fingerprint = settings.fingerprint
         if current == snapshot, currentSettings == fingerprint,
-           status == .requesting || (status == .waiting && !explicit) { return }
+           status == .requesting || (!explicit && status != .idle) { return }
         cancel(); current = snapshot; currentSettings = fingerprint
         guard settings.enabled, settings.consent else { publish([], .disabled); return }
         guard !snapshot.secure, !settings.blockedApps.contains(snapshot.appID) else { publish([], .filtered(.protectedField)); return }
@@ -75,7 +84,7 @@ public struct LRUCache<Key: Hashable, Value> {
         guard profile.accepts(snapshot.text, composingLatin: false) else { publish([], .filtered(.language)); return }
         let version = generation
         let key = TextNormalization.nfkc(snapshot.text) + fingerprint + prompt.version
-        if let cached = cache.get(key) { cacheHit = true; acceptedSnapshot = snapshot; publish(cached, .ready); return }
+        if let cached = cache.get(key) { cacheHit = true; acceptedSnapshot = snapshot; publish(cached.suggestions, cached.diagnostics); return }
         publish([], .waiting)
         task = Task { [weak self] in
             guard let self else { return }
@@ -98,11 +107,10 @@ public struct LRUCache<Key: Hashable, Value> {
                 let report = try ResponseValidator().inspect(response.json, draft: snapshot.text, settings: settings)
                 receivedCandidateCount = report.receivedCount
                 let items = report.suggestions
-                // Do not permanently cache an empty generation; an explicit retry may produce a valid suggestion.
-                if !items.isEmpty { cache.put(key, items) }
+                // Explicitly natural drafts can be reused without another request. Unknown empty results cannot.
+                if !items.isEmpty || report.assessment == .natural { cache.put(key, report) }
                 acceptedSnapshot = snapshot
-                let state: Diagnostics = !items.isEmpty ? .ready : (report.receivedCount == 0 ? .noSuggestions : .rejectedSuggestions(report.receivedCount))
-                publish(items, state)
+                publish(items, report.diagnostics)
             } catch is CancellationError { /* New text must never revive old suggestions. */ }
             catch {
                 guard generation == version, !Task.isCancelled else { return }
@@ -110,6 +118,7 @@ public struct LRUCache<Key: Hashable, Value> {
             }
         }
     }
+    public var suggestionDraft: String { acceptedSnapshot?.text ?? "" }
     public func accept(index: Int, current snapshot: DraftSnapshot) -> String? {
         guard snapshot == acceptedSnapshot, !snapshot.secure, suggestions.indices.contains(index) else { cancel(); return nil }
         let text = suggestions[index].text; cancel(); return text
