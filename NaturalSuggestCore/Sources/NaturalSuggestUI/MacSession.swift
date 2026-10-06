@@ -31,7 +31,6 @@ private final class SuggestionPanel: NSPanel {
 @MainActor public final class NaturalMacSession {
     public let model = SuggestionModel()
     private let panel = SuggestionPanel(contentRect: .zero, styleMask: [.borderless, .nonactivatingPanel], backing: .buffered, defer: true)
-    private var subscription: AnyCancellable?
     private var fieldID = UUID().uuidString
     private var client: (any IMKTextInput)?
     private var snapshot: DraftSnapshot?
@@ -53,9 +52,10 @@ private final class SuggestionPanel: NSPanel {
         model.onStatusChange = { [weak self] status in
             NativeSuggestionActivity.shared.record(status)
             if let timing = self?.model.timingText, !timing.isEmpty { NativeSuggestionActivity.shared.timing = timing }
-        }
-        subscription = model.$suggestions.dropFirst().sink { [weak self] items in
-            Task { @MainActor in self?.render(items) }
+            Task { @MainActor [weak self] in
+                guard let self else { return }
+                self.render(self.model.suggestions)
+            }
         }
     }
     public func reset() { captureTask?.cancel(); captureTask = nil; model.cancel(); panel.orderOut(nil); snapshot = nil; client = nil; expectedCommittedEnd = nil; recentDraft.reset(); lastCaret = .zero; fieldID = UUID().uuidString }
@@ -83,6 +83,17 @@ private final class SuggestionPanel: NSPanel {
               let character = event.charactersIgnoringModifiers,
               let index = model.settings.acceptKeys.firstIndex(of: character), index < model.suggestions.count else { return false }
         accept(index, fromKeyboard: true); return true
+    }
+    public func handleDismissal(_ event: NSEvent) -> Bool {
+        guard event.keyCode == 53,
+              event.modifierFlags.intersection([.command, .option, .control]).isEmpty,
+              panel.isVisible || !model.suggestions.isEmpty || model.status == .waiting || model.status == .requesting else { return false }
+        dismiss(); return true
+    }
+    public func dismiss() {
+        captureTask?.cancel(); captureTask = nil
+        model.dismiss(); panel.orderOut(nil); snapshot = nil
+        NativeSuggestionActivity.shared.message = "已关闭建议"
     }
     public func update(client: any IMKTextInput, composition: String, unconvertedLatin: Bool, discardComposition: @escaping () -> Void) {
         captureTask?.cancel()
@@ -143,13 +154,23 @@ private final class SuggestionPanel: NSPanel {
         return client.attributedSubstring(from: range)?.string
     }
     private func render(_ items: [Suggestion]) {
-        guard !items.isEmpty, items == model.suggestions, !IsSecureEventInputEnabled(), let client, let snapshot,
+        guard (!items.isEmpty || SuggestionStatusIndicator.isVisible(model.status)), items == model.suggestions, !IsSecureEventInputEnabled(), let client, let snapshot,
               snapshot.appID == (NSWorkspace.shared.frontmostApplication?.bundleIdentifier ?? ""),
               client.selectedRange() == selectionAnchor, client.markedRange() == markedAnchor else {
             if !items.isEmpty { NativeSuggestionActivity.shared.message = "建议已生成，但文字、光标或前台应用已变化，已取消显示" }
             panel.orderOut(nil); return
         }
-        panel.contentView = NSHostingView(rootView: SuggestionStrip(suggestions: items, copiesOnly: replacement.location == NSNotFound || replacement != markedAnchor) { [weak self] in self?.accept($0) }.frame(width: 480))
+        if items.isEmpty {
+            panel.contentView = NSHostingView(rootView: HStack(spacing: 6) {
+                SuggestionStatusIndicator(status: model.status)
+                Button { [weak self] in self?.dismiss() } label: {
+                    Image(systemName: "xmark").font(.system(size: 10)).foregroundStyle(.secondary)
+                        .frame(width: 20, height: 20).contentShape(Rectangle())
+                }.buttonStyle(.plain).help("閉じる（Esc）").accessibilityLabel("閉じる")
+            }.padding(5).background(.regularMaterial, in: RoundedRectangle(cornerRadius: 8)))
+        } else {
+            panel.contentView = NSHostingView(rootView: SuggestionStrip(suggestions: items, copiesOnly: replacement.location == NSNotFound || replacement != markedAnchor, original: model.suggestionDraft, highlightChanges: model.settings.highlightChanges, dismiss: { [weak self] in self?.dismiss() }) { [weak self] in self?.accept($0) }.frame(width: 480))
+        }
         let size = panel.contentView?.fittingSize ?? NSSize(width: 360, height: 90)
         var caret = NSRect.zero
         for index in [client.selectedRange().location, client.markedRange().location, 0] where index != NSNotFound {
@@ -159,11 +180,12 @@ private final class SuggestionPanel: NSPanel {
         if caret == .zero { caret = lastCaret } else { lastCaret = caret }
         guard caret != .zero else { NativeSuggestionActivity.shared.message = "建议已生成，但此应用没有提供光标位置"; panel.orderOut(nil); return }
         let screen = NSScreen.screens.first { $0.frame.intersects(caret) }?.visibleFrame ?? NSScreen.main?.visibleFrame ?? .zero
-        let width = min(500, max(260, size.width)); let height = min(340, max(45, size.height))
+        let width = items.isEmpty ? 56 : min(500, max(260, size.width))
+        let height = items.isEmpty ? 30 : min(340, max(45, size.height))
         let x = min(max(caret.minX, screen.minX), screen.maxX - width)
         let y = caret.maxY + height + 6 <= screen.maxY ? caret.maxY + 6 : caret.minY - height - 6
         panel.setFrame(NSRect(x: x, y: max(screen.minY, y), width: width, height: height), display: true)
-        NativeSuggestionActivity.shared.message = "已显示 \(items.count) 条建议"
+        NativeSuggestionActivity.shared.message = items.isEmpty ? model.status.message : "已显示 \(items.count) 条建议"
         panel.alphaValue = 0; panel.orderFrontRegardless()
         NSAnimationContext.runAnimationGroup { $0.duration = 0.10; panel.animator().alphaValue = 1 }
     }
