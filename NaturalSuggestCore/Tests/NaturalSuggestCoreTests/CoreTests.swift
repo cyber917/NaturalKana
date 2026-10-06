@@ -131,7 +131,12 @@ struct ProviderTests {
     @Test func testAcceptanceRequiresExactSnapshot() async throws {
         let engine = try engine(); let provider = MockProvider(); let snapshot = DraftSnapshot(text: "今何にしていますか", fieldID: "a")
         engine.update(snapshot, settings: settings, provider: provider, explicit: true)
-        try await Task.sleep(for: .milliseconds(40)); XCTAssertEqual(engine.suggestions.count, 1)
+        let deadline = ContinuousClock.now + .seconds(2)
+        while engine.status != .ready && ContinuousClock.now < deadline {
+            try await Task.sleep(for: .milliseconds(10))
+        }
+        try #require(engine.status == .ready)
+        XCTAssertEqual(engine.suggestions.count, 1)
         XCTAssertNil(engine.accept(index: 0, current: .init(text: snapshot.text, fieldID: "b")))
     }
     @Test func testDebounceAndCache() async throws {
