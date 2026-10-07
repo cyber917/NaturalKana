@@ -8,7 +8,7 @@ import NaturalSuggestCore
 
 @MainActor public final class NativeSuggestionActivity: ObservableObject {
     public static let shared = NativeSuggestionActivity()
-    @Published public var message = "等待日语输入"
+    @Published public var message = "等待输入"
     @Published public var inspectedText = ""
     @Published public var contextSource = "尚未取到文字"
     @Published public var lastRequest = "尚未发起请求"
@@ -166,10 +166,10 @@ private final class SuggestionPanel: NSPanel {
                 Button { [weak self] in self?.dismiss() } label: {
                     Image(systemName: "xmark").font(.system(size: 10)).foregroundStyle(.secondary)
                         .frame(width: 20, height: 20).contentShape(Rectangle())
-                }.buttonStyle(.plain).help("閉じる（Esc）").accessibilityLabel("閉じる")
+                }.buttonStyle(.plain).help(model.settings.language.closeTitle + " (Esc)").accessibilityLabel(model.settings.language.closeTitle)
             }.padding(5).background(.regularMaterial, in: RoundedRectangle(cornerRadius: 8)))
         } else {
-            panel.contentView = NSHostingView(rootView: SuggestionStrip(suggestions: items, copiesOnly: replacement.location == NSNotFound || replacement != markedAnchor, original: model.suggestionDraft, highlightChanges: model.settings.highlightChanges, dismiss: { [weak self] in self?.dismiss() }) { [weak self] in self?.accept($0) }.frame(width: 480))
+            panel.contentView = NSHostingView(rootView: SuggestionStrip(suggestions: items, language: model.settings.language, copiesOnly: replacement.location == NSNotFound || replacement != markedAnchor, original: model.suggestionDraft, highlightChanges: model.settings.highlightChanges, dismiss: { [weak self] in self?.dismiss() }) { [weak self] in self?.accept($0) }.frame(width: 480))
         }
         let size = panel.contentView?.fittingSize ?? NSSize(width: 360, height: 90)
         var caret = NSRect.zero

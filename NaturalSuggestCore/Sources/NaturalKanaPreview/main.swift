@@ -16,12 +16,12 @@ struct PreviewView: View {
         HSplitView {
             VStack(alignment: .leading, spacing: 18) {
                 Text("NaturalKana").font(.largeTitle.bold())
-                Text("日语自然表达 · 开发预览").foregroundStyle(.secondary)
+                Text("自然表达 · 开发预览").foregroundStyle(.secondary)
                 Text("这是独立测试窗口。系统输入法与 iOS 键盘尚需 Xcode 构建和设备验证。")
                     .font(.callout).foregroundStyle(.secondary)
                 TextEditor(text: $draft).font(.title3).frame(height: 180).border(.quaternary)
                     .onChange(of: draft) { _ in model.update(snapshot) }
-                SuggestionStrip(suggestions: model.suggestions, original: model.suggestionDraft, highlightChanges: model.settings.highlightChanges) { index in
+                SuggestionStrip(suggestions: model.suggestions, language: model.settings.language, original: model.suggestionDraft, highlightChanges: model.settings.highlightChanges) { index in
                     let current = snapshot
                     if let replacement = model.accept(index, snapshot: current), draft.hasSuffix(current.text) {
                         draft = String(draft.dropLast(current.text.count)) + replacement

@@ -2,12 +2,12 @@
 import PackageDescription
 let package = Package(
     name: "NaturalSuggestCore", platforms: [.macOS(.v13), .iOS(.v16)],
-    products: [.library(name: "NaturalSuggestCore", targets: ["NaturalSuggestCore"]),
+    products: [.library(name: "NaturalKanaStorage", targets: ["NaturalKanaStorage"]), .library(name: "NaturalSuggestCore", targets: ["NaturalSuggestCore"]),
                .library(name: "NaturalSuggestUI", targets: ["NaturalSuggestUI"]),
                .executable(name: "NaturalKanaPreview", targets: ["NaturalKanaPreview"]),
                .executable(name: "natural-suggest", targets: ["NaturalSuggestCLI"])],
-    targets: [.target(name: "NaturalSuggestCore", resources: [.copy("Resources")]),
-              .target(name: "NaturalSuggestUI", dependencies: ["NaturalSuggestCore"]),
+    targets: [.target(name: "NaturalKanaStorage"), .target(name: "NaturalSuggestCore", dependencies: ["NaturalKanaStorage"], resources: [.copy("Resources")]),
+              .target(name: "NaturalSuggestUI", dependencies: ["NaturalSuggestCore", "NaturalKanaStorage"]),
               .executableTarget(name: "NaturalKanaPreview", dependencies: ["NaturalSuggestUI"]),
-              .executableTarget(name: "NaturalSuggestCLI", dependencies: ["NaturalSuggestCore"]),
-              .testTarget(name: "NaturalSuggestCoreTests", dependencies: ["NaturalSuggestCore"])])
+              .executableTarget(name: "NaturalSuggestCLI", dependencies: ["NaturalSuggestCore", "NaturalKanaStorage"]),
+              .testTarget(name: "NaturalSuggestCoreTests", dependencies: ["NaturalSuggestCore", "NaturalKanaStorage"])])

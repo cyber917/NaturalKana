@@ -5,6 +5,7 @@ import NaturalSuggestCore
 /// The controller reserves exactly this height, independently of the number of candidates.
 public struct IOSSuggestionPanel: View {
     public static let height: CGFloat = 132
+    private let language: SuggestionLanguage
     private let original: String
     private let highlightChanges: Bool
     private let suggestions: [Suggestion]
@@ -12,7 +13,8 @@ public struct IOSSuggestionPanel: View {
     private let dismiss: () -> Void
     @State private var selection = 0
 
-    public init(suggestions: [Suggestion], original: String = "", highlightChanges: Bool = true, accept: @escaping (Int) -> Void, dismiss: @escaping () -> Void) {
+    public init(suggestions: [Suggestion], language: SuggestionLanguage = .japanese, original: String = "", highlightChanges: Bool = true, accept: @escaping (Int) -> Void, dismiss: @escaping () -> Void) {
+        self.language = language
         self.original = original; self.highlightChanges = highlightChanges
         self.suggestions = suggestions; self.accept = accept; self.dismiss = dismiss
     }
@@ -20,15 +22,15 @@ public struct IOSSuggestionPanel: View {
     public var body: some View {
         VStack(spacing: 0) {
             HStack(spacing: 12) {
-                Text(suggestions.indices.contains(selection) && suggestions[selection].register == .polite ? "丁寧" : "カジュアル")
+                Text(language.registerTitle(suggestions.indices.contains(selection) ? suggestions[selection].register : .casual))
                     .font(.system(size: 11, weight: .medium)).foregroundStyle(.secondary)
                 Spacer()
                 Button { selection = max(0, selection - 1) } label: { Image(systemName: "chevron.left") }
-                    .disabled(selection == 0).accessibilityLabel("前の候補")
+                    .disabled(selection == 0).accessibilityLabel(language == .japanese ? "前の候補" : "Previous suggestion")
                 Text("\(selection + 1) / \(suggestions.count)").font(.caption.monospacedDigit()).foregroundStyle(.secondary)
                 Button { selection = min(suggestions.count - 1, selection + 1) } label: { Image(systemName: "chevron.right") }
-                    .disabled(selection >= suggestions.count - 1).accessibilityLabel("次の候補")
-                Button(action: dismiss) { Image(systemName: "xmark") }.accessibilityLabel("閉じる")
+                    .disabled(selection >= suggestions.count - 1).accessibilityLabel(language == .japanese ? "次の候補" : "Next suggestion")
+                Button(action: dismiss) { Image(systemName: "xmark") }.accessibilityLabel(language.closeTitle)
             }
             .font(.system(size: 13, weight: .medium)).buttonStyle(.plain)
             .padding(.horizontal, 14).frame(height: 34)

@@ -56,7 +56,7 @@ public struct JapaneseDraftProfile: LanguageProfile {
               !normalized.unicodeScalars.contains(where: CharacterSet.controlCharacters.contains),
               normalized.unicodeScalars.filter(JapaneseProfile.isKana).count >= 3 else { return false }
         // Require Japanese sentence structure, not just a foreign sentence with です appended.
-        let structure = ["したら", "して", "でき", "だから", "けど", "たい", "ない", "だった", "ます", "ました", "ください", "って", "ちゃ", "った", "れる", "られる"]
+        let structure = ["した", "する", "して", "でき", "だから", "けど", "たい", "ない", "だった", "ます", "ました", "ください", "って", "ちゃ", "った", "れる", "られる"]
         let topic = normalized.range(of: "[一-龯ぁ-ゖァ-ヺー]{2,}(?:[はがをにと]|で(?!す))", options: .regularExpression) != nil
         guard structure.contains(where: normalized.contains) || (topic && normalized.contains("です")) else { return false }
         let scalars = normalized.unicodeScalars.filter { !CharacterSet.whitespacesAndNewlines.contains($0) }
@@ -65,58 +65,5 @@ public struct JapaneseDraftProfile: LanguageProfile {
         let latin = scalars.filter { $0.isASCII && CharacterSet.letters.contains($0) }.count
         let weightedLength = scalars.count - latin + JapaneseProfile.latinWords(normalized).reduce(0) { $0 + min(2, $1.count) }
         return Double(japanese) / Double(max(1, weightedLength)) >= 0.5
-    }
-}
-public struct ResponseValidator: Sendable {
-    public init() {}
-    public enum Assessment: String, Sendable { case natural, rewrite, unsupported }
-    public struct Report: Sendable {
-        public let suggestions: [Suggestion]
-        public let receivedCount: Int
-        public let assessment: Assessment?
-        public var diagnostics: Diagnostics {
-            if !suggestions.isEmpty { return .ready }
-            if receivedCount > 0 { return .rejectedSuggestions(receivedCount) }
-            if assessment == .natural { return .natural }
-            if assessment == .unsupported { return .unsupportedDraft }
-            return .noSuggestions
-        }
-    }
-    public func validate(_ data: Data, draft: String, settings: SuggestionSettings) throws -> [Suggestion] {
-        try inspect(data, draft: draft, settings: settings).suggestions
-    }
-    public func inspect(_ data: Data, draft: String, settings: SuggestionSettings) throws -> Report {
-        guard data.count <= 32_768,
-              let object = (try? JSONSerialization.jsonObject(with: data)) as? [String: Any],
-              Set(object.keys).isSubset(of: ["suggestions", "assessment"]),
-              let rows = object["suggestions"] as? [[String: Any]], rows.count <= SuggestionSettings.suggestionCountRange.upperBound else { throw SuggestionError.invalidResponse }
-        let assessment: Assessment?
-        if let value = object["assessment"] {
-            guard let raw = value as? String, let known = Assessment(rawValue: raw),
-                  (known == .rewrite ? !rows.isEmpty : rows.isEmpty) else { throw SuggestionError.invalidResponse }
-            assessment = known
-        } else { assessment = nil } // Legacy empty replies are unknown, never a green check.
-        let original = TextNormalization.nfkc(draft)
-        var seen = Set<String>()
-        let originalLatin = Set(JapaneseProfile.latinWords(original))
-        let suggestions = rows.compactMap { row -> Suggestion? in
-            guard Set(row.keys) == ["text", "register"], let raw = row["text"] as? String,
-                  let registerName = row["register"] as? String, let register = Register(rawValue: registerName) else { return nil }
-            let text = TextNormalization.nfkc(raw).trimmingCharacters(in: .whitespaces)
-            guard !text.isEmpty, !text.contains(where: { $0.isNewline }),
-                  !text.unicodeScalars.contains(where: { CharacterSet.controlCharacters.contains($0) || CharacterSet.illegalCharacters.contains($0) }),
-                  text != original, text.count <= 3 * original.count,
-                  JapaneseProfile().accepts(text, composingLatin: false),
-                  JapaneseProfile.latinWords(text).allSatisfy({ originalLatin.contains($0) }),
-                  settings.registerPreference != .friendsCasual || register == .casual,
-                  settings.registerPreference != .politeCasual || register == .polite else { return nil }
-            // Reject newly introduced emoji/symbols. Numeric emoji properties alone are not sufficient.
-            let emoji = text.unicodeScalars.filter { $0.properties.isEmojiPresentation || $0.value == 0xFE0F }
-            guard emoji.allSatisfy({ original.unicodeScalars.contains($0) }), seen.insert(text).inserted else { return nil }
-            return Suggestion(text: text, register: register)
-        }.prefix(settings.suggestionLimit).map { $0 }
-        // Keep model ranking within each register and use the same order for display, cache and acceptance.
-        let grouped = suggestions.filter { $0.register == .casual } + suggestions.filter { $0.register == .polite }
-        return Report(suggestions: grouped, receivedCount: rows.count, assessment: assessment)
     }
 }

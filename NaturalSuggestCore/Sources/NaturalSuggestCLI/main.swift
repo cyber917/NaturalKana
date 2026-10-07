@@ -8,9 +8,10 @@ import NaturalSuggestCore
             do {
                 guard let object = try JSONSerialization.jsonObject(with: Data(line.utf8)) as? [String: Any], let draft = object["draft"] as? String else { throw SuggestionError.configuration }
                 var settings = SuggestionSettings(); settings.enabled = true; settings.consent = true
+                settings.language = SuggestionLanguage(rawValue: object["language"] as? String ?? "japanese") ?? .japanese
                 settings.slangLevel = SlangLevel(rawValue: object["slang_level"] as? String ?? "light") ?? .light
                 settings.registerPreference = RegisterPreference(rawValue: object["register_pref"] as? String ?? "both") ?? .both
-                let accepted = JapaneseDraftProfile().accepts(draft, composingLatin: object["composingLatin"] as? Bool ?? false) && draft.count >= 4
+                let accepted = settings.language.draftProfile.accepts(draft, composingLatin: object["composingLatin"] as? Bool ?? false) && draft.count >= 4
                 var result: [String: Any] = ["gate": accepted, "suggestions": []]
                 if let candidates = object["response"] {
                     let data = try JSONSerialization.data(withJSONObject: candidates)

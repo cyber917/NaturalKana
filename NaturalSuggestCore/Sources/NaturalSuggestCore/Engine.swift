@@ -42,22 +42,24 @@ public struct LRUCache<Key: Hashable, Value> {
     private var currentSettings: String?
     private var acceptedSnapshot: DraftSnapshot?
     private var dismissedSnapshot: DraftSnapshot?
+    private var dismissedSettings: String?
     private var lastRequest = ContinuousClock.now - .seconds(10)
     private var cache = LRUCache<String, ResponseValidator.Report>()
-    private let profile: any LanguageProfile
+    private let profile: (any LanguageProfile)?
     private let budget: DailyBudget
     private let prompt: PromptBuilder
     private let lexicon: Lexicon
-    public init(profile: any LanguageProfile = JapaneseDraftProfile(), budget: DailyBudget = DailyBudget(),
+    public init(profile: (any LanguageProfile)? = nil, budget: DailyBudget = DailyBudget(),
                 prompt: PromptBuilder, lexicon: Lexicon = .bundled()) {
         self.profile = profile; self.budget = budget; self.prompt = prompt; self.lexicon = lexicon
     }
     public func cancel(clearCache: Bool = false) {
         requestSeconds = nil; cacheHit = false; receivedCandidateCount = nil
         generation += 1; task?.cancel(); task = nil; current = nil; currentSettings = nil; acceptedSnapshot = nil
-        if clearCache { cache.clear(); dismissedSnapshot = nil }; publish([], .idle)
+        if clearCache { cache.clear(); dismissedSnapshot = nil; dismissedSettings = nil }; publish([], .idle)
     }
     public func dismiss() {
+        dismissedSettings = currentSettings ?? dismissedSettings
         dismissedSnapshot = current ?? dismissedSnapshot
         cancel()
     }
@@ -69,7 +71,7 @@ public struct LRUCache<Key: Hashable, Value> {
     public func update(_ snapshot: DraftSnapshot, settings: SuggestionSettings, provider: any SuggestionProvider, explicit: Bool = false) {
         // A late host update must not reopen a palette dismissed for this draft.
         // Editing the draft, changing fields, or an explicit request resumes suggestions.
-        if dismissedSnapshot == snapshot, !explicit { return }
+        if dismissedSnapshot == snapshot, dismissedSettings == settings.fingerprint, !explicit { return }
         dismissedSnapshot = nil
         // Repeated clicks must not cancel a valid in-flight response. Changed text/settings still cancel it.
         let fingerprint = settings.fingerprint
@@ -81,7 +83,7 @@ public struct LRUCache<Key: Hashable, Value> {
         guard !snapshot.text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else { publish([], .filtered(.empty)); return }
         guard !snapshot.composingLatin else { publish([], .filtered(.composing)); return }
         guard snapshot.text.count >= max(1, settings.minimumLength) else { publish([], .filtered(.tooShort(max(1, settings.minimumLength)))); return }
-        guard profile.accepts(snapshot.text, composingLatin: false) else { publish([], .filtered(.language)); return }
+        guard (profile ?? settings.language.draftProfile).accepts(snapshot.text, composingLatin: false) else { publish([], .filtered(.language)); return }
         let version = generation
         let key = TextNormalization.nfkc(snapshot.text) + fingerprint + prompt.version
         if let cached = cache.get(key) { cacheHit = true; acceptedSnapshot = snapshot; publish(cached.suggestions, cached.diagnostics); return }
@@ -89,7 +91,7 @@ public struct LRUCache<Key: Hashable, Value> {
         task = Task { [weak self] in
             guard let self else { return }
             do {
-                let punctuation = snapshot.text.last.map { "。！？!?".contains($0) } ?? false
+                let punctuation = snapshot.text.last.map { "。！？!?.".contains($0) } ?? false
                 if !explicit && !punctuation { try await Task.sleep(for: .milliseconds(max(0, settings.debounceMilliseconds))) }
                 let earliest = lastRequest + .milliseconds(700)
                 if ContinuousClock.now < earliest { try await Task.sleep(until: earliest, clock: .continuous) }

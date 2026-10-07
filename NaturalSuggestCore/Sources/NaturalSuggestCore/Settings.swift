@@ -84,6 +84,7 @@ public struct ProviderConfiguration: Codable, Hashable, Sendable {
 public struct SuggestionSettings: Codable, Hashable, Sendable {
     public var enabled = false
     public var consent = false
+    public var language: SuggestionLanguage = .japanese
     public var provider: ProviderKind = .openAI
     public var openAI = ProviderConfiguration(baseURL: "https://api.openai.com/v1")
     public var qwen = ProviderConfiguration(baseURL: "https://dashscope-intl.aliyuncs.com/compatible-mode/v1")
@@ -121,11 +122,12 @@ public struct SuggestionSettings: Codable, Hashable, Sendable {
         let encoder = JSONEncoder(); encoder.outputFormatting = .sortedKeys
         return SHA256.hash(data: (try? encoder.encode(self)) ?? Data()).map { String(format: "%02x", $0) }.joined()
     }
-    private enum CodingKeys: String, CodingKey { case enabled, consent, provider, openAI, qwen, additionalProviders, highlightChanges, qualityPartner, registerPreference, slangLevel, debounceMilliseconds, minimumLength, maximumSuggestions, qualityMode, dailyCap, blockedApps, acceptKeys }
+    private enum CodingKeys: String, CodingKey { case enabled, consent, language, provider, openAI, qwen, additionalProviders, highlightChanges, qualityPartner, registerPreference, slangLevel, debounceMilliseconds, minimumLength, maximumSuggestions, qualityMode, dailyCap, blockedApps, acceptKeys }
     public init(from decoder: Decoder) throws {
         let values = try decoder.container(keyedBy: CodingKeys.self)
         enabled = try values.decodeIfPresent(Bool.self, forKey: .enabled) ?? false
         consent = try values.decodeIfPresent(Bool.self, forKey: .consent) ?? false
+        language = try values.decodeIfPresent(SuggestionLanguage.self, forKey: .language) ?? .japanese
         provider = try values.decodeIfPresent(ProviderKind.self, forKey: .provider) ?? .openAI
         openAI = try values.decodeIfPresent(ProviderConfiguration.self, forKey: .openAI) ?? ProviderKind.openAI.defaultConfiguration
         qwen = try values.decodeIfPresent(ProviderConfiguration.self, forKey: .qwen) ?? ProviderKind.qwen.defaultConfiguration
@@ -155,9 +157,9 @@ public enum InputFilterReason: Equatable, Sendable {
         switch self {
         case .empty: "尚未取得当前行文字；未联网"
         case .tooShort(let minimum): "当前送检文字不足 \(minimum) 字；未联网"
-        case .composing: "等待罗马字转换成日语；未联网"
+        case .composing: "等待当前拼写转换完成；未联网"
         case .protectedField: "当前输入框或应用禁止建议；未联网"
-        case .language: "送检文字未识别为可处理的日语，或属于翻译/指令内容；未联网"
+        case .language: "当前句子与建议语言不符，或属于翻译/指令内容；未联网"
         }
     }
 }
@@ -246,7 +248,15 @@ public struct DraftSnapshot: Equatable, Sendable {
         self.composingLatin = composingLatin; self.appID = appID
     }
     public static func currentLine(before: String, after: String) -> String {
-        String(((before.components(separatedBy: .newlines).last ?? "") +
-                (after.components(separatedBy: .newlines).first ?? "")).suffix(200))
+        let start = before.lastIndex(where: { $0.isNewline }).map { before.index(after: $0) } ?? before.startIndex
+        return String((before[start...] + after.prefix(while: { !$0.isNewline })).suffix(200))
+    }
+    /// Text between the caret and this draft's line end. Nil means the draft changed
+    /// or the caret is outside the bounded replacement range.
+    public func replacementSuffix(before: String, after: String) -> String? {
+        let suffix = after.prefix(while: { !$0.isNewline })
+        guard !text.isEmpty, Self.currentLine(before: before, after: after) == text,
+              suffix.count <= text.count else { return nil }
+        return String(suffix)
     }
 }

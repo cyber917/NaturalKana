@@ -50,7 +50,7 @@ public struct NaturalSettingsView: View {
         Form {
             Section {
                 Toggle("允许发送当前句子", isOn: $model.settings.consent)
-                Toggle("日语建议", isOn: $model.settings.enabled).disabled(!model.settings.consent)
+                Toggle("表达建议", isOn: $model.settings.enabled).disabled(!model.settings.consent)
             } footer: {
                 Text("最多发送当前句子 200 字及命中的词库参考。iPhone 需允许键盘完全访问。")
             }
@@ -67,9 +67,12 @@ public struct NaturalSettingsView: View {
                 }
             }
             Section("表达") {
+                Picker("建议语言", selection: $model.settings.language) {
+                    ForEach(SuggestionLanguage.allCases, id: \.self) { language in Text(language.title).tag(language) }
+                }
                 Picker("语体", selection: $model.settings.registerPreference) {
                     Text("口语").tag(RegisterPreference.friendsCasual)
-                    Text("敬语").tag(RegisterPreference.politeCasual)
+                    Text(model.settings.language == .japanese ? "敬语" : "礼貌").tag(RegisterPreference.politeCasual)
                     Text("两种").tag(RegisterPreference.both)
                 }
                 Picker("网络用语", selection: $model.settings.slangLevel) {
@@ -91,6 +94,10 @@ public struct NaturalSettingsView: View {
                     TextField("禁用应用 Bundle ID", text: Binding(get: { model.settings.blockedApps.joined(separator: ",") }, set: { model.settings.blockedApps = $0.split(separator: ",").map { $0.trimmingCharacters(in: .whitespaces) } }))
                     TextField("第一个候选：Control +", text: Binding(get: { model.settings.acceptKeys.first ?? "1" }, set: { model.settings.acceptKeys[0] = String($0.prefix(1)) }))
                     TextField("第二个候选：Control +", text: Binding(get: { model.settings.acceptKeys.count > 1 ? model.settings.acceptKeys[1] : "2" }, set: { model.settings.acceptKeys[1] = String($0.prefix(1)) }))
+                    #endif
+                    #if os(iOS)
+                    Button("检查共享权限") { model.refreshSharingDiagnostics() }
+                    if !model.sharingMessage.isEmpty { Text(model.sharingMessage).font(.caption).foregroundStyle(.secondary) }
                     #endif
                     Button("删除当前服务商密钥", role: .destructive) { model.deleteKey(model.settings.provider) }
                 }
