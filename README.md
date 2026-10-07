@@ -2,45 +2,49 @@
 
 [English](README.en.md)
 
-日语输入与表达建议，支持 macOS 输入法和 iPhone 键盘。
+带 AI 表达建议的日语输入法：iPhone 键盘 + macOS 输入法。打完一句日语，停顿一下，键盘上方会给出更自然的口语／敬语说法，点一下就能替换。
 
-基于 [azooKey](https://github.com/azooKey/azooKey) 与 [azooKey-Desktop](https://github.com/azooKey/azooKey-Desktop) 的衍生项目，沿用上游的日语输入引擎与键盘组件，新增 NaturalSuggestCore 表达建议功能。不是 azooKey 官方版本。[代码来源与许可核对](docs/PROVENANCE.md)。
+基于 [azooKey](https://github.com/azooKey/azooKey) 与 [azooKey-Desktop](https://github.com/azooKey/azooKey-Desktop) 的衍生项目，日语输入引擎和键盘沿用上游，新增了表达建议功能。不是 azooKey 官方版本。
 
-- Qwen / 百炼、OpenAI、DeepSeek、Kimi、Gemini、Claude，以及自定义兼容接口。
-- 口语和敬语分组，最多 10 条建议。
-- iPhone 顶部候选卡片，左右翻页；Mac 使用独立候选窗。
-- 支持个人词库参考，保留原句中的网络用语。
-- 日语里夹杂不熟悉的英文、中文词语时，也可获取日语建议。
-- 本地标出候选中的改动，不额外调用模型。
+- 支持 Qwen／百炼、OpenAI、DeepSeek、Kimi、Gemini、Claude 和自定义兼容接口（自备 API 密钥）
+- 口语和敬语分组，最多 10 条建议，标出改动的部分
+- 句子里夹着不会说的英文、中文词，也能给出日语说法
+- 可导入自己的网络用语词库（Mac）
 
-## 项目状态
+## 安装
 
-当前为开发版。源码已在 macOS 与 iPhone 上构建和使用；不同应用、设备和系统版本仍需测试。目前提供源码，自行构建安装。
+| 你有的设备 | 推荐方式 |
+| --- | --- |
+| **Windows / Mac / Linux 电脑 + iPhone** | 下载现成的 IPA，用 SideStore 安装，不需要 Mac 和 Xcode → [教程](docs/INSTALLATION.md#iphone不需要-mac) |
+| Mac + iPhone，想自己改代码 | 用 Xcode 从源码构建 → [教程](docs/INSTALLATION.md#从源码构建-iphone-版) |
+| Mac（输入法） | 用 Xcode 从源码构建 → [教程](docs/INSTALLATION.md#mac-输入法) |
 
-## 首次安装
+iPhone 版需要 iOS 17.6 或更高。安装包在 [Releases](https://github.com/cyber917/NaturalKana/releases) 页面。
 
-第一次使用请按教程完成安装，再配置 API。没有现成的 App Store 或一键安装包。
+装好后到 App 里填写服务商、模型 ID 和 API 密钥，再在系统键盘设置里打开“允许完全访问”。详见[配置与使用](docs/USAGE.md)。
 
-- [安装教程：工具准备、下载源码和应用标识](docs/INSTALLATION.md#准备工具并下载源码)
-- [Mac：签名构建、安装和添加输入源](docs/INSTALLATION.md#mac-安装)
-- [iPhone：开发者模式、Xcode 签名和添加键盘](docs/INSTALLATION.md#iphone-安装)
-- [API 配置与使用：服务商、模型 ID、快捷键和设置](docs/USAGE.md)
-- [没有建议或连接报错的排查](docs/USAGE.md#没有建议时按这个顺序排查)
-- [SNS 词库导入](docs/SNS词库使用说明.md)
+## 为什么要“签名”，为什么 7 天要续一次
 
-## 使用
+**iPhone 不允许运行没有 Apple 签名的 App**，自己编译的也不例外。不经过 App Store 安装时，App 要用某个 Apple 账户签名，签名的有效期取决于账户类型：
 
-在应用设置中填写服务商、模型和 API 密钥，允许发送当前句子并开启建议。
-模型填写服务商 API 的模型 ID，不能填应用里的展示名称。每家服务商分别保存配置和密钥。“接口兼容”可调整协议、JSON 格式和输出参数；自定义接口支持 OpenAI 兼容和 Claude Messages。
+| 签名方式 | 有效期 | 费用 | 到期前要做什么 |
+| --- | --- | --- | --- |
+| 免费 Apple ID + SideStore（本项目推荐） | 7 天 | 免费 | 在手机上打开 SideStore 点刷新，不需要电脑 |
+| 免费 Apple ID + Xcode | 7 天 | 免费 | 用 Mac 重新运行一次 |
+| 付费开发者账户（99 美元／年） | 1 年 | 付费 | 一年重装一次 |
 
-iPhone 还需在系统的键盘设置中添加 NaturalKana，开启“允许完全访问”。
-建议出现后，点击句子采用；iPhone 上左右切换候选，右上角关闭。
-Mac 默认使用 Control + 1 / 2 采用前两条候选，Esc 关闭建议。
-小勾表示模型认为无需修改，转圈表示正在检查，叹号表示请求失败。iPhone 点图标、Mac 悬停可查看详情。状态判断使用同一次请求，不额外调用模型。
+- 过期后 App 和键盘会打不开，但**设置和密钥一般不会丢**，刷新或重新安装同一个 App 后就能继续用。
+- 免费账户的限制：同一台手机最多同时装 3 个自签 App（SideStore 自己占 1 个）；每 7 天最多注册 10 个 App ID（NaturalKana 主程序和键盘共用 2 个）。
+- SideStore 本身也是 7 天签名。只要在到期前点过刷新，它就会连同自己一起续期。如果已经过期，要回到电脑上用 iloader 重装 SideStore，NaturalKana 不用重装。
+- **Mac 版不受这个限制**：macOS 允许运行本地构建的程序，不需要每周续期。
 
-## 构建
+## 隐私
 
-需要完整 Xcode、Python 3、Git 和 Git LFS。下面只准备源码，不会完成安装；完整签名与安装步骤见[安装教程](docs/INSTALLATION.md)。
+联网建议只发送当前这一句（最多 200 字）、表达偏好和命中的词库条目，直接发到你自己配置的服务商；本项目没有服务器。API 密钥保存在设备钥匙串里。键盘的“完全访问”只用于联网获取建议。
+
+## 从源码构建
+
+需要 Mac、完整 Xcode、Python 3、Git 和 Git LFS。
 
 ```sh
 git clone https://github.com/cyber917/NaturalKana.git
@@ -49,31 +53,8 @@ python3 tools/bootstrap.py --weights
 open NaturalKana.xcworkspace
 ```
 
-在 Xcode 中配置自己的签名账户。iPhone 的 scheme 为 `MainApp`，主应用和 `Keyboard` 扩展使用同一 Team、App Group 和钥匙串组。
-建议选择 Release 配置进行设备测试。
-
-`Config/Brand.json` 保存公开的默认标识。需要自定义时，修改它并运行 `python3 tools/rebrand.py`，再重新签名构建。
-已安装版本应保持原有标识，否则无法沿用原来的设置和密钥。
-
-## 隐私
-
-联网建议发送当前句子（最多 200 字）、表达偏好和命中的词库参考。API 密钥保存在设备钥匙串。
-双模型评选会向两家服务商发送请求；服务商的数据政策仍然适用。
-不要把自己的密钥、导入词库、签名证书或已签名应用提交到仓库。
-
-## 开发与验证
-
-```sh
-swift test --package-path NaturalSuggestCore
-python3 tools/check_public_source.py
-```
-
-本地身份配置可保存在被 Git 忽略的 `Config/LocalBrand.json`。导出上游修改使用 `tools/export_patches.py`，公开补丁使用通用标识并移除签名 Team。
-`upstream/` 是本地工作目录；仓库通过固定版本和 `patches/` 重建，不直接上传它。
-
-iPhone 候选仅在输入框末尾提供安全替换；不同宿主应用的键盘兼容性仍需测试。
-Mac 无法核验鼠标替换范围时会复制建议，提示选中原句粘贴。
+`bootstrap.py` 会下载固定版本的上游源码和模型，再应用 `patches/` 里的修改。签名和安装步骤见[安装教程](docs/INSTALLATION.md#从源码构建-iphone-版)，仓库结构和开发说明见 [docs/DEVELOPMENT.md](docs/DEVELOPMENT.md)。
 
 ## 许可
 
-基于 azooKey 的输入引擎与界面组件。项目许可、上游许可与依赖说明见 `LICENSE`、`licenses/` 和 `THIRD_PARTY_NOTICES.md`。
+NaturalKana 新增的代码使用 MIT 许可（[LICENSE](LICENSE)）。上游 azooKey、转换引擎、字典、模型和其他依赖各自保留原许可，见 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)、[licenses/](licenses/) 和[来源核对](docs/PROVENANCE.md)。

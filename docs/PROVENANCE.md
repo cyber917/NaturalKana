@@ -1,6 +1,6 @@
 # 代码来源与许可核对
 
-核对日期：2026-10-07。范围：公开源码、固定的上游版本、补丁与保存的许可文件。此次核对不是完整安装包的法律审查，也不表示所有模型和数据的再分发授权已经确认。
+核对日期：2026-10-07；2026-10-08 补充 iPhone 安装包（build 17）的内容与许可文本。范围：公开源码、固定的上游版本、补丁与保存的许可文件。此次核对不是完整安装包的法律审查，也不表示所有模型和数据的再分发授权已经确认。
 
 ## 项目与上游的关系
 
@@ -55,11 +55,11 @@ NaturalKana 是基于 azooKey 与 azooKey-Desktop 的衍生项目，不是从零
 
 | 组件 | 当前证据 | 尚缺的确认 |
 | --- | --- | --- |
-| `base_n5_lm`，固定版本 `160a305a89c033ac53a674baeac4470cf531a71b` | 未找到 LICENSE、README 或模型卡。 | 模型及相关词表的再分发授权。不能因主项目为 MIT 就假定权重也为 MIT。 |
+| `base_n5_lm`，固定版本 `160a305a89c033ac53a674baeac4470cf531a71b`（仅 Mac 版使用，iPhone 安装包不含） | 未找到 LICENSE、README 或模型卡。 | 模型及相关词表的再分发授权。不能因主项目为 MIT 就假定权重也为 MIT。 |
 | `zenz-v3.2-small-gguf`、`zenz-v3.2-xsmall-gguf` | 模型卡标为 Apache-2.0，没有独立许可文件。 | 基础模型、转换过程与附带文件的来源及再分发声明。 |
 | 默认字典 | 固定版本根许可为 Apache-2.0。 | 其底层词典数据来源及可能要求保留的附加声明。 |
-| `azooKey_emoji_dictionary_storage` | 数据说明列出 Mozc BSD-3-Clause、Unicode 数据条款及 MIT 来源。 | 对应固定数据版本的完整许可文本与署名清单。 |
-| `llama.cpp` XCFramework 等间接二进制组件 | 转换器依赖配置中包含二进制下载。 | 二进制内各组件的许可及附带声明。 |
+| `azooKey_emoji_dictionary_storage` | 数据说明列出 Mozc BSD-3-Clause、Unicode 数据条款及 MIT 来源；已补充 `licenses/mozc-LICENSE.txt`、`licenses/Unicode-LICENSE.txt`。 | 与固定数据版本逐项对应的署名核对。 |
+| `llama.cpp` XCFramework 等间接二进制组件 | 转换器依赖配置中包含二进制下载；llama.cpp／ggml 的 MIT 许可已保存为 `licenses/llama.cpp-LICENSE.txt`。 | 二进制内各组件的许可及附带声明。 |
 
 [Apache-2.0](https://www.apache.org/licenses/LICENSE-2.0)对保留许可、相关声明、修改说明及适用的 NOTICE 有要求，也不授予上游商标使用权。仅保留主项目的一份 MIT 文件，不能解决所有组件的授权问题。
 

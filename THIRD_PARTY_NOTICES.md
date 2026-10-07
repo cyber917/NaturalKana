@@ -26,4 +26,11 @@ Submodules:
 - zenz-v3.2-small-gguf and zenz-v3.2-xsmall-gguf: model-card metadata says Apache-2.0; no standalone LICENSE in either checkout. Upstream base-model and conversion provenance still need review. Local device builds downloaded LFS weights; weights are not included in this public source repository. A model-card license label alone does not complete a redistribution audit.
 - base_n5_lm: no LICENSE or model card found in the pinned repository. License is unresolved; do not assume MIT for these weights.
 
+Data and binary components bundled in the iPhone IPA (build 17):
+- Emoji data from Mozc (`emoji_data.tsv`): BSD-3-Clause, Copyright 2010-2018 Google Inc.; full text in licenses/mozc-LICENSE.txt.
+- Emoji sequences and CLDR annotations from Unicode: Unicode License v3; full text in licenses/Unicode-LICENSE.txt. Source list in licenses/emoji-data-attribution.md.
+- llama.cpp / ggml (inference runtime used by the converter): MIT; full text in licenses/llama.cpp-LICENSE.txt.
+- zenz-v3.2-small and zenz-v3.2-xsmall GGUF models (Miwa-Keita): Apache-2.0 per model card.
+- base_n5_lm is not included in the iPhone IPA; it is used only by the macOS build.
+
 Transitive binary targets (including the llama.cpp XCFramework), dictionary sources, emoji data terms and embedded model components still need a full release audit before distributing compiled apps. Root MIT licenses do not cover every data/model artifact. No statement of license-complete distribution is made.

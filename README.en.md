@@ -1,15 +1,42 @@
 # NaturalKana
 
-Japanese input and phrasing suggestions for macOS and iPhone.
+[中文](README.md)
 
-Supports Qwen, OpenAI, DeepSeek, Kimi, Gemini, Claude, and custom endpoints. Includes casual/polite alternatives, personal vocabulary references, mixed-word Japanese drafts, and local change highlighting.
+A Japanese keyboard for iPhone and input method for macOS with AI phrasing suggestions. Type a Japanese sentence, pause, and NaturalKana offers more natural casual or polite alternatives above the keyboard. Tap one to replace your draft.
 
-Use API model IDs rather than display names. Each provider keeps its own configuration and Keychain credential. Custom endpoints can use OpenAI-compatible Chat Completions or Claude Messages; JSON and token parameters are configurable.
+NaturalKana is derived from [azooKey](https://github.com/azooKey/azooKey) and [azooKey-Desktop](https://github.com/azooKey/azooKey-Desktop). It keeps their Japanese input engine and keyboard and adds the suggestion feature. It is not an official azooKey release.
 
-See [中文说明](README.md) for setup, building, privacy and development notes.
+- Bring your own API key: Qwen, OpenAI, DeepSeek, Kimi, Gemini, Claude, or any OpenAI-compatible / Claude Messages endpoint
+- Casual and polite groups, up to 10 candidates, with changes highlighted
+- Handles Japanese drafts that mix in English or Chinese words
+- Optional personal slang vocabulary (Mac)
 
-Detailed guides (Chinese): [installation on Mac and iPhone](docs/INSTALLATION.md), [API configuration, usage and troubleshooting](docs/USAGE.md), and [SNS vocabulary import](docs/SNS词库使用说明.md). The installation guide explains source preparation, signing both iOS targets, Developer Mode, keyboard access, and adding the macOS input source. Builds currently target Apple Silicon Macs; the iPhone host app requires iOS 17.6 or later.
+## Install
 
-A derivative of [azooKey](https://github.com/azooKey/azooKey) and [azooKey-Desktop](https://github.com/azooKey/azooKey-Desktop), retaining their Japanese input engine and keyboard components and adding NaturalSuggestCore for phrasing suggestions. This is not an official azooKey release. See [source provenance (Chinese)](docs/PROVENANCE.md), [third-party notices](THIRD_PARTY_NOTICES.md), and the included licenses.
+- **iPhone, no Mac needed (Windows / macOS / Linux):** download the IPA from [Releases](https://github.com/cyber917/NaturalKana/releases), install [SideStore](https://github.com/SideStore/SideStore) with [iloader](https://github.com/nab138/iloader), then import the IPA in SideStore. Requires iOS 17.6+.
+- **Build from source (Mac + Xcode):** iPhone app and macOS input method.
 
-A small checkmark means the model explicitly judged the draft natural; a spinner means checking, and an exclamation mark signals a request failure. Tap the indicator on iPhone or hover on Mac for details. This assessment uses the same model request. Escape dismisses the Mac palette without changing the draft or clipboard.
+Step-by-step guides are in Chinese: [docs/INSTALLATION.md](docs/INSTALLATION.md). Configuration and troubleshooting: [docs/USAGE.md](docs/USAGE.md).
+
+## Signing and the 7-day limit
+
+iOS only runs apps signed through Apple. Apps signed with a free Apple ID expire after **7 days**. With SideStore you renew them on the phone (LocalDevVPN connected → SideStore → Refresh All), with no computer needed. A paid Apple Developer account extends this to one year. Free accounts are limited to 3 sideloaded apps per device, including SideStore, and 10 App IDs per 7 days. NaturalKana uses 2 App IDs: the app and its keyboard. The macOS input method has no such weekly expiry.
+
+## Privacy
+
+Only the current sentence (up to 200 characters), your style preferences and matching vocabulary entries are sent, directly to the provider you configure. There is no NaturalKana server. API keys are stored in the device Keychain.
+
+## Build
+
+```sh
+git clone https://github.com/cyber917/NaturalKana.git
+cd NaturalKana
+python3 tools/bootstrap.py --weights
+open NaturalKana.xcworkspace
+```
+
+Requires full Xcode, Python 3, Git and Git LFS. See [docs/DEVELOPMENT.md](docs/DEVELOPMENT.md).
+
+## License
+
+Original NaturalKana code is MIT ([LICENSE](LICENSE)). Upstream code, dictionaries, models and dependencies keep their own licenses. See [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) and [licenses/](licenses/).

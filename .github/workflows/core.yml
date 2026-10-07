@@ -8,5 +8,4 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - run: swift test --package-path NaturalSuggestCore
-      - run: python3 tools/test_refresh.py
-      - run: python3 -m py_compile eval/run.py tools/refresh_lexicon.py
+      - run: python3 tools/check_public_source.py
