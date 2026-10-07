@@ -4,6 +4,8 @@
 
 日语输入与表达建议，支持 macOS 输入法和 iPhone 键盘。
 
+基于 [azooKey](https://github.com/azooKey/azooKey) 与 [azooKey-Desktop](https://github.com/azooKey/azooKey-Desktop) 的衍生项目，沿用上游的日语输入引擎与键盘组件，新增 NaturalSuggestCore 表达建议功能。不是 azooKey 官方版本。[代码来源与许可核对](docs/PROVENANCE.md)。
+
 - Qwen / 百炼、OpenAI、DeepSeek、Kimi、Gemini、Claude，以及自定义兼容接口。
 - 口语和敬语分组，最多 10 条建议。
 - iPhone 顶部候选卡片，左右翻页；Mac 使用独立候选窗。

@@ -698,18 +698,20 @@ index b014c89..97bae6f 100644
      @Published var mode: Mode = .list
      @Published var selectedItem: EditableUserDictionaryData?
 diff --git a/MainApp/Features/Settings/SettingsHomeView.swift b/MainApp/Features/Settings/SettingsHomeView.swift
-index ea60613..ce2d69f 100644
+index ea60613..befff16 100644
 --- a/MainApp/Features/Settings/SettingsHomeView.swift
 +++ b/MainApp/Features/Settings/SettingsHomeView.swift
-@@ -1,266 +1,62 @@
--//
--//  SettingTab.swift
--//  MainApp
--//
--//  Created by ensan on 2020/09/16.
--//  Copyright © 2020 ensan. All rights reserved.
--//
--
+@@ -1,266 +1,72 @@
+ //
+ //  SettingTab.swift
+ //  MainApp
+ //
+ //  Created by ensan on 2020/09/16.
+ //  Copyright © 2020 ensan. All rights reserved.
+ //
+ 
++// Modified for NaturalKana: unified settings and suggestion configuration.
++
  import AzooKeyUtils
  import KeyboardViews
 -import StoreKit
