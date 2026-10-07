@@ -20,7 +20,7 @@ Step-by-step guides are in Chinese: [docs/INSTALLATION.md](docs/INSTALLATION.md)
 
 ## Signing and the 7-day limit
 
-iOS only runs apps signed through Apple. Apps signed with a free Apple ID expire after **7 days**. With SideStore you renew them on the phone (LocalDevVPN connected → SideStore → Refresh All), with no computer needed. A paid Apple Developer account extends this to one year. Free accounts are limited to 3 sideloaded apps per device, including SideStore, and 10 App IDs per 7 days. NaturalKana uses 2 App IDs: the app and its keyboard. The macOS input method has no such weekly expiry.
+iOS only runs apps signed through Apple. Apps signed with a free Apple ID expire after **7 days**. With SideStore you renew them on the phone (LocalDevVPN connected → SideStore → Refresh All), with no computer needed. A paid Apple Developer account extends this to one year. Free accounts are limited to 3 sideloaded apps per device, including SideStore, and 10 App IDs per 7 days. NaturalKana uses 2 App IDs: the app and its keyboard. macOS is far more permissive with locally built apps; the input method normally does not need weekly renewal (rebuild and reinstall if it ever stops loading).
 
 ## Privacy
 
