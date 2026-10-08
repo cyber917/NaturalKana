@@ -626,7 +626,7 @@ index 8462a66..ae80808 100644
  
      @MainActor
 diff --git a/Keyboard/Info.plist b/Keyboard/Info.plist
-index f38855f..225c398 100644
+index f38855f..ba28575 100644
 --- a/Keyboard/Info.plist
 +++ b/Keyboard/Info.plist
 @@ -5,7 +5,7 @@
@@ -647,7 +647,7 @@ index f38855f..225c398 100644
  	<key>CFBundlePackageType</key>
  	<string>$(PRODUCT_BUNDLE_PACKAGE_TYPE)</string>
  	<key>CFBundleShortVersionString</key>
-@@ -38,9 +38,13 @@
+@@ -38,9 +38,20 @@
  		<key>NSExtensionPrincipalClass</key>
  		<string>$(PRODUCT_MODULE_NAME).KeyboardViewController</string>
  	</dict>
@@ -659,6 +659,13 @@ index f38855f..225c398 100644
  	</array>
 +	<key>NaturalKanaKeychainSuffix</key>
 +	<string>org.naturalkana</string>
++	<key>NSAppTransportSecurity</key>
++	<dict>
++		<key>NSAllowsLocalNetworking</key>
++		<true/>
++	</dict>
++	<key>NSLocalNetworkUsageDescription</key>
++	<string>仅在你把建议服务的接口地址设为本机或局域网地址时使用，用于连接自行搭建的模型服务（如 Ollama、llama.cpp）。</string>
  </dict>
  </plist>
 diff --git a/Keyboard/Keyboard.entitlements b/Keyboard/Keyboard.entitlements
@@ -1391,7 +1398,7 @@ index 6bad68a..c784213 100644
      }
  }
 diff --git a/MainApp/Info.plist b/MainApp/Info.plist
-index 32ff583..0ba9b13 100644
+index 32ff583..31633b5 100644
 --- a/MainApp/Info.plist
 +++ b/MainApp/Info.plist
 @@ -2,15 +2,10 @@
@@ -1450,12 +1457,19 @@ index 32ff583..0ba9b13 100644
  	<key>UIRequiredDeviceCapabilities</key>
  	<array>
  		<string>armv7</string>
-@@ -160,5 +162,7 @@
+@@ -160,5 +162,14 @@
  			</dict>
  		</dict>
  	</array>
 +	<key>NaturalKanaKeychainSuffix</key>
 +	<string>org.naturalkana</string>
++	<key>NSAppTransportSecurity</key>
++	<dict>
++		<key>NSAllowsLocalNetworking</key>
++		<true/>
++	</dict>
++	<key>NSLocalNetworkUsageDescription</key>
++	<string>仅在你把建议服务的接口地址设为本机或局域网地址时使用，用于连接自行搭建的模型服务（如 Ollama、llama.cpp）。</string>
  </dict>
  </plist>
 diff --git a/MainApp/Shared/UI/Components/HeaderLogoView.swift b/MainApp/Shared/UI/Components/HeaderLogoView.swift
