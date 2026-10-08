@@ -171,6 +171,10 @@
   "en": "Save TSV Template…",
   "ja": "TSV テンプレートを保存…"
  },
+ "保存后，在英文键盘上切到韩语：全键盘点左下角的语言键（A／한），九宫格点左侧的“한”键。长按 ㅂㅈㄷㄱㅅ 后右滑输入 ㅃㅉㄸㄲㅆ，长按 ㅐㅔ 后右滑输入 ㅒㅖ。": {
+  "en": "After saving, switch to Korean from the English keyboard: on QWERTY tap the language key (A／한) at the bottom left; on the 10-key layout tap the “한” key on the left. Long-press ㅂㅈㄷㄱㅅ and slide right for ㅃㅉㄸㄲㅆ, or ㅐㅔ for ㅒㅖ.",
+  "ja": "保存後、英語キーボードから韓国語に切り替えます。QWERTY は左下の言語キー（A／한）、フリックは左列の「한」キーをタップします。ㅂㅈㄷㄱㅅ を長押しして右にスライドすると ㅃㅉㄸㄲㅆ、ㅐㅔ なら ㅒㅖ を入力できます。"
+ },
  "保存常用词的日语读音和写法，最多 50 条。": {
   "en": "Save the Japanese reading and spelling of words you use often (up to 50).",
   "ja": "よく使う語の読みと表記を保存します（最大 50 件）。"
@@ -1294,6 +1298,10 @@
  "键盘": {
   "en": "Keyboard",
   "ja": "キーボード"
+ },
+ "键盘加入韩语布局": {
+  "en": "Korean layout in the keyboard",
+  "ja": "キーボードに韓国語レイアウトを追加"
  },
  "键盘设置即时生效。表达建议的配置请在对应页点击“保存设置”。": {
   "en": "Keyboard settings apply immediately. For suggestion settings, click Save Settings on that tab.",
