@@ -4,6 +4,7 @@ import NaturalSuggestCore
 public struct NaturalSettingsView: View {
     @ObservedObject private var model: SuggestionModel
     @State private var hasLoadedSettings = false
+    @State private var clearedWordMemory = false
     @State private var providerKeys: [ProviderKind: String] = [:]
     public init(model: SuggestionModel) { self.model = model }
     private func save() -> Bool {
@@ -148,6 +149,10 @@ public struct NaturalSettingsView: View {
                         set: { model.settings.setKeyboardLayout(layout, enabled: $0) }
                     ))
                 }
+                Toggle(UIText.t("记住键盘常用词"), isOn: $model.settings.keyboardWordLearning)
+                Text(UIText.t("法语、俄语、韩语可离线补全词语；记忆只保存在本机，关闭后只使用内置词库。")).font(.caption).foregroundStyle(.secondary)
+                Button(UIText.t("清空键盘词语记忆")) { model.clearKeyboardWordMemory(); clearedWordMemory = true }
+                if clearedWordMemory { Text(UIText.t("键盘词语记忆已清空")).font(.caption).foregroundStyle(.secondary) }
                 NavigationLink(UIText.t("快捷切换语言")) {
                     keyboardSwitchSettings
                 }

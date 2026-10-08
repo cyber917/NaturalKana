@@ -90,6 +90,10 @@ import NaturalSuggestCore
         defaults.set(data, forKey: "nk.personalLexicon")
         personalData = data; personalEntries = entries; engine?.setPersonalLexicon(entries)
     }
+    public func clearKeyboardWordMemory() {
+        if let defaults { WordCompletionMemory.clear(in: defaults) }
+    }
+
     public func useResponsiveSettings() {
         settings.debounceMilliseconds = 300; settings.qualityMode = false
         if settings.provider == .qwen { settings.qwen.disableThinking = true }
