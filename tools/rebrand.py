@@ -7,6 +7,8 @@ new=json.loads((ROOT/'Config/Brand.json').read_text()); stamp=ROOT/'Config/Gener
 if not re.fullmatch(r'[A-Za-z][A-Za-z0-9 ]{1,40}',new['name']):raise SystemExit('Use a plain ASCII display name for this generator')
 for field in ['bundlePrefix','iosAppGroup','macAppGroup','macBundleIdentifier']:
  if not re.fullmatch(r'[A-Za-z0-9.-]+',new[field]):raise SystemExit('Invalid bundle/group identifier')
+# InputMethodKit silently refuses input methods whose bundle ID lacks a ".inputmethod." segment (imklaunchagent: "Refusing connection name").
+if '.inputmethod.' not in new['macBundleIdentifier']:raise SystemExit('macBundleIdentifier must contain ".inputmethod.", e.g. com.yourname.inputmethod.naturalkana; otherwise macOS never lists the input method')
 replacements=sorted([(old[k],new[k]) for k in new if k!='name' and new[k]!=old[k]],key=lambda x:-len(x[0]))
 for base in [ROOT/'upstream',ROOT/'NaturalSuggestCore/Sources']:
  for path in base.rglob('*'):

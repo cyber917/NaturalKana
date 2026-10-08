@@ -16,7 +16,8 @@ signing=(CODE_SIGNING_ALLOWED=NO)
 if [[ "$mode" == --signed ]]; then
   python3 "$root/tools/verify_mac_models.py"
   : "${NATURALKANA_TEAM_ID:?Set your actual Xcode development team ID before a signed build}"
-  signing=(CODE_SIGN_STYLE=Automatic "DEVELOPMENT_TEAM=$NATURALKANA_TEAM_ID")
+  # A new bundle ID has no provisioning profile yet; let Xcode create it on the first signed build.
+  signing=(-allowProvisioningUpdates CODE_SIGN_STYLE=Automatic "DEVELOPMENT_TEAM=$NATURALKANA_TEAM_ID")
 fi
 swift build --package-path "$project/Core" --scratch-path "$cache/packages" \
   --cache-path "$cache/cache" --config-path "$cache/config" --security-path "$cache/security" \

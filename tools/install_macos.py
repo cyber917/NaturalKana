@@ -20,7 +20,11 @@ brand_file = root / 'Config/LocalBrand.json'
 if not brand_file.exists():
     brand_file = root / 'Config/Brand.json'
 identifier = json.loads(brand_file.read_text())['macBundleIdentifier']
-legacy_identifier = 'org.naturalkana.mac'
+if '.inputmethod.' not in identifier:
+    raise SystemExit('macBundleIdentifier must contain ".inputmethod." (e.g. com.yourname.inputmethod.naturalkana); '
+                     'macOS refuses other input methods. Fix Config/Brand.json, run tools/rebrand.py and rebuild.')
+# Earlier public identifiers; org.naturalkana.inputmethod was never accepted by InputMethodKit.
+legacy_identifiers = ('org.naturalkana.mac', 'org.naturalkana.inputmethod')
 service = identifier + '.ConverterServer'
 info = plistlib.loads((source / 'Contents/Info.plist').read_bytes())
 if info.get('CFBundleIdentifier') != identifier:
@@ -49,13 +53,13 @@ subprocess.run(['ditto', str(source), str(staging)], check=True)
 subprocess.run(['codesign', '--verify', '--deep', '--strict', str(staging)], check=True)
 if destination.exists():
     old = plistlib.loads((destination / 'Contents/Info.plist').read_bytes())
-    if old.get('CFBundleIdentifier') not in (identifier, legacy_identifier):
+    if old.get('CFBundleIdentifier') not in (identifier, *legacy_identifiers):
         raise SystemExit('Existing destination is another app; preserved.')
     backup = root / 'installed-backups' / datetime.datetime.now().strftime('%Y%m%d-%H%M%S')
     backup.mkdir(parents=True)
     shutil.move(str(destination), str(backup / destination.name))
-    if old.get('CFBundleIdentifier') == legacy_identifier:
-        legacy_agent = library / 'LaunchAgents' / (legacy_identifier + '.ConverterServer.plist')
+    if old.get('CFBundleIdentifier') in legacy_identifiers:
+        legacy_agent = library / 'LaunchAgents' / (old['CFBundleIdentifier'] + '.ConverterServer.plist')
         if legacy_agent.exists():
             subprocess.run(['launchctl', 'bootout', 'gui/' + str(os.getuid()), str(legacy_agent)],
                            stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
