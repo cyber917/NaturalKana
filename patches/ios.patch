@@ -27,18 +27,9 @@ index 2b9fc9b..8cf6a81 100644
                  "KeyboardThemes",
                  "KeyboardViews",
 diff --git a/AzooKeyCore/Sources/AzooKeyUtils/AzooKeyKeyboardViewExtension.swift b/AzooKeyCore/Sources/AzooKeyUtils/AzooKeyKeyboardViewExtension.swift
-index 3935bf8..fd5c6b9 100644
+index 3935bf8..7ce6b1c 100644
 --- a/AzooKeyCore/Sources/AzooKeyUtils/AzooKeyKeyboardViewExtension.swift
 +++ b/AzooKeyCore/Sources/AzooKeyUtils/AzooKeyKeyboardViewExtension.swift
-@@ -79,7 +79,7 @@ public enum AzooKeyKeyboardViewExtension: ApplicationSpecificKeyboardViewExtensi
-     }
- 
-     public static var displayTabBarButton: Bool {
--        true
-+        false
-     }
- 
-     public static var hideResetButtonInOneHandedMode: Bool {
 @@ -136,7 +136,7 @@ public struct ClipboardHistoryManagerConfig: ClipboardHistoryManagerConfiguratio
      }
  
@@ -697,10 +688,10 @@ index 407388f..13ee7e7 100644
      typealias Value = ThemeData<Extension>
  
 diff --git a/AzooKeyCore/Sources/KeyboardViews/View/KeyboardView.swift b/AzooKeyCore/Sources/KeyboardViews/View/KeyboardView.swift
-index c0751ed..8d19f33 100644
+index c0751ed..1d76958 100644
 --- a/AzooKeyCore/Sources/KeyboardViews/View/KeyboardView.swift
 +++ b/AzooKeyCore/Sources/KeyboardViews/View/KeyboardView.swift
-@@ -8,6 +8,7 @@
+@@ -8,15 +8,19 @@
  
  import CustardKit
  import Foundation
@@ -708,7 +699,10 @@ index c0751ed..8d19f33 100644
  import SwiftUI
  
  @MainActor
-@@ -17,6 +18,8 @@ public struct KeyboardView<Extension: ApplicationSpecificKeyboardViewExtension>:
+ public struct KeyboardView<Extension: ApplicationSpecificKeyboardViewExtension>: View {
+     @State private var messageManager = MessageManager(necessaryMessages: Extension.MessageProvider.messages, userDefaults: Extension.MessageProvider.userDefaults)
+     @State private var isResultViewExpanded = false
++    @State private var keyPreviewHeight: CGFloat = 0
  
      @Environment(Extension.Theme.self) private var theme
      @Environment(\.showMessage) private var showMessage
@@ -717,12 +711,16 @@ index c0751ed..8d19f33 100644
      @EnvironmentObject private var variableStates: VariableStates
  
      private let defaultTab: KeyboardTab.ExistentialTab?
-@@ -25,6 +28,72 @@ public struct KeyboardView<Extension: ApplicationSpecificKeyboardViewExtension>:
+@@ -25,6 +29,101 @@ public struct KeyboardView<Extension: ApplicationSpecificKeyboardViewExtension>:
          self.defaultTab = defaultTab
      }
  
 +    private var isLanguageMenuPresented: Bool {
 +        variableStates.boolStates[VariableStates.BoolStates.languageMenuKey] ?? false
++    }
++
++    private var fullTopInset: CGFloat {
++        Design.keyboardBarHeight(interfaceHeight: resolvedInterfaceHeight, context: variableStates.layoutContext) + 12
 +    }
 +
 +    private var topInsetReduction: CGFloat {
@@ -735,8 +733,33 @@ index c0751ed..8d19f33 100644
 +              statusAccessory == nil else { return 0 }
 +        if case .special = variableStates.tabManager.existentialTab() { return 0 }
 +        if let undo = variableStates.undoAction, undo.textChangedCount == variableStates.textChangedCount { return 0 }
-+        // Keep key sizes unchanged, leaving only a small inset above the first row.
-+        return Design.keyboardBarHeight(interfaceHeight: resolvedInterfaceHeight, context: variableStates.layoutContext) + 6
++        // Keep two thirds of the original bar, reserving more room for key previews.
++        return min(fullTopInset / 3, max(0, fullTopInset - keyPreviewHeight))
++    }
++
++    private var compactTools: some View {
++        HStack(spacing: 8) {
++            toolButton("face.smiling", title: UIText.t("表情"), action: .moveTab(.system(.emoji_tab)))
++            toolButton("doc.on.clipboard", title: UIText.t("剪贴板"), action: .moveTab(.system(.clipboard_history_tab)))
++            Spacer()
++            toolButton("ellipsis", title: UIText.t("更多工具"), action: .setTabBar(.toggle))
++        }
++        .padding(.horizontal, 10)
++        .foregroundStyle(theme.resultTextColor.color)
++    }
++
++    private func toolButton(_ icon: String, title: String, action keyAction: ActionType) -> some View {
++        Button {
++            action.registerAction(keyAction, variableStates: variableStates)
++        } label: {
++            Image(systemName: icon)
++                .font(.system(size: 20))
++                .frame(width: 44)
++                .frame(maxHeight: .infinity)
++                .contentShape(Rectangle())
++        }
++        .buttonStyle(.plain)
++        .accessibilityLabel(title)
 +    }
 +
 +    private func closeLanguageMenu() {
@@ -790,7 +813,7 @@ index c0751ed..8d19f33 100644
      private var backgroundColor: Color {
          if theme.picture.image != nil {
              Color.white.opacity(0.001)
-@@ -66,7 +135,7 @@ public struct KeyboardView<Extension: ApplicationSpecificKeyboardViewExtension>:
+@@ -66,7 +165,7 @@ public struct KeyboardView<Extension: ApplicationSpecificKeyboardViewExtension>:
          } else {
              currentBodyHeight
          }
@@ -799,7 +822,7 @@ index c0751ed..8d19f33 100644
      }
  
      @ViewBuilder
-@@ -83,7 +152,7 @@ public struct KeyboardView<Extension: ApplicationSpecificKeyboardViewExtension>:
+@@ -83,7 +182,7 @@ public struct KeyboardView<Extension: ApplicationSpecificKeyboardViewExtension>:
              }
              .frame(
                  width: variableStates.containerWidth,
@@ -808,7 +831,7 @@ index c0751ed..8d19f33 100644
                      + variableStates.interfaceBottomOffset
                      + Design.keyboardScreenBottomPadding
              )
-@@ -140,20 +209,25 @@ public struct KeyboardView<Extension: ApplicationSpecificKeyboardViewExtension>:
+@@ -140,20 +239,25 @@ public struct KeyboardView<Extension: ApplicationSpecificKeyboardViewExtension>:
                      } else if isResultViewExpanded {
                          ExpandedResultView<Extension>(isResultViewExpanded: $isResultViewExpanded)
                      } else {
@@ -833,7 +856,7 @@ index c0751ed..8d19f33 100644
 +                                .contentShape(Rectangle())
 +                                .padding(.vertical, 6)
 +                        } else {
-+                            Color.clear.frame(height: 6)
++                            compactTools.frame(height: fullTopInset - topInsetReduction)
 +                        }
                          keyboardView(tab: defaultTab ?? variableStates.tabManager.existentialTab())
                              .zIndex(1)
@@ -843,7 +866,7 @@ index c0751ed..8d19f33 100644
                  .resizingFrame(
                      size: $variableStates.interfaceSize,
                      position: $variableStates.interfacePosition,
-@@ -172,6 +246,13 @@ public struct KeyboardView<Extension: ApplicationSpecificKeyboardViewExtension>:
+@@ -172,6 +276,13 @@ public struct KeyboardView<Extension: ApplicationSpecificKeyboardViewExtension>:
                  }
              }
  
@@ -857,10 +880,11 @@ index c0751ed..8d19f33 100644
              if variableStates.boolStates.isTextMagnifying {
                  LargeTextView(text: variableStates.magnifyingText, isViewOpen: $variableStates.boolStates.isTextMagnifying)
              }
-@@ -191,6 +272,9 @@ public struct KeyboardView<Extension: ApplicationSpecificKeyboardViewExtension>:
+@@ -191,6 +302,10 @@ public struct KeyboardView<Extension: ApplicationSpecificKeyboardViewExtension>:
              }
          }
          .frame(height: totalBackgroundHeight)
++        .onPreferenceChange(KeyPreviewHeightPreferenceKey.self) { keyPreviewHeight = $0 }
 +        .onAppear { variableStates.keyboardTopInsetReduction = topInsetReduction }
 +        .onChange(of: topInsetReduction) { _, value in variableStates.keyboardTopInsetReduction = value }
 +        .onDisappear { closeLanguageMenu() }
@@ -1058,6 +1082,66 @@ index 107a484..88cb6c9 100644
 +        let text = Design.language.getEnterKeyText(states.enterKeyState, english: states.tabManager.languageForSymbols == .english || states.keyboardLanguage == .en_US)
          return KeyLabel(.text(text), width: width, textSize: textSize, textColor: color ?? specialTextColor(states: states, theme: theme))
      }
+ 
+diff --git a/AzooKeyCore/Sources/KeyboardViews/View/UnifiedKey/Suggest/UnifiedQwertySuggestView.swift b/AzooKeyCore/Sources/KeyboardViews/View/UnifiedKey/Suggest/UnifiedQwertySuggestView.swift
+index e97b861..7888835 100644
+--- a/AzooKeyCore/Sources/KeyboardViews/View/UnifiedKey/Suggest/UnifiedQwertySuggestView.swift
++++ b/AzooKeyCore/Sources/KeyboardViews/View/UnifiedKey/Suggest/UnifiedQwertySuggestView.swift
+@@ -2,6 +2,14 @@ import Foundation
+ import SwiftUI
+ import SwiftUIUtils
+ 
++struct KeyPreviewHeightPreferenceKey: PreferenceKey {
++    static let defaultValue: CGFloat = 0
++
++    static func reduce(value: inout CGFloat, nextValue: () -> CGFloat) {
++        value = max(value, nextValue())
++    }
++}
++
+ struct UnifiedQwertySuggestView<Extension: ApplicationSpecificKeyboardViewExtension>: View {
+     @EnvironmentObject private var variableStates: VariableStates
+     @Environment(Extension.Theme.self) private var theme
+@@ -98,22 +106,25 @@ struct UnifiedQwertySuggestView<Extension: ApplicationSpecificKeyboardViewExtens
+ 
+     var body: some View {
+         let height = tabDesign.verticalSpacing + size.height
+-        switch self.suggestType {
+-        case .normal:
+-            Self.scaleToFrameSize(keyWidth: size.width, scale_y: 1, color: suggestColor, borderColor: keyBorderColor, borderWidth: keyBorderWidth, tabDesign: tabDesign)
+-                .overlay { baseLabel.padding(.bottom, height) }
+-                .compositingGroup()
+-                .shadow(color: shadowColor, radius: 1, x: 0, y: 0)
+-                .allowsHitTesting(false)
+-        case .variation(let selection):
+-            Self.scaleToVariationsSize(keyWidth: size.width, scale_y: 1, variationsCount: variationsModel.variations.count, color: suggestColor, borderColor: keyBorderColor, borderWidth: keyBorderWidth, direction: variationsModel.direction, tabDesign: tabDesign)
+-                .overlay(alignment: variationsModel.direction.alignment) {
+-                    QwertyVariationsView<Extension>(model: variationsModel, selection: selection, tabDesign: tabDesign).padding(.bottom, height)
+-                }
+-                .compositingGroup()
+-                .shadow(color: shadowColor, radius: 1, x: 0, y: 0)
+-                .allowsHitTesting(false)
++        Group {
++            switch self.suggestType {
++            case .normal:
++                Self.scaleToFrameSize(keyWidth: size.width, scale_y: 1, color: suggestColor, borderColor: keyBorderColor, borderWidth: keyBorderWidth, tabDesign: tabDesign)
++                    .overlay { baseLabel.padding(.bottom, height) }
++                    .compositingGroup()
++                    .shadow(color: shadowColor, radius: 1, x: 0, y: 0)
++                    .allowsHitTesting(false)
++            case .variation(let selection):
++                Self.scaleToVariationsSize(keyWidth: size.width, scale_y: 1, variationsCount: variationsModel.variations.count, color: suggestColor, borderColor: keyBorderColor, borderWidth: keyBorderWidth, direction: variationsModel.direction, tabDesign: tabDesign)
++                    .overlay(alignment: variationsModel.direction.alignment) {
++                        QwertyVariationsView<Extension>(model: variationsModel, selection: selection, tabDesign: tabDesign).padding(.bottom, height)
++                    }
++                    .compositingGroup()
++                    .shadow(color: shadowColor, radius: 1, x: 0, y: 0)
++                    .allowsHitTesting(false)
++            }
+         }
++        .preference(key: KeyPreviewHeightPreferenceKey.self, value: tabDesign.keyViewHeight + tabDesign.verticalSpacing + 4)
+     }
+ }
  
 diff --git a/AzooKeyCore/Tests/KeyboardViewsTests/ExtraKeyboardLayoutTests.swift b/AzooKeyCore/Tests/KeyboardViewsTests/ExtraKeyboardLayoutTests.swift
 new file mode 100644

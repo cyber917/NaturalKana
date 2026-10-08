@@ -351,6 +351,10 @@
   "en": "Cut",
   "ja": "カット"
  },
+ "剪贴板": {
+  "en": "Clipboard",
+  "ja": "クリップボード"
+ },
  "功能关闭，或尚未同意发送草稿": {
   "en": "Off, or sending drafts hasn't been allowed yet",
   "ja": "オフになっているか、下書きの送信がまだ許可されていません"
@@ -759,6 +763,10 @@
   "en": "For languages other than Japanese and English: type a sentence with a built-in keyboard, then switch to the NaturalKana keyboard to see suggestions.",
   "ja": "日本語・英語以外の文：標準のキーボードで文を入力してから NaturalKana キーボードに切り替えると、候補が表示されます。"
  },
+ "更多工具": {
+  "en": "More tools",
+  "ja": "その他のツール"
+ },
  "最多发送当前句子 200 字及命中的词库参考。iPhone 需允许键盘完全访问。": {
   "en": "Sends at most 200 characters of the current sentence plus matching lexicon references. On iPhone, the keyboard needs Full Access.",
   "ja": "現在の文の最大 200 文字と、該当する語彙の参考情報だけを送信します。iPhone ではキーボードの「フルアクセスを許可」が必要です。"
@@ -1150,6 +1158,10 @@
  "英语": {
   "en": "English",
   "ja": "英語"
+ },
+ "表情": {
+  "en": "Emoji",
+  "ja": "絵文字"
  },
  "表达": {
   "en": "Expression",
