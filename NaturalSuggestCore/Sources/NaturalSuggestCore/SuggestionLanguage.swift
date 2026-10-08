@@ -34,7 +34,6 @@ public enum SuggestionLanguage: String, Codable, CaseIterable, Sendable {
         }
     }
     public var closeTitle: String { self == .japanese ? "閉じる" : "Close" }
-    public var copyHint: String { self == .japanese ? "クリックでコピー・元の文を選択して貼り付け" : "Click to copy · Select the original text and paste" }
 }
 
 /// Allows learner English, including a few unknown foreign words in an English sentence.
