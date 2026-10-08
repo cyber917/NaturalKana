@@ -79,6 +79,7 @@ public sealed class ProviderConfig
 public sealed class AppSettings
 {
     public bool Consent { get; set; }
+    public SuggestionLanguage Language { get; set; } = SuggestionLanguage.Japanese;
     public ProviderKind Provider { get; set; } = ProviderKind.Qwen;
     public Dictionary<ProviderKind, ProviderConfig> ProviderConfigs { get; set; } = new();
     public RegisterPreference RegisterPreference { get; set; } = RegisterPreference.Both;

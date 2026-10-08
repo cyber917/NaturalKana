@@ -102,6 +102,11 @@
             <Border Style="{StaticResource Section}">
                 <StackPanel>
                     <DockPanel Style="{StaticResource Row}">
+                        <TextBlock Text="建议语言" Style="{StaticResource Label}"/>
+                        <ComboBox x:Name="LanguageBox"/>
+                    </DockPanel>
+                    <Border Style="{StaticResource Divider}"/>
+                    <DockPanel Style="{StaticResource Row}">
                         <TextBlock Text="语体" Style="{StaticResource Label}"/>
                         <ComboBox x:Name="RegisterBox"/>
                     </DockPanel>

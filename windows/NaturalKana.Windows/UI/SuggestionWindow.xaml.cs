@@ -15,6 +15,7 @@ public partial class SuggestionWindow : Window
     readonly Native.POINT anchor;
     readonly string draft;
     readonly bool highlight;
+    readonly SuggestionLanguage language;
     readonly List<Border> rows = [];
     IReadOnlyList<Suggestion> suggestions = [];
     int selected = -1;
@@ -23,7 +24,7 @@ public partial class SuggestionWindow : Window
     /// Raised with the chosen text, or null when the user dismissed the card.
     public event Action<string?, bool>? Finished;
 
-    public SuggestionWindow(string draft, Native.POINT anchor, bool highlight)
+    public SuggestionWindow(string draft, Native.POINT anchor, bool highlight, SuggestionLanguage language)
     {
         InitializeComponent();
         // Digits must reach the window directly even when a Japanese IME is active.
@@ -31,6 +32,7 @@ public partial class SuggestionWindow : Window
         this.draft = draft;
         this.anchor = anchor;
         this.highlight = highlight;
+        this.language = language;
         Draft.Text = draft;
         ShowRequesting();
         SourceInitialized += (_, _) => Reposition();
@@ -73,7 +75,7 @@ public partial class SuggestionWindow : Window
                 group = item.Register;
                 Items.Children.Add(new TextBlock
                 {
-                    Text = group == Register.Casual ? "口语" : "敬语",
+                    Text = Languages.RegisterTitle(language, item.Register),
                     FontSize = 12, Foreground = Theme.Light,
                     Margin = new Thickness(0, Items.Children.Count == 0 ? 2 : 10, 0, 4),
                 });

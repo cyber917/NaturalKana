@@ -42,7 +42,6 @@ public static partial class JapaneseText
         LatinWordRegex().Matches(text).Select(m => m.Value).ToArray();
 
     [GeneratedRegex("[A-Za-z]+")] private static partial Regex LatinWordRegex();
-    [GeneratedRegex("[一-龯ぁ-ゖァ-ヺー]{2,}(?:[はがをにと]|で(?!す))")] private static partial Regex TopicRegex();
 
     /// Strict check used for model output.
     public static bool IsJapanese(string text)
@@ -59,17 +58,17 @@ public static partial class JapaneseText
     }
 
     /// Lenient check for drafts: unknown foreign words inside a Japanese sentence are allowed.
+    /// Unlike the iPhone/Mac typing gate, Windows only runs on an explicit hotkey, so it does not
+    /// require particular grammar endings (e.g. あとでmeetingがあるから is accepted); the model
+    /// still answers "unsupported" for anything that is not a Japanese draft.
     public static bool IsJapaneseDraft(string text)
     {
         if (IsJapanese(text)) return true;
         var normalized = Nfkc(text);
         var lower = normalized.ToLowerInvariant();
         if (Denied.Any(lower.Contains) || lower.Contains("ignore instructions") || lower.Contains("system prompt")) return false;
-        if (normalized.Any(char.IsControl)) return false;
+        if (normalized.Any(char.IsControl) || ChineseMarkers.Any(normalized.Contains)) return false;
         if (Scalars(normalized).Count(IsKana) < 3) return false;
-        string[] structure = ["した", "する", "して", "でき", "だから", "けど", "たい", "ない", "だった", "ます", "ました", "ください", "って", "ちゃ", "った", "れる", "られる"];
-        var topic = TopicRegex().IsMatch(normalized);
-        if (!structure.Any(normalized.Contains) && !(topic && normalized.Contains("です"))) return false;
         var scalars = Scalars(normalized).Where(v => !IsWhitespace(v)).ToList();
         var japanese = scalars.Count(v => IsKana(v) || IsHan(v));
         var latin = scalars.Count(v => v < 128 && char.IsLetter((char)v));

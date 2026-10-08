@@ -20,6 +20,7 @@
   <!-- Shared with the iPhone/Mac builds so all platforms use the same prompts and lexicon. -->
   <ItemGroup>
     <EmbeddedResource Include="..\..\NaturalSuggestCore\Sources\NaturalSuggestCore\Resources\Prompts\system_v1.txt" LogicalName="system_v1.txt" />
+    <EmbeddedResource Include="..\..\NaturalSuggestCore\Sources\NaturalSuggestCore\Resources\Prompts\english_v1.txt" LogicalName="english_v1.txt" />
     <EmbeddedResource Include="..\..\NaturalSuggestCore\Sources\NaturalSuggestCore\Resources\slang.jsonl" LogicalName="slang.jsonl" />
   </ItemGroup>
 

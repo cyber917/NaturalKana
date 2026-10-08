@@ -23,8 +23,9 @@ public partial class SettingsWindow : Window
         this.registerHotkey = registerHotkey;
         foreach (var (kind, config) in settings.ProviderConfigs) edits[kind] = config.Clone();
 
-        Intro.Text = $"在任何软件里选中一句日语（或把光标放在句尾），按 {settings.Hotkey} 获取更自然的说法。";
+        Intro.Text = $"在任何软件里选中一句话（或把光标放在句尾），按 {settings.Hotkey} 获取更自然的说法。";
         Fill(ProviderBox, Enum.GetValues<ProviderKind>().Select(k => (k, Providers.Title(k))), settings.Provider);
+        Fill(LanguageBox, [(SuggestionLanguage.Japanese, "日语"), (SuggestionLanguage.English, "英语")], settings.Language);
         Fill(RegisterBox, [(RegisterPreference.Both, "口语和敬语都要"), (RegisterPreference.FriendsCasual, "只要口语"), (RegisterPreference.PoliteCasual, "只要敬语")], settings.RegisterPreference);
         Fill(SlangBox, [(SlangLevel.Off, "不用"), (SlangLevel.Light, "轻度（只用常见说法）"), (SlangLevel.Trendy, "流行")], settings.SlangLevel);
         Fill(CountBox, Enumerable.Range(1, 10).Select(n => (n, n.ToString())), settings.SuggestionLimit);
@@ -115,6 +116,7 @@ public partial class SettingsWindow : Window
         var key = pendingKeys.GetValueOrDefault(current) ?? SecretStore.Read(current) ?? "";
         var trial = new AppSettings
         {
+            Language = Get<SuggestionLanguage>(LanguageBox),
             RegisterPreference = Get<RegisterPreference>(RegisterBox),
             SlangLevel = Get<SlangLevel>(SlangBox),
             MaximumSuggestions = Get<int>(CountBox),
@@ -124,8 +126,8 @@ public partial class SettingsWindow : Window
         var watch = Stopwatch.StartNew();
         try
         {
-            var json = await new Provider(current, Edit(current), key).SuggestAsync(PromptBuilder.Make(PromptBuilder.TestDraft, trial), CancellationToken.None);
-            var report = ResponseValidator.Inspect(json, PromptBuilder.TestDraft, trial);
+            var json = await new Provider(current, Edit(current), key).SuggestAsync(PromptBuilder.Make(Languages.TestDraft(trial.Language), trial), CancellationToken.None);
+            var report = ResponseValidator.Inspect(json, Languages.TestDraft(trial.Language), trial);
             var seconds = watch.Elapsed.TotalSeconds.ToString("0.0");
             Show(report.Suggestions.Count > 0
                 ? $"连接成功：返回 {report.Suggestions.Count} 条建议，用时 {seconds} 秒。例：{report.Suggestions[0].Text}"
@@ -150,6 +152,7 @@ public partial class SettingsWindow : Window
 
         settings.Provider = current;
         settings.ProviderConfigs = edits.ToDictionary(p => p.Key, p => p.Value.Clone());
+        settings.Language = Get<SuggestionLanguage>(LanguageBox);
         settings.RegisterPreference = Get<RegisterPreference>(RegisterBox);
         settings.SlangLevel = Get<SlangLevel>(SlangBox);
         settings.MaximumSuggestions = Get<int>(CountBox);

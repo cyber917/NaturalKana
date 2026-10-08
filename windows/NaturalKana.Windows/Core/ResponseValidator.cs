@@ -11,7 +11,7 @@ public sealed record ValidationReport(IReadOnlyList<Suggestion> Suggestions, int
         Suggestions.Count > 0 ? null
         : ReceivedCount > 0 ? $"模型返回了 {ReceivedCount} 条候选，但都没通过格式或语言检查"
         : Assessment == Core.Assessment.Natural ? "这句话已经很自然了"
-        : Assessment == Core.Assessment.Unsupported ? "这句看起来不是日语草稿，模型没有给出建议"
+        : Assessment == Core.Assessment.Unsupported ? "模型认为这句不是可以修改的草稿，没有给出建议"
         : "模型返回了空候选；这不代表原句一定自然";
 }
 
@@ -56,7 +56,7 @@ public static class ResponseValidator
                 var text = JapaneseText.Nfkc(row.GetProperty("text").GetString()!).Trim();
                 if (text.Length == 0 || text.Any(c => c is '\n' or '\r' || char.IsControl(c)) || text == original
                     || JapaneseText.Length(text) > 3 * originalLength
-                    || !JapaneseText.AcceptsCandidate(text, original)
+                    || !Languages.AcceptsCandidate(settings.Language, text, original)
                     || (settings.RegisterPreference == RegisterPreference.FriendsCasual && register != Register.Casual)
                     || (settings.RegisterPreference == RegisterPreference.PoliteCasual && register != Register.Polite))
                     continue;

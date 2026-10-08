@@ -42,7 +42,7 @@ public partial class App : Application
         if (!registered)
             tray.ShowBalloonTip(5000, "NaturalKana", $"快捷键 {settings.Hotkey} 被其他软件占用了，请在设置里换一个。", Forms.ToolTipIcon.Warning);
         if (!settings.Consent || !SecretStore.Has(settings.Provider)) OpenSettings();
-        else tray.ShowBalloonTip(4000, "NaturalKana 已在后台运行", $"选中一句日语，按 {settings.Hotkey}", Forms.ToolTipIcon.None);
+        else tray.ShowBalloonTip(4000, "NaturalKana 已在后台运行", $"选中一句{Languages.Title(settings.Language)}，按 {settings.Hotkey}", Forms.ToolTipIcon.None);
     }
 
     static void Open(string url) =>
@@ -80,12 +80,12 @@ public partial class App : Application
         var capture = await TextBridge.CaptureAsync();
         if (capture is null)
         {
-            tray?.ShowBalloonTip(3000, "NaturalKana", "没有取到文字：请先选中一句日语，或把光标放在句尾再按快捷键。", Forms.ToolTipIcon.None);
+            tray?.ShowBalloonTip(3000, "NaturalKana", "没有取到文字：请先选中一句话，或把光标放在句尾再按快捷键。", Forms.ToolTipIcon.None);
             return;
         }
 
         var draft = capture.Text;
-        var card = new SuggestionWindow(draft.Length > 200 ? draft[^200..] : draft, capture.Anchor, settings.HighlightChanges);
+        var card = new SuggestionWindow(draft.Length > 200 ? draft[^200..] : draft, capture.Anchor, settings.HighlightChanges, settings.Language);
         string? chosen = null;
         var refocus = false;
         var closed = new TaskCompletionSource();
@@ -108,7 +108,7 @@ public partial class App : Application
         {
             if (draft.Contains('\n') || draft.Contains('\r')) { card.ShowMessage("一次只能检查一句话，请只选中一行。"); return; }
             if (JapaneseText.Length(draft) < 2) { card.ShowMessage("句子太短了。"); return; }
-            if (!JapaneseText.IsJapaneseDraft(draft)) { card.ShowMessage("这看起来不是日语句子，没有发送。"); return; }
+            if (!Languages.AcceptsDraft(settings.Language, draft)) { card.ShowMessage(Languages.NotThisLanguage(settings.Language)); return; }
             if (!settings.ReserveRequest()) { card.ShowMessage(SuggestionException.Describe(Diagnostic.Quota), true); return; }
 
             var provider = new Provider(settings.Provider, settings.Config(settings.Provider), SecretStore.Read(settings.Provider) ?? "");
