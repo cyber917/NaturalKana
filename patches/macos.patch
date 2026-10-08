@@ -336,6 +336,65 @@ index 0da10cf..152ad70 100644
 +        public static let key: String = "org.naturalkana.inputmethod.naturalkana.preference.PromptHistory"
      }
  }
+diff --git a/Core/Sources/Core/XPC/ConverterClientEventRouter.swift b/Core/Sources/Core/XPC/ConverterClientEventRouter.swift
+index f7a5495..c7e4e75 100644
+--- a/Core/Sources/Core/XPC/ConverterClientEventRouter.swift
++++ b/Core/Sources/Core/XPC/ConverterClientEventRouter.swift
+@@ -56,13 +56,41 @@ public enum ConverterClientEventRouter {
+             return .sendToServer
+         }
+ 
+-        let inputState = context.acknowledgedInputState.inputState
++        if case .fallthrough = Self.clientAction(event: event, context: context) {
++            return .fallthroughToApplication
++        }
++        return .sendToServer
++    }
++
++    /// Server の応答を待つ間、application へ同期的に置く暫定の marked text
++    /// 未確定文字列が無い状態の最初の文字が生のキーとして漏れるのを防ぐ。
++    public static func provisionalMarkedText(
++        event: KeyEventCore,
++        context: ConverterClientEventRoutingContext
++    ) -> String? {
++        guard context.acknowledgedInputState == .none else {
++            return nil
++        }
++        switch Self.clientAction(event: event, context: context) {
++        case .appendPieceToMarkedText(let pieces):
++            return pieces.inputString(preferIntention: false)
++        case .insertWithoutMarkedText(let text):
++            return text
++        default:
++            return nil
++        }
++    }
++
++    private static func clientAction(
++        event: KeyEventCore,
++        context: ConverterClientEventRoutingContext
++    ) -> ClientAction {
+         let userAction = UserAction.getUserAction(
+             eventCore: event,
+             inputLanguage: context.acknowledgedInputLanguage,
+             typeBackSlash: context.typeBackSlash
+         )
+-        let (action, _) = inputState.event(
++        let (action, _) = context.acknowledgedInputState.inputState.event(
+             eventCore: event,
+             userAction: userAction,
+             inputLanguage: context.acknowledgedInputLanguage,
+@@ -70,9 +98,6 @@ public enum ConverterClientEventRouter {
+             enableDebugWindow: context.enableDebugWindow,
+             enableSuggestion: context.enableSuggestion
+         )
+-        if case .fallthrough = action {
+-            return .fallthroughToApplication
+-        }
+-        return .sendToServer
++        return action
+     }
+ }
 diff --git a/Core/Tests/CoreTests/ConfigsTests/AppGroupTests.swift b/Core/Tests/CoreTests/ConfigsTests/AppGroupTests.swift
 index e663034..67958bf 100644
 --- a/Core/Tests/CoreTests/ConfigsTests/AppGroupTests.swift
@@ -349,6 +408,79 @@ index e663034..67958bf 100644
          )
      }
  }
+diff --git a/Core/Tests/CoreTests/XPCTests/ConverterClientEventRouterTests.swift b/Core/Tests/CoreTests/XPCTests/ConverterClientEventRouterTests.swift
+index db2022d..ff8a141 100644
+--- a/Core/Tests/CoreTests/XPCTests/ConverterClientEventRouterTests.swift
++++ b/Core/Tests/CoreTests/XPCTests/ConverterClientEventRouterTests.swift
+@@ -83,3 +83,68 @@ private func disposition(
+     #expect(disposition(event: event) == .fallthroughToApplication)
+     #expect(disposition(event: event, state: .composing) == .sendToServer)
+ }
++
++private func provisionalMarkedText(
++    event: KeyEventCore,
++    state: ConverterInputState = .none,
++    language: InputLanguage = .japanese,
++    hasPendingKeyEvents: Bool = false
++) -> String? {
++    ConverterClientEventRouter.provisionalMarkedText(
++        event: event,
++        context: .init(
++            acknowledgedInputState: state,
++            acknowledgedInputLanguage: language,
++            hasPendingKeyEvents: hasPendingKeyEvents
++        )
++    )
++}
++
++private let letterB = KeyEventCore(
++    modifierFlags: [],
++    characters: "b",
++    charactersIgnoringModifiers: "b",
++    keyCode: 11
++)
++
++@Test func firstCharacterIsPlacedAsProvisionalMarkedText() {
++    #expect(provisionalMarkedText(event: letterB) == "b")
++    #expect(provisionalMarkedText(event: letterB, language: .english) == "b")
++}
++
++@Test func provisionalMarkedTextKeepsRawKeyForKanaInput() {
++    // かな入力の変換は Server の入力テーブルが行うため、Client は生のキーを置く
++    let event = KeyEventCore(
++        modifierFlags: [],
++        characters: "r",
++        charactersIgnoringModifiers: "r",
++        keyCode: 15
++    )
++    #expect(provisionalMarkedText(event: event) == "r")
++}
++
++@Test func provisionalMarkedTextIsAccumulatedWhileEarlierKeyEventIsPending() {
++    // acknowledged state が古くても文字は返す。積み上げは Client が行う
++    #expect(provisionalMarkedText(event: letterB, hasPendingKeyEvents: true) == "b")
++}
++
++@Test func provisionalMarkedTextIsNotPlacedDuringComposition() {
++    #expect(provisionalMarkedText(event: letterB, state: .composing) == nil)
++}
++
++@Test func provisionalMarkedTextIsNotPlacedForNonInputKeys() {
++    let backspace = KeyEventCore(
++        modifierFlags: [],
++        characters: nil,
++        charactersIgnoringModifiers: nil,
++        keyCode: 51
++    )
++    let commandShortcut = KeyEventCore(
++        modifierFlags: [.command],
++        characters: "c",
++        charactersIgnoringModifiers: "c",
++        keyCode: 8
++    )
++    #expect(provisionalMarkedText(event: backspace) == nil)
++    #expect(provisionalMarkedText(event: commandShortcut) == nil)
++}
 diff --git a/Tools/ConverterServerResourceBundleInfo.plist b/Tools/ConverterServerResourceBundleInfo.plist
 index 49c9d72..350c82a 100644
 --- a/Tools/ConverterServerResourceBundleInfo.plist
@@ -1628,10 +1760,10 @@ index f5058d6..0000000
 -    }
 -}
 diff --git a/azooKeyMac/InputController/azooKeyMacInputController.swift b/azooKeyMac/InputController/azooKeyMacInputController.swift
-index f10ba35..2cb3259 100644
+index f10ba35..2671f79 100644
 --- a/azooKeyMac/InputController/azooKeyMacInputController.swift
 +++ b/azooKeyMac/InputController/azooKeyMacInputController.swift
-@@ -1,9 +1,12 @@
+@@ -1,14 +1,19 @@
  import Cocoa
  import Core
  import InputMethodKit
@@ -1645,7 +1777,14 @@ index f10ba35..2cb3259 100644
      let converterServerClient = ConverterServerClient()
      private var currentConverterView: ConverterSessionSnapshot?
      private(set) var inputState: InputState = .none
-@@ -18,7 +21,6 @@ class azooKeyMacInputController: IMKInputController, NSMenuItemValidation { // s
+     private var inputLanguage: InputLanguage = .japanese
+     private var pendingKeyEventCount = 0
++    /// Server の応答を待つ間、application に置いている暫定の marked text
++    private var provisionalMarkedText = ""
+     private var nextKeyEventID: UInt64 = 0
+     private var activationGeneration: UInt64 = 0
+     private var pendingConverterServerActivation: ConverterSessionActivation?
+@@ -18,7 +23,6 @@ class azooKeyMacInputController: IMKInputController, NSMenuItemValidation { // s
  
      var appMenu: NSMenu
      var liveConversionToggleMenuItem: NSMenuItem
@@ -1653,7 +1792,7 @@ index f10ba35..2cb3259 100644
  
      private var candidatesWindow: NSWindow
      private var candidatesViewController: CandidatesViewController
-@@ -29,22 +31,10 @@ class azooKeyMacInputController: IMKInputController, NSMenuItemValidation { // s
+@@ -29,22 +33,10 @@ class azooKeyMacInputController: IMKInputController, NSMenuItemValidation { // s
      private var lastPredictionUpdateTime: TimeInterval = 0
      private var predictionHideWorkItem: DispatchWorkItem?
  
@@ -1677,7 +1816,7 @@ index f10ba35..2cb3259 100644
      }
  
      private static func makeCandidateWindow(contentViewController: NSViewController) -> NSWindow {
-@@ -57,84 +47,31 @@ class azooKeyMacInputController: IMKInputController, NSMenuItemValidation { // s
+@@ -57,84 +49,31 @@ class azooKeyMacInputController: IMKInputController, NSMenuItemValidation { // s
          // ウィンドウは直後に orderOut されるため origin はユーザーから不可視であり、
          // 最初の候補表示時に refreshCandidateWindow() で正しい位置に再配置される。
          var frame = NSRect.zero
@@ -1764,7 +1903,7 @@ index f10ba35..2cb3259 100644
          MainActor.assumeIsolated {
              self.converterServerClient.onLog = { [weak self] message in
                  self?.appendDebugMessage(message)
-@@ -145,12 +82,10 @@ class azooKeyMacInputController: IMKInputController, NSMenuItemValidation { // s
+@@ -145,12 +84,10 @@ class azooKeyMacInputController: IMKInputController, NSMenuItemValidation { // s
  
      @MainActor
      override func activateServer(_ sender: Any!) {
@@ -1778,7 +1917,7 @@ index f10ba35..2cb3259 100644
          self.pendingConverterServerActivation = ConverterSessionActivation(
              config: self.converterServerSessionConfig,
              inputLanguage: self.inputLanguage
-@@ -174,6 +109,7 @@ class azooKeyMacInputController: IMKInputController, NSMenuItemValidation { // s
+@@ -174,14 +111,15 @@ class azooKeyMacInputController: IMKInputController, NSMenuItemValidation { // s
  
      @MainActor
      override func deactivateServer(_ sender: Any!) {
@@ -1786,7 +1925,8 @@ index f10ba35..2cb3259 100644
          self.activationGeneration &+= 1
          self.pendingConverterServerActivation = nil
          self.converterServerClient.sendIfSessionOpen({ _ in .lifecycle(.deactivate) }, completion: { _ in })
-@@ -181,7 +117,6 @@ class azooKeyMacInputController: IMKInputController, NSMenuItemValidation { // s
+         self.currentConverterView = nil
++        self.provisionalMarkedText = ""
          self.inputState = .none
          self.candidatesWindow.orderOut(nil)
          self.predictionWindow.orderOut(nil)
@@ -1794,7 +1934,7 @@ index f10ba35..2cb3259 100644
          self.candidatesViewController.updateCandidatePresentations([], selectionIndex: nil, cursorLocation: .zero)
          super.deactivateServer(sender)
      }
-@@ -211,6 +146,7 @@ class azooKeyMacInputController: IMKInputController, NSMenuItemValidation { // s
+@@ -211,6 +149,7 @@ class azooKeyMacInputController: IMKInputController, NSMenuItemValidation { // s
          if let value = value as? NSString {
              self.client()?.overrideKeyboard(withKeyboardNamed: Config.KeyboardLayout().value.layoutIdentifier)
              let englishMode = value == "com.apple.inputmethod.Roman"
@@ -1802,7 +1942,7 @@ index f10ba35..2cb3259 100644
  
              if englishMode {
                  // 英語モードへの切り替え通知（実際の処理はhandleで行う）
-@@ -251,80 +187,12 @@ class azooKeyMacInputController: IMKInputController, NSMenuItemValidation { // s
+@@ -251,80 +190,12 @@ class azooKeyMacInputController: IMKInputController, NSMenuItemValidation { // s
              return false
          }
  
@@ -1886,10 +2026,32 @@ index f10ba35..2cb3259 100644
              optionDirectInputText: event.characters(byApplyingModifiers: event.modifierFlags.subtracting(.option))
          )
      }
-@@ -348,6 +216,13 @@ class azooKeyMacInputController: IMKInputController, NSMenuItemValidation { // s
-             )
+@@ -335,21 +206,36 @@ class azooKeyMacInputController: IMKInputController, NSMenuItemValidation { // s
+         enableSuggestion: Bool,
+         optionDirectInputText: String? = nil
+     ) -> Bool {
+-        let disposition = ConverterClientEventRouter.disposition(
+-            event: event,
+-            context: .init(
+-                acknowledgedInputState: ConverterInputState(self.inputState),
+-                acknowledgedInputLanguage: self.inputLanguage,
+-                hasPendingKeyEvents: self.pendingKeyEventCount > 0,
+-                liveConversionEnabled: Config.LiveConversion().value,
+-                enableDebugWindow: Config.DebugWindow().value,
+-                enableSuggestion: enableSuggestion,
+-                typeBackSlash: Config.TypeBackSlash().value
+-            )
++        let routingContext = ConverterClientEventRoutingContext(
++            acknowledgedInputState: ConverterInputState(self.inputState),
++            acknowledgedInputLanguage: self.inputLanguage,
++            hasPendingKeyEvents: self.pendingKeyEventCount > 0,
++            liveConversionEnabled: Config.LiveConversion().value,
++            enableDebugWindow: Config.DebugWindow().value,
++            enableSuggestion: enableSuggestion,
++            typeBackSlash: Config.TypeBackSlash().value
          )
-         guard disposition == .sendToServer else {
+-        guard disposition == .sendToServer else {
++        guard ConverterClientEventRouter.disposition(event: event, context: routingContext) == .sendToServer else {
 +            // Direct English typing belongs to the host. Capture after it processes
 +            // the event so English suggestions also work without a converter reply.
 +            if self.inputLanguage == .english, !event.modifierFlags.contains(.command), let client = self.client() {
@@ -1899,8 +2061,21 @@ index f10ba35..2cb3259 100644
 +            }
              return false
          }
++        // 応答が届く前に `handle` が返るため、未確定文字列が無い状態で送る文字は
++        // ここで marked text にしておかないと application (e.g. iTerm2) へ生のキーが漏れる。
++        if let text = ConverterClientEventRouter.provisionalMarkedText(event: event, context: routingContext) {
++            self.provisionalMarkedText += text
++            self.setMarkedText(
++                ConverterMarkedText(
++                    elements: [.init(content: self.provisionalMarkedText, focus: .unfocused)],
++                    selectionRange: ConverterRange(location: self.provisionalMarkedText.count, length: 0)
++                )
++            )
++        }
  
-@@ -394,19 +269,6 @@ class azooKeyMacInputController: IMKInputController, NSMenuItemValidation { // s
+         self.nextKeyEventID &+= 1
+         let request = ConverterKeyEventRequest(
+@@ -394,19 +280,6 @@ class azooKeyMacInputController: IMKInputController, NSMenuItemValidation { // s
          return true
      }
  
@@ -1920,7 +2095,7 @@ index f10ba35..2cb3259 100644
      @MainActor
      private func apply(_ response: ConverterServerResponse) {
          if let inputLanguage = response.inputLanguage {
-@@ -422,7 +284,13 @@ class azooKeyMacInputController: IMKInputController, NSMenuItemValidation { // s
+@@ -422,7 +295,13 @@ class azooKeyMacInputController: IMKInputController, NSMenuItemValidation { // s
          self.refreshMarkedText()
          self.refreshCandidateWindow()
          self.refreshPredictionWindow()
@@ -1935,7 +2110,7 @@ index f10ba35..2cb3259 100644
      }
  
      @MainActor
-@@ -430,26 +298,15 @@ class azooKeyMacInputController: IMKInputController, NSMenuItemValidation { // s
+@@ -430,26 +309,15 @@ class azooKeyMacInputController: IMKInputController, NSMenuItemValidation { // s
      private func apply(_ effect: ConverterClientEffect, client: IMKTextInput) {
          switch effect {
          case .insertText(let text):
@@ -1968,7 +2143,7 @@ index f10ba35..2cb3259 100644
          case .fallthroughToApplication:
              break
          }
-@@ -472,20 +329,11 @@ class azooKeyMacInputController: IMKInputController, NSMenuItemValidation { // s
+@@ -472,20 +340,11 @@ class azooKeyMacInputController: IMKInputController, NSMenuItemValidation { // s
  
      private var converterServerSessionConfig: ConverterSessionConfig {
          ConverterSessionConfig(
@@ -1994,7 +2169,7 @@ index f10ba35..2cb3259 100644
          )
      }
  
-@@ -494,9 +342,9 @@ class azooKeyMacInputController: IMKInputController, NSMenuItemValidation { // s
+@@ -494,9 +353,9 @@ class azooKeyMacInputController: IMKInputController, NSMenuItemValidation { // s
          client.overrideKeyboard(withKeyboardNamed: Config.KeyboardLayout().value.layoutIdentifier)
          switch language {
          case .english:
@@ -2006,7 +2181,7 @@ index f10ba35..2cb3259 100644
          }
      }
  
-@@ -548,55 +396,6 @@ class azooKeyMacInputController: IMKInputController, NSMenuItemValidation { // s
+@@ -548,55 +407,6 @@ class azooKeyMacInputController: IMKInputController, NSMenuItemValidation { // s
          }
      }
  
@@ -2062,7 +2237,7 @@ index f10ba35..2cb3259 100644
      func refreshPredictionWindow() {
          guard self.inputState == .composing else {
              self.hidePredictionWindow()
-@@ -702,14 +501,6 @@ class azooKeyMacInputController: IMKInputController, NSMenuItemValidation { // s
+@@ -702,14 +512,6 @@ class azooKeyMacInputController: IMKInputController, NSMenuItemValidation { // s
          self.predictionHideWorkItem = nil
      }
  
@@ -2077,7 +2252,38 @@ index f10ba35..2cb3259 100644
      func getCursorLocation() -> CGPoint {
          var rect: NSRect = .zero
          self.client()?.attributes(forCharacterIndex: 0, lineHeightRectangle: &rect)
-@@ -840,117 +631,3 @@ extension azooKeyMacInputController {
+@@ -718,6 +520,11 @@ class azooKeyMacInputController: IMKInputController, NSMenuItemValidation { // s
+     }
+ 
+     func refreshMarkedText() {
++        self.provisionalMarkedText = ""
++        self.setMarkedText(self.currentMarkedText())
++    }
++
++    private func setMarkedText(_ markedText: ConverterMarkedText) {
+         let highlight = self.mark(
+             forStyle: kTSMHiliteSelectedConvertedText,
+             at: NSRange(location: NSNotFound, length: 0)
+@@ -727,8 +534,7 @@ class azooKeyMacInputController: IMKInputController, NSMenuItemValidation { // s
+             at: NSRange(location: NSNotFound, length: 0)
+         ) as? [NSAttributedString.Key: Any]
+         let text = NSMutableAttributedString(string: "")
+-        let currentMarkedText = self.currentMarkedText()
+-        for part in currentMarkedText.elements where !part.content.isEmpty {
++        for part in markedText.elements where !part.content.isEmpty {
+             let attributes: [NSAttributedString.Key: Any]? = switch part.focus {
+             case .focused: highlight
+             case .unfocused: underline
+@@ -743,7 +549,7 @@ class azooKeyMacInputController: IMKInputController, NSMenuItemValidation { // s
+         }
+         self.client()?.setMarkedText(
+             text,
+-            selectionRange: currentMarkedText.selectionRange.nsRange,
++            selectionRange: markedText.selectionRange.nsRange,
+             replacementRange: NSRange(location: NSNotFound, length: 0)
+         )
+     }
+@@ -840,117 +646,3 @@ extension azooKeyMacInputController {
          return NSRange(location: 0, length: 0)
      }
  }
