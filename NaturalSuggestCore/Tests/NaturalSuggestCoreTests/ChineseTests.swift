@@ -17,7 +17,7 @@ struct ChineseTests {
         let legacy = try JSONDecoder().decode(SuggestionSettings.self, from: Data(#"{"consent":true,"provider":"qwen"}"#.utf8))
         #expect(legacy.language == .japanese)
         // A language saved by a newer release must not wipe the rest of the settings.
-        let future = try JSONDecoder().decode(SuggestionSettings.self, from: Data(#"{"consent":true,"provider":"qwen","language":"korean"}"#.utf8))
+        let future = try JSONDecoder().decode(SuggestionSettings.self, from: Data(#"{"consent":true,"provider":"qwen","language":"klingon"}"#.utf8))
         #expect(future.language == .japanese && future.provider == .qwen && future.consent)
         var kansai = chinese; kansai.dialect = .kansai
         #expect(kansai.activeDialect == .off)
