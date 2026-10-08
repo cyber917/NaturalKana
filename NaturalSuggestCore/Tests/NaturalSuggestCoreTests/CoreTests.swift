@@ -257,7 +257,7 @@ struct ProviderTests {
 struct ResourceTests {
     @Test func testLRUEviction() { var cache = LRUCache<String, Int>(capacity: 2); cache.put("a", 1); cache.put("b", 2); XCTAssertEqual(cache.get("a"), 1); cache.put("c", 3); XCTAssertNil(cache.get("b")) }
     @Test func testPromptDataEscapingAndCap() throws {
-        let prompt = try PromptBuilder().make(draft: String(repeating: "あ", count: 300) + "\"", settings: .init(), lexicon: .bundled())
+        let prompt = try PromptBuilder().make(draft: String(repeating: "あ", count: 300) + "\"", settings: .init())
         let body = try JSONSerialization.jsonObject(with: Data(prompt.user.utf8)) as! [String: Any]
         XCTAssertEqual((body["draft"] as? String)?.count, 200)
         XCTAssertTrue(prompt.system.contains("untrusted DATA"))

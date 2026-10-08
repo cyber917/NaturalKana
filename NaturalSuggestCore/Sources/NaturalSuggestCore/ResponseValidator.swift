@@ -47,7 +47,7 @@ public struct ResponseValidator: Sendable {
             let emoji = text.unicodeScalars.filter { $0.properties.isEmojiPresentation || $0.value == 0xFE0F }
             guard emoji.allSatisfy({ original.unicodeScalars.contains($0) }), seen.insert(text).inserted else { return nil }
             // NFKC turns Chinese full-width punctuation (，：；) into ASCII; checks use it, display keeps the model's punctuation.
-            let display = settings.language == .chinese ? raw.precomposedStringWithCanonicalMapping.trimmingCharacters(in: .whitespaces) : text
+            let display = settings.language.pack.keepPunctuation == true ? raw.precomposedStringWithCanonicalMapping.trimmingCharacters(in: .whitespaces) : text
             return Suggestion(text: display, register: register)
         }.prefix(settings.suggestionLimit).map { $0 }
         // Keep model ranking within each register and use the same order for display, cache and acceptance.

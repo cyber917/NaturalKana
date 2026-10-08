@@ -52,9 +52,10 @@ public struct LRUCache<Key: Hashable, Value> {
     private let profile: (any LanguageProfile)?
     private let budget: DailyBudget
     private let prompt: PromptBuilder
-    private let lexicon: Lexicon
+    /// Replaces every language pack's reference lexicon (tests); nil uses each pack's own.
+    private let lexicon: Lexicon?
     public init(profile: (any LanguageProfile)? = nil, budget: DailyBudget = DailyBudget(),
-                prompt: PromptBuilder, lexicon: Lexicon = .bundled()) {
+                prompt: PromptBuilder, lexicon: Lexicon? = nil) {
         self.profile = profile; self.budget = budget; self.prompt = prompt; self.lexicon = lexicon
     }
     public func cancel(clearCache: Bool = false) {

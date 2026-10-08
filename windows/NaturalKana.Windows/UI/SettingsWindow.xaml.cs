@@ -58,9 +58,9 @@ public partial class SettingsWindow : Window
         Fill(InterfaceBox, Enum.GetValues<InterfaceLanguage>().Select(l => (l, UIText.Title(l))), Pick(InterfaceBox, settings.Interface));
         Fill(ProviderBox, Enum.GetValues<ProviderKind>().Select(k => (k, Providers.Title(k))), Pick(ProviderBox, settings.Provider));
         // null = automatic: detect each sentence; PrimaryBox then holds the language for ambiguous sentences.
-        Fill(LanguageBox, [((SuggestionLanguage?)null, UIText.T("自动")), (SuggestionLanguage.Japanese, UIText.T("日语")), (SuggestionLanguage.English, UIText.T("英语")), (SuggestionLanguage.Chinese, UIText.T("中文"))],
+        Fill(LanguageBox, Languages.All.Select(l => ((SuggestionLanguage?)l, Languages.Title(l))).Prepend(((SuggestionLanguage?)null, UIText.T("自动"))),
             Pick(LanguageBox, settings.AutoLanguage ? null : (SuggestionLanguage?)settings.Language));
-        Fill(PrimaryBox, Enum.GetValues<SuggestionLanguage>().Select(l => (l, Languages.Title(l))), Pick(PrimaryBox, settings.Language));
+        Fill(PrimaryBox, Languages.All.Select(l => (l, Languages.Title(l))), Pick(PrimaryBox, settings.Language));
         PrimaryRow.Visibility = Get<SuggestionLanguage?>(LanguageBox) is null ? Visibility.Visible : Visibility.Collapsed;
         Fill(RegisterBox, [(RegisterPreference.Both, UIText.T("口语和敬语都要")), (RegisterPreference.FriendsCasual, UIText.T("只要口语")), (RegisterPreference.PoliteCasual, UIText.T("只要敬语"))], Pick(RegisterBox, settings.RegisterPreference));
         Fill(SlangBox, [(SlangLevel.Off, UIText.T("不用")), (SlangLevel.Light, UIText.T("轻度（只用常见说法）")), (SlangLevel.Trendy, UIText.T("流行"))], Pick(SlangBox, settings.SlangLevel));

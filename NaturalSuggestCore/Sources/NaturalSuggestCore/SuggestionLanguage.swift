@@ -1,86 +1,70 @@
 import Foundation
 import NaturalLanguage
 
-public enum SuggestionLanguage: String, Codable, CaseIterable, Sendable {
-    case japanese, english, chinese
+/// A suggestion language, identified by its language pack folder (Resources/Languages/<rawValue>).
+/// Saved settings store the raw value, as the earlier enum did ("japanese", "english", "chinese").
+public struct SuggestionLanguage: RawRepresentable, Hashable, Codable, CaseIterable, Sendable {
+    public let rawValue: String
+    /// Nil for a language without a bundled pack (for example one saved by a newer release).
+    public init?(rawValue: String) {
+        guard LanguagePack.byID[rawValue] != nil else { return nil }
+        self.rawValue = rawValue
+    }
+    private init(known: String) { rawValue = known }
+    public static let japanese = SuggestionLanguage(known: "japanese")
+    public static let english = SuggestionLanguage(known: "english")
+    public static let chinese = SuggestionLanguage(known: "chinese")
+    public static var allCases: [SuggestionLanguage] { LanguagePack.bundled.map { SuggestionLanguage(known: $0.id) } }
+
+    public var pack: LanguagePack {
+        guard let pack = LanguagePack.byID[rawValue] else { preconditionFailure("No language pack for \(rawValue)") }
+        return pack
+    }
 
     /// Languages offered in settings. On Mac, Chinese is checked by the menu-bar helper; the input method itself
     /// only sees text typed through NaturalKana (see `inputMethodLanguages`).
     public static var available: [SuggestionLanguage] { allCases }
     public static let inputMethodLanguages: [SuggestionLanguage] = [.japanese, .english]
     /// The language of one draft among `languages`, or nil if none fits.
-    /// Hiragana means Japanese; common Chinese function words mean Chinese; otherwise the primary language wins.
-    /// Kanji-only text without Chinese markers is not guessed as Chinese for a Japanese-primary user.
+    /// A language's signal (hiragana for Japanese, common Chinese function words for Chinese…) decides;
+    /// otherwise the primary language wins. Kanji-only text without Chinese markers is not guessed as Chinese
+    /// for a Japanese-primary user (`ambiguousWith`).
     public static func detect(_ text: String, primary: SuggestionLanguage, among languages: [SuggestionLanguage]) -> SuggestionLanguage? {
         let normalized = TextNormalization.nfkc(text)
         let accepted = languages.filter { $0.draftProfile.accepts(normalized, composingLatin: false) }
         guard !accepted.isEmpty else { return nil }
-        let scalars = normalized.unicodeScalars
-        let hiragana = scalars.contains(where: ChineseText.isHiragana)
-        let chineseMarked = scalars.contains(where: ChineseText.markers.contains)
-        if accepted.contains(.japanese), hiragana { return .japanese }
-        if accepted.contains(.chinese), chineseMarked { return .chinese }
+        if let signaled = accepted.filter({ $0.pack.matchesSignal(normalized) }).min(by: { ($0.pack.detect.priority ?? .max) < ($1.pack.detect.priority ?? .max) }) {
+            return signaled
+        }
         if accepted.contains(primary) { return primary }
-        if accepted == [.chinese], primary == .japanese { return nil }
-        return accepted.first
+        return accepted.first { !($0.pack.detect.ambiguousWith ?? []).contains(primary.rawValue) }
     }
-    public var title: String {
-        switch self {
-        case .japanese: UIText.t("日语")
-        case .english: UIText.t("英语")
-        case .chinese: UIText.t("中文")
-        }
-    }
-    public var promptName: String {
-        switch self {
-        case .japanese: "Japanese"
-        case .english: "English"
-        case .chinese: "Simplified Chinese"
-        }
-    }
-    public var testDraft: String {
-        switch self {
-        case .japanese: "今日は仕事があるから、少し待ってください。"
-        case .english: "I have work to do, please wait me a moment."
-        case .chinese: "我明天有工作，所以请等一点我。"
-        }
-    }
+    public var title: String { UIText.t(pack.title) }
+    public var promptName: String { pack.promptName }
+    public var testDraft: String { pack.testDraft }
     public var draftProfile: any LanguageProfile {
-        switch self {
-        case .japanese: JapaneseDraftProfile()
-        case .english: EnglishDraftProfile()
-        case .chinese: ChineseDraftProfile()
+        switch pack.rules {
+        case "japanese": JapaneseDraftProfile()
+        case "english": EnglishDraftProfile()
+        case "chinese": ChineseDraftProfile()
+        default: GenericProfile(rules: pack.generic ?? .init(letters: "[^\\s\\S]"))
         }
     }
     public func acceptsCandidate(_ text: String, original: String) -> Bool {
-        switch self {
-        case .japanese:
+        switch pack.rules {
+        case "japanese":
             let originalLatin = Set(JapaneseProfile.latinWords(original))
             return JapaneseProfile().accepts(text) && JapaneseProfile.latinWords(text).allSatisfy(originalLatin.contains)
-        case .english:
-            return EnglishProfile().accepts(text)
-        case .chinese:
-            return ChineseProfile().accepts(text, original: original)
+        case "english": return EnglishProfile().accepts(text)
+        case "chinese": return ChineseProfile().accepts(text, original: original)
+        default: return GenericProfile(rules: pack.generic ?? .init(letters: "[^\\s\\S]")).acceptsCandidate(text, original: original)
         }
     }
     public func registerTitle(_ register: Register) -> String {
-        switch (self, register) {
-        case (.japanese, .casual): "カジュアル"
-        case (.japanese, .polite): "丁寧"
-        case (.english, .casual): "Casual"
-        case (.english, .polite): "Polite"
-        case (.chinese, .casual): "口语"
-        case (.chinese, .polite): "礼貌"
-        case (_, .kansai): Dialect.kansai.title
-        }
+        register.isDialect ? Dialect.kansai.title : pack.registerTitles[register.rawValue] ?? register.rawValue
     }
-    public var closeTitle: String {
-        switch self {
-        case .japanese: "閉じる"
-        case .english: "Close"
-        case .chinese: "关闭"
-        }
-    }
+    public var closeTitle: String { pack.closeTitle }
+    public var copyHint: String { pack.copyHint }
 }
 
 /// Allows learner English, including a few unknown foreign words in an English sentence.

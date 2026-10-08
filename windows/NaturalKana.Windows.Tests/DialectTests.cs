@@ -109,6 +109,6 @@ public class DialectTests
     public void GroupTitle()
     {
         Assert.Equal("関西弁", Languages.RegisterTitle(SuggestionLanguage.Japanese, Register.Kansai));
-        Assert.Equal(UIText.T("口语"), Languages.RegisterTitle(SuggestionLanguage.Japanese, Register.Casual));
+        Assert.Equal("カジュアル", Languages.RegisterTitle(SuggestionLanguage.Japanese, Register.Casual));
     }
 }

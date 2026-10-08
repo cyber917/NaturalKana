@@ -85,16 +85,16 @@ public class InterfaceLanguageTests
 public class AutoLanguageTests
 {
     [Theory]
-    [InlineData("今何にしていますか", SuggestionLanguage.Chinese, SuggestionLanguage.Japanese)]
-    [InlineData("あとでmeetingがあるから、少し待って。", SuggestionLanguage.English, SuggestionLanguage.Japanese)]
-    [InlineData("我明天有工作，所以请等一点我", SuggestionLanguage.Japanese, SuggestionLanguage.Chinese)]
-    [InlineData("我昨天在コンビニ买了饮料", SuggestionLanguage.Japanese, SuggestionLanguage.Chinese)]
-    [InlineData("我明天要meeting", SuggestionLanguage.English, SuggestionLanguage.Chinese)]
-    [InlineData("Yesterday I go to school.", SuggestionLanguage.Japanese, SuggestionLanguage.English)]
-    [InlineData("I need to 预约 a table for two.", SuggestionLanguage.Chinese, SuggestionLanguage.English)]
-    [InlineData("東京駅到着", SuggestionLanguage.Chinese, SuggestionLanguage.Chinese)]
-    public void Detects(string text, SuggestionLanguage primary, SuggestionLanguage expected) =>
-        Assert.Equal(expected, Languages.Detect(text, primary));
+    [InlineData("今何にしていますか", "chinese", "japanese")]
+    [InlineData("あとでmeetingがあるから、少し待って。", "english", "japanese")]
+    [InlineData("我明天有工作，所以请等一点我", "japanese", "chinese")]
+    [InlineData("我昨天在コンビニ买了饮料", "japanese", "chinese")]
+    [InlineData("我明天要meeting", "english", "chinese")]
+    [InlineData("Yesterday I go to school.", "japanese", "english")]
+    [InlineData("I need to 预约 a table for two.", "chinese", "english")]
+    [InlineData("東京駅到着", "chinese", "chinese")]
+    public void Detects(string text, string primary, string expected) =>
+        Assert.Equal(new SuggestionLanguage(expected), Languages.Detect(text, new SuggestionLanguage(primary)));
 
     [Fact]
     public void KanjiOnlyTextIsNotGuessedAsChineseForJapaneseUsers()

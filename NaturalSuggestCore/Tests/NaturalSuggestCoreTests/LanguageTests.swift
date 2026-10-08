@@ -45,14 +45,14 @@ struct LanguageTests {
     }
     @Test func promptLanguageAndReferencesStaySeparate() throws {
         let builder = try PromptBuilder()
-        let prompt = try builder.make(draft: "I need to 预约 a table.", settings: english, lexicon: .bundled())
+        let prompt = try builder.make(draft: "I need to 预约 a table.", settings: english)
         #expect(prompt.system.contains("English phrasing assistant"))
         #expect(!prompt.system.contains("Japanese phrasing assistant"))
         #expect(prompt.system.contains("Output only English candidates"))
         let payload = try #require(JSONSerialization.jsonObject(with: Data(prompt.user.utf8)) as? [String: Any])
         #expect(payload["language"] as? String == "english")
         #expect((payload["lexicon"] as? [String])?.isEmpty == true)
-        let japanese = try builder.make(draft: "昨日友達を会いました", settings: .init(), lexicon: .bundled())
+        let japanese = try builder.make(draft: "昨日友達を会いました", settings: .init())
         #expect(japanese.system.contains("Japanese phrasing assistant"))
         #expect(japanese.system.contains("Output only Japanese candidates"))
     }

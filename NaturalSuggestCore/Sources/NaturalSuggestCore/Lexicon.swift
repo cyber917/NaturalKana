@@ -4,7 +4,7 @@ import CryptoKit
 public struct LexiconEntry: Codable, Sendable {
     public let term: String
     public let reading: String
-    /// Meaning in the lexicon's own language: gloss_ja in slang.jsonl, gloss_zh in slang_zh.jsonl.
+    /// Meaning in the lexicon's own language: gloss_ja (Japanese pack), gloss_zh (Chinese pack).
     public let gloss_ja: String?
     public let gloss_zh: String?
     public var gloss: String { gloss_zh ?? gloss_ja ?? "" }
@@ -25,12 +25,8 @@ public struct Lexicon: Sendable {
         guard data.count <= 1_000_000, let text = String(data: data, encoding: .utf8) else { throw SuggestionError.invalidResponse }
         entries = try text.split(whereSeparator: \.isNewline).map { try JSONDecoder().decode(LexiconEntry.self, from: Data($0.utf8)) }
     }
-    /// slang: Japanese reference lexicon. slang_zh: Simplified Chinese reference lexicon.
-    public static func bundled(_ name: String = "slang") -> Lexicon {
-        guard let url = Bundle.module.url(forResource: name, withExtension: "jsonl", subdirectory: "Resources"),
-              let data = try? Data(contentsOf: url), let lexicon = try? Lexicon(data: data) else { return Lexicon(entries: []) }
-        return lexicon
-    }
+    /// The reference lexicon of a language pack (Japanese by default); empty when the pack has none.
+    public static func bundled(_ language: SuggestionLanguage = .japanese) -> Lexicon { language.pack.lexicon }
     public init(entries: [LexiconEntry]) { self.entries = entries }
     public func compact(slang: SlangLevel, now: Date = Date()) -> [String] {
         guard slang != .off else { return [] }
@@ -72,36 +68,21 @@ public struct Prompt: Sendable {
     }
 }
 public struct PromptBuilder: Sendable {
+    /// Part of the suggestion cache key; bump when prompts change in a way that should not reuse cached results.
     public let version: String
-    public let system: String
-    private let englishSystem: String
-    private let chineseSystem: String
-    private let chineseLexicon = Lexicon.bundled("slang_zh")
-    public init(version: String = "system_v1", override: String? = nil) throws {
-        self.version = version
-        if let override { system = override; englishSystem = override; chineseSystem = override }
-        else {
-            guard let url = Bundle.module.url(forResource: version, withExtension: "txt", subdirectory: "Resources/Prompts") else { throw SuggestionError.configuration }
-            system = try String(contentsOf: url, encoding: .utf8)
-            guard let englishURL = Bundle.module.url(forResource: "english_v1", withExtension: "txt", subdirectory: "Resources/Prompts") else { throw SuggestionError.configuration }
-            englishSystem = try String(contentsOf: englishURL, encoding: .utf8)
-            guard let chineseURL = Bundle.module.url(forResource: "chinese_v1", withExtension: "txt", subdirectory: "Resources/Prompts") else { throw SuggestionError.configuration }
-            chineseSystem = try String(contentsOf: chineseURL, encoding: .utf8)
-        }
+    /// One system prompt for every language (evaluation runs); nil uses each language pack's prompt.txt.
+    private let override: String?
+    public init(version: String = "v1", override: String? = nil) throws {
+        guard override != nil || !LanguagePack.bundled.isEmpty else { throw SuggestionError.configuration }
+        self.version = version; self.override = override
     }
-    public func make(draft: String, settings: SuggestionSettings, lexicon: Lexicon, personalEntries: [PersonalLexiconEntry] = []) throws -> Prompt {
-        let lines: [String]
-        switch settings.language {
-        case .japanese: lines = lexicon.compact(slang: settings.slangLevel)
-        case .chinese: lines = chineseLexicon.compact(slang: settings.slangLevel)
-        case .english: lines = []
-        }
-        let base: String
-        switch settings.language {
-        case .japanese: base = system
-        case .english: base = englishSystem
-        case .chinese: base = chineseSystem
-        }
+    /// The Japanese system prompt (or the override).
+    public var system: String { override ?? SuggestionLanguage.japanese.pack.prompt }
+    /// `lexicon` replaces the language pack's reference lexicon (tests and evaluations).
+    public func make(draft: String, settings: SuggestionSettings, lexicon: Lexicon? = nil, personalEntries: [PersonalLexiconEntry] = []) throws -> Prompt {
+        let pack = settings.language.pack
+        let lines = (lexicon ?? pack.lexicon).compact(slang: settings.slangLevel)
+        let base = override ?? pack.prompt
         // Reference content is encoded once as user data; never splice imported text into system instructions.
         let payload: [String: Any] = ["draft": String(draft.suffix(200)), "language": settings.language.rawValue, "register_pref": settings.registerPreference.rawValue,
                                       "slang_level": settings.slangLevel.rawValue, "dialect": settings.activeDialect.rawValue, "lexicon": lines,

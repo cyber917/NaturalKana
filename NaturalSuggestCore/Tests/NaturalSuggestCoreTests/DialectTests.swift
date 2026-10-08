@@ -63,17 +63,17 @@ struct DialectTests {
     }
     @Test func promptCarriesTheDialectSetting() throws {
         let builder = try PromptBuilder()
-        let on = try builder.make(draft: "今何にしていますか", settings: kansai, lexicon: .bundled())
+        let on = try builder.make(draft: "今何にしていますか", settings: kansai)
         let payload = try #require(JSONSerialization.jsonObject(with: Data(on.user.utf8)) as? [String: Any])
         #expect(payload["dialect"] as? String == "kansai")
         #expect(on.registers == [.casual, .polite, .kansai])
         #expect(on.system.contains("dialect=kansai") && on.system.contains("Regional dialects are not errors"))
-        let off = try builder.make(draft: "今何にしていますか", settings: .init(), lexicon: .bundled())
+        let off = try builder.make(draft: "今何にしていますか", settings: .init())
         let offPayload = try #require(JSONSerialization.jsonObject(with: Data(off.user.utf8)) as? [String: Any])
         #expect(offPayload["dialect"] as? String == "off")
         #expect(off.registers == [.casual, .polite])
         var english = kansai; english.language = .english
-        let englishPayload = try #require(JSONSerialization.jsonObject(with: Data(try builder.make(draft: "I go home.", settings: english, lexicon: .bundled()).user.utf8)) as? [String: Any])
+        let englishPayload = try #require(JSONSerialization.jsonObject(with: Data(try builder.make(draft: "I go home.", settings: english).user.utf8)) as? [String: Any])
         #expect(englishPayload["dialect"] as? String == "off")
     }
     @Test func schemaAllowsKansaiOnlyWhenRequested() throws {

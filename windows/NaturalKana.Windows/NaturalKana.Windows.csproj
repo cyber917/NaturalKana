@@ -17,13 +17,10 @@
     <NoWarn>$(NoWarn);WFAC010</NoWarn>
   </PropertyGroup>
 
-  <!-- Shared with the iPhone/Mac builds so all platforms use the same prompts and lexicon. -->
+  <!-- Shared with the iPhone/Mac builds so all platforms use the same language packs and interface text. -->
   <ItemGroup>
-    <EmbeddedResource Include="..\..\NaturalSuggestCore\Sources\NaturalSuggestCore\Resources\Prompts\system_v1.txt" LogicalName="system_v1.txt" />
-    <EmbeddedResource Include="..\..\NaturalSuggestCore\Sources\NaturalSuggestCore\Resources\Prompts\english_v1.txt" LogicalName="english_v1.txt" />
-    <EmbeddedResource Include="..\..\NaturalSuggestCore\Sources\NaturalSuggestCore\Resources\Prompts\chinese_v1.txt" LogicalName="chinese_v1.txt" />
-    <EmbeddedResource Include="..\..\NaturalSuggestCore\Sources\NaturalSuggestCore\Resources\slang.jsonl" LogicalName="slang.jsonl" />
-    <EmbeddedResource Include="..\..\NaturalSuggestCore\Sources\NaturalSuggestCore\Resources\slang_zh.jsonl" LogicalName="slang_zh.jsonl" />
+    <!-- One folder per suggestion language: language.json, prompt.txt, optional lexicon.jsonl. -->
+    <EmbeddedResource Include="..\..\NaturalSuggestCore\Sources\NaturalSuggestCore\Resources\Languages\**\*" LogicalName="Languages/%(RecursiveDir)%(Filename)%(Extension)" />
     <EmbeddedResource Include="..\..\NaturalSuggestCore\Sources\NaturalSuggestCore\Resources\ui_strings.json" LogicalName="ui_strings.json" />
   </ItemGroup>
 

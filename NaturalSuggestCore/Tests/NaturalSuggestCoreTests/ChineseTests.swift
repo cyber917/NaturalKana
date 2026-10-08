@@ -60,7 +60,7 @@ struct ChineseTests {
     }
     @Test func promptUsesChineseInstructionsAndLexicon() throws {
         let builder = try PromptBuilder()
-        let prompt = try builder.make(draft: draft, settings: chinese, lexicon: .bundled())
+        let prompt = try builder.make(draft: draft, settings: chinese)
         #expect(prompt.system.contains("Chinese phrasing assistant"))
         #expect(!prompt.system.contains("Japanese phrasing assistant"))
         #expect(prompt.system.contains("Output only Simplified Chinese candidates"))
@@ -71,23 +71,23 @@ struct ChineseTests {
         // The reference lexicon is unreviewed, so like the Japanese one it is only offered at trendy.
         #expect((payload["lexicon"] as? [String])?.isEmpty == true)
         var trendy = chinese; trendy.slangLevel = .trendy
-        let lines = try #require(JSONSerialization.jsonObject(with: Data(try builder.make(draft: draft, settings: trendy, lexicon: .bundled()).user.utf8)) as? [String: Any])["lexicon"] as? [String]
+        let lines = try #require(JSONSerialization.jsonObject(with: Data(try builder.make(draft: draft, settings: trendy).user.utf8)) as? [String: Any])["lexicon"] as? [String]
         let chineseLines = try #require(lines)
         #expect(chineseLines.contains("绝了:好到或离谱到极点"))
         #expect(chineseLines.reduce(0) { $0 + $1.utf8.count } <= 1800)
         var japanese = trendy; japanese.language = .japanese
-        let japaneseLines = try #require(JSONSerialization.jsonObject(with: Data(try builder.make(draft: "今何にしていますか", settings: japanese, lexicon: .bundled()).user.utf8)) as? [String: Any])["lexicon"] as? [String]
+        let japaneseLines = try #require(JSONSerialization.jsonObject(with: Data(try builder.make(draft: "今何にしていますか", settings: japanese).user.utf8)) as? [String: Any])["lexicon"] as? [String]
         #expect(japaneseLines?.contains(where: { $0.hasPrefix("绝了") }) == false)
     }
     @Test func bundledChineseLexiconIsWellFormed() {
-        let lexicon = Lexicon.bundled("slang_zh")
+        let lexicon = Lexicon.bundled(.chinese)
         #expect(lexicon.entries.count >= 30 && lexicon.entries.count <= 40)
         #expect(lexicon.entries.allSatisfy { $0.gloss_zh != nil && !$0.gloss.isEmpty && !$0.verified })
         #expect(Lexicon.bundled().entries.allSatisfy { $0.gloss_ja != nil })
         #expect(Set(lexicon.entries.map(\.term)).count == lexicon.entries.count)
     }
     @Test func promptListsExactlyTheLatinWordsTheValidatorAllows() throws {
-        let system = try PromptBuilder().make(draft: draft, settings: chinese, lexicon: .bundled()).system
+        let system = try PromptBuilder().make(draft: draft, settings: chinese).system
         let line = try #require(system.split(separator: "\n").first { $0.contains("Latin letters are otherwise allowed only in these established words:") })
         let listed = line.components(separatedBy: "established words: ")[1].components(separatedBy: ". ")[0].components(separatedBy: ", ")
         #expect(Set(listed) == ChineseText.latinAllowlist)
