@@ -60,3 +60,14 @@ public class AutoModeTests
         Assert.Equal(SuggestionLanguage.Japanese, settings.Language);
     }
 }
+
+public class CommonShortcutTests
+{
+    [Theory]
+    [InlineData("Ctrl+Z"), InlineData("Ctrl+C"), InlineData("Ctrl+V"), InlineData("Ctrl+A"), InlineData("Ctrl+Space")]
+    public void EverydayShortcutsAreRejected(string text) => Assert.NotNull(HotkeyHost.CommonShortcutName(text));
+
+    [Theory]
+    [InlineData("Ctrl+Alt+J"), InlineData("Ctrl+Shift+Space"), InlineData("Alt+Shift+J")]
+    public void DedicatedShortcutsAreAllowed(string text) => Assert.Null(HotkeyHost.CommonShortcutName(text));
+}

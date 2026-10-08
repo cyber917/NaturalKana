@@ -25,7 +25,8 @@ public partial class SettingsWindow : Window
         this.settings = settings;
         this.registerHotkey = registerHotkey;
         this.suspendHotkey = suspendHotkey;
-        hotkey = settings.Hotkey;
+        // Older builds allowed everyday shortcuts such as Ctrl+Z; fall back to the default for those.
+        hotkey = Win.HotkeyHost.CommonShortcutName(settings.Hotkey) is null ? settings.Hotkey : HotkeyPreset.Default;
         foreach (var (kind, config) in settings.ProviderConfigs) edits[kind] = config.Clone();
 
         Intro.Text = $"在任何软件里选中一句话（或把光标放在句尾），按 {settings.Hotkey} 获取更自然的说法。";
@@ -74,6 +75,11 @@ public partial class SettingsWindow : Window
         if (key == System.Windows.Input.Key.Escape) { Keyboard.ClearFocus(); return; }
         if (Win.HotkeyHost.Format(Keyboard.Modifiers, key) is { } text)
         {
+            if (Win.HotkeyHost.CommonShortcutName(text) is { } name)
+            {
+                HotkeyHint.Text = $"{text} 是常用的“{name}”，会让其他软件里的{name}失效，请换一个";
+                return;
+            }
             hotkey = text;
             HotkeyBox.Text = text;
             HotkeyHint.Text = "已录制，点“保存”生效";

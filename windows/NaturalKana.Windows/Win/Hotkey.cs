@@ -58,6 +58,18 @@ public sealed class HotkeyHost : IDisposable
         return string.Join("+", parts);
     }
 
+    static readonly Dictionary<string, string> Common = new(StringComparer.OrdinalIgnoreCase)
+    {
+        ["Ctrl+A"] = "全选", ["Ctrl+C"] = "复制", ["Ctrl+V"] = "粘贴", ["Ctrl+X"] = "剪切", ["Ctrl+Z"] = "撤销", ["Ctrl+Y"] = "重做",
+        ["Ctrl+S"] = "保存", ["Ctrl+F"] = "查找", ["Ctrl+P"] = "打印", ["Ctrl+N"] = "新建", ["Ctrl+O"] = "打开", ["Ctrl+W"] = "关闭",
+        ["Ctrl+T"] = "新标签页", ["Ctrl+R"] = "刷新", ["Ctrl+B"] = "加粗", ["Ctrl+I"] = "斜体", ["Ctrl+U"] = "下划线",
+        ["Ctrl+Tab"] = "切换标签页", ["Ctrl+Back"] = "删除词", ["Ctrl+Delete"] = "删除词", ["Ctrl+Return"] = "发送", ["Ctrl+Space"] = "切换输入法",
+        ["Ctrl+Shift+Z"] = "重做", ["Ctrl+Shift+T"] = "恢复标签页", ["Alt+F4"] = "关闭窗口", ["Alt+Tab"] = "切换窗口", ["Alt+Shift"] = "切换输入法",
+    };
+
+    /// Everyday shortcuts that would stop working in every other app if taken over globally.
+    public static string? CommonShortcutName(string text) => Common.TryGetValue(text, out var name) ? name : null;
+
     /// Returns false when another app already owns the combination.
     public bool Register(int id, string text, Action action)
     {

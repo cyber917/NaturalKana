@@ -33,6 +33,8 @@ public partial class App : Application
         if (!ownsMutex) { MessageBox.Show("NaturalKana 已经在运行，请在任务栏右下角的托盘里找到它。", "NaturalKana"); Shutdown(); return; }
 
         settings = AppSettings.Load();
+        // Never take over everyday shortcuts (e.g. Ctrl+Z) saved by an earlier build.
+        if (HotkeyHost.CommonShortcutName(settings.Hotkey) is not null) { settings.Hotkey = HotkeyPreset.Default; settings.Save(); }
         hotkeys = new HotkeyHost();
         var registered = RegisterMainHotkey(settings.Hotkey);
 
