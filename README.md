@@ -17,7 +17,7 @@
 | --- | --- |
 | **Windows / Mac / Linux 电脑 + iPhone** | 下载现成的 IPA，用 SideStore 安装，不需要 Mac 和 Xcode → [教程](docs/INSTALLATION.md#iphone不需要-mac) |
 | Mac + iPhone，想自己改代码 | 用 Xcode 从源码构建 → [教程](docs/INSTALLATION.md#从源码构建-iphone-版) |
-| Mac（输入法） | 用 Xcode 从源码构建 → [教程](docs/INSTALLATION.md#mac-输入法) |
+| Mac（输入法，Apple 芯片） | 用 Xcode 从源码构建 → [详细教程](docs/MAC_INSTALL.md) |
 | **Windows 电脑** | 下载 exe，配合任何日语输入法使用：按 Ctrl+Alt+J，或打开自动建议 → [说明](docs/WINDOWS.md) |
 
 iPhone 版需要 iOS 17.6 或更高；Windows 版需要 Windows 10/11（64 位）。安装包都在 [Releases](https://github.com/cyber917/NaturalKana/releases) 页面。
