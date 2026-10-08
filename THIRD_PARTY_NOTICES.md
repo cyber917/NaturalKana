@@ -33,4 +33,8 @@ Data and binary components bundled in the iPhone IPA (build 17):
 - zenz-v3.2-small and zenz-v3.2-xsmall GGUF models (Miwa-Keita): Apache-2.0 per model card.
 - base_n5_lm is not included in the iPhone IPA; it is used only by the macOS build.
 
+Windows build (NaturalKana-Windows-x64.exe):
+- Self-contained .NET 8 runtime, WPF and Windows Forms (Microsoft, MIT); full texts in licenses/dotnet-runtime-LICENSE.txt and licenses/dotnet-wpf-LICENSE.txt. Their own third-party notices: https://github.com/dotnet/runtime/blob/main/THIRD-PARTY-NOTICES.TXT
+- Uses the same prompt files and lexicon as NaturalSuggestCore; contains no dictionaries or models.
+
 Transitive binary targets (including the llama.cpp XCFramework), dictionary sources, emoji data terms and embedded model components still need a full release audit before distributing compiled apps. Root MIT licenses do not cover every data/model artifact. No statement of license-complete distribution is made.
