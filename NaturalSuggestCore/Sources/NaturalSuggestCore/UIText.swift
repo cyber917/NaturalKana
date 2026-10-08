@@ -46,6 +46,17 @@ public enum UIText {
         return table
     }()
 
+    public static func keyboard(_ chinese: String, language: KeyboardSwitchLanguage) -> String {
+        let code: String = switch language {
+        case .japanese: "ja"
+        case .english: "en"
+        case .korean: "ko"
+        case .french: "fr"
+        case .russian: "ru"
+        }
+        return table[chinese]?[code] ?? table[chinese]?["en"] ?? chinese
+    }
+
     public static func t(_ chinese: String, _ arguments: String...) -> String {
         translate(chinese, arguments, into: language.resolved)
     }
