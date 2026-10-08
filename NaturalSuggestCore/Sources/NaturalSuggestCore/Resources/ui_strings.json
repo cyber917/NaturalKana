@@ -127,6 +127,10 @@
   "en": "Chinese",
   "ja": "中国語"
  },
+ "中文句子请用菜单栏小助手检查：用任何输入法打完一句，按 ⌃⌥J。": {
+  "en": "Chinese sentences are checked by the menu-bar helper: type a sentence with any input method and press ⌃⌥J.",
+  "ja": "中国語の文はメニューバーのヘルパーでチェックします。どの入力方式でも文を入力して ⌃⌥J を押してください。"
+ },
  "主应用：共享配置可读，密钥%@。键盘：%@。": {
   "en": "App: shared settings readable, key %@. Keyboard: %@.",
   "ja": "アプリ：共有設定は読み取り可能、キーは%@。キーボード：%@。"
@@ -203,6 +207,10 @@
   "en": "Pause: %@ ms",
   "ja": "待ち時間：%@ ミリ秒"
  },
+ "允许“辅助功能”权限…": {
+  "en": "Allow Accessibility Access…",
+  "ja": "「アクセシビリティ」を許可…"
+ },
  "允许发送当前句子": {
   "en": "Allow sending the current sentence",
   "ja": "現在の文の送信を許可"
@@ -214,6 +222,10 @@
  "先保存模板，用表格软件填写，再导出为 UTF-8 制表符分隔文本。这里只显示你导入的内容，不把未核实的种子词条当成书中内容。": {
   "en": "Save the template, fill it in a spreadsheet app, then export it as UTF-8 tab-separated text. Only what you import is shown here; unverified seed entries are never presented as book content.",
   "ja": "テンプレートを保存し、表計算アプリで記入してから UTF-8 のタブ区切りテキストとして書き出してください。ここには読み込んだ内容だけが表示され、未確認の初期項目を書籍の内容として扱うことはありません。"
+ },
+ "光标所在的这一行是空的。": {
+  "en": "The line at the cursor is empty.",
+  "ja": "カーソルのある行は空です。"
  },
  "全选": {
   "en": "Select All",
@@ -322,6 +334,10 @@
  "原句已经变了或无法自动替换，建议已复制，请手动粘贴。": {
   "en": "The sentence changed or can't be replaced automatically. The suggestion was copied; paste it yourself.",
   "ja": "元の文が変わったか自動で置き換えられません。候補をコピーしたので、手動で貼り付けてください。"
+ },
+ "原句已经变了，建议已复制，请手动粘贴。": {
+  "en": "The sentence has changed. The suggestion was copied; paste it yourself.",
+  "ja": "元の文が変わりました。候補をコピーしたので、手動で貼り付けてください。"
  },
  "原句已经变了，这条建议没有替换": {
   "en": "The sentence has changed, so this suggestion was not applied",
@@ -563,6 +579,10 @@
   "en": "The shortcut %@ is used by another app. Choose another.",
   "ja": "ショートカット %@ は他のアプリが使用しています。別のキーにしてください。"
  },
+ "快捷键 %@ 被其他软件占用了，只能从这里检查。": {
+  "en": "The shortcut %@ is used by another app; check from this menu instead.",
+  "ja": "ショートカット %@ は他のアプリが使用しています。このメニューからチェックしてください。"
+ },
  "快捷键 %@ 被其他软件占用了，请在设置里换一个。": {
   "en": "The shortcut %@ is used by another app. Choose another in Settings.",
   "ja": "ショートカット %@ は他のアプリが使用しています。設定で変更してください。"
@@ -590,6 +610,10 @@
  "拖动可移动建议框，双击恢复默认位置": {
   "en": "Drag to move the suggestion panel; double-click to reset its position",
   "ja": "ドラッグで候補パネルを移動、ダブルクリックで元の位置に戻します"
+ },
+ "按数字键或点击采用 · Esc 关闭": {
+  "en": "Press a number or click to use · Esc to close",
+  "ja": "数字キーかクリックで採用 · Esc で閉じる"
  },
  "按每一句自动判断是哪种语言；分不清时（例如只有汉字的短句）按主要语言处理。": {
   "en": "Each sentence's language is detected automatically; unclear ones (such as short kanji-only sentences) use the main language.",
@@ -670,6 +694,10 @@
  "无法删除密钥。": {
   "en": "Couldn't delete the key.",
   "ja": "キーを削除できませんでした。"
+ },
+ "无法更改登录项，请在“系统设置 → 通用 → 登录项”里手动添加。": {
+  "en": "Couldn't change the login item. Add it in System Settings → General → Login Items.",
+  "ja": "ログイン項目を変更できませんでした。「システム設定 → 一般 → ログイン項目」で追加してください。"
  },
  "无法读取文件；请选择 UTF-8 的 TSV 或 JSON 词表。": {
   "en": "Couldn't read the file; choose a UTF-8 TSV or JSON word list.",
@@ -779,6 +807,10 @@
   "en": "Check Sharing Permissions",
   "ja": "共有権限を確認"
  },
+ "检查当前句子": {
+  "en": "Check Current Sentence",
+  "ja": "現在の文をチェック"
+ },
  "检查整个输入框": {
   "en": "Check the whole field",
   "ja": "入力欄全体をチェック"
@@ -871,6 +903,10 @@
   "en": "Nothing to import.",
   "ja": "読み込める項目がありません。"
  },
+ "没有找到 NaturalKana 输入法，请先安装输入法。": {
+  "en": "The NaturalKana input method was not found. Install it first.",
+  "ja": "NaturalKana 入力方式が見つかりません。先にインストールしてください。"
+ },
  "没认出这是日语、中文还是英语句子，没有发送。": {
   "en": "Couldn't tell whether this is Japanese, Chinese or English, so nothing was sent.",
   "ja": "日本語・中国語・英語のどれか判別できなかったため、送信しませんでした。"
@@ -946,6 +982,10 @@
  "登录 Windows 后自动在后台运行": {
   "en": "Run in the background after signing in to Windows",
   "ja": "Windows にサインインしたらバックグラウンドで起動"
+ },
+ "登录时自动启动": {
+  "en": "Open at Login",
+  "ja": "ログイン時に開く"
  },
  "确认后合并到本机词库，同名词条更新。内容来自你提供的文件，不代表已核实或仍在流行。": {
   "en": "After you confirm, entries are merged into this device's lexicon and entries with the same word are updated. The content comes from your file and is not verified or guaranteed to be current.",
@@ -1095,6 +1135,10 @@
   "en": "Save the API key for the selected provider",
   "ja": "選択したサービス提供元の API キーを保存してください"
  },
+ "请先在“系统设置 → 隐私与安全性 → 辅助功能”里允许 NaturalKana Helper，再按 %@。": {
+  "en": "First allow NaturalKana Helper in System Settings → Privacy & Security → Accessibility, then press %@.",
+  "ja": "先に「システム設定 → プライバシーとセキュリティ → アクセシビリティ」で NaturalKana Helper を許可してから、%@ を押してください。"
+ },
  "请在设置里保存所选服务商的 API 密钥": {
   "en": "Save the API key for the selected provider in Settings",
   "ja": "設定で、選択したサービス提供元の API キーを保存してください"
@@ -1183,9 +1227,21 @@
   "en": "Output length parameter",
   "ja": "出力長パラメータ"
  },
+ "这一行超过 200 字。请选中要检查的那一句，再按 %@。": {
+  "en": "This line is longer than 200 characters. Select the sentence to check, then press %@.",
+  "ja": "この行は 200 文字を超えています。チェックする文を選択してから %@ を押してください。"
+ },
+ "这个 App 不提供输入框里的文字。请先选中要检查的那一句，再按 %@。": {
+  "en": "This app doesn't share the text in its fields. Select the sentence to check, then press %@.",
+  "ja": "このアプリは入力欄のテキストを提供していません。チェックする文を選択してから %@ を押してください。"
+ },
  "这句话已经很自然了": {
   "en": "This sentence is already natural",
   "ja": "この文はすでに自然です"
+ },
+ "这是密码输入框，不会检查。": {
+  "en": "This is a password field; it is never checked.",
+  "ja": "パスワード入力欄はチェックしません。"
  },
  "这看起来不是%@句子，没有发送。（设置里可以切换建议语言）": {
   "en": "This doesn't look like a %@ sentence, so nothing was sent. (You can change the suggestion language in Settings.)",

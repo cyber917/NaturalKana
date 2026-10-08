@@ -1080,10 +1080,10 @@ index ed689f8..f5477c2 100644
  </dict>
  </plist>
 diff --git a/azooKeyMac/Info.plist b/azooKeyMac/Info.plist
-index 27b5e67..750419f 100644
+index 27b5e67..722d41f 100644
 --- a/azooKeyMac/Info.plist
 +++ b/azooKeyMac/Info.plist
-@@ -2,98 +2,109 @@
+@@ -2,98 +2,111 @@
  <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
  <plist version="1.0">
  <dict>
@@ -1241,6 +1241,8 @@ index 27b5e67..750419f 100644
  	</array>
 -	<key>tsInputMethodIconFileKey</key>
 -	<string>main.tiff</string>
++	<key>NaturalKanaAppGroup</key>
++	<string>group.org.naturalkana.mac</string>
 +	<key>NSAppTransportSecurity</key>
 +	<dict>
 +		<key>NSAllowsLocalNetworking</key>

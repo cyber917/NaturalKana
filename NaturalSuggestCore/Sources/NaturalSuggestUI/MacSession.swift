@@ -65,6 +65,7 @@ private final class SuggestionPanel: NSPanel {
     private var positioningPanel = false
     private var noticeTask: Task<Void, Never>?
     public init() {
+        model.languages = SuggestionLanguage.inputMethodLanguages
         // The host editor stays active while an IME displays candidates. A panel
         // that hides with our inactive application can disappear immediately.
         panel.isFloatingPanel = true; panel.level = .popUpMenu; panel.hidesOnDeactivate = false

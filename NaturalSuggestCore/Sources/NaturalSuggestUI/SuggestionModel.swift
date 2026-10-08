@@ -42,6 +42,7 @@ import NaturalSuggestCore
         #else
         let group = Bundle.main.object(forInfoDictionaryKey: "NaturalKanaAppGroup") as? String
         let storage: UserDefaults? = group.flatMap(UserDefaults.init(suiteName:)) ?? UserDefaults(suiteName: "NaturalKana")!
+        if group != nil, let storage { Self.migrateLegacyDefaults(to: storage) }
         #endif
         defaults = storage
         settings = defaults?.data(forKey: "nk.settings").flatMap { try? JSONDecoder().decode(SuggestionSettings.self, from: $0) } ?? SuggestionSettings()
@@ -58,6 +59,16 @@ import NaturalSuggestCore
         }
         reloadPersonalLexicon()
     }
+    #if os(macOS)
+    /// Earlier Mac builds kept settings in the input method's private "NaturalKana" suite. They move to the
+    /// app group once, so the menu-bar helper shares them. Keys already in the group are never overwritten.
+    static func migrateLegacyDefaults(from legacy: UserDefaults? = UserDefaults(suiteName: "NaturalKana"), to group: UserDefaults) {
+        guard group.object(forKey: "nk.settings") == nil, let legacy, legacy.object(forKey: "nk.settings") != nil else { return }
+        for key in ["nk.settings", "nk.personalLexicon", "nk.budget.day", "nk.budget.used"] {
+            if let value = legacy.object(forKey: key) { group.set(value, forKey: key) }
+        }
+    }
+    #endif
     private func reloadPersonalLexicon() {
         let data = defaults?.data(forKey: "nk.personalLexicon")
         guard data != personalData else { return }

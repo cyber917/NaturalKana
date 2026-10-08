@@ -20,7 +20,7 @@ Mac 版目前**没有现成的安装包**，需要在你自己的 Mac 上从源�
 bash <(curl -fsSL https://raw.githubusercontent.com/cyber917/NaturalKana/main/tools/mac_install.sh)
 ```
 
-脚本会自动检查环境、查出 Team ID、下载源码和模型、生成你自己的应用标识、编译并安装，中途只会问你一个英文名，并在安装前提醒你切换输入法。第一次大约 20～40 分钟。最后按屏幕提示在系统设置里添加输入法、填写 API 即可。
+脚本会自动检查环境、查出 Team ID、下载源码和模型、生成你自己的应用标识、编译并安装（包括[菜单栏小助手](USAGE.md#mac-菜单栏小助手)），中途只会问你一个英文名，并在安装前提醒你切换输入法。第一次大约 20～40 分钟。最后按屏幕提示在系统设置里添加输入法、填写 API 即可。
 
 **以后要更新，重新运行同一行命令**，它会沿用你的标识，设置和密钥都会保留。源码放在 `~/NaturalKana`，你的标识保存在 `~/.config/naturalkana/Brand.json`。
 
@@ -215,6 +215,30 @@ NaturalKana 的图标是方块里的 **「な」**（日语）和 **「na」**�
 
 详细说明见[配置与使用](USAGE.md#第一次配置)。打一句日语、完成假名／汉字转换后停顿一下，光标旁边就会出现建议。
 
+## 第 11 步（可选）：菜单栏小助手
+
+想用拼音等其他输入法打字后也能检查（包括中文句子），装上菜单栏小助手。用法见[Mac 菜单栏小助手](USAGE.md#mac-菜单栏小助手)。
+
+1. 查出签名用的证书编号，复制 `Apple Development` 那一行开头的 40 位编号：
+
+   ```sh
+   security find-identity -v -p codesigning
+   ```
+
+2. 编译并签名（把 `证书编号` 换成上一步的编号；第 6 步的 `rebrand.py` 必须已经运行过）：
+
+   ```sh
+   cd ~/NaturalKana && bash tools/build_macos_helper.sh 证书编号
+   ```
+
+3. 安装并打开：
+
+   ```sh
+   mkdir -p ~/Applications && rm -rf ~/Applications/NaturalKana\ Helper.app && ditto ~/NaturalKana/.build-local/helper/NaturalKana\ Helper.app ~/Applications/NaturalKana\ Helper.app && open ~/Applications/NaturalKana\ Helper.app
+   ```
+
+更新时重复第 2、3 步。
+
 ## 更新到新版本
 
 你的标识写在 `Config/Brand.json` 里，更新前先备份，更新后再放回去：
@@ -252,7 +276,14 @@ cd ~/NaturalKana && cp ~/NaturalKana-Brand.json Config/Brand.json && python3 too
    ID='你的macBundleIdentifier'; launchctl bootout gui/$(id -u) ~/Library/LaunchAgents/$ID.ConverterServer.plist; rm -f ~/Library/LaunchAgents/$ID.ConverterServer.plist; rm -rf ~/Library/Input\ Methods/NaturalKana.app
    ```
 
-3. 不再需要源码的话，删掉 `~/NaturalKana` 文件夹。
+3. 删除菜单栏小助手：点菜单栏的对话气泡图标 → 退出，然后运行
+
+   ```sh
+   rm -rf ~/Applications/NaturalKana\ Helper.app
+   ```
+
+   如果开过“登录时自动启动”，到“系统设置 → 通用 → 登录项”里把它删掉。
+4. 不再需要源码的话，删掉 `~/NaturalKana` 文件夹。
 
 ## 常见问题
 
@@ -273,6 +304,9 @@ cd ~/NaturalKana && cp ~/NaturalKana-Brand.json Config/Brand.json && python3 too
 | `A staging app already exists` | 上次安装中断了。删掉提示里那个 `NaturalKana.installing.app` 后重新安装 |
 | 系统设置的列表里没有 NaturalKana | 先退出登录再登录。还不行就打开一次输入法列表，然后运行 `log show --last 5m --predicate 'process == "imklaunchagent"' \| grep 'Refusing connection'`，有输出说明标识缺少 `.inputmethod.`，按第 6 步改好后重新编译、安装 |
 | 切换输入法时 NaturalKana 显示成灰色键盘图标，或一切到 NaturalKana 微信等 App 就闪退 | 旧版本没有输入法图标，部分 macOS 版本会因此让当前 App 崩溃。[更新到新版本](#更新到新版本)后**退出登录再登录一次**，图标会变成「な」「na」 |
+| 按 ⌃⌥J 没反应 | 看菜单栏有没有对话气泡图标（没有就打开“应用程序”里的 NaturalKana Helper）；在“系统设置 → 隐私与安全性 → 辅助功能”里确认 NaturalKana Helper 已打开。更新小助手后如果失效，把它在列表里关掉再打开 |
+| 小助手提示“这个 App 不提供输入框里的文字” | 先选中要检查的那一句，再按 ⌃⌥J |
+| 一直弹出钥匙串密码框 | 输入开机密码后点“始终允许”，不要点“允许” |
 | 菜单里找不到“NaturalKana 设置…” | 确认当前选中的是 NaturalKana 输入法；或在项目文件夹运行 `zsh tools/open_macos_settings.command` |
 | 用了一段时间后输入法突然不工作 | 重新执行[第 7 步](#第-7-步编译)和[第 8 步](#第-8-步安装)即可，设置和密钥不会丢 |
 | Intel 芯片的 Mac | 暂不支持 |
