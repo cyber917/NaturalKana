@@ -9,6 +9,11 @@ jobs:
       - uses: actions/checkout@v4
       - run: swift test --package-path NaturalSuggestCore
       - run: python3 tools/check_public_source.py
+      - name: Shell scripts parse under UTF-8
+        # macOS bash 3.2 reads some UTF-8 bytes as identifier characters, so "$var，" breaks; write "${var}，".
+        run: |
+          perl -ne 'if (/\$[A-Za-z_][A-Za-z0-9_]*[\x80-\xff]/) { print "$ARGV:$.: $_"; $bad = 1 } close ARGV if eof; END { exit $bad }' tools/*.sh
+          for f in tools/*.sh; do LC_ALL=en_US.UTF-8 bash -n "$f"; done
   windows:
     runs-on: windows-latest
     steps:
