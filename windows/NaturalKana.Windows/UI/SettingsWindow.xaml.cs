@@ -31,7 +31,7 @@ public partial class SettingsWindow : Window
 
         Intro.Text = $"在任何软件里选中一句话（或把光标放在句尾），按 {settings.Hotkey} 获取更自然的说法。";
         Fill(ProviderBox, Enum.GetValues<ProviderKind>().Select(k => (k, Providers.Title(k))), settings.Provider);
-        Fill(LanguageBox, [(SuggestionLanguage.Japanese, "日语"), (SuggestionLanguage.English, "英语")], settings.Language);
+        Fill(LanguageBox, [(SuggestionLanguage.Japanese, "日语"), (SuggestionLanguage.English, "英语"), (SuggestionLanguage.Chinese, "中文")], settings.Language);
         Fill(RegisterBox, [(RegisterPreference.Both, "口语和敬语都要"), (RegisterPreference.FriendsCasual, "只要口语"), (RegisterPreference.PoliteCasual, "只要敬语")], settings.RegisterPreference);
         Fill(SlangBox, [(SlangLevel.Off, "不用"), (SlangLevel.Light, "轻度（只用常见说法）"), (SlangLevel.Trendy, "流行")], settings.SlangLevel);
         Fill(DialectBox, [(Dialect.Off, "不用"), (Dialect.Kansai, "関西弁（另给一组关西话说法，仅日语）")], settings.Dialect);

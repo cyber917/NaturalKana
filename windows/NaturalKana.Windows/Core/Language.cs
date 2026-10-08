@@ -3,37 +3,64 @@ using System.Text.RegularExpressions;
 
 namespace NaturalKana.Windows.Core;
 
-public enum SuggestionLanguage { Japanese, English }
+public enum SuggestionLanguage { Japanese, English, Chinese }
 
 /// Per-language behaviour, mirroring SuggestionLanguage in NaturalSuggestCore.
 public static class Languages
 {
-    public static string Title(SuggestionLanguage language) => language == SuggestionLanguage.Japanese ? "日语" : "英语";
-    public static string PromptName(SuggestionLanguage language) => language == SuggestionLanguage.Japanese ? "Japanese" : "English";
-    public static string Key(SuggestionLanguage language) => language == SuggestionLanguage.Japanese ? "japanese" : "english";
+    public static string Title(SuggestionLanguage language) => language switch
+    {
+        SuggestionLanguage.Japanese => "日语",
+        SuggestionLanguage.Chinese => "中文",
+        _ => "英语",
+    };
+    public static string PromptName(SuggestionLanguage language) => language switch
+    {
+        SuggestionLanguage.Japanese => "Japanese",
+        SuggestionLanguage.Chinese => "Simplified Chinese",
+        _ => "English",
+    };
+    public static string Key(SuggestionLanguage language) => language switch
+    {
+        SuggestionLanguage.Japanese => "japanese",
+        SuggestionLanguage.Chinese => "chinese",
+        _ => "english",
+    };
 
-    public static string TestDraft(SuggestionLanguage language) => language == SuggestionLanguage.Japanese
-        ? "今日は仕事があるから、少し待ってください。"
-        : "I have work to do, please wait me a moment.";
+    public static string TestDraft(SuggestionLanguage language) => language switch
+    {
+        SuggestionLanguage.Japanese => "今日は仕事があるから、少し待ってください。",
+        SuggestionLanguage.Chinese => "我明天有工作，所以请等一点我。",
+        _ => "I have work to do, please wait me a moment.",
+    };
 
     public static string RegisterTitle(SuggestionLanguage language, Register register) => (language, register) switch
     {
         (_, Register.Kansai) => "関西弁",
         (SuggestionLanguage.Japanese, Register.Casual) => "口语",
         (SuggestionLanguage.Japanese, _) => "敬语",
+        (SuggestionLanguage.Chinese, Register.Casual) => "口语",
+        (SuggestionLanguage.Chinese, _) => "礼貌",
         (_, Register.Casual) => "Casual",
         _ => "Polite",
     };
 
-    public static string NotThisLanguage(SuggestionLanguage language) => language == SuggestionLanguage.Japanese
-        ? "这看起来不是日语句子，没有发送。（设置里可以切换到英语）"
-        : "这看起来不是英语句子，没有发送。（设置里可以切换到日语）";
+    public static string NotThisLanguage(SuggestionLanguage language) =>
+        $"这看起来不是{Title(language)}句子，没有发送。（设置里可以切换建议语言）";
 
-    public static bool AcceptsDraft(SuggestionLanguage language, string text) =>
-        language == SuggestionLanguage.Japanese ? JapaneseText.IsJapaneseDraft(text) : EnglishText.IsEnglishDraft(text);
+    public static bool AcceptsDraft(SuggestionLanguage language, string text) => language switch
+    {
+        SuggestionLanguage.Japanese => JapaneseText.IsJapaneseDraft(text),
+        SuggestionLanguage.Chinese => ChineseText.IsChineseDraft(text),
+        _ => EnglishText.IsEnglishDraft(text),
+    };
 
-    public static bool AcceptsCandidate(SuggestionLanguage language, string text, string original) =>
-        language == SuggestionLanguage.Japanese ? JapaneseText.AcceptsCandidate(text, original) : EnglishText.IsEnglish(text);
+    public static bool AcceptsCandidate(SuggestionLanguage language, string text, string original) => language switch
+    {
+        SuggestionLanguage.Japanese => JapaneseText.AcceptsCandidate(text, original),
+        SuggestionLanguage.Chinese => ChineseText.AcceptsCandidate(text, original),
+        _ => EnglishText.IsEnglish(text),
+    };
 }
 
 /// Port of EnglishDraftProfile / EnglishProfile. Without the OS language recognizer,

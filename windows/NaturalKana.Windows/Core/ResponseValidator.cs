@@ -67,7 +67,9 @@ public static class ResponseValidator
                 // Reject newly introduced emoji/symbols.
                 if (text.EnumerateRunes().Where(IsEmoji).Any(r => !original.EnumerateRunes().Contains(r))) continue;
                 if (!seen.Add(text)) continue;
-                accepted.Add(new Suggestion(text, register));
+                // NFKC turns Chinese full-width punctuation (，：；) into ASCII; checks use it, display keeps the model's punctuation.
+                var display = settings.Language == SuggestionLanguage.Chinese ? row.GetProperty("text").GetString()!.Normalize(NormalizationForm.FormC).Trim() : text;
+                accepted.Add(new Suggestion(display, register));
                 if (accepted.Count >= settings.SuggestionLimit) break;
             }
             // Keep model ranking within each register; casual, polite, then dialect. Same order for display and acceptance.

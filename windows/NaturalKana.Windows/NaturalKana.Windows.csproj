@@ -21,7 +21,9 @@
   <ItemGroup>
     <EmbeddedResource Include="..\..\NaturalSuggestCore\Sources\NaturalSuggestCore\Resources\Prompts\system_v1.txt" LogicalName="system_v1.txt" />
     <EmbeddedResource Include="..\..\NaturalSuggestCore\Sources\NaturalSuggestCore\Resources\Prompts\english_v1.txt" LogicalName="english_v1.txt" />
+    <EmbeddedResource Include="..\..\NaturalSuggestCore\Sources\NaturalSuggestCore\Resources\Prompts\chinese_v1.txt" LogicalName="chinese_v1.txt" />
     <EmbeddedResource Include="..\..\NaturalSuggestCore\Sources\NaturalSuggestCore\Resources\slang.jsonl" LogicalName="slang.jsonl" />
+    <EmbeddedResource Include="..\..\NaturalSuggestCore\Sources\NaturalSuggestCore\Resources\slang_zh.jsonl" LogicalName="slang_zh.jsonl" />
   </ItemGroup>
 
   <ItemGroup>

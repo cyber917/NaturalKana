@@ -2,17 +2,42 @@ import Foundation
 import NaturalLanguage
 
 public enum SuggestionLanguage: String, Codable, CaseIterable, Sendable {
-    case japanese, english
+    case japanese, english, chinese
 
-    public var title: String { self == .japanese ? "日语" : "英语" }
-    public var promptName: String { self == .japanese ? "Japanese" : "English" }
+    /// The Mac input method only sees text typed through NaturalKana, so it cannot check Chinese typed with another IME.
+    public static var available: [SuggestionLanguage] {
+        #if os(macOS)
+        [.japanese, .english]
+        #else
+        allCases
+        #endif
+    }
+    public var title: String {
+        switch self {
+        case .japanese: "日语"
+        case .english: "英语"
+        case .chinese: "中文"
+        }
+    }
+    public var promptName: String {
+        switch self {
+        case .japanese: "Japanese"
+        case .english: "English"
+        case .chinese: "Simplified Chinese"
+        }
+    }
     public var testDraft: String {
-        self == .japanese ? "今日は仕事があるから、少し待ってください。" : "I have work to do, please wait me a moment."
+        switch self {
+        case .japanese: "今日は仕事があるから、少し待ってください。"
+        case .english: "I have work to do, please wait me a moment."
+        case .chinese: "我明天有工作，所以请等一点我。"
+        }
     }
     public var draftProfile: any LanguageProfile {
         switch self {
         case .japanese: JapaneseDraftProfile()
         case .english: EnglishDraftProfile()
+        case .chinese: ChineseDraftProfile()
         }
     }
     public func acceptsCandidate(_ text: String, original: String) -> Bool {
@@ -22,6 +47,8 @@ public enum SuggestionLanguage: String, Codable, CaseIterable, Sendable {
             return JapaneseProfile().accepts(text) && JapaneseProfile.latinWords(text).allSatisfy(originalLatin.contains)
         case .english:
             return EnglishProfile().accepts(text)
+        case .chinese:
+            return ChineseProfile().accepts(text, original: original)
         }
     }
     public func registerTitle(_ register: Register) -> String {
@@ -30,11 +57,25 @@ public enum SuggestionLanguage: String, Codable, CaseIterable, Sendable {
         case (.japanese, .polite): "丁寧"
         case (.english, .casual): "Casual"
         case (.english, .polite): "Polite"
+        case (.chinese, .casual): "口语"
+        case (.chinese, .polite): "礼貌"
         case (_, .kansai): Dialect.kansai.title
         }
     }
-    public var closeTitle: String { self == .japanese ? "閉じる" : "Close" }
-    public var copyHint: String { self == .japanese ? "クリックでコピー・元の文を選択して貼り付け" : "Click to copy · Select the original text and paste" }
+    public var closeTitle: String {
+        switch self {
+        case .japanese: "閉じる"
+        case .english: "Close"
+        case .chinese: "关闭"
+        }
+    }
+    public var copyHint: String {
+        switch self {
+        case .japanese: "クリックでコピー・元の文を選択して貼り付け"
+        case .english: "Click to copy · Select the original text and paste"
+        case .chinese: "点击复制 · 选中原句后粘贴"
+        }
+    }
 }
 
 /// Allows learner English, including a few unknown foreign words in an English sentence.
