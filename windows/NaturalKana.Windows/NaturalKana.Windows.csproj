@@ -10,7 +10,7 @@
     <RootNamespace>NaturalKana.Windows</RootNamespace>
     <AssemblyName>NaturalKana</AssemblyName>
     <ApplicationManifest>app.manifest</ApplicationManifest>
-    <Version>0.1.0</Version>
+    <Version>0.1.1</Version>
     <Product>NaturalKana for Windows</Product>
     <Copyright>NaturalKana contributors</Copyright>
     <InvariantGlobalization>false</InvariantGlobalization>
