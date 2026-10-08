@@ -103,8 +103,15 @@
                 <StackPanel>
                     <DockPanel Style="{StaticResource Row}">
                         <TextBlock Text="建议语言" Style="{StaticResource Label}"/>
-                        <ComboBox x:Name="LanguageBox"/>
+                        <ComboBox x:Name="LanguageBox" SelectionChanged="OnLanguageChanged"/>
                     </DockPanel>
+                    <StackPanel x:Name="PrimaryRow" Visibility="Collapsed">
+                        <Border Style="{StaticResource Divider}"/>
+                        <DockPanel Style="{StaticResource Row}">
+                            <TextBlock Text="主要语言" Style="{StaticResource Label}"/>
+                            <ComboBox x:Name="PrimaryBox" ToolTip="分不清是哪种语言时（例如只有汉字的短句），按这个语言处理"/>
+                        </DockPanel>
+                    </StackPanel>
                     <Border Style="{StaticResource Divider}"/>
                     <DockPanel Style="{StaticResource Row}">
                         <TextBlock Text="语体" Style="{StaticResource Label}"/>
@@ -136,6 +143,11 @@
             <TextBlock Text="使用" Style="{StaticResource Caption}"/>
             <Border Style="{StaticResource Section}">
                 <StackPanel>
+                    <DockPanel Style="{StaticResource Row}">
+                        <TextBlock Text="界面语言" Style="{StaticResource Label}"/>
+                        <ComboBox x:Name="InterfaceBox" SelectionChanged="OnInterfaceChanged"/>
+                    </DockPanel>
+                    <Border Style="{StaticResource Divider}"/>
                     <DockPanel Style="{StaticResource Row}">
                         <TextBlock Text="快捷键" Style="{StaticResource Label}"/>
                         <TextBlock x:Name="HotkeyHint" DockPanel.Dock="Right" Margin="10,0,0,0" VerticalAlignment="Center" FontSize="12" Foreground="#6E6E73" Text="点一下，再按新的组合键"/>

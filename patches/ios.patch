@@ -338,7 +338,7 @@ index e6038af..2386e15 100644
          var body: some View {
 +            VStack(spacing: 0) {
 +                if !naturalModel.suggestions.isEmpty {
-+                    IOSSuggestionPanel(suggestions: naturalModel.suggestions, language: naturalModel.settings.language, original: naturalModel.suggestionDraft, highlightChanges: naturalModel.settings.highlightChanges, accept: { index in
++                    IOSSuggestionPanel(suggestions: naturalModel.suggestions, language: naturalModel.suggestionLanguage, original: naturalModel.suggestionDraft, highlightChanges: naturalModel.settings.highlightChanges, accept: { index in
 +                        KeyboardViewController.naturalController?.acceptNaturalSuggestion(index)
 +                    }, dismiss: { naturalModel.dismiss() })
 +                }

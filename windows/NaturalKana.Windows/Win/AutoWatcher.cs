@@ -55,9 +55,10 @@ public sealed class AutoWatcher : IDisposable
     {
         var text = snapshot.Before.Trim();
         if (snapshot.After.Trim().Length > 0 || JapaneseText.Length(text) < Math.Max(1, config.MinimumLength) || text.Length > 200) return false;
+        var language = (config.ResolvingLanguage(text) ?? config).Language;
         // Unfinished romaji or pinyin (e.g. "今日はh", "我想去b") means the IME is still composing.
-        if (config.Language != SuggestionLanguage.English && text[^1] is >= 'a' and <= 'z' or >= 'A' and <= 'Z') return false;
-        return Languages.AcceptsDraft(config.Language, text);
+        if (language != SuggestionLanguage.English && text[^1] is >= 'a' and <= 'z' or >= 'A' and <= 'Z') return false;
+        return Languages.AcceptsDraft(language, text);
     }
 
     public void Dispose() => stop.Cancel();

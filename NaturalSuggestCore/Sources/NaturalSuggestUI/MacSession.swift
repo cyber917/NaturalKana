@@ -8,10 +8,10 @@ import NaturalSuggestCore
 
 @MainActor public final class NativeSuggestionActivity: ObservableObject {
     public static let shared = NativeSuggestionActivity()
-    @Published public var message = "等待输入"
+    @Published public var message = UIText.t("等待输入")
     @Published public var inspectedText = ""
-    @Published public var contextSource = "尚未取到文字"
-    @Published public var lastRequest = "尚未发起请求"
+    @Published public var contextSource = UIText.t("尚未取到文字")
+    @Published public var lastRequest = UIText.t("尚未发起请求")
     @Published public var timing = ""
     private init() {}
     public func record(_ status: Diagnostics) {
@@ -117,7 +117,7 @@ private final class SuggestionPanel: NSPanel {
     public func dismiss() {
         captureTask?.cancel(); captureTask = nil
         model.dismiss(); panel.orderOut(nil); snapshot = nil
-        NativeSuggestionActivity.shared.message = "已关闭建议"
+        NativeSuggestionActivity.shared.message = UIText.t("已关闭建议")
     }
     public func update(client: any IMKTextInput, composition: String, unconvertedLatin: Bool, discardComposition: @escaping () -> Void) {
         captureTask?.cancel()
@@ -136,7 +136,7 @@ private final class SuggestionPanel: NSPanel {
         model.reload()
         let appID = NSWorkspace.shared.frontmostApplication?.bundleIdentifier ?? ""
         guard model.settings.enabled, model.settings.consent, !IsSecureEventInputEnabled(),
-              !model.settings.blockedApps.contains(appID) else { reset(); NativeSuggestionActivity.shared.message = model.settings.enabled && model.settings.consent ? "当前应用或输入框已禁用建议" : Diagnostics.disabled.message; return }
+              !model.settings.blockedApps.contains(appID) else { reset(); NativeSuggestionActivity.shared.message = model.settings.enabled && model.settings.consent ? UIText.t("当前应用或输入框已禁用建议") : Diagnostics.disabled.message; return }
         self.client = client; self.discardComposition = discardComposition
         let marked = client.markedRange(); let selected = client.selectedRange()
         selectionAnchor = selected; markedAnchor = marked
@@ -158,7 +158,7 @@ private final class SuggestionPanel: NSPanel {
         }
         let text = recentDraft.text(hostPrefix: prefix, composition: composition)
         NativeSuggestionActivity.shared.inspectedText = text
-        NativeSuggestionActivity.shared.contextSource = prefix != nil ? "输入框上下文" : "本次输入会话的已提交文字"
+        NativeSuggestionActivity.shared.contextSource = prefix != nil ? UIText.t("输入框上下文") : UIText.t("本次输入会话的已提交文字")
         let snap = DraftSnapshot(text: text, fieldID: fieldID, composingLatin: unconvertedLatin, appID: appID)
         let markedLength = marked.location != NSNotFound ? marked.length : 0
         // A fallback may generate suggestions, but replacement still requires host verification.
@@ -181,7 +181,7 @@ private final class SuggestionPanel: NSPanel {
         guard (!items.isEmpty || SuggestionStatusIndicator.isVisible(model.status)), items == model.suggestions, !IsSecureEventInputEnabled(), let client, let snapshot,
               snapshot.appID == (NSWorkspace.shared.frontmostApplication?.bundleIdentifier ?? ""),
               client.selectedRange() == selectionAnchor, client.markedRange() == markedAnchor else {
-            if !items.isEmpty { NativeSuggestionActivity.shared.message = "建议已生成，但文字、光标或前台应用已变化，已取消显示" }
+            if !items.isEmpty { NativeSuggestionActivity.shared.message = UIText.t("建议已生成，但文字、光标或前台应用已变化，已取消显示") }
             panel.orderOut(nil); return
         }
         if items.isEmpty {
@@ -190,10 +190,10 @@ private final class SuggestionPanel: NSPanel {
                 Button { [weak self] in self?.dismiss() } label: {
                     Image(systemName: "xmark").font(.system(size: 10)).foregroundStyle(.secondary)
                         .frame(width: 20, height: 20).contentShape(Rectangle())
-                }.buttonStyle(.plain).help(model.settings.language.closeTitle + " (Esc)").accessibilityLabel(model.settings.language.closeTitle)
+                }.buttonStyle(.plain).help(model.suggestionLanguage.closeTitle + " (Esc)").accessibilityLabel(model.suggestionLanguage.closeTitle)
             }.padding(5).background(.regularMaterial, in: RoundedRectangle(cornerRadius: 8)))
         } else {
-            panel.contentView = NSHostingView(rootView: SuggestionStrip(suggestions: items, language: model.settings.language, original: model.suggestionDraft, highlightChanges: model.settings.highlightChanges, dragHandle: AnyView(dragHandle), dismiss: { [weak self] in self?.dismiss() }) { [weak self] in self?.accept($0) }.frame(width: 480))
+            panel.contentView = NSHostingView(rootView: SuggestionStrip(suggestions: items, language: model.suggestionLanguage, original: model.suggestionDraft, highlightChanges: model.settings.highlightChanges, dragHandle: AnyView(dragHandle), dismiss: { [weak self] in self?.dismiss() }) { [weak self] in self?.accept($0) }.frame(width: 480))
         }
         let size = panel.contentView?.fittingSize ?? NSSize(width: 360, height: 90)
         var caret = NSRect.zero
@@ -202,7 +202,7 @@ private final class SuggestionPanel: NSPanel {
             if caret != .zero { break }
         }
         if caret == .zero { caret = lastCaret } else { lastCaret = caret }
-        guard caret != .zero else { NativeSuggestionActivity.shared.message = "建议已生成，但此应用没有提供光标位置"; panel.orderOut(nil); return }
+        guard caret != .zero else { NativeSuggestionActivity.shared.message = UIText.t("建议已生成，但此应用没有提供光标位置"); panel.orderOut(nil); return }
         let screen = NSScreen.screens.first { $0.frame.intersects(caret) }?.visibleFrame ?? NSScreen.main?.visibleFrame ?? .zero
         let width = items.isEmpty ? 56 : min(500, max(260, size.width))
         let height = items.isEmpty ? 30 : min(340, max(45, size.height))
@@ -215,16 +215,16 @@ private final class SuggestionPanel: NSPanel {
         positioningPanel = true
         panel.setFrame(NSRect(origin: origin, size: NSSize(width: width, height: height)), display: true)
         positioningPanel = false
-        NativeSuggestionActivity.shared.message = items.isEmpty ? model.status.message : "已显示 \(items.count) 条建议"
+        NativeSuggestionActivity.shared.message = items.isEmpty ? model.status.message : UIText.t("已显示 %@ 条建议", "\(items.count)")
         panel.alphaValue = 0; panel.orderFrontRegardless()
         NSAnimationContext.runAnimationGroup { $0.duration = 0.10; panel.animator().alphaValue = 1 }
     }
     private func accept(_ index: Int, fromKeyboard: Bool = false) {
         guard let client, let snapshot, !IsSecureEventInputEnabled(),
               client.selectedRange() == selectionAnchor, client.markedRange() == markedAnchor,
-              snapshot.appID == (NSWorkspace.shared.frontmostApplication?.bundleIdentifier ?? "") else { reset(); showNotice("输入框里的文字或光标已经变了，这条建议没有替换"); return }
+              snapshot.appID == (NSWorkspace.shared.frontmostApplication?.bundleIdentifier ?? "") else { reset(); showNotice(UIText.t("输入框里的文字或光标已经变了，这条建议没有替换")); return }
         if replacement.location != NSNotFound {
-            guard read(client, range: replacement) == original else { reset(); showNotice("原句已经变了，这条建议没有替换"); return }
+            guard read(client, range: replacement) == original else { reset(); showNotice(UIText.t("原句已经变了，这条建议没有替换")); return }
         }
         guard let text = model.accept(index, snapshot: snapshot) else { reset(); return }
         // Palette clicks occur outside the host's input-event dispatch. Some
@@ -234,8 +234,8 @@ private final class SuggestionPanel: NSPanel {
             discardComposition?(); client.insertText(text, replacementRange: replacement)
         } else {
             NSPasteboard.general.clearContents(); NSPasteboard.general.setString(text, forType: .string)
-            NativeSuggestionActivity.shared.message = "此应用不支持这段文字的安全替换；建议已复制，请选中原句后粘贴"
-            self.snapshot = nil; showNotice("已复制，选中原句后按 ⌘V 粘贴"); return
+            NativeSuggestionActivity.shared.message = UIText.t("此应用不支持这段文字的安全替换；建议已复制，请选中原句后粘贴")
+            self.snapshot = nil; showNotice(UIText.t("已复制，选中原句后按 ⌘V 粘贴")); return
         }
         panel.orderOut(nil); self.snapshot = nil
     }
@@ -243,7 +243,7 @@ private final class SuggestionPanel: NSPanel {
         PanelDragHandle { [weak self] in self?.resetPanelOffset() }
             .frame(width: 30, height: 24)
             .overlay { Image(systemName: "line.3.horizontal").font(.system(size: 11, weight: .medium)).foregroundStyle(.secondary).allowsHitTesting(false) }
-            .help("拖动可移动建议框，双击恢复默认位置")
+            .help(UIText.t("拖动可移动建议框，双击恢复默认位置"))
     }
     private func panelMovedByUser() {
         guard !positioningPanel, panel.isVisible, noticeTask == nil else { return }

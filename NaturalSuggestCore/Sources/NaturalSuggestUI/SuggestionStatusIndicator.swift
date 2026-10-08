@@ -57,10 +57,10 @@ public struct KeyboardSuggestionStatus: View {
                         Text(status.message).font(.system(size: 12)).lineLimit(2).minimumScaleFactor(0.8)
                             .frame(maxWidth: .infinity, alignment: .leading)
                         if status != .natural && status != .waiting && status != .requesting {
-                            Button("重试") { expanded = false; retry() }.font(.system(size: 13, weight: .medium))
+                            Button(UIText.t("重试")) { expanded = false; retry() }.font(.system(size: 13, weight: .medium))
                         }
                         Button { expanded = false } label: { Image(systemName: "xmark").font(.system(size: 12, weight: .medium)) }
-                            .accessibilityLabel("关闭")
+                            .accessibilityLabel(UIText.t("关闭提示"))
                     }
                     .buttonStyle(.plain).padding(.horizontal, 10)
                     .frame(width: min(UIScreen.main.bounds.width - 12, 520), height: 38)

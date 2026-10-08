@@ -38,7 +38,7 @@ public static class SecretStore
                 CredentialBlobSize = (uint)bytes.Length,
                 Persist = CRED_PERSIST_LOCAL_MACHINE,
             };
-            if (!CredWrite(ref cred, 0)) throw new InvalidOperationException("无法保存到 Windows 凭据管理器");
+            if (!CredWrite(ref cred, 0)) throw new InvalidOperationException(UIText.T("无法保存到 Windows 凭据管理器"));
         }
         finally
         {

@@ -10,9 +10,9 @@ public static class Languages
 {
     public static string Title(SuggestionLanguage language) => language switch
     {
-        SuggestionLanguage.Japanese => "日语",
-        SuggestionLanguage.Chinese => "中文",
-        _ => "英语",
+        SuggestionLanguage.Japanese => UIText.T("日语"),
+        SuggestionLanguage.Chinese => UIText.T("中文"),
+        _ => UIText.T("英语"),
     };
     public static string PromptName(SuggestionLanguage language) => language switch
     {
@@ -37,16 +37,32 @@ public static class Languages
     public static string RegisterTitle(SuggestionLanguage language, Register register) => (language, register) switch
     {
         (_, Register.Kansai) => "関西弁",
-        (SuggestionLanguage.Japanese, Register.Casual) => "口语",
-        (SuggestionLanguage.Japanese, _) => "敬语",
-        (SuggestionLanguage.Chinese, Register.Casual) => "口语",
-        (SuggestionLanguage.Chinese, _) => "礼貌",
+        (SuggestionLanguage.Japanese, Register.Casual) => UIText.T("口语"),
+        (SuggestionLanguage.Japanese, _) => UIText.T("敬语"),
+        (SuggestionLanguage.Chinese, Register.Casual) => UIText.T("口语"),
+        (SuggestionLanguage.Chinese, _) => UIText.T("礼貌"),
         (_, Register.Casual) => "Casual",
         _ => "Polite",
     };
 
     public static string NotThisLanguage(SuggestionLanguage language) =>
-        $"这看起来不是{Title(language)}句子，没有发送。（设置里可以切换建议语言）";
+        UIText.T("这看起来不是%@句子，没有发送。（设置里可以切换建议语言）", $"{Title(language)}");
+
+    /// Mirrors SuggestionLanguage.detect: hiragana means Japanese; common Chinese function words mean Chinese;
+    /// otherwise the primary language wins. Kanji-only text is not guessed as Chinese for a Japanese-primary user.
+    public static SuggestionLanguage? Detect(string text, SuggestionLanguage primary)
+    {
+        var accepted = Enum.GetValues<SuggestionLanguage>().Where(l => AcceptsDraft(l, text)).ToList();
+        if (accepted.Count == 0) return null;
+        var normalized = JapaneseText.Nfkc(text);
+        var hiragana = normalized.Any(c => c is >= '\u3041' and <= '\u3096');
+        var chineseMarked = normalized.Any(c => ChineseText.Markers.Contains(c));
+        if (accepted.Contains(SuggestionLanguage.Japanese) && hiragana) return SuggestionLanguage.Japanese;
+        if (accepted.Contains(SuggestionLanguage.Chinese) && chineseMarked) return SuggestionLanguage.Chinese;
+        if (accepted.Contains(primary)) return primary;
+        if (accepted is [SuggestionLanguage.Chinese] && primary == SuggestionLanguage.Japanese) return null;
+        return accepted[0];
+    }
 
     public static bool AcceptsDraft(SuggestionLanguage language, string text) => language switch
     {

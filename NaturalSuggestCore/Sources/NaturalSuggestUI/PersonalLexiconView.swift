@@ -28,41 +28,41 @@ public struct PersonalLexiconView: View {
     }
     public var body: some View {
         VStack(alignment: .leading, spacing: 12) {
-            Text("SNS 词库 · 释义与表达参考").font(.title2.bold())
-            Text("在这里查词无需联网。生成建议时，仅将当前句子命中的词语、释义和用法发送给已配置的服务商，不发送整本词库。词条不会自动成为假名转换候选；常用姓名等请放在“词典”页。")
+            Text(UIText.t("SNS 词库 · 释义与表达参考")).font(.title2.bold())
+            Text(UIText.t("在这里查词无需联网。生成建议时，仅将当前句子命中的词语、释义和用法发送给已配置的服务商，不发送整本词库。词条不会自动成为假名转换候选；常用姓名等请放在“词典”页。"))
                 .font(.callout).foregroundStyle(.secondary)
             HStack {
-                Button("导入词表…") { importing = true }
-                Button("导出词库…") {
+                Button(UIText.t("导入词表…")) { importing = true }
+                Button(UIText.t("导出词库…")) {
                     do {
                         let encoder = JSONEncoder(); encoder.outputFormatting = [.prettyPrinted, .sortedKeys]
                         document = LexiconDocument(data: try encoder.encode(model.personalEntries))
                         exportType = .json; exportName = "NaturalKana-SNS.json"; exporting = true
-                    } catch { message = "导出失败。" }
+                    } catch { message = UIText.t("导出失败。") }
                 }.disabled(model.personalEntries.isEmpty)
-                Button("保存 TSV 模板…") {
+                Button(UIText.t("保存 TSV 模板…")) {
                     document = LexiconDocument(data: Data(PersonalLexicon.template.utf8))
-                    exportType = .tabSeparatedText; exportName = "SNS词表模板.tsv"; exporting = true
+                    exportType = .tabSeparatedText; exportName = UIText.t("SNS词表模板.tsv"); exporting = true
                 }
                 Spacer()
-                Text("\(model.personalEntries.count) / 2000 条").foregroundStyle(.secondary)
+                Text(UIText.t("%@ / 2000 条", "\(model.personalEntries.count)")).foregroundStyle(.secondary)
             }
-            Text("支持 UTF-8 的 TSV / JSON，最大 1 MB。必填：词语、释义；可选：读音、例句、用法、来源。PDF 和照片请先提取、校对成词表。同名词条会在确认导入后更新。")
+            Text(UIText.t("支持 UTF-8 的 TSV / JSON，最大 1 MB。必填：词语、释义；可选：读音、例句、用法、来源。PDF 和照片请先提取、校对成词表。同名词条会在确认导入后更新。"))
                 .font(.caption).foregroundStyle(.secondary)
-            TextField("搜索词语、读音或中文释义", text: $query)
+            TextField(UIText.t("搜索词语、读音或中文释义"), text: $query)
             if !message.isEmpty { Text(message).font(.callout).textSelection(.enabled) }
             if model.personalEntries.isEmpty {
                 Spacer()
-                Text("尚未导入词条").font(.headline).frame(maxWidth: .infinity)
-                Text("先保存模板，用表格软件填写，再导出为 UTF-8 制表符分隔文本。这里只显示你导入的内容，不把未核实的种子词条当成书中内容。")
+                Text(UIText.t("尚未导入词条")).font(.headline).frame(maxWidth: .infinity)
+                Text(UIText.t("先保存模板，用表格软件填写，再导出为 UTF-8 制表符分隔文本。这里只显示你导入的内容，不把未核实的种子词条当成书中内容。"))
                     .foregroundStyle(.secondary).frame(maxWidth: .infinity)
                 Spacer()
             } else {
                 List(matches) { entry in
                     row(entry).contextMenu {
-                        Button("删除此词条", role: .destructive) {
-                            do { try model.removePersonalEntry(entry.id); message = "已删除“\(entry.term)”。" }
-                            catch { message = "删除失败。" }
+                        Button(UIText.t("删除此词条"), role: .destructive) {
+                            do { try model.removePersonalEntry(entry.id); message = UIText.t("已删除“%@”。", "\(entry.term)") }
+                            catch { message = UIText.t("删除失败。") }
                         }
                     }
                 }
@@ -74,29 +74,29 @@ public struct PersonalLexiconView: View {
                 let scoped = url.startAccessingSecurityScopedResource()
                 defer { if scoped { url.stopAccessingSecurityScopedResource() } }
                 guard (try url.resourceValues(forKeys: [.fileSizeKey]).fileSize ?? 1_000_001) <= 1_000_000 else {
-                    throw PersonalLexiconError.invalid("文件超过 1 MB；请拆分词表。")
+                    throw PersonalLexiconError.invalid(UIText.t("文件超过 1 MB；请拆分词表。"))
                 }
                 pending = try PersonalLexicon.parse(Data(contentsOf: url), json: url.pathExtension.lowercased() == "json")
                 preview = true
             } catch let error as PersonalLexiconError { message = error.localizedDescription }
-            catch { message = "无法读取文件；请选择 UTF-8 的 TSV 或 JSON 词表。" }
+            catch { message = UIText.t("无法读取文件；请选择 UTF-8 的 TSV 或 JSON 词表。") }
         }
         .fileExporter(isPresented: $exporting, document: document, contentType: exportType, defaultFilename: exportName) { result in
-            switch result { case .success: message = "文件已保存。"; case .failure: message = "文件未保存。" }
+            switch result { case .success: message = UIText.t("文件已保存。"); case .failure: message = UIText.t("文件未保存。") }
         }
         .sheet(isPresented: $preview) {
             VStack(alignment: .leading, spacing: 12) {
-                Text("预览导入：\(pending.count) 条").font(.title2.bold())
-                Text("确认后合并到本机词库，同名词条更新。内容来自你提供的文件，不代表已核实或仍在流行。")
+                Text(UIText.t("预览导入：%@ 条", "\(pending.count)")).font(.title2.bold())
+                Text(UIText.t("确认后合并到本机词库，同名词条更新。内容来自你提供的文件，不代表已核实或仍在流行。"))
                 List(Array(pending.prefix(100))) { row($0) }
-                if pending.count > 100 { Text("此处预览前 100 条，将导入全部 \(pending.count) 条。") }
+                if pending.count > 100 { Text(UIText.t("此处预览前 100 条，将导入全部 %@ 条。", "\(pending.count)")) }
                 HStack {
-                    Button("取消") { pending = []; preview = false }
+                    Button(UIText.t("取消")) { pending = []; preview = false }
                     Spacer()
-                    Button("确认导入") {
+                    Button(UIText.t("确认导入")) {
                         do {
                             try model.importPersonalLexicon(pending)
-                            message = "已合并 \(pending.count) 条，词库现有 \(model.personalEntries.count) 条；立即生效。"
+                            message = UIText.t("已合并 %@ 条，词库现有 %@ 条；立即生效。", "\(pending.count)", "\(model.personalEntries.count)")
                             pending = []; preview = false
                         } catch { message = error.localizedDescription; preview = false }
                     }.buttonStyle(.borderedProminent)
@@ -108,9 +108,9 @@ public struct PersonalLexiconView: View {
         VStack(alignment: .leading, spacing: 4) {
             Text(entry.term + (entry.reading.isEmpty ? "" : "（\(entry.reading)）")).font(.headline)
             Text(entry.meaning)
-            if !entry.example.isEmpty { Text("例句：" + entry.example) }
-            if !entry.note.isEmpty { Text("用法：" + entry.note).foregroundStyle(.secondary) }
-            if !entry.source.isEmpty { Text("来源：" + entry.source).font(.caption).foregroundStyle(.secondary) }
+            if !entry.example.isEmpty { Text(UIText.t("例句：") + entry.example) }
+            if !entry.note.isEmpty { Text(UIText.t("用法：") + entry.note).foregroundStyle(.secondary) }
+            if !entry.source.isEmpty { Text(UIText.t("来源：") + entry.source).font(.caption).foregroundStyle(.secondary) }
         }.textSelection(.enabled).padding(.vertical, 4)
     }
 }

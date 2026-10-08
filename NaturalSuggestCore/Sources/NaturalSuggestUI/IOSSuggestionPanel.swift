@@ -26,10 +26,10 @@ public struct IOSSuggestionPanel: View {
                     .font(.system(size: 11, weight: .medium)).foregroundStyle(.secondary)
                 Spacer()
                 Button { selection = max(0, selection - 1) } label: { Image(systemName: "chevron.left") }
-                    .disabled(selection == 0).accessibilityLabel(language == .japanese ? "前の候補" : language == .chinese ? "上一条" : "Previous suggestion")
+                    .disabled(selection == 0).accessibilityLabel(UIText.t("上一条"))
                 Text("\(selection + 1) / \(suggestions.count)").font(.caption.monospacedDigit()).foregroundStyle(.secondary)
                 Button { selection = min(suggestions.count - 1, selection + 1) } label: { Image(systemName: "chevron.right") }
-                    .disabled(selection >= suggestions.count - 1).accessibilityLabel(language == .japanese ? "次の候補" : language == .chinese ? "下一条" : "Next suggestion")
+                    .disabled(selection >= suggestions.count - 1).accessibilityLabel(UIText.t("下一条"))
                 Button(action: dismiss) { Image(systemName: "xmark") }.accessibilityLabel(language.closeTitle)
             }
             .font(.system(size: 13, weight: .medium)).buttonStyle(.plain)

@@ -12,11 +12,27 @@ public enum SuggestionLanguage: String, Codable, CaseIterable, Sendable {
         allCases
         #endif
     }
+    /// The language of one draft among `languages`, or nil if none fits.
+    /// Hiragana means Japanese; common Chinese function words mean Chinese; otherwise the primary language wins.
+    /// Kanji-only text without Chinese markers is not guessed as Chinese for a Japanese-primary user.
+    public static func detect(_ text: String, primary: SuggestionLanguage, among languages: [SuggestionLanguage]) -> SuggestionLanguage? {
+        let normalized = TextNormalization.nfkc(text)
+        let accepted = languages.filter { $0.draftProfile.accepts(normalized, composingLatin: false) }
+        guard !accepted.isEmpty else { return nil }
+        let scalars = normalized.unicodeScalars
+        let hiragana = scalars.contains(where: ChineseText.isHiragana)
+        let chineseMarked = scalars.contains(where: ChineseText.markers.contains)
+        if accepted.contains(.japanese), hiragana { return .japanese }
+        if accepted.contains(.chinese), chineseMarked { return .chinese }
+        if accepted.contains(primary) { return primary }
+        if accepted == [.chinese], primary == .japanese { return nil }
+        return accepted.first
+    }
     public var title: String {
         switch self {
-        case .japanese: "日语"
-        case .english: "英语"
-        case .chinese: "中文"
+        case .japanese: UIText.t("日语")
+        case .english: UIText.t("英语")
+        case .chinese: UIText.t("中文")
         }
     }
     public var promptName: String {

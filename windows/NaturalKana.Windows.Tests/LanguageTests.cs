@@ -55,7 +55,7 @@ public class LanguageTests
     [Fact]
     public void RegisterTitles()
     {
-        Assert.Equal("敬语", Languages.RegisterTitle(SuggestionLanguage.Japanese, Register.Polite));
+        Assert.Equal(UIText.T("敬语"), Languages.RegisterTitle(SuggestionLanguage.Japanese, Register.Polite));
         Assert.Equal("Casual", Languages.RegisterTitle(SuggestionLanguage.English, Register.Casual));
     }
 }

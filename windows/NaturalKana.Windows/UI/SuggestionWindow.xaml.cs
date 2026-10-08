@@ -30,6 +30,7 @@ public partial class SuggestionWindow : Window
     public SuggestionWindow(string draft, Native.POINT anchor, bool highlight, SuggestionLanguage language, bool passive)
     {
         InitializeComponent();
+        Localizer.Apply(this);
         // Digits must reach the window directly even when a Japanese IME is active.
         InputMethod.SetIsInputMethodEnabled(this, false);
         this.draft = draft;
@@ -40,8 +41,8 @@ public partial class SuggestionWindow : Window
         ShowActivated = !passive;
         Draft.Text = draft;
         if (language == SuggestionLanguage.Chinese) Draft.FontFamily = Theme.Chinese;
-        Mode.Text = passive ? "自动建议" : "";
-        Hint.Text = passive ? "点击或按 Ctrl+数字 采用 · Esc 关闭 · 可拖动" : "点击或按数字键采用 · ↑↓ 选择，Enter 采用 · 可拖动";
+        Mode.Text = passive ? UIText.T("自动建议") : "";
+        Hint.Text = passive ? UIText.T("点击或按 Ctrl+数字 采用 · Esc 关闭 · 可拖动") : UIText.T("点击或按数字键采用 · ↑↓ 选择，Enter 采用 · 可拖动");
         ShowRequesting();
 
         SourceInitialized += (_, _) =>
@@ -66,7 +67,7 @@ public partial class SuggestionWindow : Window
     public string DraftText => draft;
     public bool IsFinished => finished;
 
-    public void ShowRequesting() => SetStatus("正在获取建议…", Theme.Gray);
+    public void ShowRequesting() => SetStatus(UIText.T("正在获取建议…"), Theme.Gray);
 
     public void ShowMessage(string message, bool warning = false)
     {

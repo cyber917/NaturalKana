@@ -1,0 +1,1274 @@
+{
+ "%@ / 2000 条": {
+  "en": "%@ / 2000 entries",
+  "ja": "%@ / 2000 件"
+ },
+ "%@ 密钥（留空保留）": {
+  "en": "%@ API key (leave blank to keep)",
+  "ja": "%@ の API キー（空欄なら変更しない）"
+ },
+ "%@ 是常用的“%@”，会让其他软件里的%@失效，请换一个": {
+  "en": "%@ is the common “%@” shortcut; using it would break %@ in other apps. Choose another.",
+  "ja": "%@ はよく使う「%@」のショートカットです。他のアプリで%@が使えなくなるため、別のキーにしてください"
+ },
+ "%@ 秒": {
+  "en": "%@ s",
+  "ja": "%@ 秒"
+ },
+ "0 表示不限。请求仍按服务商规则计费。": {
+  "en": "0 means no limit. Requests are still billed by your provider.",
+  "ja": "0 は無制限です。リクエストはサービス提供元の料金体系で課金されます。"
+ },
+ "0 表示不限；这不是服务商的费用上限": {
+  "en": "0 means no limit; this is not a spending limit at your provider",
+  "ja": "0 は無制限です。サービス提供元の利用上限ではありません"
+ },
+ "API 密钥": {
+  "en": "API key",
+  "ja": "API キー"
+ },
+ "API 模型 ID": {
+  "en": "API model ID",
+  "ja": "API モデル ID"
+ },
+ "AZIK 罗马字方案": {
+  "en": "AZIK romaji scheme",
+  "ja": "AZIK"
+ },
+ "HTTP 不加密：草稿和密钥会以明文发送，只适合本机或可信局域网中的模型服务。公网地址请使用 HTTPS。": {
+  "en": "HTTP is not encrypted: drafts and keys are sent in plain text. Use it only for model servers on this Mac or a trusted local network; use HTTPS for internet addresses.",
+  "ja": "HTTP は暗号化されません。下書きとキーが平文で送信されるため、この端末か信頼できるローカルネットワーク上のモデルサーバーにのみ使ってください。インターネット上のアドレスには HTTPS を使ってください。"
+ },
+ "JSON 必须是词条数组，每条至少包含 term 和 meaning 字段。": {
+  "en": "The JSON must be an array of entries, each with at least term and meaning.",
+  "ja": "JSON は項目の配列で、各項目に少なくとも term と meaning が必要です。"
+ },
+ "JSON 格式": {
+  "en": "JSON format",
+  "ja": "JSON 形式"
+ },
+ "NaturalKana 已在后台运行": {
+  "en": "NaturalKana is running in the background",
+  "ja": "NaturalKana はバックグラウンドで動作中です"
+ },
+ "NaturalKana 已经在运行，请在任务栏右下角的托盘里找到它。": {
+  "en": "NaturalKana is already running. Find it in the system tray at the bottom right of the taskbar.",
+  "ja": "NaturalKana はすでに起動しています。タスクバー右下の通知領域にあります。"
+ },
+ "NaturalKana 设置": {
+  "en": "NaturalKana Settings",
+  "ja": "NaturalKana 設定"
+ },
+ "NaturalKana 设置…": {
+  "en": "NaturalKana Settings…",
+  "ja": "NaturalKana 設定…"
+ },
+ "OpenAI 兼容": {
+  "en": "OpenAI compatible",
+  "ja": "OpenAI 互換"
+ },
+ "Qwen / 百炼": {
+  "en": "Qwen / Model Studio",
+  "ja": "Qwen / Model Studio"
+ },
+ "Qwen / 百炼（中国站）": {
+  "en": "Qwen / Model Studio (China)",
+  "ja": "Qwen / Model Studio（中国版）"
+ },
+ "Qwen / 百炼（国际站）": {
+  "en": "Qwen / Model Studio (International)",
+  "ja": "Qwen / Model Studio（国際版）"
+ },
+ "SNS 词库": {
+  "en": "Slang Lexicon",
+  "ja": "SNS 語彙"
+ },
+ "SNS 词库 · 释义与表达参考": {
+  "en": "Slang lexicon · meanings and usage reference",
+  "ja": "SNS 語彙 · 意味と表現の参考"
+ },
+ "SNS词表模板.tsv": {
+  "en": "slang-lexicon-template.tsv",
+  "ja": "SNS語彙テンプレート.tsv"
+ },
+ "TSV 第一行需包含 term、meaning（或“词语”“释义”）；可选 reading、example、note、source。列之间使用制表符。": {
+  "en": "The first TSV row must include term and meaning (or 词语 and 释义); reading, example, note and source are optional. Separate columns with tabs.",
+  "ja": "TSV の 1 行目に term と meaning（または「词语」「释义」）が必要です。reading、example、note、source は任意です。列はタブで区切ってください。"
+ },
+ "一次只能检查一句话，请只选中一行。": {
+  "en": "Only one sentence can be checked at a time. Select a single line.",
+  "ja": "一度にチェックできるのは 1 文だけです。1 行だけ選択してください。"
+ },
+ "上一条": {
+  "en": "Previous suggestion",
+  "ja": "前の候補"
+ },
+ "下一条": {
+  "en": "Next suggestion",
+  "ja": "次の候補"
+ },
+ "下划线": {
+  "en": "Underline",
+  "ja": "下線"
+ },
+ "不使用学习历史": {
+  "en": "Don't use history",
+  "ja": "学習履歴を使わない"
+ },
+ "不用": {
+  "en": "Off",
+  "ja": "使わない"
+ },
+ "两种": {
+  "en": "Both",
+  "ja": "両方"
+ },
+ "中文": {
+  "en": "Chinese",
+  "ja": "中国語"
+ },
+ "主应用：共享配置可读，密钥%@。键盘：%@。": {
+  "en": "App: shared settings readable, key %@. Keyboard: %@.",
+  "ja": "アプリ：共有設定は読み取り可能、キーは%@。キーボード：%@。"
+ },
+ "主要语言": {
+  "en": "Main language",
+  "ja": "メインの言語"
+ },
+ "仅提示词": {
+  "en": "Prompt only",
+  "ja": "プロンプトのみ"
+ },
+ "从服务商控制台复制 API 模型 ID，不是聊天界面的显示名": {
+  "en": "Copy the API model ID from your provider's console, not the name shown in its chat app",
+  "ja": "サービス提供元のコンソールから API モデル ID をコピーしてください（チャット画面の表示名ではありません）"
+ },
+ "使用": {
+  "en": "General",
+  "ja": "一般"
+ },
+ "使用半角空格": {
+  "en": "Use half-width space",
+  "ja": "半角スペースを使う"
+ },
+ "使用快速设置": {
+  "en": "Use fast settings",
+  "ja": "高速設定にする"
+ },
+ "使用说明": {
+  "en": "Help",
+  "ja": "使い方"
+ },
+ "例句：": {
+  "en": "Example: ",
+  "ja": "例文："
+ },
+ "保存": {
+  "en": "Save",
+  "ja": "保存"
+ },
+ "保存 TSV 模板…": {
+  "en": "Save TSV Template…",
+  "ja": "TSV テンプレートを保存…"
+ },
+ "保存常用词的日语读音和写法，最多 50 条。": {
+  "en": "Save the Japanese reading and spelling of words you use often (up to 50).",
+  "ja": "よく使う語の読みと表記を保存します（最大 50 件）。"
+ },
+ "保存设置": {
+  "en": "Save Settings",
+  "ja": "設定を保存"
+ },
+ "假名输入（日式键盘）": {
+  "en": "Kana input (JIS keyboard)",
+  "ja": "かな入力（JIS キーボード）"
+ },
+ "假名输入（美式键盘）": {
+  "en": "Kana input (US keyboard)",
+  "ja": "かな入力（US キーボード）"
+ },
+ "停止学习，保留历史": {
+  "en": "Stop learning, keep history",
+  "ja": "学習を停止（履歴は保持）"
+ },
+ "停顿": {
+  "en": "Pause",
+  "ja": "待ち時間"
+ },
+ "停顿后自动给出建议（实验性）": {
+  "en": "Suggest automatically after a pause (experimental)",
+  "ja": "入力が止まったら自動で提案する（試験的）"
+ },
+ "停顿：%@ 毫秒": {
+  "en": "Pause: %@ ms",
+  "ja": "待ち時間：%@ ミリ秒"
+ },
+ "允许发送当前句子": {
+  "en": "Allow sending the current sentence",
+  "ja": "現在の文の送信を許可"
+ },
+ "允许把选中的那一句（最多 200 字）发送给上面配置的服务商。": {
+  "en": "Allow sending the selected sentence (up to 200 characters) to the provider above.",
+  "ja": "選択した文（最大 200 文字）を上で設定したサービス提供元に送信することを許可します。"
+ },
+ "先保存模板，用表格软件填写，再导出为 UTF-8 制表符分隔文本。这里只显示你导入的内容，不把未核实的种子词条当成书中内容。": {
+  "en": "Save the template, fill it in a spreadsheet app, then export it as UTF-8 tab-separated text. Only what you import is shown here; unverified seed entries are never presented as book content.",
+  "ja": "テンプレートを保存し、表計算アプリで記入してから UTF-8 のタブ区切りテキストとして書き出してください。ここには読み込んだ内容だけが表示され、未確認の初期項目を書籍の内容として扱うことはありません。"
+ },
+ "全选": {
+  "en": "Select All",
+  "ja": "すべてを選択"
+ },
+ "公网接口必须使用 HTTPS；http:// 只支持本机或局域网地址（如 localhost、192.168.x.x、*.local）": {
+  "en": "Internet endpoints must use HTTPS; http:// only works for this device or local network addresses (localhost, 192.168.x.x, *.local)",
+  "ja": "インターネット上のエンドポイントには HTTPS が必要です。http:// はこの端末かローカルネットワークのアドレス（localhost、192.168.x.x、*.local など）でのみ使えます"
+ },
+ "共享设置不可用（G04）": {
+  "en": "Shared settings unavailable (G04)",
+  "ja": "共有設定を利用できません（G04）"
+ },
+ "共享设置不可用，请检查签名。": {
+  "en": "Shared settings are unavailable. Check the app signing.",
+  "ja": "共有設定を利用できません。署名を確認してください。"
+ },
+ "关闭": {
+  "en": "Off",
+  "ja": "オフ"
+ },
+ "关闭后，按空格转换，按回车确认。普通打字使用本地词典，无需联网。": {
+  "en": "When off, press Space to convert and Return to confirm. Normal typing uses the local dictionary and needs no network.",
+  "ja": "オフのときは Space で変換、Return で確定します。通常の入力はローカル辞書を使い、ネットワークは不要です。"
+ },
+ "关闭提示": {
+  "en": "Close",
+  "ja": "閉じる"
+ },
+ "关闭深度思考，更快（所选 Qwen 模型需支持）": {
+  "en": "Turn off thinking for faster replies (the Qwen model must support it)",
+  "ja": "思考モードをオフにして高速化（対応する Qwen モデルのみ）"
+ },
+ "关闭窗口": {
+  "en": "Close window",
+  "ja": "ウインドウを閉じる"
+ },
+ "关闭（Esc）": {
+  "en": "Close (Esc)",
+  "ja": "閉じる（Esc）"
+ },
+ "分不清是哪种语言时（例如只有汉字的短句），按这个语言处理": {
+  "en": "Used when the language is unclear (for example a short sentence with only kanji)",
+  "ja": "言語を判別できないとき（漢字だけの短い文など）はこの言語として扱います"
+ },
+ "切换标签页": {
+  "en": "Switch tab",
+  "ja": "タブの切り替え"
+ },
+ "切换窗口": {
+  "en": "Switch window",
+  "ja": "ウインドウの切り替え"
+ },
+ "切换输入法": {
+  "en": "Switch input method",
+  "ja": "入力方式の切り替え"
+ },
+ "删除": {
+  "en": "Delete",
+  "ja": "削除"
+ },
+ "删除失败。": {
+  "en": "Couldn't delete.",
+  "ja": "削除できませんでした。"
+ },
+ "删除密钥": {
+  "en": "Delete key",
+  "ja": "キーを削除"
+ },
+ "删除当前服务商密钥": {
+  "en": "Delete This Provider's Key",
+  "ja": "このサービスのキーを削除"
+ },
+ "删除当前服务商的已保存密钥": {
+  "en": "Delete the saved key for this provider",
+  "ja": "このサービス提供元の保存済みキーを削除"
+ },
+ "删除此词条": {
+  "en": "Delete Entry",
+  "ja": "この項目を削除"
+ },
+ "删除词": {
+  "en": "Delete word",
+  "ja": "単語の削除"
+ },
+ "刷新": {
+  "en": "Refresh",
+  "ja": "再読み込み"
+ },
+ "剪切": {
+  "en": "Cut",
+  "ja": "カット"
+ },
+ "功能关闭，或尚未同意发送草稿": {
+  "en": "Off, or sending drafts hasn't been allowed yet",
+  "ja": "オフになっているか、下書きの送信がまだ許可されていません"
+ },
+ "加粗": {
+  "en": "Bold",
+  "ja": "太字"
+ },
+ "协议": {
+  "en": "Protocol",
+  "ja": "プロトコル"
+ },
+ "原句已经变了或无法自动替换，建议已复制，请手动粘贴。": {
+  "en": "The sentence changed or can't be replaced automatically. The suggestion was copied; paste it yourself.",
+  "ja": "元の文が変わったか自動で置き換えられません。候補をコピーしたので、手動で貼り付けてください。"
+ },
+ "原句已经变了，这条建议没有替换": {
+  "en": "The sentence has changed, so this suggestion was not applied",
+  "ja": "元の文が変わったため、この候補は置き換えませんでした"
+ },
+ "双模型评选": {
+  "en": "Compare two models",
+  "ja": "2 つのモデルで比較"
+ },
+ "反斜杠键输入 \\ 而非 ¥": {
+  "en": "Backslash key types \\ instead of ¥",
+  "ja": "バックスラッシュキーで ¥ ではなく \\ を入力"
+ },
+ "发送": {
+  "en": "Send",
+  "ja": "送信"
+ },
+ "取消": {
+  "en": "Cancel",
+  "ja": "キャンセル"
+ },
+ "口语": {
+  "en": "Casual",
+  "ja": "カジュアル"
+ },
+ "口语和敬语都要": {
+  "en": "Casual and polite",
+  "ja": "カジュアルと丁寧の両方"
+ },
+ "句子太短了。": {
+  "en": "The sentence is too short.",
+  "ja": "文が短すぎます。"
+ },
+ "只在能读取输入框内容的软件里生效（记事本、Word、浏览器等）；微信等软件读不到时请用快捷键。每次停顿都可能请求一次，受每日上限限制。": {
+  "en": "Works only in apps that expose their text (Notepad, Word, browsers, etc.); in apps such as WeChat, use the shortcut. Each pause may send a request and counts toward the daily limit.",
+  "ja": "入力欄の内容を読み取れるアプリ（メモ帳、Word、ブラウザーなど）でのみ動作します。WeChat などで読み取れない場合はショートカットを使ってください。止まるたびにリクエストが送られることがあり、1 日の上限に数えられます。"
+ },
+ "只检查光标前的这一行": {
+  "en": "Check only the line before the cursor",
+  "ja": "カーソルより前の行だけチェック"
+ },
+ "只要口语": {
+  "en": "Casual only",
+  "ja": "カジュアルのみ"
+ },
+ "只要敬语": {
+  "en": "Polite only",
+  "ja": "丁寧のみ"
+ },
+ "可读": {
+  "en": "readable",
+  "ja": "読み取り可"
+ },
+ "合并后的词库超过 2000 条或 1 MB；原词库未修改。": {
+  "en": "The merged lexicon would exceed 2000 entries or 1 MB; your lexicon was not changed.",
+  "ja": "結合後の語彙が 2000 件または 1 MB を超えるため、元の語彙は変更していません。"
+ },
+ "同时发送给两家服务商，每次最多 3 个请求。": {
+  "en": "Sends to two providers at once, up to 3 requests each time.",
+  "ja": "2 つのサービス提供元に同時に送信します（1 回につき最大 3 リクエスト）。"
+ },
+ "在任何软件里选中一句话（或把光标放在句尾），按 %@ 获取更自然的说法。": {
+  "en": "In any app, select a sentence (or put the cursor at its end) and press %@ for more natural wording.",
+  "ja": "どのアプリでも文を選択（またはカーソルを文末に置いて）%@ を押すと、より自然な言い方が表示されます。"
+ },
+ "在这里查词无需联网。生成建议时，仅将当前句子命中的词语、释义和用法发送给已配置的服务商，不发送整本词库。词条不会自动成为假名转换候选；常用姓名等请放在“词典”页。": {
+  "en": "Looking up words here needs no network. When suggesting, only the entries that match the current sentence (word, meaning and usage) are sent to your provider, never the whole lexicon. Entries do not become kana conversion candidates; put names and such in the Dictionary tab.",
+  "ja": "ここでの検索はネットワーク不要です。提案時には、現在の文に該当する語・意味・用法だけを設定済みのサービス提供元に送信し、語彙全体は送信しません。項目はかな漢字変換の候補にはなりません。よく使う名前などは「辞書」タブに登録してください。"
+ },
+ "复制": {
+  "en": "Copy",
+  "ja": "コピー"
+ },
+ "学习": {
+  "en": "Learning",
+  "ja": "学習"
+ },
+ "学习并使用历史": {
+  "en": "Learn and use history",
+  "ja": "学習して履歴を使う"
+ },
+ "学习记录已清除": {
+  "en": "Learning history cleared",
+  "ja": "学習履歴を消去しました"
+ },
+ "完成": {
+  "en": "Done",
+  "ja": "完了"
+ },
+ "密钥保存在设备钥匙串。测试连接会发送一条固定例句。": {
+  "en": "Keys are stored in the device keychain. Test Connection sends one fixed sample sentence.",
+  "ja": "キーはデバイスのキーチェーンに保存されます。「接続テスト」は決まった例文を 1 つ送信します。"
+ },
+ "密钥已删除。": {
+  "en": "Key deleted.",
+  "ja": "キーを削除しました。"
+ },
+ "密钥验证失败（HTTP 401），请检查密钥及接口地区": {
+  "en": "Key rejected (HTTP 401). Check the key and the endpoint region",
+  "ja": "キーの認証に失敗しました（HTTP 401）。キーとエンドポイントのリージョンを確認してください"
+ },
+ "对比服务商": {
+  "en": "Comparison provider",
+  "ja": "比較するサービス"
+ },
+ "导入词表…": {
+  "en": "Import Word List…",
+  "ja": "語彙リストを読み込む…"
+ },
+ "导出失败。": {
+  "en": "Export failed.",
+  "ja": "書き出しに失敗しました。"
+ },
+ "导出词库…": {
+  "en": "Export Lexicon…",
+  "ja": "語彙を書き出す…"
+ },
+ "尚未发起请求": {
+  "en": "No request yet",
+  "ja": "まだリクエストしていません"
+ },
+ "尚未取到文字": {
+  "en": "No text read yet",
+  "ja": "まだテキストを取得していません"
+ },
+ "尚未取得当前行文字；未联网": {
+  "en": "The current line hasn't been read yet; nothing was sent",
+  "ja": "現在の行をまだ取得していません（未送信）"
+ },
+ "尚未导入词条": {
+  "en": "No entries imported yet",
+  "ja": "まだ項目がありません"
+ },
+ "已保存": {
+  "en": "Saved",
+  "ja": "保存済み"
+ },
+ "已保存。密钥保存在系统钥匙串。": {
+  "en": "Saved. Keys are stored in the system keychain.",
+  "ja": "保存しました。キーはシステムのキーチェーンに保存されます。"
+ },
+ "已关闭建议": {
+  "en": "Suggestions closed",
+  "ja": "候補を閉じました"
+ },
+ "已删除“%@”。": {
+  "en": "Deleted “%@”.",
+  "ja": "「%@」を削除しました。"
+ },
+ "已删除当前服务商的密钥。": {
+  "en": "The key for this provider was deleted.",
+  "ja": "このサービス提供元のキーを削除しました。"
+ },
+ "已合并 %@ 条，词库现有 %@ 条；立即生效。": {
+  "en": "Merged %@ entries; the lexicon now has %@. Takes effect immediately.",
+  "ja": "%@ 件を結合しました。語彙は現在 %@ 件で、すぐに反映されます。"
+ },
+ "已复制，选中原句后按 ⌘V 粘贴": {
+  "en": "Copied. Select the original sentence and press ⌘V",
+  "ja": "コピーしました。元の文を選択して ⌘V で貼り付けてください"
+ },
+ "已录制，点“保存”生效": {
+  "en": "Recorded. Click Save to apply",
+  "ja": "記録しました。「保存」で反映されます"
+ },
+ "已显示 %@ 条建议": {
+  "en": "Showing %@ suggestions",
+  "ja": "%@ 件の候補を表示中"
+ },
+ "已达到本机今日请求上限": {
+  "en": "Today's request limit on this device has been reached",
+  "ja": "この端末の本日のリクエスト上限に達しました"
+ },
+ "已达到本机今日请求上限（可在设置里调整）": {
+  "en": "Today's request limit on this device has been reached (you can change it in Settings)",
+  "ja": "この端末の本日のリクエスト上限に達しました（設定で変更できます）"
+ },
+ "帮助": {
+  "en": "Help",
+  "ja": "ヘルプ"
+ },
+ "建议": {
+  "en": "Suggestions",
+  "ja": "提案"
+ },
+ "建议上限": {
+  "en": "Max suggestions",
+  "ja": "候補の上限"
+ },
+ "建议上限：%@ 条": {
+  "en": "Max suggestions: %@",
+  "ja": "候補の上限：%@ 件"
+ },
+ "建议已生成，但文字、光标或前台应用已变化，已取消显示": {
+  "en": "Suggestions arrived, but the text, cursor or app changed, so they were not shown",
+  "ja": "候補を生成しましたが、テキスト・カーソル・前面のアプリが変わったため表示を取りやめました"
+ },
+ "建议已生成，但此应用没有提供光标位置": {
+  "en": "Suggestions arrived, but this app doesn't report the cursor position",
+  "ja": "候補を生成しましたが、このアプリはカーソル位置を提供していません"
+ },
+ "建议语言": {
+  "en": "Suggestion language",
+  "ja": "提案の言語"
+ },
+ "开机启动": {
+  "en": "Start at login",
+  "ja": "ログイン時に起動"
+ },
+ "当前句子与建议语言不符，或属于翻译/指令内容；未联网": {
+  "en": "The sentence doesn't match the suggestion language, or is a translation/instruction request; nothing was sent",
+  "ja": "文が提案の言語と一致しないか、翻訳・指示の依頼です（未送信）"
+ },
+ "当前应用或输入框已禁用建议": {
+  "en": "Suggestions are turned off for this app or field",
+  "ja": "このアプリまたは入力欄では提案が無効です"
+ },
+ "当前输入位置暂不支持建议": {
+  "en": "Suggestions aren't available at this position",
+  "ja": "この入力位置では提案を利用できません"
+ },
+ "当前输入框或应用禁止建议；未联网": {
+  "en": "This field or app doesn't allow suggestions; nothing was sent",
+  "ja": "この入力欄またはアプリでは提案できません（未送信）"
+ },
+ "当前送检文字不足 %@ 字；未联网": {
+  "en": "Fewer than %@ characters; nothing was sent",
+  "ja": "文字数が %@ 文字未満です（未送信）"
+ },
+ "待机": {
+  "en": "Idle",
+  "ja": "待機中"
+ },
+ "快捷键": {
+  "en": "Shortcut",
+  "ja": "ショートカット"
+ },
+ "快捷键 %@ 已被其他软件占用，请换一个。": {
+  "en": "The shortcut %@ is used by another app. Choose another.",
+  "ja": "ショートカット %@ は他のアプリが使用しています。別のキーにしてください。"
+ },
+ "快捷键 %@ 被其他软件占用了，请在设置里换一个。": {
+  "en": "The shortcut %@ is used by another app. Choose another in Settings.",
+  "ja": "ショートカット %@ は他のアプリが使用しています。設定で変更してください。"
+ },
+ "恢复标签页": {
+  "en": "Reopen tab",
+  "ja": "タブを元に戻す"
+ },
+ "恢复默认": {
+  "en": "Reset",
+  "ja": "デフォルトに戻す"
+ },
+ "打印": {
+  "en": "Print",
+  "ja": "印刷"
+ },
+ "打字与转换": {
+  "en": "Typing and Conversion",
+  "ja": "入力と変換"
+ },
+ "打开": {
+  "en": "Open",
+  "ja": "開く"
+ },
+ "拖动可移动建议框，双击恢复默认位置": {
+  "en": "Drag to move the suggestion panel; double-click to reset its position",
+  "ja": "ドラッグで候補パネルを移動、ダブルクリックで元の位置に戻します"
+ },
+ "按每一句自动判断是哪种语言；分不清时（例如只有汉字的短句）按主要语言处理。": {
+  "en": "Each sentence's language is detected automatically; unclear ones (such as short kanji-only sentences) use the main language.",
+  "ja": "文ごとに言語を自動で判別します。判別できない文（漢字だけの短い文など）はメインの言語として扱います。"
+ },
+ "接口兼容": {
+  "en": "API Compatibility",
+  "ja": "API 互換性"
+ },
+ "接口地址": {
+  "en": "Endpoint URL",
+  "ja": "エンドポイント URL"
+ },
+ "接口或模型不存在（HTTP 404），请检查接口地址和模型 ID": {
+  "en": "Endpoint or model not found (HTTP 404). Check the endpoint URL and model ID",
+  "ja": "エンドポイントまたはモデルが見つかりません（HTTP 404）。URL とモデル ID を確認してください"
+ },
+ "提示": {
+  "en": "Hint",
+  "ja": "ヒント"
+ },
+ "搜索词语、读音或中文释义": {
+  "en": "Search words, readings or meanings",
+  "ja": "語・読み・意味を検索"
+ },
+ "撤销": {
+  "en": "Undo",
+  "ja": "取り消す"
+ },
+ "撤销删除": {
+  "en": "Undo Delete",
+  "ja": "削除を取り消す"
+ },
+ "支持 UTF-8 的 TSV / JSON，最大 1 MB。必填：词语、释义；可选：读音、例句、用法、来源。PDF 和照片请先提取、校对成词表。同名词条会在确认导入后更新。": {
+  "en": "UTF-8 TSV or JSON, up to 1 MB. Required: word, meaning; optional: reading, example, usage, source. Turn PDFs and photos into a checked word list first. Entries with the same word are updated after you confirm.",
+  "ja": "UTF-8 の TSV / JSON（最大 1 MB）に対応。必須：語・意味、任意：読み・例文・用法・出典。PDF や写真は先に抽出・確認して語彙リストにしてください。同じ語の項目は確認後に更新されます。"
+ },
+ "敬语": {
+  "en": "Polite",
+  "ja": "丁寧"
+ },
+ "文件已保存。": {
+  "en": "File saved.",
+  "ja": "ファイルを保存しました。"
+ },
+ "文件未保存。": {
+  "en": "File not saved.",
+  "ja": "ファイルを保存しませんでした。"
+ },
+ "文件超过 1 MB；请拆分词表。": {
+  "en": "The file is larger than 1 MB; split the word list.",
+  "ja": "ファイルが 1 MB を超えています。語彙リストを分割してください。"
+ },
+ "文字来源：": {
+  "en": "Text source: ",
+  "ja": "テキストの取得元："
+ },
+ "斜体": {
+  "en": "Italic",
+  "ja": "斜体"
+ },
+ "新建": {
+  "en": "New",
+  "ja": "新規"
+ },
+ "新标签页": {
+  "en": "New tab",
+  "ja": "新しいタブ"
+ },
+ "方言": {
+  "en": "Dialect",
+  "ja": "方言"
+ },
+ "无法保存到 Windows 凭据管理器": {
+  "en": "Couldn't save to Windows Credential Manager",
+  "ja": "Windows 資格情報マネージャーに保存できません"
+ },
+ "无法删除密钥。": {
+  "en": "Couldn't delete the key.",
+  "ja": "キーを削除できませんでした。"
+ },
+ "无法读取文件；请选择 UTF-8 的 TSV 或 JSON 词表。": {
+  "en": "Couldn't read the file; choose a UTF-8 TSV or JSON word list.",
+  "ja": "ファイルを読み込めません。UTF-8 の TSV または JSON の語彙リストを選んでください。"
+ },
+ "无需修改": {
+  "en": "Already natural",
+  "ja": "修正不要"
+ },
+ "日语": {
+  "en": "Japanese",
+  "ja": "日本語"
+ },
+ "最多发送当前句子 200 字及命中的词库参考。iPhone 需允许键盘完全访问。": {
+  "en": "Sends at most 200 characters of the current sentence plus matching lexicon references. On iPhone, the keyboard needs Full Access.",
+  "ja": "現在の文の最大 200 文字と、該当する語彙の参考情報だけを送信します。iPhone ではキーボードの「フルアクセスを許可」が必要です。"
+ },
+ "最多可保存 50 条词语": {
+  "en": "You can save up to 50 words",
+  "ja": "最大 50 件まで保存できます"
+ },
+ "最少字符：%@": {
+  "en": "Minimum characters: %@",
+  "ja": "最小文字数：%@"
+ },
+ "最近请求：": {
+  "en": "Last request: ",
+  "ja": "最近のリクエスト："
+ },
+ "服务": {
+  "en": "Service",
+  "ja": "サービス"
+ },
+ "服务商": {
+  "en": "Provider",
+  "ja": "サービス提供元"
+ },
+ "服务商已响应，但返回内容不符合候选 JSON 格式，请重试或检查模型兼容性": {
+  "en": "The provider replied, but not in the expected JSON format. Try again or check model compatibility",
+  "ja": "応答はありましたが、候補の JSON 形式ではありませんでした。再試行するか、モデルの互換性を確認してください"
+ },
+ "服务商已响应，但返回内容不符合候选格式，请重试或换个模型": {
+  "en": "The provider replied, but not in the expected format. Try again or use another model",
+  "ja": "応答はありましたが、候補の形式ではありませんでした。再試行するか、別のモデルを使ってください"
+ },
+ "服务商拒绝生成此内容": {
+  "en": "The provider refused to generate this content",
+  "ja": "サービス提供元がこの内容の生成を拒否しました"
+ },
+ "服务商拒绝生成此内容，请调整草稿后重试": {
+  "en": "The provider refused to generate this content. Edit the draft and try again",
+  "ja": "サービス提供元がこの内容の生成を拒否しました。下書きを変えて再試行してください"
+ },
+ "服务商拒绝访问（HTTP 403），请检查账户和模型权限": {
+  "en": "Access denied (HTTP 403). Check your account and model permissions",
+  "ja": "アクセスが拒否されました（HTTP 403）。アカウントとモデルの権限を確認してください"
+ },
+ "服务商暂时出错（HTTP %@），请稍后重试": {
+  "en": "The provider had a temporary error (HTTP %@). Try again later",
+  "ja": "サービス提供元で一時的なエラーが発生しました（HTTP %@）。しばらくしてから再試行してください"
+ },
+ "服务商请求失败（HTTP %@），请检查服务商配置": {
+  "en": "Request failed (HTTP %@). Check the provider settings",
+  "ja": "リクエストに失敗しました（HTTP %@）。サービス提供元の設定を確認してください"
+ },
+ "服务商返回余额或额度不足，请检查服务商账户": {
+  "en": "The provider reports insufficient balance or quota. Check your provider account",
+  "ja": "残高または利用枠が不足しています。サービス提供元のアカウントを確認してください"
+ },
+ "服务商限制了请求（HTTP 429），请稍后重试": {
+  "en": "Rate limited by the provider (HTTP 429). Try again later",
+  "ja": "リクエストが制限されました（HTTP 429）。しばらくしてから再試行してください"
+ },
+ "服务商限制了请求（HTTP 429），请稍后重试并检查账户限额": {
+  "en": "Rate limited by the provider (HTTP 429). Try again later and check your account limits",
+  "ja": "リクエストが制限されました（HTTP 429）。しばらくしてから再試行し、アカウントの上限を確認してください"
+ },
+ "未保存": {
+  "en": "Not saved",
+  "ja": "未保存"
+ },
+ "本次联网耗时 %.2f 秒": {
+  "en": "Request took %.2f s",
+  "ja": "今回の通信時間：%.2f 秒"
+ },
+ "本次输入会话的已提交文字": {
+  "en": "text committed in this input session",
+  "ja": "この入力セッションで確定した文字"
+ },
+ "本程序没有服务器，不保存草稿。": {
+  "en": "This app has no server and does not keep drafts.",
+  "ja": "このアプリにはサーバーがなく、下書きを保存しません。"
+ },
+ "来源：": {
+  "en": "Source: ",
+  "ja": "出典："
+ },
+ "查找": {
+  "en": "Find",
+  "ja": "検索"
+ },
+ "标出改动": {
+  "en": "Highlight changes",
+  "ja": "変更箇所を強調"
+ },
+ "检查共享权限": {
+  "en": "Check Sharing Permissions",
+  "ja": "共有権限を確認"
+ },
+ "检查整个输入框": {
+  "en": "Check the whole field",
+  "ja": "入力欄全体をチェック"
+ },
+ "检查详情（仅在内存中显示，不写日志）": {
+  "en": "Details (kept in memory only, never logged)",
+  "ja": "詳細（メモリ上のみに表示、ログには残しません）"
+ },
+ "模型 ID 不能含空格；请填写服务商 API 文档中的 ID": {
+  "en": "A model ID can't contain spaces; use the ID from the provider's API docs",
+  "ja": "モデル ID に空白は使えません。サービス提供元の API ドキュメントにある ID を入力してください"
+ },
+ "模型不存在或无访问权限，请核对 API 模型 ID": {
+  "en": "The model doesn't exist or you have no access. Check the API model ID",
+  "ja": "モデルが存在しないか、アクセス権がありません。API モデル ID を確認してください"
+ },
+ "模型不支持当前参数；请在接口兼容设置中调整 JSON 格式或输出参数": {
+  "en": "The model doesn't support these parameters; adjust the JSON format or output settings under API Compatibility",
+  "ja": "モデルがこのパラメータに対応していません。「API 互換性」で JSON 形式や出力パラメータを調整してください"
+ },
+ "模型不支持当前参数；请在设置的“高级”里调整 JSON 格式或输出长度参数": {
+  "en": "The model doesn't support these parameters; adjust the JSON format or output length parameter under Advanced in Settings",
+  "ja": "モデルがこのパラメータに対応していません。設定の「詳細」で JSON 形式や出力長パラメータを調整してください"
+ },
+ "模型回复被截断；可缩短句子或开启非思考模式": {
+  "en": "The reply was cut off; shorten the sentence or turn on non-thinking mode",
+  "ja": "応答が途中で切れました。文を短くするか、思考モードをオフにしてください"
+ },
+ "模型回复达到输出长度上限，内容被截断；可缩短草稿或使用非思考模式": {
+  "en": "The reply hit the output length limit and was cut off; shorten the draft or use non-thinking mode",
+  "ja": "応答が出力の上限に達して途中で切れました。下書きを短くするか、思考モードをオフにしてください"
+ },
+ "模型未能判断这句话": {
+  "en": "The model couldn't assess this sentence",
+  "ja": "モデルはこの文を判断できませんでした"
+ },
+ "模型认为这句不是可以修改的草稿，没有给出建议": {
+  "en": "The model doesn't see this as a draft it can improve, so there are no suggestions",
+  "ja": "モデルはこれを修正できる下書きではないと判断し、候補を出しませんでした"
+ },
+ "模型返回了 %@ 条候选，但都未通过格式、语言或重复内容检查": {
+  "en": "The model returned %@ candidates, but none passed the format, language or duplicate checks",
+  "ja": "モデルが %@ 件の候補を返しましたが、形式・言語・重複のチェックをすべて通りませんでした"
+ },
+ "模型返回了 %@ 条候选，但都没通过格式或语言检查": {
+  "en": "The model returned %@ candidates, but none passed the format or language checks",
+  "ja": "モデルが %@ 件の候補を返しましたが、形式・言語のチェックをすべて通りませんでした"
+ },
+ "模型返回了空候选；这不代表原句一定自然": {
+  "en": "The model returned no candidates; this doesn't mean the sentence is natural",
+  "ja": "モデルは候補を返しませんでした。元の文が自然という意味ではありません"
+ },
+ "正在发送一条固定例句测试…（可能产生少量费用）": {
+  "en": "Sending a fixed test sentence… (may cost a little)",
+  "ja": "決まった例文でテスト中…（少額の料金がかかる場合があります）"
+ },
+ "正在获取建议…": {
+  "en": "Getting suggestions…",
+  "ja": "候補を取得中…"
+ },
+ "正在请求，请稍候；无需重复点击": {
+  "en": "Requesting, please wait; no need to click again",
+  "ja": "リクエスト中です。そのままお待ちください"
+ },
+ "此处预览前 100 条，将导入全部 %@ 条。": {
+  "en": "Previewing the first 100; all %@ will be imported.",
+  "ja": "最初の 100 件を表示しています。全 %@ 件を読み込みます。"
+ },
+ "此应用不支持这段文字的安全替换；建议已复制，请选中原句后粘贴": {
+  "en": "This app can't safely replace this text; the suggestion was copied. Select the original sentence and paste",
+  "ja": "このアプリではこのテキストを安全に置き換えられません。候補をコピーしたので、元の文を選択して貼り付けてください"
+ },
+ "每日请求上限": {
+  "en": "Daily request limit",
+  "ja": "1 日のリクエスト上限"
+ },
+ "每日请求上限请填写 0 或正整数。": {
+  "en": "Enter 0 or a positive whole number for the daily request limit.",
+  "ja": "1 日のリクエスト上限には 0 以上の整数を入力してください。"
+ },
+ "每日请求上限：%@": {
+  "en": "Daily request limit: %@",
+  "ja": "1 日のリクエスト上限：%@"
+ },
+ "没有取到文字：请把光标放进输入框，或先选中一句话再按快捷键。": {
+  "en": "No text found: put the cursor in a text field, or select a sentence, then press the shortcut.",
+  "ja": "テキストを取得できませんでした。入力欄にカーソルを置くか、文を選択してからショートカットを押してください。"
+ },
+ "没有可导入的词条。": {
+  "en": "Nothing to import.",
+  "ja": "読み込める項目がありません。"
+ },
+ "没认出这是日语、中文还是英语句子，没有发送。": {
+  "en": "Couldn't tell whether this is Japanese, Chinese or English, so nothing was sent.",
+  "ja": "日本語・中国語・英語のどれか判別できなかったため、送信しませんでした。"
+ },
+ "没选中文字时": {
+  "en": "When nothing is selected",
+  "ja": "何も選択していないとき"
+ },
+ "流行": {
+  "en": "Trendy",
+  "ja": "流行語も"
+ },
+ "测试连接": {
+  "en": "Test Connection",
+  "ja": "接続テスト"
+ },
+ "添加": {
+  "en": "Add",
+  "ja": "追加"
+ },
+ "清除后无法恢复，是否继续？": {
+  "en": "This can't be undone. Continue?",
+  "ja": "消去すると元に戻せません。続けますか？"
+ },
+ "清除失败，请重试": {
+  "en": "Couldn't clear; try again",
+  "ja": "消去できませんでした。もう一度お試しください"
+ },
+ "清除学习记录": {
+  "en": "Clear Learning History",
+  "ja": "学習履歴を消去"
+ },
+ "点一下，再按新的组合键": {
+  "en": "Click, then press the new key combination",
+  "ja": "クリックしてから新しいキーの組み合わせを押してください"
+ },
+ "点击或按 Ctrl+数字 采用 · Esc 关闭 · 可拖动": {
+  "en": "Click or press Ctrl+number to use · Esc to close · drag to move",
+  "ja": "クリックか Ctrl+数字で採用 · Esc で閉じる · ドラッグで移動"
+ },
+ "点击或按数字键采用 · ↑↓ 选择，Enter 采用 · 可拖动": {
+  "en": "Click or press a number to use · ↑↓ to choose, Enter to use · drag to move",
+  "ja": "クリックか数字キーで採用 · ↑↓ で選択、Enter で採用 · ドラッグで移動"
+ },
+ "现有自定义方案": {
+  "en": "Current custom scheme",
+  "ja": "現在のカスタム設定"
+ },
+ "用户词典": {
+  "en": "User Dictionary",
+  "ja": "ユーザ辞書"
+ },
+ "用法：": {
+  "en": "Usage: ",
+  "ja": "用法："
+ },
+ "用系统自带的中文键盘打完一句后，切换到 NaturalKana 键盘即可看到建议。": {
+  "en": "Type a sentence with the built-in Chinese keyboard, then switch to the NaturalKana keyboard to see suggestions.",
+  "ja": "標準の中国語キーボードで文を入力してから NaturalKana キーボードに切り替えると、候補が表示されます。"
+ },
+ "用蓝色标出和原句不同的部分": {
+  "en": "Show what differs from the original in blue",
+  "ja": "元の文と違う部分を青で表示"
+ },
+ "界面语言": {
+  "en": "Interface language",
+  "ja": "表示言語"
+ },
+ "留空则保留已保存的密钥": {
+  "en": "Leave blank to keep the saved key",
+  "ja": "空欄のままなら保存済みのキーを使います"
+ },
+ "登录 Windows 后自动在后台运行": {
+  "en": "Run in the background after signing in to Windows",
+  "ja": "Windows にサインインしたらバックグラウンドで起動"
+ },
+ "确认后合并到本机词库，同名词条更新。内容来自你提供的文件，不代表已核实或仍在流行。": {
+  "en": "After you confirm, entries are merged into this device's lexicon and entries with the same word are updated. The content comes from your file and is not verified or guaranteed to be current.",
+  "ja": "確認すると、この端末の語彙に結合され、同じ語の項目は更新されます。内容は指定したファイルのもので、確認済みであることや現在も使われていることを保証するものではありません。"
+ },
+ "确认导入": {
+  "en": "Import",
+  "ja": "読み込む"
+ },
+ "礼貌": {
+  "en": "Polite",
+  "ja": "丁寧"
+ },
+ "禁用应用 Bundle ID": {
+  "en": "Blocked app bundle IDs",
+  "ja": "提案しないアプリの Bundle ID"
+ },
+ "第 %@ 行列数不一致；单元格内不要换行或插入制表符。": {
+  "en": "Row %@ has a different number of columns; don't put line breaks or tabs inside a cell.",
+  "ja": "%@ 行目の列数が一致しません。セル内で改行やタブを使わないでください。"
+ },
+ "第一个候选：Control +": {
+  "en": "First suggestion: Control +",
+  "ja": "1 つ目の候補：Control +"
+ },
+ "第二个候选：Control +": {
+  "en": "Second suggestion: Control +",
+  "ja": "2 つ目の候補：Control +"
+ },
+ "等待停顿": {
+  "en": "Waiting for a pause",
+  "ja": "入力の区切りを待っています"
+ },
+ "等待当前拼写转换完成；未联网": {
+  "en": "Waiting for the current conversion to finish; nothing was sent",
+  "ja": "変換が終わるのを待っています（未送信）"
+ },
+ "等待输入": {
+  "en": "Waiting for input",
+  "ja": "入力待ち"
+ },
+ "等待验证，请切换到键盘后返回": {
+  "en": "Waiting for verification: switch to the keyboard, then come back",
+  "ja": "確認待ちです。キーボードに切り替えてから戻ってください"
+ },
+ "粘贴": {
+  "en": "Paste",
+  "ja": "ペースト"
+ },
+ "缓存命中，无需联网": {
+  "en": "From cache, no network needed",
+  "ja": "キャッシュを使用（通信なし）"
+ },
+ "编辑": {
+  "en": "Edit",
+  "ja": "編集"
+ },
+ "网络用语": {
+  "en": "Internet slang",
+  "ja": "ネットスラング"
+ },
+ "网络连接失败，请检查网络、代理和接口地址": {
+  "en": "Network connection failed. Check your network, proxy and endpoint URL",
+  "ja": "ネットワークに接続できません。ネットワーク・プロキシ・エンドポイント URL を確認してください"
+ },
+ "网络连接失败，请检查网络和接口地址后重试": {
+  "en": "Network connection failed. Check your network and endpoint URL, then try again",
+  "ja": "ネットワークに接続できません。ネットワークとエンドポイント URL を確認して再試行してください"
+ },
+ "罗马字转假名（默认）": {
+  "en": "Romaji to kana (default)",
+  "ja": "ローマ字入力（標準）"
+ },
+ "自动": {
+  "en": "Automatic",
+  "ja": "自動"
+ },
+ "自动建议": {
+  "en": "Auto suggestions",
+  "ja": "自動提案"
+ },
+ "自动转换": {
+  "en": "Live Conversion",
+  "ja": "ライブ変換"
+ },
+ "自定义": {
+  "en": "Custom",
+  "ja": "カスタム"
+ },
+ "英语": {
+  "en": "English",
+  "ja": "英語"
+ },
+ "表达": {
+  "en": "Expression",
+  "ja": "表現"
+ },
+ "表达建议": {
+  "en": "Suggestions",
+  "ja": "表現の提案"
+ },
+ "设置…": {
+  "en": "Settings…",
+  "ja": "設定…"
+ },
+ "设置随机度": {
+  "en": "Set temperature",
+  "ja": "温度を設定"
+ },
+ "评选模型 ID（留空使用上面的模型）": {
+  "en": "Judge model ID (blank uses the model above)",
+  "ja": "評価用モデル ID（空欄なら上のモデル）"
+ },
+ "词典": {
+  "en": "Dictionary",
+  "ja": "辞書"
+ },
+ "词典学习": {
+  "en": "Dictionary learning",
+  "ja": "辞書の学習"
+ },
+ "词库最多支持 2000 条。": {
+  "en": "The lexicon holds at most 2000 entries.",
+  "ja": "語彙は最大 2000 件までです。"
+ },
+ "词表为空。": {
+  "en": "The word list is empty.",
+  "ja": "語彙リストが空です。"
+ },
+ "词语": {
+  "en": "Word",
+  "ja": "語"
+ },
+ "词语与释义不能为空；字段过长或含控制字符，请检查词表。": {
+  "en": "Word and meaning can't be empty, and fields can't be too long or contain control characters. Check the word list.",
+  "ja": "語と意味は空にできません。長すぎる項目や制御文字がないか、語彙リストを確認してください。"
+ },
+ "语体": {
+  "en": "Register",
+  "ja": "文体"
+ },
+ "请为键盘允许完全访问": {
+  "en": "Allow Full Access for the keyboard",
+  "ja": "キーボードの「フルアクセスを許可」をオンにしてください"
+ },
+ "请保存所选服务商的 API 密钥": {
+  "en": "Save the API key for the selected provider",
+  "ja": "選択したサービス提供元の API キーを保存してください"
+ },
+ "请在设置里保存所选服务商的 API 密钥": {
+  "en": "Save the API key for the selected provider in Settings",
+  "ja": "設定で、選択したサービス提供元の API キーを保存してください"
+ },
+ "请在设置里填写有效的 HTTPS 接口地址和模型 ID": {
+  "en": "Enter a valid HTTPS endpoint URL and model ID in Settings",
+  "ja": "設定で有効な HTTPS のエンドポイント URL とモデル ID を入力してください"
+ },
+ "请填写有效的接口地址（https://，本机或局域网服务可用 http://）和模型 ID": {
+  "en": "Enter a valid endpoint URL (https://, or http:// for this device or the local network) and a model ID",
+  "ja": "有効なエンドポイント URL（https://。この端末やローカルネットワークなら http:// も可）とモデル ID を入力してください"
+ },
+ "请按下组合键（需含 Ctrl / Alt / Win）": {
+  "en": "Press a key combination (with Ctrl / Alt / Win)",
+  "ja": "キーの組み合わせを押してください（Ctrl / Alt / Win を含む）"
+ },
+ "请求参数被拒绝（HTTP %@），请检查模型是否支持 JSON Schema 等参数": {
+  "en": "Request parameters rejected (HTTP %@). Check whether the model supports JSON Schema and similar parameters",
+  "ja": "リクエストのパラメータが拒否されました（HTTP %@）。モデルが JSON Schema などに対応しているか確認してください"
+ },
+ "请求参数被拒绝（HTTP %@），请检查模型是否支持 JSON Schema、非思考模式等参数": {
+  "en": "Request parameters rejected (HTTP %@). Check whether the model supports JSON Schema, non-thinking mode and similar parameters",
+  "ja": "リクエストのパラメータが拒否されました（HTTP %@）。モデルが JSON Schema や思考モードのオフなどに対応しているか確認してください"
+ },
+ "请求完成": {
+  "en": "Done",
+  "ja": "完了"
+ },
+ "请求未完成，发生了未识别的错误，请重试": {
+  "en": "The request didn't finish because of an unknown error. Try again",
+  "ja": "不明なエラーでリクエストが完了しませんでした。もう一度お試しください"
+ },
+ "请求超时（20 秒），请稍后重试；Qwen 可开启非思考模式": {
+  "en": "The request timed out (20 s). Try again later; for Qwen, turn on non-thinking mode",
+  "ja": "リクエストがタイムアウトしました（20 秒）。しばらくしてから再試行してください。Qwen は思考モードをオフにできます"
+ },
+ "请求超时（20 秒），请稍后重试；兼容的 Qwen 模型可开启非思考模式": {
+  "en": "The request timed out (20 s). Try again later; supported Qwen models can use non-thinking mode",
+  "ja": "リクエストがタイムアウトしました（20 秒）。しばらくしてから再試行してください。対応する Qwen モデルは思考モードをオフにできます"
+ },
+ "请选择不超过 1 MB 的 UTF-8 词表。": {
+  "en": "Choose a UTF-8 word list of 1 MB or less.",
+  "ja": "1 MB 以下の UTF-8 の語彙リストを選んでください。"
+ },
+ "读音": {
+  "en": "Reading",
+  "ja": "読み"
+ },
+ "跟随系统": {
+  "en": "Same as system",
+  "ja": "システムと同じ"
+ },
+ "轻度": {
+  "en": "Light",
+  "ja": "控えめ"
+ },
+ "轻度（只用常见说法）": {
+  "en": "Light (common expressions only)",
+  "ja": "控えめ（よく使う表現のみ）"
+ },
+ "输入方式": {
+  "en": "Input method",
+  "ja": "入力方式"
+ },
+ "输入时自动转换": {
+  "en": "Convert while typing",
+  "ja": "入力中に自動で変換"
+ },
+ "输入框上下文": {
+  "en": "text field context",
+  "ja": "入力欄の内容"
+ },
+ "输入框里有好几行，一次只能检查一句。请选中要检查的那一句再按快捷键。": {
+  "en": "The field has several lines and only one sentence can be checked at a time. Select the sentence to check, then press the shortcut.",
+  "ja": "入力欄に複数の行があります。一度にチェックできるのは 1 文だけなので、チェックする文を選択してからショートカットを押してください。"
+ },
+ "输入框里的文字或光标已经变了，这条建议没有替换": {
+  "en": "The text or cursor has changed, so this suggestion was not applied",
+  "ja": "テキストまたはカーソルが変わったため、この候補は置き換えませんでした"
+ },
+ "输入状态：": {
+  "en": "Status: ",
+  "ja": "状態："
+ },
+ "输出长度参数": {
+  "en": "Output length parameter",
+  "ja": "出力長パラメータ"
+ },
+ "这句话已经很自然了": {
+  "en": "This sentence is already natural",
+  "ja": "この文はすでに自然です"
+ },
+ "这看起来不是%@句子，没有发送。（设置里可以切换建议语言）": {
+  "en": "This doesn't look like a %@ sentence, so nothing was sent. (You can change the suggestion language in Settings.)",
+  "ja": "%@の文ではないようなので、送信しませんでした（提案の言語は設定で変更できます）。"
+ },
+ "连接成功（用时 %@ 秒）：%@": {
+  "en": "Connected (%@ s): %@",
+  "ja": "接続成功（%@ 秒）：%@"
+ },
+ "连接成功：返回 %@ 条建议，用时 %@ 秒。例：%@": {
+  "en": "Connected: %@ suggestions in %@ s. Example: %@",
+  "ja": "接続成功：%@ 件の候補（%@ 秒）。例：%@"
+ },
+ "退出": {
+  "en": "Quit",
+  "ja": "終了"
+ },
+ "选中一句%@，或直接按 %@": {
+  "en": "Select a %@ sentence, or just press %@",
+  "ja": "%@の文を選択するか、そのまま %@ を押してください"
+ },
+ "选中一句话，或直接按 %@": {
+  "en": "Select a sentence, or just press %@",
+  "ja": "文を選択するか、そのまま %@ を押してください"
+ },
+ "配置、钥匙串共享通过": {
+  "en": "settings and keychain sharing OK",
+  "ja": "設定とキーチェーンの共有は正常"
+ },
+ "重做": {
+  "en": "Redo",
+  "ja": "やり直す"
+ },
+ "重试": {
+  "en": "Retry",
+  "ja": "再試行"
+ },
+ "钥匙串不可用（%@）。请检查共享权限。": {
+  "en": "Keychain unavailable (%@). Check sharing permissions.",
+  "ja": "キーチェーンを利用できません（%@）。共有権限を確認してください。"
+ },
+ "钥匙串校验失败（%@）": {
+  "en": "keychain check failed (%@)",
+  "ja": "キーチェーンの確認に失敗（%@）"
+ },
+ "错误 %@": {
+  "en": "error %@",
+  "ja": "エラー %@"
+ },
+ "键盘": {
+  "en": "Keyboard",
+  "ja": "キーボード"
+ },
+ "键盘设置即时生效。表达建议的配置请在对应页点击“保存设置”。": {
+  "en": "Keyboard settings apply immediately. For suggestion settings, click Save Settings on that tab.",
+  "ja": "キーボードの設定はすぐに反映されます。提案の設定は、そのタブで「設定を保存」をクリックしてください。"
+ },
+ "関西弁（另给一组关西话说法，仅日语）": {
+  "en": "Kansai-ben (an extra Kansai group, Japanese only)",
+  "ja": "関西弁（関西弁の候補を追加、日本語のみ）"
+ },
+ "非思考模式": {
+  "en": "Non-thinking mode",
+  "ja": "思考モードをオフ"
+ },
+ "预览导入：%@ 条": {
+  "en": "Import preview: %@ entries",
+  "ja": "読み込みのプレビュー：%@ 件"
+ },
+ "高级设置": {
+  "en": "Advanced",
+  "ja": "詳細設定"
+ },
+ "高级（接口不兼容时再调整）": {
+  "en": "Advanced (change only if the API is incompatible)",
+  "ja": "詳細（API に互換性がない場合のみ変更）"
+ },
+ "（空）": {
+  "en": "(empty)",
+  "ja": "（空）"
+ },
+ "，共 %@ 字": {
+  "en": ", %@ characters",
+  "ja": "、計 %@ 文字"
+ }
+}

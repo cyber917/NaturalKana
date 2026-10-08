@@ -30,14 +30,14 @@ public static class Providers
 {
     public static string Title(ProviderKind kind) => kind switch
     {
-        ProviderKind.Qwen => "Qwen / 百炼（国际站）",
-        ProviderKind.QwenChina => "Qwen / 百炼（中国站）",
+        ProviderKind.Qwen => UIText.T("Qwen / 百炼（国际站）"),
+        ProviderKind.QwenChina => UIText.T("Qwen / 百炼（中国站）"),
         ProviderKind.DeepSeek => "DeepSeek",
         ProviderKind.Kimi => "Kimi",
         ProviderKind.OpenAI => "OpenAI",
         ProviderKind.Gemini => "Gemini",
         ProviderKind.Claude => "Claude",
-        _ => "自定义",
+        _ => UIText.T("自定义"),
     };
 
     public static ProviderConfig Default(ProviderKind kind) => new()
@@ -92,6 +92,9 @@ public sealed class AppSettings
 {
     public bool Consent { get; set; }
     public SuggestionLanguage Language { get; set; } = SuggestionLanguage.Japanese;
+    /// Detect each draft's language; Language stays the primary choice for ambiguous drafts.
+    public bool AutoLanguage { get; set; }
+    public InterfaceLanguage Interface { get; set; } = InterfaceLanguage.System;
     public ProviderKind Provider { get; set; } = ProviderKind.Qwen;
     public Dictionary<ProviderKind, ProviderConfig> ProviderConfigs { get; set; } = new();
     public RegisterPreference RegisterPreference { get; set; } = RegisterPreference.Both;
@@ -114,6 +117,18 @@ public sealed class AppSettings
     /// Dialects only apply to Japanese suggestions.
     [JsonIgnore] public Dialect ActiveDialect => Language == SuggestionLanguage.Japanese ? Dialect : Dialect.Off;
     [JsonIgnore] public int SuggestionLimit => Math.Clamp(MaximumSuggestions, 1, 10);
+
+    /// Settings for one draft: with AutoLanguage, Language becomes the detected language (null: no language fits).
+    /// The copy is only for building and checking the request; budget and saving stay on the original.
+    public AppSettings? ResolvingLanguage(string draft)
+    {
+        if (!AutoLanguage) return this;
+        if (Languages.Detect(draft, Language) is not { } detected) return null;
+        if (detected == Language) return this;
+        var copy = (AppSettings)MemberwiseClone();
+        copy.Language = detected;
+        return copy;
+    }
 
     public ProviderConfig Config(ProviderKind kind) =>
         ProviderConfigs.TryGetValue(kind, out var config) ? config : Providers.Default(kind);

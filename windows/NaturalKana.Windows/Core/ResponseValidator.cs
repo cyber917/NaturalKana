@@ -9,10 +9,10 @@ public sealed record ValidationReport(IReadOnlyList<Suggestion> Suggestions, int
 {
     public string? EmptyMessage =>
         Suggestions.Count > 0 ? null
-        : ReceivedCount > 0 ? $"模型返回了 {ReceivedCount} 条候选，但都没通过格式或语言检查"
-        : Assessment == Core.Assessment.Natural ? "这句话已经很自然了"
-        : Assessment == Core.Assessment.Unsupported ? "模型认为这句不是可以修改的草稿，没有给出建议"
-        : "模型返回了空候选；这不代表原句一定自然";
+        : ReceivedCount > 0 ? UIText.T("模型返回了 %@ 条候选，但都没通过格式或语言检查", $"{ReceivedCount}")
+        : Assessment == Core.Assessment.Natural ? UIText.T("这句话已经很自然了")
+        : Assessment == Core.Assessment.Unsupported ? UIText.T("模型认为这句不是可以修改的草稿，没有给出建议")
+        : UIText.T("模型返回了空候选；这不代表原句一定自然");
 }
 
 /// Port of ResponseValidator: strict JSON shape, register filter, language and duplicate checks.

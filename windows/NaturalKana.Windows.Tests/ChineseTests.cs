@@ -93,10 +93,10 @@ public class ChineseTests
     [Fact]
     public void Titles()
     {
-        Assert.Equal("口语", Languages.RegisterTitle(SuggestionLanguage.Chinese, Register.Casual));
-        Assert.Equal("礼貌", Languages.RegisterTitle(SuggestionLanguage.Chinese, Register.Polite));
-        Assert.Equal("中文", Languages.Title(SuggestionLanguage.Chinese));
+        Assert.Equal(UIText.T("口语"), Languages.RegisterTitle(SuggestionLanguage.Chinese, Register.Casual));
+        Assert.Equal(UIText.T("礼貌"), Languages.RegisterTitle(SuggestionLanguage.Chinese, Register.Polite));
+        Assert.Equal(UIText.T("中文"), Languages.Title(SuggestionLanguage.Chinese));
         Assert.True(Languages.AcceptsDraft(SuggestionLanguage.Chinese, Languages.TestDraft(SuggestionLanguage.Chinese)));
-        Assert.Contains("中文", Languages.NotThisLanguage(SuggestionLanguage.Chinese));
+        Assert.Contains(UIText.T("中文"), Languages.NotThisLanguage(SuggestionLanguage.Chinese));
     }
 }

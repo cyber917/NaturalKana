@@ -34,6 +34,10 @@ public struct LRUCache<Key: Hashable, Value> {
     public private(set) var requestSeconds: Double?
     public private(set) var cacheHit = false
     public private(set) var receivedCandidateCount: Int?
+    /// Languages this host can check; with auto language, drafts are detected among them.
+    public var languages = SuggestionLanguage.available
+    /// Language of the current suggestions (the detected one when auto language is on).
+    public private(set) var language: SuggestionLanguage = .japanese
     private var personalEntries: [PersonalLexiconEntry] = []
     public var onChange: (([Suggestion], Diagnostics) -> Void)?
     private var task: Task<Void, Never>?
@@ -68,7 +72,9 @@ public struct LRUCache<Key: Hashable, Value> {
         personalEntries = entries; cancel(clearCache: true)
     }
     private func publish(_ items: [Suggestion], _ state: Diagnostics) { suggestions = items; status = state; onChange?(items, state) }
-    public func update(_ snapshot: DraftSnapshot, settings: SuggestionSettings, provider: any SuggestionProvider, explicit: Bool = false) {
+    public func update(_ snapshot: DraftSnapshot, settings chosen: SuggestionSettings, provider: any SuggestionProvider, explicit: Bool = false) {
+        // Unrecognised drafts keep the primary language here and are filtered by its gate below.
+        let settings = chosen.resolvingLanguage(for: snapshot.text, among: languages) ?? chosen
         // A late host update must not reopen a palette dismissed for this draft.
         // Editing the draft, changing fields, or an explicit request resumes suggestions.
         if dismissedSnapshot == snapshot, dismissedSettings == settings.fingerprint, !explicit { return }
@@ -77,7 +83,7 @@ public struct LRUCache<Key: Hashable, Value> {
         let fingerprint = settings.fingerprint
         if current == snapshot, currentSettings == fingerprint,
            status == .requesting || (!explicit && status != .idle) { return }
-        cancel(); current = snapshot; currentSettings = fingerprint
+        cancel(); current = snapshot; currentSettings = fingerprint; language = settings.language
         guard settings.enabled, settings.consent else { publish([], .disabled); return }
         guard !snapshot.secure, !settings.blockedApps.contains(snapshot.appID) else { publish([], .filtered(.protectedField)); return }
         guard !snapshot.text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else { publish([], .filtered(.empty)); return }

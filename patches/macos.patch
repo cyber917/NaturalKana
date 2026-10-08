@@ -716,7 +716,7 @@ index 3c415cf..3e77017 100644
  	};
  	rootObject = 1A41E60C26E745D9009B65D7 /* Project object */;
 diff --git a/azooKeyMac/AppDelegate.swift b/azooKeyMac/AppDelegate.swift
-index 13c8752..c5d4936 100644
+index 13c8752..76e1003 100644
 --- a/azooKeyMac/AppDelegate.swift
 +++ b/azooKeyMac/AppDelegate.swift
 @@ -1,138 +1,101 @@
@@ -771,7 +771,7 @@ index 13c8752..c5d4936 100644
 +    @MainActor func openSettingsWindow() {
 +        if settingsWindow == nil {
 +            let window = NSWindow(contentRect: NSRect(x: 0, y: 0, width: 660, height: 760), styleMask: [.titled, .closable, .resizable], backing: .buffered, defer: false)
-+            window.title = "NaturalKana 设置"
++            window.title = UIText.t("NaturalKana 设置")
 +            window.isReleasedWhenClosed = false
 +            window.contentView = NSHostingView(rootView: ConfigWindow(model: settingsModel))
 +            window.center(); settingsWindow = window
@@ -927,15 +927,15 @@ index 13c8752..c5d4936 100644
 +        server = IMKServer(name: Bundle.main.infoDictionary?["InputMethodConnectionName"] as? String, bundleIdentifier: Bundle.main.bundleIdentifier)
 +        converterClient.synchronizeUserDictionary(forceExport: false) { _ in }
 +        let menu = NSMenu()
-+        let edit = NSMenuItem(title: "编辑", action: nil, keyEquivalent: "")
-+        let actions = NSMenu(title: "编辑"); edit.submenu = actions; menu.addItem(edit)
-+        actions.addItem(withTitle: "撤销", action: Selector(("undo:")), keyEquivalent: "z")
-+        actions.addItem(withTitle: "重做", action: Selector(("redo:")), keyEquivalent: "Z")
++        let edit = NSMenuItem(title: UIText.t("编辑"), action: nil, keyEquivalent: "")
++        let actions = NSMenu(title: UIText.t("编辑")); edit.submenu = actions; menu.addItem(edit)
++        actions.addItem(withTitle: UIText.t("撤销"), action: Selector(("undo:")), keyEquivalent: "z")
++        actions.addItem(withTitle: UIText.t("重做"), action: Selector(("redo:")), keyEquivalent: "Z")
 +        actions.addItem(.separator())
-+        actions.addItem(withTitle: "剪切", action: #selector(NSText.cut(_:)), keyEquivalent: "x")
-+        actions.addItem(withTitle: "复制", action: #selector(NSText.copy(_:)), keyEquivalent: "c")
-+        actions.addItem(withTitle: "粘贴", action: #selector(NSText.paste(_:)), keyEquivalent: "v")
-+        actions.addItem(withTitle: "全选", action: #selector(NSText.selectAll(_:)), keyEquivalent: "a")
++        actions.addItem(withTitle: UIText.t("剪切"), action: #selector(NSText.cut(_:)), keyEquivalent: "x")
++        actions.addItem(withTitle: UIText.t("复制"), action: #selector(NSText.copy(_:)), keyEquivalent: "c")
++        actions.addItem(withTitle: UIText.t("粘贴"), action: #selector(NSText.paste(_:)), keyEquivalent: "v")
++        actions.addItem(withTitle: UIText.t("全选"), action: #selector(NSText.selectAll(_:)), keyEquivalent: "a")
 +        NSApp.mainMenu = menu
 +        if CommandLine.arguments.contains("--natural-settings") { openSettingsWindow() }
      }
@@ -1777,7 +1777,7 @@ index f5058d6..0000000
 -    }
 -}
 diff --git a/azooKeyMac/InputController/azooKeyMacInputController.swift b/azooKeyMac/InputController/azooKeyMacInputController.swift
-index f10ba35..2671f79 100644
+index f10ba35..4f131e8 100644
 --- a/azooKeyMac/InputController/azooKeyMacInputController.swift
 +++ b/azooKeyMac/InputController/azooKeyMacInputController.swift
 @@ -1,14 +1,19 @@
@@ -1959,7 +1959,19 @@ index f10ba35..2671f79 100644
  
              if englishMode {
                  // 英語モードへの切り替え通知（実際の処理はhandleで行う）
-@@ -251,80 +190,12 @@ class azooKeyMacInputController: IMKInputController, NSMenuItemValidation { // s
+@@ -239,7 +178,10 @@ class azooKeyMacInputController: IMKInputController, NSMenuItemValidation { // s
+     }
+ 
+     override func menu() -> NSMenu! {
+-        self.appMenu
++        // Pick up an interface language chosen in settings since this menu was built.
++        MainActor.assumeIsolated { self.naturalSession.model.reload() }
++        self.refreshMenuTitles()
++        return self.appMenu
+     }
+ 
+     // swiftlint:disable:next cyclomatic_complexity
+@@ -251,80 +193,12 @@ class azooKeyMacInputController: IMKInputController, NSMenuItemValidation { // s
              return false
          }
  
@@ -2043,7 +2055,7 @@ index f10ba35..2671f79 100644
              optionDirectInputText: event.characters(byApplyingModifiers: event.modifierFlags.subtracting(.option))
          )
      }
-@@ -335,21 +206,36 @@ class azooKeyMacInputController: IMKInputController, NSMenuItemValidation { // s
+@@ -335,21 +209,36 @@ class azooKeyMacInputController: IMKInputController, NSMenuItemValidation { // s
          enableSuggestion: Bool,
          optionDirectInputText: String? = nil
      ) -> Bool {
@@ -2092,7 +2104,7 @@ index f10ba35..2671f79 100644
  
          self.nextKeyEventID &+= 1
          let request = ConverterKeyEventRequest(
-@@ -394,19 +280,6 @@ class azooKeyMacInputController: IMKInputController, NSMenuItemValidation { // s
+@@ -394,19 +283,6 @@ class azooKeyMacInputController: IMKInputController, NSMenuItemValidation { // s
          return true
      }
  
@@ -2112,7 +2124,7 @@ index f10ba35..2671f79 100644
      @MainActor
      private func apply(_ response: ConverterServerResponse) {
          if let inputLanguage = response.inputLanguage {
-@@ -422,7 +295,13 @@ class azooKeyMacInputController: IMKInputController, NSMenuItemValidation { // s
+@@ -422,7 +298,13 @@ class azooKeyMacInputController: IMKInputController, NSMenuItemValidation { // s
          self.refreshMarkedText()
          self.refreshCandidateWindow()
          self.refreshPredictionWindow()
@@ -2127,7 +2139,7 @@ index f10ba35..2671f79 100644
      }
  
      @MainActor
-@@ -430,26 +309,15 @@ class azooKeyMacInputController: IMKInputController, NSMenuItemValidation { // s
+@@ -430,26 +312,15 @@ class azooKeyMacInputController: IMKInputController, NSMenuItemValidation { // s
      private func apply(_ effect: ConverterClientEffect, client: IMKTextInput) {
          switch effect {
          case .insertText(let text):
@@ -2160,7 +2172,7 @@ index f10ba35..2671f79 100644
          case .fallthroughToApplication:
              break
          }
-@@ -472,20 +340,11 @@ class azooKeyMacInputController: IMKInputController, NSMenuItemValidation { // s
+@@ -472,20 +343,11 @@ class azooKeyMacInputController: IMKInputController, NSMenuItemValidation { // s
  
      private var converterServerSessionConfig: ConverterSessionConfig {
          ConverterSessionConfig(
@@ -2186,7 +2198,7 @@ index f10ba35..2671f79 100644
          )
      }
  
-@@ -494,9 +353,9 @@ class azooKeyMacInputController: IMKInputController, NSMenuItemValidation { // s
+@@ -494,9 +356,9 @@ class azooKeyMacInputController: IMKInputController, NSMenuItemValidation { // s
          client.overrideKeyboard(withKeyboardNamed: Config.KeyboardLayout().value.layoutIdentifier)
          switch language {
          case .english:
@@ -2198,7 +2210,7 @@ index f10ba35..2671f79 100644
          }
      }
  
-@@ -548,55 +407,6 @@ class azooKeyMacInputController: IMKInputController, NSMenuItemValidation { // s
+@@ -548,55 +410,6 @@ class azooKeyMacInputController: IMKInputController, NSMenuItemValidation { // s
          }
      }
  
@@ -2254,7 +2266,7 @@ index f10ba35..2671f79 100644
      func refreshPredictionWindow() {
          guard self.inputState == .composing else {
              self.hidePredictionWindow()
-@@ -702,14 +512,6 @@ class azooKeyMacInputController: IMKInputController, NSMenuItemValidation { // s
+@@ -702,14 +515,6 @@ class azooKeyMacInputController: IMKInputController, NSMenuItemValidation { // s
          self.predictionHideWorkItem = nil
      }
  
@@ -2269,7 +2281,7 @@ index f10ba35..2671f79 100644
      func getCursorLocation() -> CGPoint {
          var rect: NSRect = .zero
          self.client()?.attributes(forCharacterIndex: 0, lineHeightRectangle: &rect)
-@@ -718,6 +520,11 @@ class azooKeyMacInputController: IMKInputController, NSMenuItemValidation { // s
+@@ -718,6 +523,11 @@ class azooKeyMacInputController: IMKInputController, NSMenuItemValidation { // s
      }
  
      func refreshMarkedText() {
@@ -2281,7 +2293,7 @@ index f10ba35..2671f79 100644
          let highlight = self.mark(
              forStyle: kTSMHiliteSelectedConvertedText,
              at: NSRange(location: NSNotFound, length: 0)
-@@ -727,8 +534,7 @@ class azooKeyMacInputController: IMKInputController, NSMenuItemValidation { // s
+@@ -727,8 +537,7 @@ class azooKeyMacInputController: IMKInputController, NSMenuItemValidation { // s
              at: NSRange(location: NSNotFound, length: 0)
          ) as? [NSAttributedString.Key: Any]
          let text = NSMutableAttributedString(string: "")
@@ -2291,7 +2303,7 @@ index f10ba35..2671f79 100644
              let attributes: [NSAttributedString.Key: Any]? = switch part.focus {
              case .focused: highlight
              case .unfocused: underline
-@@ -743,7 +549,7 @@ class azooKeyMacInputController: IMKInputController, NSMenuItemValidation { // s
+@@ -743,7 +552,7 @@ class azooKeyMacInputController: IMKInputController, NSMenuItemValidation { // s
          }
          self.client()?.setMarkedText(
              text,
@@ -2300,7 +2312,7 @@ index f10ba35..2671f79 100644
              replacementRange: NSRange(location: NSNotFound, length: 0)
          )
      }
-@@ -840,117 +646,3 @@ extension azooKeyMacInputController {
+@@ -840,117 +649,3 @@ extension azooKeyMacInputController {
          return NSRange(location: 0, length: 0)
      }
  }
@@ -2419,11 +2431,14 @@ index f10ba35..2671f79 100644
 -
 -}
 diff --git a/azooKeyMac/InputController/azooKeyMacInputControllerHelper.swift b/azooKeyMac/InputController/azooKeyMacInputControllerHelper.swift
-index 9b993b4..a8af8bd 100644
+index 9b993b4..4af80a1 100644
 --- a/azooKeyMac/InputController/azooKeyMacInputControllerHelper.swift
 +++ b/azooKeyMac/InputController/azooKeyMacInputControllerHelper.swift
-@@ -3,98 +3,23 @@ import Core
+@@ -1,100 +1,30 @@
+ import Cocoa
+ import Core
  import InputMethodKit
++import NaturalSuggestCore
  
  extension azooKeyMacInputController {
 -    // MARK: - Settings and Menu Items
@@ -2440,10 +2455,10 @@ index 9b993b4..a8af8bd 100644
 -        self.appMenu.addItem(NSMenuItem(title: "設定…", action: #selector(self.openConfigWindow(_:)), keyEquivalent: ""))
 -        self.appMenu.addItem(NSMenuItem(title: "View on GitHub…", action: #selector(self.openGitHubRepository(_:)), keyEquivalent: ""))
 -        self.updateTransformSelectedTextMenuItemEnabledState()
-+        let settings = NSMenuItem(title: "NaturalKana 设置…", action: #selector(openSettings(_:)), keyEquivalent: "")
++        let settings = NSMenuItem(title: UIText.t("NaturalKana 设置…"), action: #selector(openSettings(_:)), keyEquivalent: "")
 +        settings.target = self
 +        appMenu.addItem(settings)
-+        liveConversionToggleMenuItem = NSMenuItem(title: "自动转换", action: #selector(toggleLiveConversion(_:)), keyEquivalent: "")
++        liveConversionToggleMenuItem = NSMenuItem(title: UIText.t("自动转换"), action: #selector(toggleLiveConversion(_:)), keyEquivalent: "")
 +        liveConversionToggleMenuItem.target = self
 +        appMenu.addItem(liveConversionToggleMenuItem)
 +    }
@@ -2456,11 +2471,9 @@ index 9b993b4..a8af8bd 100644
          let config = Config.LiveConversion()
 -        config.value = !self.liveConversionEnabled
 -        self.updateLiveConversionToggleMenuItem(newValue: config.value)
-+        config.value = !liveConversionEnabled
-+        updateLiveConversionToggleMenuItem(newValue: config.value)
-     }
+-    }
 -
-     func updateLiveConversionToggleMenuItem(newValue: Bool) {
+-    func updateLiveConversionToggleMenuItem(newValue: Bool) {
 -        self.liveConversionToggleMenuItem.state = newValue ? .on : .off
 -        self.liveConversionToggleMenuItem.title = "ライブ変換"
 -    }
@@ -2468,8 +2481,7 @@ index 9b993b4..a8af8bd 100644
 -    private enum TransformMenuTitle {
 -        static let normal = "いい感じ変換"
 -        static let noBackend = "いい感じ変換（無効/バックエンドなし）"
-+        liveConversionToggleMenuItem.state = newValue ? .on : .off
-     }
+-    }
 -
 -    @MainActor @objc func performTransformSelectedText(_ sender: Any) {
 -        let aiBackendEnabled = Config.AIBackendPreference().value != .off
@@ -2504,7 +2516,9 @@ index 9b993b4..a8af8bd 100644
 -        let aiBackendEnabled = Config.AIBackendPreference().value != .off
 -        self.updateTransformSelectedTextMenuItemTitle(aiBackendEnabled: aiBackendEnabled)
 -        self.transformSelectedTextMenuItem.isEnabled = self.canPerformTransformSelectedText(client: self.client())
--    }
++        config.value = !liveConversionEnabled
++        updateLiveConversionToggleMenuItem(newValue: config.value)
+     }
 -
 -    private func canPerformTransformSelectedText(client: IMKTextInput?) -> Bool {
 -        guard !self.isPromptWindowVisible else {
@@ -2519,7 +2533,10 @@ index 9b993b4..a8af8bd 100644
 -
 -    private func updateTransformSelectedTextMenuItemTitle(aiBackendEnabled: Bool) {
 -        self.transformSelectedTextMenuItem.title = aiBackendEnabled ? TransformMenuTitle.normal : TransformMenuTitle.noBackend
--    }
++    func refreshMenuTitles() {
++        for item in appMenu.items where item.action == #selector(openSettings(_:)) { item.title = UIText.t("NaturalKana 设置…") }
++        liveConversionToggleMenuItem.title = UIText.t("自动转换")
+     }
 -
 -    @objc func openGitHubRepository(_ sender: Any) {
 -        guard let url = URL(string: "https://github.com/azooKey/azooKey-Desktop") else {
@@ -2530,18 +2547,21 @@ index 9b993b4..a8af8bd 100644
 -
 -    @objc func openConfigWindow(_ sender: Any) {
 -        (NSApplication.shared.delegate as? AppDelegate)!.openConfigWindow()
--    }
++    func updateLiveConversionToggleMenuItem(newValue: Bool) {
++        liveConversionToggleMenuItem.state = newValue ? .on : .off
+     }
 -
  }
 diff --git a/azooKeyMac/Windows/ConfigWindow.swift b/azooKeyMac/Windows/ConfigWindow.swift
-index 099d430..f690722 100644
+index 099d430..a5f6039 100644
 --- a/azooKeyMac/Windows/ConfigWindow.swift
 +++ b/azooKeyMac/Windows/ConfigWindow.swift
-@@ -1,983 +1,73 @@
+@@ -1,983 +1,74 @@
  import Cocoa
  import Core
  import SwiftUI
 +import NaturalSuggestUI
++import NaturalSuggestCore
  
 +/// The only settings surface for the installed input method.
  struct ConfigWindow: View {
@@ -3430,45 +3450,45 @@ index 099d430..f690722 100644
 -                            if self.debugTypoCorrectionDownloadInProgress {
 -                                ProgressView()
 -                                    .controlSize(.small)
-+                    Text("输入状态：" + activity.message).font(.callout)
++                    Text(UIText.t("输入状态：") + activity.message).font(.callout)
 +                    if !activity.timing.isEmpty { Text(activity.timing).font(.caption).foregroundStyle(.secondary) }
 +                    Spacer()
 +                }.padding()
-+                DisclosureGroup("检查详情（仅在内存中显示，不写日志）") {
++                DisclosureGroup(UIText.t("检查详情（仅在内存中显示，不写日志）")) {
 +                    VStack(alignment: .leading, spacing: 6) {
-+                        Text("文字来源：" + activity.contextSource + "，共 \(activity.inspectedText.count) 字")
-+                        Text(activity.inspectedText.isEmpty ? "（空）" : activity.inspectedText).textSelection(.enabled)
-+                        Text("最近请求：" + activity.lastRequest).foregroundStyle(.secondary)
++                        Text(UIText.t("文字来源：") + activity.contextSource + UIText.t("，共 %@ 字", "\(activity.inspectedText.count)"))
++                        Text(activity.inspectedText.isEmpty ? UIText.t("（空）") : activity.inspectedText).textSelection(.enabled)
++                        Text(UIText.t("最近请求：") + activity.lastRequest).foregroundStyle(.secondary)
 +                    }.font(.callout).frame(maxWidth: .infinity, alignment: .leading)
 +                }.padding(.horizontal).padding(.bottom, 8)
 +                Divider()
 +                NaturalSettingsView(model: model)
-+            }.tabItem { Label("表达建议", systemImage: "sparkles") }
++            }.tabItem { Label(UIText.t("表达建议"), systemImage: "sparkles") }
 +            Form {
-+                Section("打字与转换") {
-+                    Toggle("输入时自动转换", isOn: $liveConversion)
-+                    Text("关闭后，按空格转换，按回车确认。普通打字使用本地词典，无需联网。")
++                Section(UIText.t("打字与转换")) {
++                    Toggle(UIText.t("输入时自动转换"), isOn: $liveConversion)
++                    Text(UIText.t("关闭后，按空格转换，按回车确认。普通打字使用本地词典，无需联网。"))
 +                        .font(.caption).foregroundStyle(.secondary)
-+                    Picker("输入方式", selection: $inputStyle) {
-+                        Text("罗马字转假名（默认）").tag(Config.InputStyle.Value.default)
-+                        Text("假名输入（日式键盘）").tag(Config.InputStyle.Value.defaultKanaJIS)
-+                        Text("假名输入（美式键盘）").tag(Config.InputStyle.Value.defaultKanaUS)
-+                        Text("AZIK 罗马字方案").tag(Config.InputStyle.Value.defaultAZIK)
-+                        if inputStyle.value == .custom { Text("现有自定义方案").tag(Config.InputStyle.Value.custom) }
++                    Picker(UIText.t("输入方式"), selection: $inputStyle) {
++                        Text(UIText.t("罗马字转假名（默认）")).tag(Config.InputStyle.Value.default)
++                        Text(UIText.t("假名输入（日式键盘）")).tag(Config.InputStyle.Value.defaultKanaJIS)
++                        Text(UIText.t("假名输入（美式键盘）")).tag(Config.InputStyle.Value.defaultKanaUS)
++                        Text(UIText.t("AZIK 罗马字方案")).tag(Config.InputStyle.Value.defaultAZIK)
++                        if inputStyle.value == .custom { Text(UIText.t("现有自定义方案")).tag(Config.InputStyle.Value.custom) }
 +                    }
-+                    Toggle("使用半角空格", isOn: $halfSpace)
-+                    Toggle("反斜杠键输入 \\ 而非 ¥", isOn: $backSlash)
++                    Toggle(UIText.t("使用半角空格"), isOn: $halfSpace)
++                    Toggle(UIText.t("反斜杠键输入 \\ 而非 ¥"), isOn: $backSlash)
 +                }
-+                Section("学习") {
-+                    Picker("词典学习", selection: $learning) {
-+                        Text("学习并使用历史").tag(Config.Learning.Value.inputAndOutput)
-+                        Text("停止学习，保留历史").tag(Config.Learning.Value.onlyOutput)
-+                        Text("不使用学习历史").tag(Config.Learning.Value.nothing)
++                Section(UIText.t("学习")) {
++                    Picker(UIText.t("词典学习"), selection: $learning) {
++                        Text(UIText.t("学习并使用历史")).tag(Config.Learning.Value.inputAndOutput)
++                        Text(UIText.t("停止学习，保留历史")).tag(Config.Learning.Value.onlyOutput)
++                        Text(UIText.t("不使用学习历史")).tag(Config.Learning.Value.nothing)
 +                    }
-+                    Button("清除学习记录", role: .destructive) { showReset = true }
-+                        .confirmationDialog("清除后无法恢复，是否继续？", isPresented: $showReset) {
-+                            Button("清除学习记录", role: .destructive) {
-+                                client.resetLearningData { ok in resetMessage = ok ? "学习记录已清除" : "清除失败，请重试" }
++                    Button(UIText.t("清除学习记录"), role: .destructive) { showReset = true }
++                        .confirmationDialog(UIText.t("清除后无法恢复，是否继续？"), isPresented: $showReset) {
++                            Button(UIText.t("清除学习记录"), role: .destructive) {
++                                client.resetLearningData { ok in resetMessage = ok ? UIText.t("学习记录已清除") : UIText.t("清除失败，请重试") }
                              }
 -                            Spacer()
 -                            switch self.debugTypoCorrectionState {
@@ -3524,7 +3544,7 @@ index 099d430..f690722 100644
 -                    HStack {
 -                        Button("Finderで開く") {
 -                            self.openAzooKeyDataDirectoryInFinder()
-+                            Button("取消", role: .cancel) {}
++                            Button(UIText.t("取消"), role: .cancel) {}
                          }
 -                    }
 +                    if !resetMessage.isEmpty { Text(resetMessage) }
@@ -3567,11 +3587,11 @@ index 099d430..f690722 100644
 -        }
 -        .formStyle(.grouped)
 -        .scrollContentBackground(.hidden)
-+                Text("键盘设置即时生效。表达建议的配置请在对应页点击“保存设置”。")
++                Text(UIText.t("键盘设置即时生效。表达建议的配置请在对应页点击“保存设置”。"))
 +                    .font(.caption).foregroundStyle(.secondary)
-+            }.formStyle(.grouped).tabItem { Label("键盘", systemImage: "keyboard") }
-+            UserDictionaryEditorWindow().padding().tabItem { Label("词典", systemImage: "book") }
-+            PersonalLexiconView(model: model).tabItem { Label("SNS 词库", systemImage: "text.book.closed") }
++            }.formStyle(.grouped).tabItem { Label(UIText.t("键盘"), systemImage: "keyboard") }
++            UserDictionaryEditorWindow().padding().tabItem { Label(UIText.t("词典"), systemImage: "book") }
++            PersonalLexiconView(model: model).tabItem { Label(UIText.t("SNS 词库"), systemImage: "text.book.closed") }
 +        }.padding(12).frame(minWidth: 620, minHeight: 640)
      }
  }
@@ -5384,97 +5404,105 @@ index a0a7d5e..0000000
 -    RomajiTableEditorWindow(base: .defaultRomanToKana) { _ in }
 -}
 diff --git a/azooKeyMac/Windows/UserDictionaryEditorWindow.swift b/azooKeyMac/Windows/UserDictionaryEditorWindow.swift
-index 29b84d5..a6d9b4a 100644
+index 29b84d5..c0d7740 100644
 --- a/azooKeyMac/Windows/UserDictionaryEditorWindow.swift
 +++ b/azooKeyMac/Windows/UserDictionaryEditorWindow.swift
-@@ -18,7 +18,7 @@ struct UserDictionaryEditorWindow: View {
+@@ -7,6 +7,7 @@
+ 
+ import Core
+ import SwiftUI
++import NaturalSuggestCore
+ 
+ struct UserDictionaryEditorWindow: View {
+ 
+@@ -18,7 +19,7 @@ struct UserDictionaryEditorWindow: View {
      @ViewBuilder
      private func helpButton(helpContent: LocalizedStringKey, isPresented: Binding<Bool>) -> some View {
          if #available(macOS 14, *) {
 -            Button("ヘルプ", systemImage: "questionmark") {
-+            Button("帮助", systemImage: "questionmark") {
++            Button(UIText.t("帮助"), systemImage: "questionmark") {
                  isPresented.wrappedValue = true
              }
              .labelStyle(.iconOnly)
-@@ -58,10 +58,10 @@ struct UserDictionaryEditorWindow: View {
+@@ -58,10 +59,10 @@ struct UserDictionaryEditorWindow: View {
  
      var body: some View {
          VStack {
 -            Text("ユーザ辞書の設定")
-+            Text("用户词典")
++            Text(UIText.t("用户词典"))
                  .bold()
                  .font(.title)
 -            Text("この機能はβ版です。予告なく仕様を変更することがあるほか、最大50件に限定しています。")
-+            Text("保存常用词的日语读音和写法，最多 50 条。")
++            Text(UIText.t("保存常用词的日语读音和写法，最多 50 条。"))
                  .font(.caption)
              Spacer()
              if let editTargetID {
-@@ -80,12 +80,12 @@ struct UserDictionaryEditorWindow: View {
+@@ -80,12 +81,12 @@ struct UserDictionaryEditorWindow: View {
                      }
                  )
                  Form {
 -                    TextField("単語", text: itemBinding.word)
 -                    TextField("読み", text: itemBinding.reading)
 -                    TextField("ヒント", text: itemBinding.nonNullHint)
-+                    TextField("词语", text: itemBinding.word)
-+                    TextField("读音", text: itemBinding.reading)
-+                    TextField("提示", text: itemBinding.nonNullHint)
++                    TextField(UIText.t("词语"), text: itemBinding.word)
++                    TextField(UIText.t("读音"), text: itemBinding.reading)
++                    TextField(UIText.t("提示"), text: itemBinding.nonNullHint)
                      HStack {
                          Spacer()
 -                        Button("完了", systemImage: "checkmark") {
-+                        Button("完成", systemImage: "checkmark") {
++                        Button(UIText.t("完成"), systemImage: "checkmark") {
                              self.editTargetID = nil
                              self.exportUserDictionary()
                          }
-@@ -95,7 +95,7 @@ struct UserDictionaryEditorWindow: View {
+@@ -95,7 +96,7 @@ struct UserDictionaryEditorWindow: View {
              } else {
                  HStack {
                      Spacer()
 -                    Button("追加", systemImage: "plus") {
-+                    Button("添加", systemImage: "plus") {
++                    Button(UIText.t("添加"), systemImage: "plus") {
                          let newItem = Config.UserDictionaryEntry(word: "", reading: "", hint: nil)
                          self.updateUserDictionary { value in
                              value.items.append(newItem)
-@@ -105,11 +105,11 @@ struct UserDictionaryEditorWindow: View {
+@@ -105,11 +106,11 @@ struct UserDictionaryEditorWindow: View {
                      }
                      .disabled(self.isAdditionDisabled)
                      if self.isAdditionDisabled {
 -                        Label("50件を超えています", systemImage: "exclamationmark.octagon")
-+                        Label("最多可保存 50 条词语", systemImage: "exclamationmark.octagon")
++                        Label(UIText.t("最多可保存 50 条词语"), systemImage: "exclamationmark.octagon")
                              .foregroundStyle(.red)
                      }
                      if let undoItem {
 -                        Button("元に戻す", systemImage: "arrow.uturn.backward") {
-+                        Button("撤销删除", systemImage: "arrow.uturn.backward") {
++                        Button(UIText.t("撤销删除"), systemImage: "arrow.uturn.backward") {
                              self.updateUserDictionary { value in
                                  value.items.append(undoItem)
                              }
-@@ -125,13 +125,13 @@ struct UserDictionaryEditorWindow: View {
+@@ -125,13 +126,13 @@ struct UserDictionaryEditorWindow: View {
                  Table(self.userDictionaryValue.items) {
                      TableColumn("") { item in
                          HStack {
 -                            Button("編集する", systemImage: "pencil") {
-+                            Button("编辑", systemImage: "pencil") {
++                            Button(UIText.t("编辑"), systemImage: "pencil") {
                                  self.editTargetID = item.id
                                  self.undoItem = nil
                              }
                              .buttonStyle(.bordered)
                              .labelStyle(.iconOnly)
 -                            Button("削除する", systemImage: "trash", role: .destructive) {
-+                            Button("删除", systemImage: "trash", role: .destructive) {
++                            Button(UIText.t("删除"), systemImage: "trash", role: .destructive) {
                                  self.updateUserDictionary { value in
                                      if let itemIndex = value.items.firstIndex(where: { $0.id == item.id }) {
                                          self.undoItem = value.items[itemIndex]
-@@ -144,9 +144,9 @@ struct UserDictionaryEditorWindow: View {
+@@ -144,9 +145,9 @@ struct UserDictionaryEditorWindow: View {
                              .labelStyle(.iconOnly)
                          }
                      }
 -                    TableColumn("単語", value: \.word)
 -                    TableColumn("読み", value: \.reading)
 -                    TableColumn("ヒント", value: \.nonNullHint)
-+                    TableColumn("词语", value: \.word)
-+                    TableColumn("读音", value: \.reading)
-+                    TableColumn("提示", value: \.nonNullHint)
++                    TableColumn(UIText.t("词语"), value: \.word)
++                    TableColumn(UIText.t("读音"), value: \.reading)
++                    TableColumn(UIText.t("提示"), value: \.nonNullHint)
                  }
                  .disabled(editTargetID != nil)
                  Spacer()

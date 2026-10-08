@@ -79,7 +79,7 @@ public class ValidatorTests
     public void NaturalAssessmentMessage()
     {
         var report = ResponseValidator.Inspect("""{"assessment":"natural","suggestions":[]}""", "今日は天気がいいですね。", new AppSettings());
-        Assert.Equal("这句话已经很自然了", report.EmptyMessage);
+        Assert.Equal(UIText.T("这句话已经很自然了"), report.EmptyMessage);
     }
 }
 
