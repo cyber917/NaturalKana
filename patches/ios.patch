@@ -262,6 +262,38 @@ index 5e244a2..53b0938 100644
              case .user_japanese:
                  return .user_dependent(.japanese)
              case .user_english:
+diff --git a/AzooKeyCore/Sources/KeyboardViews/View/CustomKeyboard/CustomKeyboard.swift b/AzooKeyCore/Sources/KeyboardViews/View/CustomKeyboard/CustomKeyboard.swift
+index b6507a3..a214f6a 100644
+--- a/AzooKeyCore/Sources/KeyboardViews/View/CustomKeyboard/CustomKeyboard.swift
++++ b/AzooKeyCore/Sources/KeyboardViews/View/CustomKeyboard/CustomKeyboard.swift
+@@ -45,7 +45,7 @@ public extension CustardInterface {
+             nil
+         }
+ 
+-        func flickTabKeyModel(_ data: KeyFlickSetting.SettingData) -> any UnifiedKeyModelProtocol<Extension> {
++        func flickTabKeyModel(_ data: KeyFlickSetting.SettingData, switchesToKoreanInEnglish: Bool = false) -> any UnifiedKeyModelProtocol<Extension> {
+             FlickTabKeyModel<Extension>(
+                 labelType: data.labelType,
+                 pressActions: data.actions,
+@@ -54,7 +54,8 @@ public extension CustardInterface {
+                     UnifiedVariation(label: $0.labelType, pressActions: $0.pressActions, longPressActions: $0.longPressActions)
+                 },
+                 showsTapBubble: false,
+-                colorRole: .special
++                colorRole: .special,
++                switchesToKoreanInEnglish: switchesToKoreanInEnglish
+             )
+         }
+ 
+@@ -115,7 +116,7 @@ public extension CustardInterface {
+                 case .flickHiraTab:
+                     flickTabKeyModel(Extension.SettingProvider.hiraTabFlickCustomKey.compiled())
+                 case .flickAbcTab:
+-                    flickTabKeyModel(Extension.SettingProvider.abcTabFlickCustomKey.compiled())
++                    flickTabKeyModel(Extension.SettingProvider.abcTabFlickCustomKey.compiled(), switchesToKoreanInEnglish: true)
+                 case .flickStar123Tab:
+                     flickTabKeyModel(Extension.SettingProvider.symbolsTabFlickCustomKey.compiled())
+                 }
 diff --git a/AzooKeyCore/Sources/KeyboardViews/View/KeyboardBar/KeyboardBarView.swift b/AzooKeyCore/Sources/KeyboardViews/View/KeyboardBar/KeyboardBarView.swift
 index 201a3b6..183b5c9 100644
 --- a/AzooKeyCore/Sources/KeyboardViews/View/KeyboardBar/KeyboardBarView.swift
@@ -377,6 +409,63 @@ index 407388f..13ee7e7 100644
  struct GenericThemeEnvironmentKey<Extension: ApplicationSpecificKeyboardViewExtensionLayoutDependentDefaultThemeProvidable>: EnvironmentKey {
      typealias Value = ThemeData<Extension>
  
+diff --git a/AzooKeyCore/Sources/KeyboardViews/View/UnifiedKey/KeyModels/Flick/FlickTabKeyModel.swift b/AzooKeyCore/Sources/KeyboardViews/View/UnifiedKey/KeyModels/Flick/FlickTabKeyModel.swift
+index 4f57f53..d0beb3b 100644
+--- a/AzooKeyCore/Sources/KeyboardViews/View/UnifiedKey/KeyModels/Flick/FlickTabKeyModel.swift
++++ b/AzooKeyCore/Sources/KeyboardViews/View/UnifiedKey/KeyModels/Flick/FlickTabKeyModel.swift
+@@ -18,22 +18,33 @@ struct FlickTabKeyModel<Extension: ApplicationSpecificKeyboardViewExtension>: Un
+     private let flickMap: [FlickDirection: UnifiedVariation]
+     private let showsBubbleFlag: Bool
+     private let colorRole: ColorRole
++    /// NaturalKana: with the Korean layout enabled, the ABC key shown while already in English moves to Korean.
++    private let switchesToKoreanInEnglish: Bool
+ 
+     init(labelType: KeyLabelType,
+          pressActions: [ActionType],
+          longPressActions: LongpressActionType,
+          flick: [FlickDirection: UnifiedVariation],
+          showsTapBubble: Bool,
+-         colorRole: ColorRole = .special) {
++         colorRole: ColorRole = .special,
++         switchesToKoreanInEnglish: Bool = false) {
+         self.labelType = labelType
+         self.centerPress = pressActions
+         self.centerLongpress = longPressActions
+         self.flickMap = flick
+         self.showsBubbleFlag = showsTapBubble
+         self.colorRole = colorRole
++        self.switchesToKoreanInEnglish = switchesToKoreanInEnglish
+     }
+ 
+-    func pressActions(variableStates _: VariableStates) -> [ActionType] { centerPress }
++    @MainActor
++    private func movesToKorean(states: VariableStates) -> Bool {
++        switchesToKoreanInEnglish && SemiStaticStates.shared.koreanKeyboardEnabled && isMoveTabTargetSelected(states: states) == true
++    }
++
++    func pressActions(variableStates: VariableStates) -> [ActionType] {
++        movesToKorean(states: variableStates) ? [.moveTab(.system(.qwerty_korean))] : centerPress
++    }
+     func longPressActions(variableStates _: VariableStates) -> LongpressActionType { centerLongpress }
+     func variationSpace(variableStates _: VariableStates) -> UnifiedVariationSpace { .fourWay(flickMap) }
+     @MainActor func showsTapBubble(variableStates _: VariableStates) -> Bool { showsBubbleFlag }
+@@ -41,13 +52,13 @@ struct FlickTabKeyModel<Extension: ApplicationSpecificKeyboardViewExtension>: Un
+     func isFlickAble(to direction: FlickDirection, variableStates _: VariableStates) -> Bool { flickMap.keys.contains(direction) }
+     func flickSensitivity(to direction: FlickDirection) -> CGFloat { 25 / Extension.SettingProvider.flickSensitivity }
+ 
+-    func label<ThemeExtension>(width: CGFloat, theme _: ThemeData<ThemeExtension>, states _: VariableStates, color _: Color?) -> KeyLabel<Extension> where ThemeExtension: ApplicationSpecificKeyboardViewExtensionLayoutDependentDefaultThemeProvidable {
+-        KeyLabel(labelType, width: width)
++    func label<ThemeExtension>(width: CGFloat, theme _: ThemeData<ThemeExtension>, states: VariableStates, color _: Color?) -> KeyLabel<Extension> where ThemeExtension: ApplicationSpecificKeyboardViewExtensionLayoutDependentDefaultThemeProvidable {
++        KeyLabel(movesToKorean(states: states) ? .text("한") : labelType, width: width)
+     }
+ 
+     @MainActor
+     func backgroundStyleWhenUnpressed<ThemeExtension>(states: VariableStates, theme: ThemeData<ThemeExtension>) -> UnifiedKeyBackgroundStyleValue where ThemeExtension: ApplicationSpecificKeyboardViewExtensionLayoutDependentDefaultThemeProvidable {
+-        if let isTabMoveSelected = isMoveTabTargetSelected(states: states), isTabMoveSelected {
++        if !movesToKorean(states: states), let isTabMoveSelected = isMoveTabTargetSelected(states: states), isTabMoveSelected {
+             return (theme.pushedKeyFillColor.color, theme.pushedKeyFillColor.blendMode)
+         }
+         return switch colorRole {
 diff --git a/AzooKeyCore/Sources/KeyboardViews/View/UnifiedKey/KeyModels/Qwerty/QwertyDynamicChangeKeyModel.swift b/AzooKeyCore/Sources/KeyboardViews/View/UnifiedKey/KeyModels/Qwerty/QwertyDynamicChangeKeyModel.swift
 index 2349a9e..a7b8d7b 100644
 --- a/AzooKeyCore/Sources/KeyboardViews/View/UnifiedKey/KeyModels/Qwerty/QwertyDynamicChangeKeyModel.swift

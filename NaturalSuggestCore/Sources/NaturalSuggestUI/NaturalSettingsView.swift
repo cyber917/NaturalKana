@@ -108,7 +108,7 @@ public struct NaturalSettingsView: View {
                 #if os(iOS)
                 Toggle(UIText.t("键盘加入韩语布局"), isOn: $model.settings.koreanKeyboard)
                 if model.settings.koreanKeyboard {
-                    Text(UIText.t("保存后，在英文键盘上点左下角的语言键（A／한）切换到韩语。长按 ㅂㅈㄷㄱㅅ 输入 ㅃㅉㄸㄲㅆ，长按 ㅐㅔ 输入 ㅒㅖ。")).font(.caption).foregroundStyle(.secondary)
+                    Text(UIText.t("保存后，在英文键盘上切到韩语：全键盘点左下角的语言键（A／한），九宫格点左侧的“한”键。长按 ㅂㅈㄷㄱㅅ 后右滑输入 ㅃㅉㄸㄲㅆ，长按 ㅐㅔ 后右滑输入 ㅒㅖ。")).font(.caption).foregroundStyle(.secondary)
                 }
                 #endif
                 Picker(UIText.t("语体"), selection: $model.settings.registerPreference) {
