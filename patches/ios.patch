@@ -369,10 +369,33 @@ index 5478d73..e9ed17c 100644
          var keys: [CustardKeyPositionSpecifier: CustardInterfaceKey] = [:]
          let numberVariations = [
 diff --git a/AzooKeyCore/Sources/KeyboardViews/Design.swift b/AzooKeyCore/Sources/KeyboardViews/Design.swift
-index 6af6ab4..dc6d948 100644
+index 6af6ab4..aa101a9 100644
 --- a/AzooKeyCore/Sources/KeyboardViews/Design.swift
 +++ b/AzooKeyCore/Sources/KeyboardViews/Design.swift
-@@ -394,40 +394,27 @@ public enum Design {
+@@ -74,6 +74,11 @@ public struct TabDependentDesign {
+         return keyHeight
+     }
+ 
++    @MainActor var keyPreviewHeight: CGFloat {
++        let topInset = (Design.keyboardBarHeight(interfaceHeight: interfaceHeight, context: layoutContext) + 12) * 2 / 3
++        return min(keyViewHeight, max(12, topInset - verticalSpacing - 4))
++    }
++
+     var keysWidth: CGFloat {
+         keyViewWidth * horizontalKeyCount + horizontalSpacing * (horizontalKeyCount - 1)
+     }
+@@ -218,6 +223,10 @@ public enum Design {
+             - Design.keyboardHeight(context: context, upsideComponent: nil)
+     }
+     /// バー部分の高さは`interfaceHeight`に基づいて決定する
++    static func keyboardContentBarHeight(interfaceHeight: CGFloat, context: KeyboardLayoutContext) -> CGFloat {
++        (keyboardBarHeight(interfaceHeight: interfaceHeight, context: context) + 12) * 2 / 3 - 12
++    }
++
+     static func keyboardBarHeight(
+         interfaceHeight: CGFloat,
+         context: KeyboardLayoutContext
+@@ -394,40 +403,27 @@ public enum Design {
      public enum Language: Sendable {
          case `default`
  
@@ -728,10 +751,24 @@ index c5dabd2..4959564 100644
      }
  
 diff --git a/AzooKeyCore/Sources/KeyboardViews/View/KeyboardBar/EmojiTabResultBar.swift b/AzooKeyCore/Sources/KeyboardViews/View/KeyboardBar/EmojiTabResultBar.swift
-index 2ff6870..292d8d8 100644
+index 2ff6870..7ef5150 100644
 --- a/AzooKeyCore/Sources/KeyboardViews/View/KeyboardBar/EmojiTabResultBar.swift
 +++ b/AzooKeyCore/Sources/KeyboardViews/View/KeyboardBar/EmojiTabResultBar.swift
-@@ -29,7 +29,7 @@ struct EmojiTabResultBar<Extension: ApplicationSpecificKeyboardViewExtension>: V
+@@ -17,19 +17,19 @@ struct EmojiTabResultBar<Extension: ApplicationSpecificKeyboardViewExtension>: V
+     @EnvironmentObject private var variableStates: VariableStates
+     @Namespace private var namespace
+     private var buttonHeight: CGFloat {
+-        Design.keyboardBarHeight(
++        Design.keyboardContentBarHeight(
+             interfaceHeight: variableStates.interfaceSize.height,
+             context: variableStates.layoutContext
+         ) * 0.9
+     }
+     private var searchBarHeight: CGFloat {
+-        Design.keyboardBarHeight(
++        Design.keyboardContentBarHeight(
+             interfaceHeight: variableStates.interfaceSize.height,
+             context: variableStates.layoutContext
          ) * 0.8
      }
      private var searchBarDesign: InKeyboardSearchBar<Extension>.Configuration {
@@ -759,7 +796,7 @@ index 2ff6870..292d8d8 100644
                      ], variableStates: variableStates)
                  }
 diff --git a/AzooKeyCore/Sources/KeyboardViews/View/KeyboardBar/KeyboardBarView.swift b/AzooKeyCore/Sources/KeyboardViews/View/KeyboardBar/KeyboardBarView.swift
-index 201a3b6..183b5c9 100644
+index 201a3b6..b28604f 100644
 --- a/AzooKeyCore/Sources/KeyboardViews/View/KeyboardBar/KeyboardBarView.swift
 +++ b/AzooKeyCore/Sources/KeyboardViews/View/KeyboardBar/KeyboardBarView.swift
 @@ -99,6 +99,7 @@ struct KeyboardBarButton<Extension: ApplicationSpecificKeyboardViewExtension>: V
@@ -770,6 +807,23 @@ index 201a3b6..183b5c9 100644
      }
      @Environment(Extension.Theme.self) private var theme
      @EnvironmentObject private var variableStates: VariableStates
+@@ -119,14 +120,14 @@ struct KeyboardBarButton<Extension: ApplicationSpecificKeyboardViewExtension>: V
+     }
+ 
+     private var circleSize: CGFloat {
+-        Design.keyboardBarHeight(
++        Design.keyboardContentBarHeight(
+             interfaceHeight: variableStates.interfaceSize.height,
+             context: variableStates.layoutContext
+         ) * 0.8
+     }
+ 
+     private var iconSize: CGFloat {
+-        Design.keyboardBarHeight(
++        Design.keyboardContentBarHeight(
+             interfaceHeight: variableStates.interfaceSize.height,
+             context: variableStates.layoutContext
+         ) * 0.6
 @@ -135,9 +136,11 @@ struct KeyboardBarButton<Extension: ApplicationSpecificKeyboardViewExtension>: V
      var body: some View {
          Button(action: self.action) {
@@ -799,7 +853,7 @@ index 201a3b6..183b5c9 100644
              }
          }
 diff --git a/AzooKeyCore/Sources/KeyboardViews/View/KeyboardBar/ResultBar.swift b/AzooKeyCore/Sources/KeyboardViews/View/KeyboardBar/ResultBar.swift
-index 6195c9c..bfad1e2 100644
+index 6195c9c..6735e15 100644
 --- a/AzooKeyCore/Sources/KeyboardViews/View/KeyboardBar/ResultBar.swift
 +++ b/AzooKeyCore/Sources/KeyboardViews/View/KeyboardBar/ResultBar.swift
 @@ -25,6 +25,7 @@ private extension Equatable {
@@ -810,6 +864,22 @@ index 6195c9c..bfad1e2 100644
      @EnvironmentObject private var variableStates: VariableStates
      @Binding private var isResultViewExpanded: Bool
      @State private var undoButtonAction: VariableStates.UndoAction?
+@@ -33,13 +34,13 @@ struct ResultBar<Extension: ApplicationSpecificKeyboardViewExtension>: View {
+     }
+ 
+     private var buttonWidth: CGFloat {
+-        Design.keyboardBarHeight(
++        Design.keyboardContentBarHeight(
+             interfaceHeight: variableStates.interfaceSize.height,
+             context: variableStates.layoutContext
+         ) * 0.5
+     }
+     private var buttonHeight: CGFloat {
+-        Design.keyboardBarHeight(
++        Design.keyboardContentBarHeight(
+             interfaceHeight: variableStates.interfaceSize.height,
+             context: variableStates.layoutContext
+         ) * 0.6
 @@ -55,6 +56,13 @@ struct ResultBar<Extension: ApplicationSpecificKeyboardViewExtension>: View {
      }
  
@@ -824,6 +894,28 @@ index 6195c9c..bfad1e2 100644
          Group {
              if variableStates.resultModel.displayState == .nothing {
                  HStack {
+diff --git a/AzooKeyCore/Sources/KeyboardViews/View/KeyboardBar/TabBar.swift b/AzooKeyCore/Sources/KeyboardViews/View/KeyboardBar/TabBar.swift
+index 7de7119..f6ba428 100644
+--- a/AzooKeyCore/Sources/KeyboardViews/View/KeyboardBar/TabBar.swift
++++ b/AzooKeyCore/Sources/KeyboardViews/View/KeyboardBar/TabBar.swift
+@@ -39,7 +39,7 @@ struct TabBarView<Extension: ApplicationSpecificKeyboardViewExtension>: View {
+         }
+         .buttonStyle(
+             ResultButtonStyle<Extension>(
+-                height: Design.keyboardBarHeight(
++                height: Design.keyboardContentBarHeight(
+                     interfaceHeight: variableStates.interfaceSize.height,
+                     context: variableStates.layoutContext
+                 ) * 0.6
+@@ -66,7 +66,7 @@ struct TabBarView<Extension: ApplicationSpecificKeyboardViewExtension>: View {
+             }
+         }
+         .frame(
+-            height: Design.keyboardBarHeight(
++            height: Design.keyboardContentBarHeight(
+                 interfaceHeight: variableStates.interfaceSize.height,
+                 context: variableStates.layoutContext
+             )
 diff --git a/AzooKeyCore/Sources/KeyboardViews/View/KeyboardBar/TabBarButton.swift b/AzooKeyCore/Sources/KeyboardViews/View/KeyboardBar/TabBarButton.swift
 index 6517a13..15fabeb 100644
 --- a/AzooKeyCore/Sources/KeyboardViews/View/KeyboardBar/TabBarButton.swift
@@ -874,10 +966,10 @@ index 407388f..13ee7e7 100644
      typealias Value = ThemeData<Extension>
  
 diff --git a/AzooKeyCore/Sources/KeyboardViews/View/KeyboardView.swift b/AzooKeyCore/Sources/KeyboardViews/View/KeyboardView.swift
-index c0751ed..536e480 100644
+index c0751ed..0ded9d2 100644
 --- a/AzooKeyCore/Sources/KeyboardViews/View/KeyboardView.swift
 +++ b/AzooKeyCore/Sources/KeyboardViews/View/KeyboardView.swift
-@@ -8,15 +8,19 @@
+@@ -8,6 +8,7 @@
  
  import CustardKit
  import Foundation
@@ -885,10 +977,7 @@ index c0751ed..536e480 100644
  import SwiftUI
  
  @MainActor
- public struct KeyboardView<Extension: ApplicationSpecificKeyboardViewExtension>: View {
-     @State private var messageManager = MessageManager(necessaryMessages: Extension.MessageProvider.messages, userDefaults: Extension.MessageProvider.userDefaults)
-     @State private var isResultViewExpanded = false
-+    @State private var keyPreviewHeight: CGFloat = 0
+@@ -17,6 +18,8 @@ public struct KeyboardView<Extension: ApplicationSpecificKeyboardViewExtension>:
  
      @Environment(Extension.Theme.self) private var theme
      @Environment(\.showMessage) private var showMessage
@@ -897,7 +986,7 @@ index c0751ed..536e480 100644
      @EnvironmentObject private var variableStates: VariableStates
  
      private let defaultTab: KeyboardTab.ExistentialTab?
-@@ -25,6 +29,106 @@ public struct KeyboardView<Extension: ApplicationSpecificKeyboardViewExtension>:
+@@ -25,6 +28,104 @@ public struct KeyboardView<Extension: ApplicationSpecificKeyboardViewExtension>:
          self.defaultTab = defaultTab
      }
  
@@ -923,9 +1012,7 @@ index c0751ed..536e480 100644
 +    }
 +
 +    private var topInsetReduction: CGFloat {
-+        guard usesCompactTools else { return 0 }
-+        // Keep two thirds of the original bar, reserving more room for key previews.
-+        return min(fullTopInset / 3, max(0, fullTopInset - keyPreviewHeight))
++        variableStates.resizingState == .fullwidth ? fullTopInset / 3 : 0
 +    }
 +
 +    private var compactTools: some View {
@@ -1004,7 +1091,7 @@ index c0751ed..536e480 100644
      private var backgroundColor: Color {
          if theme.picture.image != nil {
              Color.white.opacity(0.001)
-@@ -66,7 +170,7 @@ public struct KeyboardView<Extension: ApplicationSpecificKeyboardViewExtension>:
+@@ -66,7 +167,7 @@ public struct KeyboardView<Extension: ApplicationSpecificKeyboardViewExtension>:
          } else {
              currentBodyHeight
          }
@@ -1013,7 +1100,7 @@ index c0751ed..536e480 100644
      }
  
      @ViewBuilder
-@@ -83,7 +187,7 @@ public struct KeyboardView<Extension: ApplicationSpecificKeyboardViewExtension>:
+@@ -83,7 +184,7 @@ public struct KeyboardView<Extension: ApplicationSpecificKeyboardViewExtension>:
              }
              .frame(
                  width: variableStates.containerWidth,
@@ -1022,7 +1109,7 @@ index c0751ed..536e480 100644
                      + variableStates.interfaceBottomOffset
                      + Design.keyboardScreenBottomPadding
              )
-@@ -140,20 +244,25 @@ public struct KeyboardView<Extension: ApplicationSpecificKeyboardViewExtension>:
+@@ -140,20 +241,22 @@ public struct KeyboardView<Extension: ApplicationSpecificKeyboardViewExtension>:
                      } else if isResultViewExpanded {
                          ExpandedResultView<Extension>(isResultViewExpanded: $isResultViewExpanded)
                      } else {
@@ -1034,10 +1121,7 @@ index c0751ed..536e480 100644
 +                        if !usesCompactTools {
 +                            KeyboardBarView<Extension>(isResultViewExpanded: $isResultViewExpanded)
 +                                .frame(
-+                                    height: Design.keyboardBarHeight(
-+                                        interfaceHeight: variableStates.interfaceSize.height,
-+                                        context: variableStates.layoutContext
-+                                    )
++                                    height: fullTopInset - topInsetReduction - 12
                                  )
 -                            )
 -                            // バーのタッチ判定領域はpaddingより前まで
@@ -1057,13 +1141,13 @@ index c0751ed..536e480 100644
                  .resizingFrame(
                      size: $variableStates.interfaceSize,
                      position: $variableStates.interfacePosition,
-@@ -172,6 +281,13 @@ public struct KeyboardView<Extension: ApplicationSpecificKeyboardViewExtension>:
+@@ -172,6 +275,13 @@ public struct KeyboardView<Extension: ApplicationSpecificKeyboardViewExtension>:
                  }
              }
  
 +            if isLanguageMenuPresented {
 +                languageMenu
-+                    .frame(width: min(variableStates.containerWidth - 16, 420), height: max(120, resolvedInterfaceHeight - 12))
++                    .frame(width: min(variableStates.containerWidth - 16, 420), height: max(120, resolvedInterfaceHeight - topInsetReduction - 12))
 +                    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottom)
 +                    .padding(.bottom, Design.keyboardScreenBottomPadding + 6)
 +            }
@@ -1071,13 +1155,12 @@ index c0751ed..536e480 100644
              if variableStates.boolStates.isTextMagnifying {
                  LargeTextView(text: variableStates.magnifyingText, isViewOpen: $variableStates.boolStates.isTextMagnifying)
              }
-@@ -191,6 +307,12 @@ public struct KeyboardView<Extension: ApplicationSpecificKeyboardViewExtension>:
+@@ -191,6 +301,11 @@ public struct KeyboardView<Extension: ApplicationSpecificKeyboardViewExtension>:
              }
          }
          .frame(height: totalBackgroundHeight)
 +        .tint(.primary)
 +        .accentColor(.primary)
-+        .onPreferenceChange(KeyPreviewHeightPreferenceKey.self) { keyPreviewHeight = $0 }
 +        .onAppear { variableStates.keyboardTopInsetReduction = topInsetReduction }
 +        .onChange(of: topInsetReduction) { _, value in variableStates.keyboardTopInsetReduction = value }
 +        .onDisappear { closeLanguageMenu() }
@@ -1535,29 +1618,58 @@ index 107a484..e4ea08e 100644
      }
  
      func feedback(variableStates: VariableStates) {
+diff --git a/AzooKeyCore/Sources/KeyboardViews/View/UnifiedKey/Suggest/QwertyVariationsView.swift b/AzooKeyCore/Sources/KeyboardViews/View/UnifiedKey/Suggest/QwertyVariationsView.swift
+index c8bbd6f..cd19934 100644
+--- a/AzooKeyCore/Sources/KeyboardViews/View/UnifiedKey/Suggest/QwertyVariationsView.swift
++++ b/AzooKeyCore/Sources/KeyboardViews/View/UnifiedKey/Suggest/QwertyVariationsView.swift
+@@ -42,8 +42,9 @@ struct QwertyVariationsView<Extension: ApplicationSpecificKeyboardViewExtension>
+                             .matchedGeometryEffect(id: "focus", in: namespace)
+                     }
+                     getLabel(model.variations[index].label, textColor: index == selection ? .white : unselectedKeyColor)
++                        .minimumScaleFactor(0.5).lineLimit(1)
+                 }
+-                .frame(width: tabDesign.keyViewWidth, height: tabDesign.keyViewHeight * 0.9, alignment: .center)
++                .frame(width: tabDesign.keyViewWidth, height: tabDesign.keyPreviewHeight, alignment: .center)
+             }
+         }
+         .animation(.easeOut(duration: 0.075), value: selection)
 diff --git a/AzooKeyCore/Sources/KeyboardViews/View/UnifiedKey/Suggest/UnifiedQwertySuggestView.swift b/AzooKeyCore/Sources/KeyboardViews/View/UnifiedKey/Suggest/UnifiedQwertySuggestView.swift
-index e97b861..7888835 100644
+index e97b861..95f476d 100644
 --- a/AzooKeyCore/Sources/KeyboardViews/View/UnifiedKey/Suggest/UnifiedQwertySuggestView.swift
 +++ b/AzooKeyCore/Sources/KeyboardViews/View/UnifiedKey/Suggest/UnifiedQwertySuggestView.swift
-@@ -2,6 +2,14 @@ import Foundation
- import SwiftUI
- import SwiftUIUtils
+@@ -46,8 +46,8 @@ struct UnifiedQwertySuggestView<Extension: ApplicationSpecificKeyboardViewExtens
  
-+struct KeyPreviewHeightPreferenceKey: PreferenceKey {
-+    static let defaultValue: CGFloat = 0
-+
-+    static func reduce(value: inout CGFloat, nextValue: () -> CGFloat) {
-+        value = max(value, nextValue())
-+    }
-+}
-+
- struct UnifiedQwertySuggestView<Extension: ApplicationSpecificKeyboardViewExtension>: View {
-     @EnvironmentObject private var variableStates: VariableStates
-     @Environment(Extension.Theme.self) private var theme
-@@ -98,22 +106,25 @@ struct UnifiedQwertySuggestView<Extension: ApplicationSpecificKeyboardViewExtens
+     // MARK: Shapes (ported from QwertySuggestView)
+     @MainActor private static func expandedPath(rdw: CGFloat, ldw: CGFloat, keyWidth: CGFloat, tabDesign: TabDependentDesign) -> some Shape {
+-        let height = tabDesign.keyViewHeight * 2 + tabDesign.verticalSpacing
+-        let BC: CGFloat = tabDesign.keyViewHeight
++        let height = tabDesign.keyViewHeight + tabDesign.keyPreviewHeight + tabDesign.verticalSpacing
++        let BC: CGFloat = tabDesign.keyPreviewHeight
+         let _CD: CGSize = .init(width: tabDesign.verticalSpacing, height: tabDesign.verticalSpacing)
+         let G_H = _CD
+         let EF = keyWidth
+@@ -71,14 +71,14 @@ struct UnifiedQwertySuggestView<Extension: ApplicationSpecificKeyboardViewExtens
+         }.offsetBy(dx: -(ldw + _CD.width), dy: 0)
+     }
+     @MainActor private static func scaleToFrameSize(keyWidth: CGFloat, scale_y: CGFloat, color: some ShapeStyle, borderColor: some ShapeStyle, borderWidth: CGFloat, tabDesign: TabDependentDesign) -> some View {
+-        let height = (tabDesign.keyViewHeight * 2 + tabDesign.verticalSpacing) * scale_y
++        let height = (tabDesign.keyViewHeight + tabDesign.keyPreviewHeight + tabDesign.verticalSpacing) * scale_y
+         return expandedPath(rdw: 0, ldw: 0, keyWidth: keyWidth, tabDesign: tabDesign)
+             .strokeAndFill(fillContent: color, strokeContent: borderColor, lineWidth: borderWidth)
+             .frame(width: keyWidth, height: height)
+     }
+     @MainActor private static func scaleToVariationsSize(keyWidth: CGFloat, scale_y: CGFloat, variationsCount: Int, color: some ShapeStyle, borderColor: some ShapeStyle, borderWidth: CGFloat, direction: VariationsViewDirection, tabDesign: TabDependentDesign) -> some View {
+         let keyViewSize = tabDesign.keyViewSize
+-        let height = (keyViewSize.height * 2 + tabDesign.verticalSpacing) * scale_y
++        let height = (keyViewSize.height + tabDesign.keyPreviewHeight + tabDesign.verticalSpacing) * scale_y
+         let dw = keyViewSize.width * CGFloat(variationsCount - 1) + tabDesign.horizontalSpacing * CGFloat(variationsCount - 1)
+         switch direction {
+         case .center:
+@@ -97,22 +97,26 @@ struct UnifiedQwertySuggestView<Extension: ApplicationSpecificKeyboardViewExtens
+     }
  
      var body: some View {
-         let height = tabDesign.verticalSpacing + size.height
+-        let height = tabDesign.verticalSpacing + size.height
 -        switch self.suggestType {
 -        case .normal:
 -            Self.scaleToFrameSize(keyWidth: size.width, scale_y: 1, color: suggestColor, borderColor: keyBorderColor, borderWidth: keyBorderWidth, tabDesign: tabDesign)
@@ -1577,24 +1689,25 @@ index e97b861..7888835 100644
 +            switch self.suggestType {
 +            case .normal:
 +                Self.scaleToFrameSize(keyWidth: size.width, scale_y: 1, color: suggestColor, borderColor: keyBorderColor, borderWidth: keyBorderWidth, tabDesign: tabDesign)
-+                    .overlay { baseLabel.padding(.bottom, height) }
++                    .overlay(alignment: .top) {
++                        baseLabel.frame(height: tabDesign.keyPreviewHeight).minimumScaleFactor(0.5).lineLimit(1)
++                    }
 +                    .compositingGroup()
 +                    .shadow(color: shadowColor, radius: 1, x: 0, y: 0)
 +                    .allowsHitTesting(false)
 +            case .variation(let selection):
 +                Self.scaleToVariationsSize(keyWidth: size.width, scale_y: 1, variationsCount: variationsModel.variations.count, color: suggestColor, borderColor: keyBorderColor, borderWidth: keyBorderWidth, direction: variationsModel.direction, tabDesign: tabDesign)
 +                    .overlay(alignment: variationsModel.direction.alignment) {
-+                        QwertyVariationsView<Extension>(model: variationsModel, selection: selection, tabDesign: tabDesign).padding(.bottom, height)
++                        QwertyVariationsView<Extension>(model: variationsModel, selection: selection, tabDesign: tabDesign)
++                            .frame(maxHeight: .infinity, alignment: .top)
 +                    }
 +                    .compositingGroup()
 +                    .shadow(color: shadowColor, radius: 1, x: 0, y: 0)
 +                    .allowsHitTesting(false)
 +            }
          }
-+        .preference(key: KeyPreviewHeightPreferenceKey.self, value: tabDesign.keyViewHeight + tabDesign.verticalSpacing + 4)
      }
  }
- 
 diff --git a/AzooKeyCore/Sources/KeyboardViews/View/UpsideComponents/UpsideSearchView.swift b/AzooKeyCore/Sources/KeyboardViews/View/UpsideComponents/UpsideSearchView.swift
 index f659d9d..fce84cb 100644
 --- a/AzooKeyCore/Sources/KeyboardViews/View/UpsideComponents/UpsideSearchView.swift
