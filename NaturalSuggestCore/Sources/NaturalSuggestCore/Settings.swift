@@ -163,7 +163,8 @@ public struct SuggestionSettings: Codable, Hashable, Sendable {
         let values = try decoder.container(keyedBy: CodingKeys.self)
         enabled = try values.decodeIfPresent(Bool.self, forKey: .enabled) ?? false
         consent = try values.decodeIfPresent(Bool.self, forKey: .consent) ?? false
-        language = try values.decodeIfPresent(SuggestionLanguage.self, forKey: .language) ?? .japanese
+        // A language added by a newer release falls back to Japanese instead of discarding all settings.
+        language = (try? values.decodeIfPresent(SuggestionLanguage.self, forKey: .language)) ?? .japanese
         provider = try values.decodeIfPresent(ProviderKind.self, forKey: .provider) ?? .openAI
         openAI = try values.decodeIfPresent(ProviderConfiguration.self, forKey: .openAI) ?? ProviderKind.openAI.defaultConfiguration
         qwen = try values.decodeIfPresent(ProviderConfiguration.self, forKey: .qwen) ?? ProviderKind.qwen.defaultConfiguration

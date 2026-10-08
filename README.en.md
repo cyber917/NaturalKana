@@ -10,6 +10,7 @@ NaturalKana is derived from [azooKey](https://github.com/azooKey/azooKey) and [a
 - Casual and polite groups, up to 10 candidates, with changes highlighted
 - Optional Kansai-ben: an extra 関西弁 group alongside standard Japanese; drafts typed in dialect are not treated as mistakes
 - Handles Japanese drafts that mix in English or Chinese words
+- Also suggests for English and Simplified Chinese drafts; Chinese mode helps learners sound natural, including everyday internet slang (iPhone, Windows)
 - Optional personal slang vocabulary (Mac)
 
 ## Install

@@ -72,7 +72,10 @@ public struct NaturalSettingsView: View {
             }
             Section("表达") {
                 Picker("建议语言", selection: $model.settings.language) {
-                    ForEach(SuggestionLanguage.allCases, id: \.self) { language in Text(language.title).tag(language) }
+                    ForEach(SuggestionLanguage.available, id: \.self) { language in Text(language.title).tag(language) }
+                }
+                if model.settings.language == .chinese {
+                    Text("用系统自带的中文键盘打完一句后，切换到 NaturalKana 键盘即可看到建议。").font(.caption).foregroundStyle(.secondary)
                 }
                 Picker("语体", selection: $model.settings.registerPreference) {
                     Text("口语").tag(RegisterPreference.friendsCasual)
