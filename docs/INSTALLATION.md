@@ -104,7 +104,21 @@ python3 tools/bootstrap.py --weights
 
 ### 2. 改成自己的应用标识（推荐）
 
-默认标识是 `org.naturalkana`。自己签名时，Apple 可能不允许注册别人已用过的标识，建议改成自己的：编辑 `Config/Brand.json`，把除 `name` 外的四项改成你的名字，例如 `com.yourname.naturalkana`，然后运行：
+默认标识是 `org.naturalkana`。自己签名时，Apple 可能不允许注册别人已用过的标识，建议改成自己的：编辑 `Config/Brand.json`，把除 `name` 外的四项改成你的名字，例如：
+
+```json
+{
+  "name": "NaturalKana",
+  "bundlePrefix": "com.yourname.naturalkana",
+  "iosAppGroup": "group.com.yourname.naturalkana",
+  "macAppGroup": "group.com.yourname.naturalkana.mac",
+  "macBundleIdentifier": "com.yourname.inputmethod.naturalkana"
+}
+```
+
+> **Mac 输入法的标识必须包含 `.inputmethod.` 这一段**（前后都有点），例如 `com.yourname.inputmethod.naturalkana`。`com.yourname.naturalkana.inputmethod` 这种 `inputmethod` 在末尾的写法不行：安装和注册都会显示成功，但 macOS 会拒绝加载，系统设置里永远找不到它。`rebrand.py` 遇到这种标识会直接报错。
+
+然后运行：
 
 ```sh
 python3 tools/rebrand.py
@@ -126,7 +140,7 @@ python3 tools/rebrand.py
 
 准备源码和应用标识同上面的第 1、2 步，然后：
 
-1. 在 Xcode 打开 `NaturalKana.xcworkspace`，选 `azooKeyMac` target → Signing & Capabilities，选自己的 Team。在 Build Settings 里搜索 `Development Team`，记下 10 位 Team ID。
+1. 在 Xcode 打开 `NaturalKana.xcworkspace`，选 `azooKeyMac` target → Signing & Capabilities，选自己的 Team。在 Build Settings 里搜索 `Development Team`，记下 10 位 Team ID。换了新标识后，第一次签名构建时 `build_macos.sh` 会让 Xcode 自动创建描述文件，需要先在 Xcode → Settings → Accounts 登录 Apple ID。
 2. 先检查模型，再构建：
 
    ```sh
@@ -145,7 +159,13 @@ python3 tools/rebrand.py
      --registrar .build-local/bin/register-input-source
    ```
 
-4. 系统设置 → 键盘 → 文字输入 → 编辑… → `+` → 日语 → 添加 NaturalKana。列表里没有的话，退出登录再登录一次。
+4. 系统设置 → 键盘 → 文字输入 → 编辑… → `+` → 日语 → 添加 NaturalKana。列表里没有的话，退出登录再登录一次。还是没有，就打开一次上面的输入法列表，然后在终端运行：
+
+   ```sh
+   log show --last 5m --predicate 'process == "imklaunchagent"' | grep 'Refusing connection'
+   ```
+
+   有输出说明系统拒绝了这个 Bundle ID：检查 `Config/Brand.json` 里的 `macBundleIdentifier` 是否包含 `.inputmethod.`，改好后重新运行 `rebrand.py`、构建和安装。
 5. 菜单栏选 **NaturalKana（日本語）**，在输入法菜单里打开“NaturalKana 设置…”，填写 API。
 
 输入法菜单中的 **NaturalKana（English）** 是英文模式；Apple 自带的“日语”输入法不会显示本项目的建议。找不到设置入口时运行 `zsh tools/open_macos_settings.command`。

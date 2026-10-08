@@ -3,5 +3,5 @@
   "bundlePrefix": "org.naturalkana",
   "iosAppGroup": "group.org.naturalkana",
   "macAppGroup": "group.org.naturalkana.mac",
-  "macBundleIdentifier": "org.naturalkana.inputmethod"
+  "macBundleIdentifier": "org.naturalkana.inputmethod.naturalkana"
 }
