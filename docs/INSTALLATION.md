@@ -138,9 +138,11 @@ python3 tools/rebrand.py
 
 ## Mac 输入法
 
-准备源码和应用标识同上面的第 1、2 步，然后：
+> **第一次装、不熟悉终端？请看[Mac 详细安装教程](MAC_INSTALL.md)**，从安装 Xcode 开始一步步讲，包括更新、卸载和常见问题。下面是给熟悉开发的人的简略版。
 
-1. 在 Xcode 打开 `NaturalKana.xcworkspace`，选 `azooKeyMac` target → Signing & Capabilities，选自己的 Team。在 Build Settings 里搜索 `Development Team`，记下 10 位 Team ID。换了新标识后，第一次签名构建时 `build_macos.sh` 会让 Xcode 自动创建描述文件，需要先在 Xcode → Settings → Accounts 登录 Apple ID。
+需要 Apple 芯片的 Mac 和 macOS 13 以上。准备源码和应用标识同上面的第 1、2 步。Mac 的 `macAppGroup` 建议写成 `你的TeamID.` 加上 `macBundleIdentifier`，例如 `AB12CD34EF.com.yourname.inputmethod.naturalkana.mac`。然后：
+
+1. 在 Xcode → Settings → Accounts 登录 Apple ID，并在 Manage Certificates 里确认有 Apple Development 证书。用 `security find-certificate -c "Apple Development" -p | openssl x509 -noout -subject` 查 Team ID（`OU=` 后面的 10 位）。
 2. 先检查模型，再构建：
 
    ```sh
