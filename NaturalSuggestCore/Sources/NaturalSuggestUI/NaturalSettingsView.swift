@@ -151,7 +151,7 @@ public struct NaturalSettingsView: View {
                 NavigationLink(UIText.t("快捷切换语言")) {
                     keyboardSwitchSettings
                 }
-                Text(UIText.t("点语言键按自选顺序切换；长按后滑动，可直接选择任一已开启的语言。选两种就来回切，选五种就五种循环。")).font(.caption).foregroundStyle(.secondary)
+                Text(UIText.t("点语言键按自选顺序切换；长按打开列表，再点选任一已开启的语言。选两种就来回切，选五种就五种循环。")).font(.caption).foregroundStyle(.secondary)
                 if !model.settings.enabledKeyboardLayouts.isEmpty {
                     Text(UIText.t("法语用 QWERTY，长按字母后右滑选重音字母或大写；俄语用 ЙЦУКЕН，长按 е 选 ё、ь 选 ъ，各字母长按可选大写。")).font(.caption).foregroundStyle(.secondary)
                 }

@@ -303,6 +303,10 @@
   "en": "Switch window",
   "ja": "ウインドウの切り替え"
  },
+ "切换语言": {
+  "en": "Switch language",
+  "ja": "言語を切り替える"
+ },
  "切换输入法": {
   "en": "Switch input method",
   "ja": "入力方式の切り替え"
@@ -582,6 +586,10 @@
  "当前应用或输入框已禁用建议": {
   "en": "Suggestions are turned off for this app or field",
   "ja": "このアプリまたは入力欄では提案が無効です"
+ },
+ "当前语言": {
+  "en": "Current language",
+  "ja": "現在の言語"
  },
  "当前输入位置暂不支持建议": {
   "en": "Suggestions aren't available at this position",
@@ -1010,6 +1018,10 @@
  "点语言键按自选顺序切换；长按后滑动，可直接选择任一已开启的语言。选两种就来回切，选五种就五种循环。": {
   "en": "Tap the language key to cycle in your chosen order. Hold and slide to select any enabled language directly. Choose two to switch back and forth, or five to cycle through all five.",
   "ja": "言語キーをタップすると選んだ順に切り替わります。長押ししてスライドすると、有効な言語を直接選べます。2言語なら往復、5言語なら5つを順に切り替えます。"
+ },
+ "点语言键按自选顺序切换；长按打开列表，再点选任一已开启的语言。选两种就来回切，选五种就五种循环。": {
+  "en": "Tap the language key to cycle in your chosen order. Hold to open the list, then tap any enabled language. Choose two to switch back and forth, or five to cycle through all five.",
+  "ja": "言語キーをタップすると選んだ順に切り替わります。長押しで一覧を開き、有効な言語をタップして選べます。2言語なら往復、5言語なら5つを順に切り替えます。"
  },
  "现有自定义方案": {
   "en": "Current custom scheme",
