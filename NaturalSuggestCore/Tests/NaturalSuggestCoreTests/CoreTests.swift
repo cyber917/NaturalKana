@@ -125,6 +125,14 @@ struct ProviderTests {
         return SuggestionEngine(budget: DailyBudget(defaults: defaults), prompt: try PromptBuilder())
     }
     private var settings: SuggestionSettings { var value = SuggestionSettings(); value.enabled = true; value.consent = true; value.debounceMilliseconds = 10; return value }
+    /// Polls instead of sleeping a fixed time, so slow CI runners only make the test slower, not red.
+    private func waitUntil(timeout: Duration = .seconds(5), _ condition: () async -> Bool) async throws {
+        let deadline = ContinuousClock.now + timeout
+        while await !condition() {
+            try #require(ContinuousClock.now < deadline, "Condition not met within \(timeout)")
+            try await Task.sleep(for: .milliseconds(5))
+        }
+    }
     @Test func testSecureAndBlockedAndNonJapaneseNeverNetwork() async throws {
         let engine = try engine(); let provider = MockProvider(); var config = settings; config.blockedApps = ["blocked"]
         for snapshot in [DraftSnapshot(text: "今何にしていますか", fieldID: "x", secure: true), .init(text: "今何にしていますか", fieldID: "x", appID: "blocked"), .init(text: "我今天很累", fieldID: "x")] {
@@ -194,27 +202,37 @@ struct ProviderTests {
     @Test func testDebounceAndCache() async throws {
         let engine = try engine(); let provider = MockProvider(); let snapshot = DraftSnapshot(text: "今何にしていますか", fieldID: "a")
         for _ in 0..<8 { engine.update(snapshot, settings: settings, provider: provider) }
-        try await Task.sleep(for: .milliseconds(60))
+        // .ready is published last, so the single debounced request has fully finished here.
+        try await waitUntil { engine.status == .ready }
+        #expect(await provider.count() == 1)
         engine.update(snapshot, settings: settings, provider: provider)
-        try await Task.sleep(for: .milliseconds(30))
-        let count = await provider.count(); XCTAssertEqual(count, 1)
+        XCTAssertEqual(engine.status, .ready)
+        try await Task.sleep(for: .milliseconds(30)) // Give a wrongly started request time to show up.
+        #expect(await provider.count() == 1)
         XCTAssertEqual(engine.accept(index: 0, current: snapshot), TextNormalization.nfkc("今何してる？"))
     }
     @Test func testThrottle() async throws {
         let engine = try engine(); let provider = MockProvider()
+        // lastRequest is set right before .requesting is published, so these instants track the throttle clock.
+        var requested: [ContinuousClock.Instant] = []
+        engine.onChange = { _, state in if state == .requesting { requested.append(.now) } }
         engine.update(.init(text: "今何にしていますか", fieldID: "a"), settings: settings, provider: provider, explicit: true)
-        try await Task.sleep(for: .milliseconds(40))
+        try await waitUntil { await provider.count() == 1 }
         engine.update(.init(text: "昨日何にしていますか", fieldID: "a"), settings: settings, provider: provider, explicit: true)
-        try await Task.sleep(for: .milliseconds(100))
-        let count = await provider.count(); XCTAssertEqual(count, 1); engine.cancel()
+        #expect(await provider.count() == 1)
+        try await waitUntil { engine.status == .ready }
+        #expect(await provider.count() == 2)
+        try #require(requested.count == 2)
+        #expect(requested[0].duration(to: requested[1]) >= .milliseconds(700))
+        engine.cancel()
     }
     @Test func testRepeatedClicksDoNotRestartRequest() async throws {
         let engine = try engine(); let provider = MockProvider(delay: 200)
         let snapshot = DraftSnapshot(text: "今何にしていますか", fieldID: "a")
         engine.update(snapshot, settings: settings, provider: provider, explicit: true)
-        try await Task.sleep(for: .milliseconds(30))
+        try await waitUntil { engine.status == .requesting }
         for _ in 0..<10 { engine.update(snapshot, settings: settings, provider: provider, explicit: true) }
-        try await Task.sleep(for: .milliseconds(250))
+        try await waitUntil { engine.status == .ready }
         let count = await provider.count(); XCTAssertEqual(count, 1)
         XCTAssertEqual(engine.status, .ready); XCTAssertEqual(engine.suggestions.count, 1)
     }
