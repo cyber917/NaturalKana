@@ -101,7 +101,7 @@ step "准备源码"
 if [[ -d "$DIR/.git" ]]; then
   cd "$DIR"
   [[ ! -f Config/LocalBrand.json ]] || fail "检测到 Config/LocalBrand.json（开发者配置），这个脚本不处理这种环境。"
-  info "已有源码：$DIR，更新到最新版"
+  info "已有源码：${DIR}，更新到最新版"
   allowed=$'Config/Brand.json\nConfig/GeneratedBrand.json\npatches/ios.patch\npatches/macos.patch'
   unexpected="$(git status --porcelain --untracked-files=no | cut -c4- | grep -vxF "$allowed" || true)"
   [[ -z "$unexpected" ]] || fail "源码里有你自己改过的文件，为避免覆盖，脚本已停止：" $unexpected
@@ -137,12 +137,12 @@ step "设置你的应用标识"
 if [[ -f "$BRAND_FILE" ]]; then
   info "沿用之前的标识：$BRAND_FILE"
   saved_team="$(python3 -c 'import json,sys; print(json.load(open(sys.argv[1]))["macAppGroup"].split(".")[0])' "$BRAND_FILE")"
-  [[ "$saved_team" == "$TEAM" ]] || fail "之前的标识属于 Team $saved_team，这次找到的是 $TEAM。" \
+  [[ "$saved_team" == "$TEAM" ]] || fail "之前的标识属于 Team ${saved_team}，这次找到的是 ${TEAM}。" \
     "如果确实要换账号，删除 $BRAND_FILE 后重新运行（会被系统当成另一个输入法，设置要重新填写）。"
 else
   default_name="$(id -un | tr '[:upper:]' '[:lower:]' | tr -cd 'a-z0-9')"
   [[ -n "$default_name" ]] || default_name="user"
-  name="$(ask "输入一个英文名，只用小写字母和数字（直接回车用 $default_name）：")"
+  name="$(ask "输入一个英文名，只用小写字母和数字（直接回车用 ${default_name}）：")"
   name="${name:-$default_name}"
   [[ "$name" =~ ^[a-z][a-z0-9]{1,30}$ ]] || fail "名字只能用小写字母开头，后面跟小写字母或数字。"
   mkdir -p "$(dirname "$BRAND_FILE")"
@@ -153,7 +153,7 @@ mac = f"com.{name}.inputmethod.naturalkana.mac"
 json.dump({"name": "NaturalKana", "bundlePrefix": f"com.{name}.naturalkana", "iosAppGroup": f"group.com.{name}.naturalkana",
            "macAppGroup": f"{team}.{mac}", "macBundleIdentifier": mac}, open(path, "w"), indent=2)
 PY
-  info "标识已保存到 $BRAND_FILE，以后更新会自动沿用"
+  info "标识已保存到 ${BRAND_FILE}，以后更新会自动沿用"
 fi
 cp "$BRAND_FILE" Config/Brand.json
 python3 tools/rebrand.py >"$log_dir/rebrand.log" 2>&1 || { cat "$log_dir/rebrand.log" >&2; fail "应用标识设置失败。"; }
