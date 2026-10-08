@@ -2,7 +2,7 @@
 
 [中文](README.md)
 
-A Japanese keyboard for iPhone and input method for macOS with AI phrasing suggestions. Type a Japanese sentence, pause, and NaturalKana offers more natural casual or polite alternatives above the keyboard. Tap one to replace your draft.
+A Japanese keyboard for iPhone, an input method for macOS and a suggestion helper for Windows, with AI phrasing suggestions. Type a Japanese sentence, pause, and NaturalKana offers more natural casual or polite alternatives above the keyboard. Tap one to replace your draft.
 
 NaturalKana is derived from [azooKey](https://github.com/azooKey/azooKey) and [azooKey-Desktop](https://github.com/azooKey/azooKey-Desktop). It keeps their Japanese input engine and keyboard and adds the suggestion feature. It is not an official azooKey release.
 
@@ -14,6 +14,7 @@ NaturalKana is derived from [azooKey](https://github.com/azooKey/azooKey) and [a
 ## Install
 
 - **iPhone, no Mac needed (Windows / macOS / Linux):** download the IPA from [Releases](https://github.com/cyber917/NaturalKana/releases), install [SideStore](https://github.com/SideStore/SideStore) with [iloader](https://github.com/nab138/iloader), then import the IPA in SideStore. Requires iOS 17.6+.
+- **Windows 10/11:** download the exe from Releases. It works alongside any Japanese IME: select a sentence and press Ctrl+Alt+J. See [docs/WINDOWS.md](docs/WINDOWS.md).
 - **Build from source (Mac + Xcode):** iPhone app and macOS input method.
 
 Step-by-step guides are in Chinese: [docs/INSTALLATION.md](docs/INSTALLATION.md). Configuration and troubleshooting: [docs/USAGE.md](docs/USAGE.md).

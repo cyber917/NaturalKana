@@ -2,7 +2,7 @@
 
 [English](README.en.md)
 
-带 AI 表达建议的日语输入法：iPhone 键盘 + macOS 输入法。打完一句日语，停顿一下，键盘上方会给出更自然的口语／敬语说法，点一下就能替换。
+带 AI 表达建议的日语输入工具：iPhone 键盘、macOS 输入法，以及 Windows 建议小助手。打完一句日语，就能得到更自然的口语／敬语说法，点一下即可替换。
 
 基于 [azooKey](https://github.com/azooKey/azooKey) 与 [azooKey-Desktop](https://github.com/azooKey/azooKey-Desktop) 的衍生项目，日语输入引擎和键盘沿用上游，新增了表达建议功能。不是 azooKey 官方版本。
 
@@ -18,8 +18,9 @@
 | **Windows / Mac / Linux 电脑 + iPhone** | 下载现成的 IPA，用 SideStore 安装，不需要 Mac 和 Xcode → [教程](docs/INSTALLATION.md#iphone不需要-mac) |
 | Mac + iPhone，想自己改代码 | 用 Xcode 从源码构建 → [教程](docs/INSTALLATION.md#从源码构建-iphone-版) |
 | Mac（输入法） | 用 Xcode 从源码构建 → [教程](docs/INSTALLATION.md#mac-输入法) |
+| **Windows 电脑** | 下载 exe，配合任何日语输入法使用，选中句子按 Ctrl+Alt+J → [说明](docs/WINDOWS.md) |
 
-iPhone 版需要 iOS 17.6 或更高。安装包在 [Releases](https://github.com/cyber917/NaturalKana/releases) 页面。
+iPhone 版需要 iOS 17.6 或更高；Windows 版需要 Windows 10/11（64 位）。安装包都在 [Releases](https://github.com/cyber917/NaturalKana/releases) 页面。
 
 装好后到 App 里填写服务商、模型 ID 和 API 密钥，再在系统键盘设置里打开“允许完全访问”。详见[配置与使用](docs/USAGE.md)。
 
@@ -37,10 +38,11 @@ iPhone 版需要 iOS 17.6 或更高。安装包在 [Releases](https://github.com
 - 免费账户的限制：同一台手机最多同时装 3 个自签 App（SideStore 自己占 1 个）；每 7 天最多注册 10 个 App ID（NaturalKana 主程序和键盘共用 2 个）。
 - SideStore 本身也是 7 天签名。只要在到期前点过刷新，它就会连同自己一起续期。如果已经过期，要回到电脑上用 iloader 重装 SideStore，NaturalKana 不用重装。
 - **Mac 版**：macOS 对本地构建的程序宽松得多，通常不需要每周续期；如果哪天输入法加载不了，重新执行一遍构建和安装即可。
+- **Windows 版**：没有有效期，下载就能一直用。第一次运行时 Windows 可能提示“已保护你的电脑”，点“更多信息 → 仍要运行”即可（程序没有购买代码签名证书）。
 
 ## 隐私
 
-联网建议只发送当前这一句（最多 200 字）、表达偏好和命中的词库条目，直接发到你自己配置的服务商；本项目没有服务器。API 密钥保存在设备钥匙串里。键盘的“完全访问”只用于联网获取建议。
+联网建议只发送当前这一句（最多 200 字）、表达偏好和命中的词库条目，直接发到你自己配置的服务商；本项目没有服务器。API 密钥保存在设备钥匙串（Windows 上是凭据管理器）里。键盘的“完全访问”只用于联网获取建议。
 
 ## 从源码构建
 

@@ -23,3 +23,8 @@ installed-backups/
 *.p12
 *.key
 *.log
+
+# Windows companion build output
+windows/**/bin/
+windows/**/obj/
+windows/publish/

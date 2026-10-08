@@ -11,6 +11,7 @@
 | `Config/Brand.json` | 公开的默认应用标识；`rebrand.py` 据此生成工程中的标识 |
 | `Config/Dependencies/*.resolved` | 固定的 Swift 依赖版本 |
 | `tools/` | 准备源码、改标识、导出补丁、构建和安装 Mac 输入法的脚本 |
+| `windows/` | Windows 建议小助手（C# / .NET 8），核心逻辑从 `NaturalSuggestCore` 移植，见 [WINDOWS.md](WINDOWS.md#从源码构建) |
 | `upstream/` | `bootstrap.py` 下载的上游源码（不提交到仓库） |
 
 上游固定版本写在 `tools/bootstrap.py` 里。`bootstrap.py` 下载上游和子模块，应用补丁，复制依赖锁文件；加 `--weights` 会下载模型。

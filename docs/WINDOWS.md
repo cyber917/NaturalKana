@@ -1,0 +1,70 @@
+# Windows 版（建议小助手）
+
+[返回首页](../README.md) · [配置与使用](USAGE.md)
+
+Windows 版不是输入法，而是一个常驻在托盘里的小助手。照常用微软日语输入法、Google 日语输入等任何输入法打字，需要时按一下快捷键，NaturalKana 会给出更自然的说法，点一下就替换回去。
+
+它和 iPhone／Mac 版使用同一套提示词和校验规则，建议质量一致。
+
+## 安装
+
+1. 从 [Releases](https://github.com/cyber917/NaturalKana/releases) 下载 `NaturalKana-Windows-x64.exe`。不需要安装，也不需要另装运行库。需要 Windows 10 或 11（64 位）。
+2. 双击运行。第一次运行时，Windows 可能提示“Windows 已保护你的电脑”，这是因为程序没有购买代码签名证书。点**更多信息 → 仍要运行**。
+3. 程序会出现在任务栏右下角的托盘里（黑色的“あ”图标），并自动打开设置。
+
+## 设置
+
+1. 选**服务商**，填 **API 模型 ID** 和 **API 密钥**。Qwen 有国际站和中国站两个选项，按你的账户选择。
+2. 勾选**允许把选中的那一句发送给服务商**。
+3. 点**测试连接**，看到“连接成功”后点**保存**。
+
+各服务商怎么填，见[配置与使用](USAGE.md#第一次配置)。API 密钥保存在 Windows 凭据管理器里，不会写进任何文件。双击托盘图标可以随时重新打开设置。
+
+## 使用
+
+1. 在任何软件里打一句日语，**先把假名转换确认完**。
+2. 选中这句话，或者直接把光标放在句尾，程序会自动选中光标前面的这一行。
+3. 按快捷键，默认是 **Ctrl + Alt + J**。
+4. 光标附近会弹出建议卡片：
+   - 按数字键 **1–9**，或点击某一条，就会用它替换原句。
+   - **↑ ↓** 选择，**Enter** 采用。
+   - **Esc** 关闭，原句不变。
+
+蓝色是和原句不同的地方。卡片显示“这句话已经很自然了”时，说明模型认为不用改。
+
+## 工作原理和限制
+
+程序通过“复制 → 请求建议 → 粘贴”来读取和替换文字，所以几乎所有软件都能用。你原来的剪贴板会在操作后自动恢复。
+
+- **一次只检查一行**，最多 200 字。
+- 剪贴板里原来的纯文本、图片和文件会被恢复。如果原来是其他特殊格式，比如 Word 里复制的带格式内容，可能只能恢复成纯文本。
+- 少数软件里，Ctrl+C、Ctrl+V 或 Shift+Home 的行为不一样，比如终端、Excel 单元格、游戏，这时可能取不到文字或替换不了。
+- 以**管理员身份**运行的软件，普通程序没法向它发送按键。需要的话，也用管理员身份运行 NaturalKana。
+- 快捷键被别的软件占用时，在设置里换一个。
+
+## 常见问题
+
+| 现象 | 处理 |
+| --- | --- |
+| 按快捷键没反应 | 看托盘里有没有 NaturalKana；在设置里换一个快捷键再试 |
+| 提示“没有取到文字” | 先选中句子再按；确认输入法的假名转换已经确认 |
+| 提示“这看起来不是日语句子” | 程序只检查日语句子，夹几个英文或中文词没关系，整句外语不会发送 |
+| 卡片里显示 HTTP 401、404 等错误 | 见[报错对照](USAGE.md#没有建议时按这个顺序排查) |
+| 想开机自动运行 | 设置里勾选“开机启动” |
+
+## 从源码构建
+
+需要 [.NET 8 SDK](https://dotnet.microsoft.com/download/dotnet/8.0)。
+
+```sh
+dotnet test windows/NaturalKana.Windows.Tests
+dotnet publish windows/NaturalKana.Windows -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true -p:EnableCompressionInSingleFile=true -p:DebugType=none -o windows/publish
+```
+
+代码在 `windows/NaturalKana.Windows/`：
+
+- `Core/`：从 `NaturalSuggestCore` 移植的请求、提示词、校验和改动高亮。
+- `Win/`：快捷键、复制粘贴和剪贴板恢复。
+- `UI/`：建议卡片和设置窗口。
+
+提示词和网络用语词表直接引用 `NaturalSuggestCore` 里的同一份文件。修改建议逻辑时，请同时更新 Swift 和 C# 两边的测试。
