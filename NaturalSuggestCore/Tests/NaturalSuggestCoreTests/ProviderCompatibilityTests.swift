@@ -106,6 +106,14 @@ struct MixedDraftAndDiffTests {
         let accepted = try ResponseValidator().validate(data, draft: "いえいえー clickしたらpasteをできる", settings: .init())
         #expect(accepted.map(\.text) == ["クリックしたら貼り付けできる。"])
     }
+    @Test func promptListsExactlyTheLatinWordsTheValidatorAllows() throws {
+        let system = try PromptBuilder().system
+        let line = try #require(system.split(separator: "\n").first { $0.contains("Latin letters are allowed only in these established words:") })
+        let listed = line.components(separatedBy: "established words: ")[1].components(separatedBy: ". ")[0].components(separatedBy: ", ")
+        #expect(Set(listed) == JapaneseProfile.latinAllowlist.subtracting(["ww", "www"]))
+        let data = Data(#"{"suggestions":[{"text":"今、issueを改善するつもり。","register":"casual"},{"text":"今、イシューを改善するつもり。","register":"casual"}]}"#.utf8)
+        #expect(try ResponseValidator().validate(data, draft: "今issueをimproveつもりです", settings: .init()).map(\.text) == ["今、イシューを改善するつもり。"])
+    }
     @Test func embeddedForeignWordsAreNotPendingRomaji() {
         #expect(!JapaneseDraftProfile.hasPendingRomaji("いえいえー clickしたらpasteをできる"))
         #expect(!JapaneseDraftProfile.hasPendingRomaji("pasteしたい"))

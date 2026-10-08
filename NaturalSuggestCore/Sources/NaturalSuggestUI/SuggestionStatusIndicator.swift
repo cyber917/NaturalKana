@@ -42,22 +42,31 @@ public struct KeyboardSuggestionStatus: View {
     private let status: Diagnostics
     private let retry: () -> Void
     @State private var expanded = false
-    public init(status: Diagnostics, retry: @escaping () -> Void) { self.status = status; self.retry = retry }
+    public init(status: Diagnostics, expanded: Bool = false, retry: @escaping () -> Void) {
+        self.status = status; self.retry = retry; _expanded = State(initialValue: expanded)
+    }
     public var body: some View {
         Button { expanded.toggle() } label: {
             SuggestionStatusIndicator(status: status).frame(width: 28, height: 30).contentShape(Rectangle())
         }.buttonStyle(.plain)
             .accessibilityLabel(status.message)
-            .overlay(alignment: .topTrailing) {
+            // Keys are drawn above the bar (upstream zIndex), so the message must stay within the bar's height.
+            .overlay(alignment: .trailing) {
                 if expanded {
-                    VStack(alignment: .leading, spacing: 8) {
-                        Text(status.message).font(.caption).fixedSize(horizontal: false, vertical: true)
+                    HStack(spacing: 10) {
+                        Text(status.message).font(.system(size: 12)).lineLimit(2).minimumScaleFactor(0.8)
+                            .frame(maxWidth: .infinity, alignment: .leading)
                         if status != .natural && status != .waiting && status != .requesting {
-                            Button("重试") { expanded = false; retry() }.font(.caption)
+                            Button("重试") { expanded = false; retry() }.font(.system(size: 13, weight: .medium))
                         }
-                    }.padding(10).frame(width: 210, alignment: .leading)
-                        .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 10))
-                        .offset(y: 30)
+                        Button { expanded = false } label: { Image(systemName: "xmark").font(.system(size: 12, weight: .medium)) }
+                            .accessibilityLabel("关闭")
+                    }
+                    .buttonStyle(.plain).padding(.horizontal, 10)
+                    .frame(width: min(UIScreen.main.bounds.width - 12, 520), height: 38)
+                    .background(Color(uiColor: .secondarySystemBackground), in: RoundedRectangle(cornerRadius: 10))
+                    .overlay { RoundedRectangle(cornerRadius: 10).stroke(.primary.opacity(0.08), lineWidth: 0.5) }
+                    .contentShape(Rectangle()).onTapGesture { expanded = false }
                 }
             }
             .onChange(of: status) { _ in expanded = false }
