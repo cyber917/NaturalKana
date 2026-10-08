@@ -9,6 +9,8 @@ public static class ChineseText
     internal static readonly HashSet<string> LatinAllowlist = ["OK", "AI", "App", "app", "APP", "PDF", "URL", "ID", "Wi", "Fi", "KTV", "emo", "yyds", "vlog"];
     /// Common Traditional or Japanese-only forms whose Simplified form is different.
     const string NotSimplified = "們這說請謝飯嗎麼讓給還過聽歡話幫樣見來時國會學對個為與東車門開問間關長頭電體氣気動點認讀語書買賣覺親視駅図歩様済広辺発楽実経続紙網絡隣働売円応変戦検験録";
+    /// Characters that are frequent in Chinese but rare in kanji-only Japanese.
+    internal const string Markers = "的了吗呢吧们这那你我他她很没说么啊呀给让还过请谢";
     static readonly string[] Denied = ["翻译", "翻譯", "翻訳", "译成", "翻成", "忽略指令", "忽略之前", "系统提示", "提示词", "ignore instructions", "system prompt"];
 
     static bool IsHiragana(int v) => v is >= 0x3041 and <= 0x3096;

@@ -6,12 +6,12 @@ public enum ProviderKind: String, Codable, CaseIterable, Sendable {
     public var title: String {
         switch self {
         case .openAI: "OpenAI"
-        case .qwen: "Qwen / 百炼"
+        case .qwen: UIText.t("Qwen / 百炼")
         case .deepSeek: "DeepSeek"
         case .kimi: "Kimi"
         case .gemini: "Gemini"
         case .claude: "Claude"
-        case .custom: "自定义"
+        case .custom: UIText.t("自定义")
         }
     }
     public var defaultConfiguration: ProviderConfiguration {
@@ -40,7 +40,7 @@ public enum Dialect: String, Codable, CaseIterable, Sendable {
     case off, kansai
     public var title: String {
         switch self {
-        case .off: "关闭"
+        case .off: UIText.t("关闭")
         case .kansai: "関西弁"
         }
     }
@@ -118,6 +118,9 @@ public struct SuggestionSettings: Codable, Hashable, Sendable {
     public var enabled = false
     public var consent = false
     public var language: SuggestionLanguage = .japanese
+    /// Detect each draft's language; `language` stays the primary choice for ambiguous drafts.
+    public var autoLanguage = false
+    public var interfaceLanguage: InterfaceLanguage = .system
     public var provider: ProviderKind = .openAI
     public var openAI = ProviderConfiguration(baseURL: "https://api.openai.com/v1")
     public var qwen = ProviderConfiguration(baseURL: "https://dashscope-intl.aliyuncs.com/compatible-mode/v1")
@@ -153,18 +156,28 @@ public struct SuggestionSettings: Codable, Hashable, Sendable {
         default: additionalProviders[kind.rawValue] = configuration
         }
     }
+    /// Settings for one draft: with autoLanguage, `language` becomes the detected language.
+    /// Nil means the draft is not in any of `languages`.
+    public func resolvingLanguage(for text: String, among languages: [SuggestionLanguage] = SuggestionLanguage.allCases) -> SuggestionSettings? {
+        guard autoLanguage else { return self }
+        guard let detected = SuggestionLanguage.detect(text, primary: language, among: languages) else { return nil }
+        var copy = self; copy.language = detected
+        return copy
+    }
     public var comparisonProvider: ProviderKind { qualityPartner == provider ? (provider == .openAI ? .qwen : .openAI) : qualityPartner }
     public var fingerprint: String {
         let encoder = JSONEncoder(); encoder.outputFormatting = .sortedKeys
         return SHA256.hash(data: (try? encoder.encode(self)) ?? Data()).map { String(format: "%02x", $0) }.joined()
     }
-    private enum CodingKeys: String, CodingKey { case enabled, consent, language, provider, openAI, qwen, additionalProviders, highlightChanges, qualityPartner, registerPreference, slangLevel, dialect, debounceMilliseconds, minimumLength, maximumSuggestions, qualityMode, dailyCap, blockedApps, acceptKeys }
+    private enum CodingKeys: String, CodingKey { case enabled, consent, language, autoLanguage, interfaceLanguage, provider, openAI, qwen, additionalProviders, highlightChanges, qualityPartner, registerPreference, slangLevel, dialect, debounceMilliseconds, minimumLength, maximumSuggestions, qualityMode, dailyCap, blockedApps, acceptKeys }
     public init(from decoder: Decoder) throws {
         let values = try decoder.container(keyedBy: CodingKeys.self)
         enabled = try values.decodeIfPresent(Bool.self, forKey: .enabled) ?? false
         consent = try values.decodeIfPresent(Bool.self, forKey: .consent) ?? false
         // A language added by a newer release falls back to Japanese instead of discarding all settings.
         language = (try? values.decodeIfPresent(SuggestionLanguage.self, forKey: .language)) ?? .japanese
+        autoLanguage = try values.decodeIfPresent(Bool.self, forKey: .autoLanguage) ?? false
+        interfaceLanguage = (try? values.decodeIfPresent(InterfaceLanguage.self, forKey: .interfaceLanguage)) ?? .system
         provider = try values.decodeIfPresent(ProviderKind.self, forKey: .provider) ?? .openAI
         openAI = try values.decodeIfPresent(ProviderConfiguration.self, forKey: .openAI) ?? ProviderKind.openAI.defaultConfiguration
         qwen = try values.decodeIfPresent(ProviderConfiguration.self, forKey: .qwen) ?? ProviderKind.qwen.defaultConfiguration
@@ -194,11 +207,11 @@ public enum InputFilterReason: Equatable, Sendable {
     case empty, tooShort(Int), composing, protectedField, language
     public var message: String {
         switch self {
-        case .empty: "尚未取得当前行文字；未联网"
-        case .tooShort(let minimum): "当前送检文字不足 \(minimum) 字；未联网"
-        case .composing: "等待当前拼写转换完成；未联网"
-        case .protectedField: "当前输入框或应用禁止建议；未联网"
-        case .language: "当前句子与建议语言不符，或属于翻译/指令内容；未联网"
+        case .empty: UIText.t("尚未取得当前行文字；未联网")
+        case .tooShort(let minimum): UIText.t("当前送检文字不足 %@ 字；未联网", "\(minimum)")
+        case .composing: UIText.t("等待当前拼写转换完成；未联网")
+        case .protectedField: UIText.t("当前输入框或应用禁止建议；未联网")
+        case .language: UIText.t("当前句子与建议语言不符，或属于翻译/指令内容；未联网")
         }
     }
 }
@@ -237,41 +250,41 @@ public enum Diagnostics: Equatable, Sendable {
     // Only fixed messages and numeric HTTP status are exposed; never echo provider bodies or keys.
     public var message: String {
         switch self {
-        case .idle: "待机"
-        case .disabled: "功能关闭，或尚未同意发送草稿"
+        case .idle: UIText.t("待机")
+        case .disabled: UIText.t("功能关闭，或尚未同意发送草稿")
         case .filtered(let reason): reason.message
-        case .rejectedSuggestions(let count): "模型返回了 \(count) 条候选，但都未通过格式、语言或重复内容检查"
-        case .waiting: "等待停顿"
-        case .requesting: "正在请求，请稍候；无需重复点击"
-        case .ready: "请求完成"
-        case .natural: "无需修改"
-        case .unsupportedDraft: "模型未能判断这句话"
-        case .requiresFullAccess: "请为键盘允许完全访问"
-        case .contextUnavailable: "当前输入位置暂不支持建议"
-        case .noSuggestions: "模型返回了空候选；这不代表原句一定自然"
-        case .invalidModelID: "模型 ID 不能含空格；请填写服务商 API 文档中的 ID"
-        case .modelUnavailable: "模型不存在或无访问权限，请核对 API 模型 ID"
-        case .unsupportedParameter: "模型不支持当前参数；请在接口兼容设置中调整 JSON 格式或输出参数"
-        case .missingKey: "请保存所选服务商的 API 密钥"
-        case .configuration: "请填写有效的接口地址（https://，本机或局域网服务可用 http://）和模型 ID"
-        case .insecureEndpoint: "公网接口必须使用 HTTPS；http:// 只支持本机或局域网地址（如 localhost、192.168.x.x、*.local）"
-        case .quota: "已达到本机今日请求上限"
-        case .network: "网络连接失败，请检查网络和接口地址后重试"
-        case .timeout: "请求超时（20 秒），请稍后重试；兼容的 Qwen 模型可开启非思考模式"
-        case .invalidResponse: "服务商已响应，但返回内容不符合候选 JSON 格式，请重试或检查模型兼容性"
-        case .truncated: "模型回复达到输出长度上限，内容被截断；可缩短草稿或使用非思考模式"
-        case .refused: "服务商拒绝生成此内容，请调整草稿后重试"
-        case .providerQuota: "服务商返回余额或额度不足，请检查服务商账户"
-        case .httpStatus(401): "密钥验证失败（HTTP 401），请检查密钥及接口地区"
-        case .httpStatus(403): "服务商拒绝访问（HTTP 403），请检查账户和模型权限"
-        case .httpStatus(404): "接口或模型不存在（HTTP 404），请检查接口地址和模型 ID"
-        case .httpStatus(429): "服务商限制了请求（HTTP 429），请稍后重试并检查账户限额"
+        case .rejectedSuggestions(let count): UIText.t("模型返回了 %@ 条候选，但都未通过格式、语言或重复内容检查", "\(count)")
+        case .waiting: UIText.t("等待停顿")
+        case .requesting: UIText.t("正在请求，请稍候；无需重复点击")
+        case .ready: UIText.t("请求完成")
+        case .natural: UIText.t("无需修改")
+        case .unsupportedDraft: UIText.t("模型未能判断这句话")
+        case .requiresFullAccess: UIText.t("请为键盘允许完全访问")
+        case .contextUnavailable: UIText.t("当前输入位置暂不支持建议")
+        case .noSuggestions: UIText.t("模型返回了空候选；这不代表原句一定自然")
+        case .invalidModelID: UIText.t("模型 ID 不能含空格；请填写服务商 API 文档中的 ID")
+        case .modelUnavailable: UIText.t("模型不存在或无访问权限，请核对 API 模型 ID")
+        case .unsupportedParameter: UIText.t("模型不支持当前参数；请在接口兼容设置中调整 JSON 格式或输出参数")
+        case .missingKey: UIText.t("请保存所选服务商的 API 密钥")
+        case .configuration: UIText.t("请填写有效的接口地址（https://，本机或局域网服务可用 http://）和模型 ID")
+        case .insecureEndpoint: UIText.t("公网接口必须使用 HTTPS；http:// 只支持本机或局域网地址（如 localhost、192.168.x.x、*.local）")
+        case .quota: UIText.t("已达到本机今日请求上限")
+        case .network: UIText.t("网络连接失败，请检查网络和接口地址后重试")
+        case .timeout: UIText.t("请求超时（20 秒），请稍后重试；兼容的 Qwen 模型可开启非思考模式")
+        case .invalidResponse: UIText.t("服务商已响应，但返回内容不符合候选 JSON 格式，请重试或检查模型兼容性")
+        case .truncated: UIText.t("模型回复达到输出长度上限，内容被截断；可缩短草稿或使用非思考模式")
+        case .refused: UIText.t("服务商拒绝生成此内容，请调整草稿后重试")
+        case .providerQuota: UIText.t("服务商返回余额或额度不足，请检查服务商账户")
+        case .httpStatus(401): UIText.t("密钥验证失败（HTTP 401），请检查密钥及接口地区")
+        case .httpStatus(403): UIText.t("服务商拒绝访问（HTTP 403），请检查账户和模型权限")
+        case .httpStatus(404): UIText.t("接口或模型不存在（HTTP 404），请检查接口地址和模型 ID")
+        case .httpStatus(429): UIText.t("服务商限制了请求（HTTP 429），请稍后重试并检查账户限额")
         case .httpStatus(let code) where code == 400 || code == 422:
-            "请求参数被拒绝（HTTP \(code)），请检查模型是否支持 JSON Schema、非思考模式等参数"
+            UIText.t("请求参数被拒绝（HTTP %@），请检查模型是否支持 JSON Schema、非思考模式等参数", "\(code)")
         case .httpStatus(let code) where code >= 500:
-            "服务商暂时出错（HTTP \(code)），请稍后重试"
-        case .httpStatus(let code): "服务商请求失败（HTTP \(code)），请检查服务商配置"
-        case .unavailable: "请求未完成，发生了未识别的错误，请重试"
+            UIText.t("服务商暂时出错（HTTP %@），请稍后重试", "\(code)")
+        case .httpStatus(let code): UIText.t("服务商请求失败（HTTP %@），请检查服务商配置", "\(code)")
+        case .unavailable: UIText.t("请求未完成，发生了未识别的错误，请重试")
         }
     }
 }

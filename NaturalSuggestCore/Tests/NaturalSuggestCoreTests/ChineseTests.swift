@@ -97,7 +97,7 @@ struct ChineseTests {
     @Test func titles() {
         #expect(SuggestionLanguage.chinese.registerTitle(.casual) == "口语")
         #expect(SuggestionLanguage.chinese.registerTitle(.polite) == "礼貌")
-        #expect(SuggestionLanguage.chinese.title == "中文" && SuggestionLanguage.chinese.closeTitle == "关闭")
+        #expect(SuggestionLanguage.chinese.title == UIText.t("中文") && SuggestionLanguage.chinese.closeTitle == "关闭")
         #expect(ChineseDraftProfile().accepts(SuggestionLanguage.chinese.testDraft))
     }
 }

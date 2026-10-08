@@ -3,7 +3,19 @@ import NaturalKanaStorage
 import NaturalSuggestCore
 
 @MainActor public final class SuggestionModel: ObservableObject {
-    @Published public var settings: SuggestionSettings
+    @Published public var settings: SuggestionSettings {
+        didSet {
+            UIText.language = settings.interfaceLanguage
+            if settings.interfaceLanguage != oldValue.interfaceLanguage { storeInterfaceLanguage() }
+        }
+    }
+    /// Language of the shown suggestions: the detected one when auto language is on.
+    @Published public private(set) var suggestionLanguage: SuggestionLanguage = .japanese
+    /// Languages this host can check (the Mac input method cannot see Chinese typed with another IME).
+    public var languages: [SuggestionLanguage] {
+        get { engine?.languages ?? SuggestionLanguage.available }
+        set { engine?.languages = newValue }
+    }
     @Published public private(set) var suggestions: [Suggestion] = []
     @Published public private(set) var status: Diagnostics = .idle
     @Published public var settingsMessage = ""
@@ -34,11 +46,14 @@ import NaturalSuggestCore
         defaults = storage
         settings = defaults?.data(forKey: "nk.settings").flatMap { try? JSONDecoder().decode(SuggestionSettings.self, from: $0) } ?? SuggestionSettings()
         engine = storage.flatMap { store in (try? PromptBuilder()).map { SuggestionEngine(budget: DailyBudget(defaults: store), prompt: $0) } }
+        UIText.language = settings.interfaceLanguage
+        suggestionLanguage = settings.language
         engine?.onChange = { [weak self] items, state in
             guard let self else { return }
+            suggestionLanguage = engine?.language ?? settings.language
             suggestions = items; status = state
             suggestionDraft = engine?.suggestionDraft ?? ""
-            timingText = engine?.cacheHit == true ? "缓存命中，无需联网" : engine?.requestSeconds.map { String(format: "本次联网耗时 %.2f 秒", $0) } ?? ""
+            timingText = engine?.cacheHit == true ? UIText.t("缓存命中，无需联网") : engine?.requestSeconds.map { String(format: UIText.t("本次联网耗时 %.2f 秒"), $0) } ?? ""
             onStatusChange?(state)
         }
         reloadPersonalLexicon()
@@ -84,16 +99,23 @@ import NaturalSuggestCore
             if !qwenKey.isEmpty { try keychain.write(qwenKey, account: ProviderKind.qwen.rawValue) }
             for (kind, key) in providerKeys where !key.isEmpty { try keychain.write(key, account: kind.rawValue) }
             defaults.set(try JSONEncoder().encode(settings), forKey: "nk.settings")
-            engine?.cancel(clearCache: true); settingsMessage = "已保存。密钥保存在系统钥匙串。"
+            engine?.cancel(clearCache: true); settingsMessage = UIText.t("已保存。密钥保存在系统钥匙串。")
             return true
         } catch { settingsMessage = Self.sharingError(error); return false }
+    }
+    /// Only the interface language is written; other unsaved edits still wait for “保存设置”.
+    private func storeInterfaceLanguage() {
+        guard let defaults else { return }
+        var stored = defaults.data(forKey: "nk.settings").flatMap { try? JSONDecoder().decode(SuggestionSettings.self, from: $0) } ?? SuggestionSettings()
+        stored.interfaceLanguage = settings.interfaceLanguage
+        if let data = try? JSONEncoder().encode(stored) { defaults.set(data, forKey: "nk.settings") }
     }
     public func testSuggestion() {
         update(DraftSnapshot(text: settings.language.testDraft, fieldID: "settings-test"), explicit: true)
     }
     public func deleteKey(_ kind: ProviderKind) {
-        do { try keychain.write("", account: kind.rawValue); engine?.cancel(clearCache: true); settingsMessage = "密钥已删除。" }
-        catch { settingsMessage = "无法删除密钥。" }
+        do { try keychain.write("", account: kind.rawValue); engine?.cancel(clearCache: true); settingsMessage = UIText.t("密钥已删除。") }
+        catch { settingsMessage = UIText.t("无法删除密钥。") }
     }
     public func cancel() { engine?.cancel(clearCache: true) }
     public func invalidate() { engine?.cancel() }
@@ -127,14 +149,14 @@ import NaturalSuggestCore
     }
     private static func sharingError(_ error: any Error) -> String {
         if let error = error as? SharingFailure { return error.message }
-        if let error = error as? KeychainFailure { return "钥匙串不可用（\(error.status)）。请检查共享权限。" }
-        return "共享设置不可用，请检查签名。"
+        if let error = error as? KeychainFailure { return UIText.t("钥匙串不可用（%@）。请检查共享权限。", "\(error.status)") }
+        return UIText.t("共享设置不可用，请检查签名。")
     }
     #if os(iOS)
     /// Non-secret challenge verifies app -> keyboard settings AND explicit-group Keychain.
     /// No API key is put in defaults or displayed by diagnostics.
     public func refreshSharingDiagnostics() {
-        guard let defaults else { sharingMessage = SharedContainer.failure?.message ?? "共享设置不可用（G04）"; return }
+        guard let defaults else { sharingMessage = SharedContainer.failure?.message ?? UIText.t("共享设置不可用（G04）"); return }
         do {
             let store = try keychain
             let marker = KeychainStore(service: "NaturalKana.sharing-check", accessGroup: store.accessGroup)
@@ -146,10 +168,10 @@ import NaturalSuggestCore
                 defaults.set(nonce, forKey: "nk.check.app")
             }
             let code = store.availability(settings.provider.rawValue)
-            let keyState = code == 0 ? "可读" : code == -25300 ? "未保存" : "错误 \(code)"
+            let keyState = code == 0 ? UIText.t("可读") : code == -25300 ? UIText.t("未保存") : UIText.t("错误 %@", "\(code)")
             let confirmed = defaults.string(forKey: "nk.check.keyboard") == nonce
-            let keyboard = confirmed ? (defaults.bool(forKey: "nk.check.keychain") ? "配置、钥匙串共享通过" : "钥匙串校验失败（\(defaults.integer(forKey: "nk.check.code"))）") : "等待验证，请切换到键盘后返回"
-            sharingMessage = "主应用：共享配置可读，密钥\(keyState)。键盘：\(keyboard)。"
+            let keyboard = confirmed ? (defaults.bool(forKey: "nk.check.keychain") ? UIText.t("配置、钥匙串共享通过") : UIText.t("钥匙串校验失败（%@）", "\(defaults.integer(forKey: "nk.check.code"))")) : UIText.t("等待验证，请切换到键盘后返回")
+            sharingMessage = UIText.t("主应用：共享配置可读，密钥%@。键盘：%@。", "\(keyState)", "\(keyboard)")
         } catch { sharingMessage = Self.sharingError(error) }
     }
     private func recordKeyboardSharingCheck() {

@@ -68,7 +68,9 @@ public sealed class HotkeyHost : IDisposable
     };
 
     /// Everyday shortcuts that would stop working in every other app if taken over globally.
-    public static string? CommonShortcutName(string text) => Common.TryGetValue(text, out var name) ? name : null;
+    /// Names are translated when shown, so they follow the current interface language.
+    public static string? CommonShortcutName(string text) => Common.TryGetValue(text, out var name) ? Core.UIText.T(name) : null;
+    internal static IEnumerable<string> CommonShortcutNames => Common.Values.Distinct();
 
     /// Returns false when another app already owns the combination.
     public bool Register(int id, string text, Action action)

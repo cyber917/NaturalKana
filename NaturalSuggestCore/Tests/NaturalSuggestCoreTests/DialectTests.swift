@@ -90,7 +90,7 @@ struct DialectTests {
     @Test func groupTitles() {
         #expect(SuggestionLanguage.japanese.registerTitle(.kansai) == "関西弁")
         #expect(SuggestionLanguage.japanese.registerTitle(.casual) == "カジュアル")
-        #expect(Dialect.allCases.map(\.title) == ["关闭", "関西弁"])
+        #expect(Dialect.allCases.map(\.title) == [UIText.t("关闭"), "関西弁"])
         #expect(Dialect.kansai.register == .kansai && Dialect.off.register == nil)
     }
 }

@@ -29,22 +29,18 @@ public partial class App : Application
     protected override void OnStartup(StartupEventArgs e)
     {
         base.OnStartup(e);
-        single = new Mutex(true, @"Local\NaturalKana.Windows", out ownsMutex);
-        if (!ownsMutex) { MessageBox.Show("NaturalKana 已经在运行，请在任务栏右下角的托盘里找到它。", "NaturalKana"); Shutdown(); return; }
-
         settings = AppSettings.Load();
+        UIText.Language = settings.Interface;
+        single = new Mutex(true, @"Local\NaturalKana.Windows", out ownsMutex);
+        if (!ownsMutex) { MessageBox.Show(UIText.T("NaturalKana 已经在运行，请在任务栏右下角的托盘里找到它。"), "NaturalKana"); Shutdown(); return; }
+
         // Never take over everyday shortcuts (e.g. Ctrl+Z) saved by an earlier build.
         if (HotkeyHost.CommonShortcutName(settings.Hotkey) is not null) { settings.Hotkey = HotkeyPreset.Default; settings.Save(); }
         hotkeys = new HotkeyHost();
         var registered = RegisterMainHotkey(settings.Hotkey);
 
         tray = new Forms.NotifyIcon { Icon = MakeIcon(), Text = "NaturalKana", Visible = true };
-        var menu = new Forms.ContextMenuStrip();
-        menu.Items.Add("设置…", null, (_, _) => OpenSettings());
-        menu.Items.Add("使用说明", null, (_, _) => Open("https://github.com/cyber917/NaturalKana/blob/main/docs/WINDOWS.md"));
-        menu.Items.Add(new Forms.ToolStripSeparator());
-        menu.Items.Add("退出", null, (_, _) => Quit());
-        tray.ContextMenuStrip = menu;
+        BuildMenu();
         tray.DoubleClick += (_, _) => OpenSettings();
 
         watcher = new AutoWatcher(() => settings, () => busy || settingsWindow is not null);
@@ -58,9 +54,24 @@ public partial class App : Application
         });
 
         if (!registered)
-            tray.ShowBalloonTip(5000, "NaturalKana", $"快捷键 {settings.Hotkey} 被其他软件占用了，请在设置里换一个。", Forms.ToolTipIcon.Warning);
+            tray.ShowBalloonTip(5000, "NaturalKana", UIText.T("快捷键 %@ 被其他软件占用了，请在设置里换一个。", $"{settings.Hotkey}"), Forms.ToolTipIcon.Warning);
         if (!settings.Consent || !SecretStore.Has(settings.Provider)) OpenSettings();
-        else tray.ShowBalloonTip(4000, "NaturalKana 已在后台运行", $"选中一句{Languages.Title(settings.Language)}，或直接按 {settings.Hotkey}", Forms.ToolTipIcon.None);
+        else tray.ShowBalloonTip(4000, UIText.T("NaturalKana 已在后台运行"), settings.AutoLanguage
+            ? UIText.T("选中一句话，或直接按 %@", settings.Hotkey)
+            : UIText.T("选中一句%@，或直接按 %@", $"{Languages.Title(settings.Language)}", $"{settings.Hotkey}"), Forms.ToolTipIcon.None);
+    }
+
+    /// Rebuilt after the settings window closes, so a new interface language applies to the tray menu too.
+    void BuildMenu()
+    {
+        var menu = new Forms.ContextMenuStrip();
+        menu.Items.Add(UIText.T("设置…"), null, (_, _) => OpenSettings());
+        menu.Items.Add(UIText.T("使用说明"), null, (_, _) => Open("https://github.com/cyber917/NaturalKana/blob/main/docs/WINDOWS.md"));
+        menu.Items.Add(new Forms.ToolStripSeparator());
+        menu.Items.Add(UIText.T("退出"), null, (_, _) => Quit());
+        var old = tray!.ContextMenuStrip;
+        tray.ContextMenuStrip = menu;
+        old?.Dispose();
     }
 
     bool RegisterMainHotkey(string keys) => hotkeys!.Register(MainHotkey, keys, OnHotkey);
@@ -81,6 +92,8 @@ public partial class App : Application
         {
             settingsWindow = null;
             cache.Clear();
+            UIText.Language = settings.Interface;
+            BuildMenu();
             // Saving may have changed the hotkey; closing without saving keeps the old one.
             RegisterMainHotkey(settings.Hotkey);
         };
@@ -111,11 +124,13 @@ public partial class App : Application
         var capture = await TextBridge.CaptureAsync(settings.NoSelection);
         if (capture is null)
         {
-            tray?.ShowBalloonTip(3000, "NaturalKana", "没有取到文字：请把光标放进输入框，或先选中一句话再按快捷键。", Forms.ToolTipIcon.None);
+            tray?.ShowBalloonTip(3000, "NaturalKana", UIText.T("没有取到文字：请把光标放进输入框，或先选中一句话再按快捷键。"), Forms.ToolTipIcon.None);
             return;
         }
         var draft = capture.Text;
-        var card = new SuggestionWindow(draft.Length > 200 ? draft[^200..] : draft, capture.Anchor, settings.HighlightChanges, settings.Language, passive: false);
+        // With auto language, the draft decides; an unrecognised draft keeps the primary language and is rejected below.
+        var effective = settings.ResolvingLanguage(draft) ?? settings;
+        var card = new SuggestionWindow(draft.Length > 200 ? draft[^200..] : draft, capture.Anchor, settings.HighlightChanges, effective.Language, passive: false);
         string? chosen = null;
         var refocus = false;
         var closed = new TaskCompletionSource();
@@ -127,9 +142,9 @@ public partial class App : Application
         var multiline = draft.Contains('\n') || draft.Contains('\r');
         if (multiline)
             card.ShowMessage(capture.AutoSelected
-                ? "输入框里有好几行，一次只能检查一句。请选中要检查的那一句再按快捷键。"
-                : "一次只能检查一句话，请只选中一行。");
-        else _ = FillAsync(card, draft, request.Token);
+                ? UIText.T("输入框里有好几行，一次只能检查一句。请选中要检查的那一句再按快捷键。")
+                : UIText.T("一次只能检查一句话，请只选中一行。"));
+        else _ = FillAsync(card, draft, effective, request.Token);
 
         await closed.Task;
         request.Cancel();
@@ -144,7 +159,8 @@ public partial class App : Application
         if (busy || settingsWindow is not null || !settings.AutoMode || !settings.Consent || !SecretStore.Has(settings.Provider)) return;
         autoCard?.Dismiss(refocus: false);
         var draft = snapshot.Before.Trim();
-        var card = new SuggestionWindow(draft, snapshot.Anchor, settings.HighlightChanges, settings.Language, passive: true);
+        var effective = settings.ResolvingLanguage(draft) ?? settings;
+        var card = new SuggestionWindow(draft, snapshot.Anchor, settings.HighlightChanges, effective.Language, passive: true);
         autoCard = card;
         string? chosen = null;
         var closed = new TaskCompletionSource();
@@ -154,7 +170,7 @@ public partial class App : Application
         request = new CancellationTokenSource();
         var token = request.Token;
         // Show the card only once there is something worth showing, so typing is never interrupted by a spinner.
-        var report = await RequestAsync(draft, token, card);
+        var report = await RequestAsync(draft, effective, token, card);
         if (token.IsCancellationRequested || autoCard != card || card.IsFinished || report is null || report.Suggestions.Count == 0)
         {
             card.Dismiss(refocus: false);
@@ -181,7 +197,7 @@ public partial class App : Application
             else
             {
                 TextBridge.Copy(chosen);
-                tray?.ShowBalloonTip(3000, "NaturalKana", "原句已经变了或无法自动替换，建议已复制，请手动粘贴。", Forms.ToolTipIcon.None);
+                tray?.ShowBalloonTip(3000, "NaturalKana", UIText.T("原句已经变了或无法自动替换，建议已复制，请手动粘贴。"), Forms.ToolTipIcon.None);
             }
         }
         finally { busy = false; }
@@ -189,22 +205,27 @@ public partial class App : Application
 
     // ---------- shared ----------
 
-    async Task FillAsync(SuggestionWindow card, string draft, CancellationToken cancel)
+    async Task FillAsync(SuggestionWindow card, string draft, AppSettings effective, CancellationToken cancel)
     {
-        if (JapaneseText.Length(draft) < 2) { card.ShowMessage("句子太短了。"); return; }
-        if (!Languages.AcceptsDraft(settings.Language, draft)) { card.ShowMessage(Languages.NotThisLanguage(settings.Language)); return; }
-        var report = await RequestAsync(draft, cancel, card);
+        if (JapaneseText.Length(draft) < 2) { card.ShowMessage(UIText.T("句子太短了。")); return; }
+        if (!Languages.AcceptsDraft(effective.Language, draft))
+        {
+            card.ShowMessage(effective.AutoLanguage ? UIText.T("没认出这是日语、中文还是英语句子，没有发送。") : Languages.NotThisLanguage(effective.Language));
+            return;
+        }
+        var report = await RequestAsync(draft, effective, cancel, card);
         if (report is null || cancel.IsCancellationRequested) return;
         if (report.Suggestions.Count > 0) card.ShowSuggestions(report.Suggestions);
         else card.ShowMessage(report.EmptyMessage!);
     }
 
     /// Cached per draft and settings. Errors are shown on the card; returns null on error or cancel.
-    async Task<ValidationReport?> RequestAsync(string draft, CancellationToken cancel, SuggestionWindow card)
+    /// `effective` carries the draft's language; the daily budget is always counted on the saved settings.
+    async Task<ValidationReport?> RequestAsync(string draft, AppSettings effective, CancellationToken cancel, SuggestionWindow card)
     {
         var config = settings.Config(settings.Provider);
-        var key = string.Join("\u0001", draft, settings.Language, settings.Provider, config.BaseUrl, config.Model,
-            settings.RegisterPreference, settings.SlangLevel, settings.ActiveDialect, settings.SuggestionLimit);
+        var key = string.Join("\u0001", draft, effective.Language, settings.Provider, config.BaseUrl, config.Model,
+            settings.RegisterPreference, settings.SlangLevel, effective.ActiveDialect, settings.SuggestionLimit);
         if (cache.TryGetValue(key, out var cached)) return cached;
         try
         {
@@ -214,12 +235,12 @@ public partial class App : Application
             // UI test hook (Debug builds only): replay a canned provider reply from a file.
             var json = Environment.GetEnvironmentVariable("NATURALKANA_FAKE_REPLY") is { Length: > 0 } fake
                 ? await Task.Delay(400, cancel).ContinueWith(_ => System.IO.File.ReadAllText(fake), cancel)
-                : await provider.SuggestAsync(PromptBuilder.Make(draft, settings), cancel);
+                : await provider.SuggestAsync(PromptBuilder.Make(draft, effective), cancel);
 #else
-            var json = await provider.SuggestAsync(PromptBuilder.Make(draft, settings), cancel);
+            var json = await provider.SuggestAsync(PromptBuilder.Make(draft, effective), cancel);
 #endif
             if (cancel.IsCancellationRequested) return null;
-            var report = ResponseValidator.Inspect(json, draft, settings);
+            var report = ResponseValidator.Inspect(json, draft, effective);
             // Only explicit "natural" results and real suggestions are reused; unknown empty replies are retried.
             if (report.Suggestions.Count > 0 || report.Assessment == Assessment.Natural)
             {
