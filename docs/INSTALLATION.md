@@ -168,7 +168,7 @@ python3 tools/rebrand.py
    有输出说明系统拒绝了这个 Bundle ID：检查 `Config/Brand.json` 里的 `macBundleIdentifier` 是否包含 `.inputmethod.`，改好后重新运行 `rebrand.py`、构建和安装。
 5. 菜单栏选 **NaturalKana（日本語）**，在输入法菜单里打开“NaturalKana 设置…”，填写 API。
 
-输入法菜单中的 **NaturalKana（English）** 是英文模式；Apple 自带的“日语”输入法不会显示本项目的建议。找不到设置入口时运行 `zsh tools/open_macos_settings.command`。
+输入法菜单中的 **NaturalKana（English）** 是英文模式，在设置里把建议语言改成英语后也会给出英文建议；Apple 自带的“日语”输入法不会显示本项目的建议。找不到设置入口时运行 `zsh tools/open_macos_settings.command`。
 
 ## 反馈问题
 
