@@ -43,6 +43,10 @@ info "$XCODE ✓"
 
 step "检查 Git LFS"
 # Needed for the model downloads, and git itself fails on the LFS files once the filter is configured.
+# Homebrew is often installed but not on PATH when its "Next steps" were skipped.
+if ! command -v brew >/dev/null 2>&1 && [[ -x /opt/homebrew/bin/brew ]]; then
+  eval "$(/opt/homebrew/bin/brew shellenv)"
+fi
 if ! git lfs version >/dev/null 2>&1; then
   command -v brew >/dev/null 2>&1 || fail "需要 Git LFS，但这台 Mac 没有 Homebrew。" \
     "到 https://brew.sh/zh-cn/ 安装 Homebrew（装完照它提示的 Next steps 运行），再重新运行这个脚本。"
