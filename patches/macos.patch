@@ -1080,10 +1080,10 @@ index ed689f8..f5477c2 100644
  </dict>
  </plist>
 diff --git a/azooKeyMac/Info.plist b/azooKeyMac/Info.plist
-index 27b5e67..ac303e7 100644
+index 27b5e67..750419f 100644
 --- a/azooKeyMac/Info.plist
 +++ b/azooKeyMac/Info.plist
-@@ -2,98 +2,91 @@
+@@ -2,98 +2,109 @@
  <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
  <plist version="1.0">
  <dict>
@@ -1105,9 +1105,7 @@ index 27b5e67..ac303e7 100644
 -			<key>com.apple.inputmethod.Roman</key>
 +			<key>com.apple.inputmethod.Japanese</key>
  			<dict>
-+				<key>TISIconIsTemplate</key>
-+				<true/>
- 				<key>TISInputSourceID</key>
+-				<key>TISInputSourceID</key>
 -				<string>dev.ensan.inputmethod.azooKeyMac.Roman</string>
 -				<key>tsInputModePrimaryInScriptKey</key>
 -				<false/>
@@ -1119,30 +1117,40 @@ index 27b5e67..ac303e7 100644
 -				<string>;</string>
 -				<key>tsInputModeJISKeyboardShortcutKey</key>
 -				<integer>3</integer>
-+				<string>org.naturalkana.inputmethod.naturalkana.Japanese</string>
-+				<key>TISIntendedLanguage</key>
-+				<string>ja</string>
- 				<key>tsInputModeDefaultStateKey</key>
- 				<true/>
- 				<key>tsInputModeIsVisibleKey</key>
+-				<key>tsInputModeDefaultStateKey</key>
+-				<true/>
+-				<key>tsInputModeIsVisibleKey</key>
++				<key>TISIconIsTemplate</key>
  				<true/>
 -				<key>tsInputModePaletteIconFileKey</key>
 -				<string>en.tiff</string>
--				<key>tsInputModeAlternateMenuIconFileKey</key>
++				<key>TISInputSourceID</key>
++				<string>org.naturalkana.inputmethod.naturalkana.Japanese</string>
++				<key>TISIntendedLanguage</key>
++				<string>ja</string>
+ 				<key>tsInputModeAlternateMenuIconFileKey</key>
 -				<string>en.tiff</string>
--				<key>tsInputModeMenuIconFileKey</key>
++				<string>main.tiff</string>
+ 				<key>tsInputModeMenuIconFileKey</key>
 -				<string>en.tiff</string>
--				<key>tsInputMethodAlternateIconFileKey</key>
++				<string>main.tiff</string>
++				<key>tsInputModePaletteIconFileKey</key>
++				<string>main.tiff</string>
+ 				<key>tsInputMethodAlternateIconFileKey</key>
 -				<string>en.tiff</string>
 -				<key>TISIntendedLanguage</key>
 -				<string>en</string>
 -				<key>TISIconIsTemplate</key>
--				<true/>
++				<string>main.tiff</string>
++				<key>tsInputModeDefaultStateKey</key>
+ 				<true/>
 -			</dict>
 -			<key>com.apple.inputmethod.Japanese</key>
 -			<dict>
 -				<key>tsInputModeKeyEquivalentModifiersKey</key>
 -				<integer>4608</integer>
++				<key>tsInputModeIsVisibleKey</key>
++				<true/>
 +				<key>tsInputModeJISKeyboardShortcutKey</key>
 +				<integer>1</integer>
  				<key>tsInputModeKeyEquivalentKey</key>
@@ -1157,31 +1165,38 @@ index 27b5e67..ac303e7 100644
  				<string>smJapanese</string>
 -				<key>tsInputModeJISKeyboardShortcutKey</key>
 -				<integer>1</integer>
+-				<key>tsInputModeDefaultStateKey</key>
+-				<true/>
+-				<key>tsInputModeIsVisibleKey</key>
 +			</dict>
 +			<key>com.apple.inputmethod.Roman</key>
 +			<dict>
 +				<key>TISIconIsTemplate</key>
-+				<true/>
+ 				<true/>
+-				<key>tsInputModePaletteIconFileKey</key>
+-				<string>main.tiff</string>
 +				<key>TISInputSourceID</key>
 +				<string>org.naturalkana.inputmethod.naturalkana.Roman</string>
 +				<key>TISIntendedLanguage</key>
 +				<string>en</string>
- 				<key>tsInputModeDefaultStateKey</key>
- 				<true/>
- 				<key>tsInputModeIsVisibleKey</key>
- 				<true/>
--				<key>tsInputModePaletteIconFileKey</key>
+ 				<key>tsInputModeAlternateMenuIconFileKey</key>
 -				<string>main.tiff</string>
--				<key>tsInputModeAlternateMenuIconFileKey</key>
++				<string>en.tiff</string>
+ 				<key>tsInputModeMenuIconFileKey</key>
 -				<string>main.tiff</string>
--				<key>tsInputModeMenuIconFileKey</key>
--				<string>main.tiff</string>
--				<key>tsInputMethodAlternateIconFileKey</key>
++				<string>en.tiff</string>
++				<key>tsInputModePaletteIconFileKey</key>
++				<string>en.tiff</string>
+ 				<key>tsInputMethodAlternateIconFileKey</key>
 -				<string>main.tiff</string>
 -				<key>TISIntendedLanguage</key>
 -				<string>ja</string>
 -				<key>TISIconIsTemplate</key>
--				<true/>
++				<string>en.tiff</string>
++				<key>tsInputModeDefaultStateKey</key>
++				<true/>
++				<key>tsInputModeIsVisibleKey</key>
+ 				<true/>
 +				<key>tsInputModeJISKeyboardShortcutKey</key>
 +				<integer>3</integer>
 +				<key>tsInputModeKeyEquivalentKey</key>
@@ -1216,6 +1231,8 @@ index 27b5e67..ac303e7 100644
 +	<string>$(PRODUCT_MODULE_NAME).NSManualApplication</string>
 +	<key>TISIntendedLanguage</key>
 +	<string>ja</string>
++	<key>tsInputMethodIconFileKey</key>
++	<string>main.tiff</string>
  	<key>tsInputMethodCharacterRepertoireKey</key>
  	<array>
  		<string>Latn</string>
@@ -5502,6 +5519,116 @@ index 89bf0df..7037e86 100644
 -com.apple.inputmethod.Japanese = "azooKey (日本語)";
 +com.apple.inputmethod.Roman = "NaturalKana (English)";
 +com.apple.inputmethod.Japanese = "NaturalKana (日本語)";
+diff --git a/azooKeyMac/en.tiff b/azooKeyMac/en.tiff
+index bfa57943fe60b5e22a26fd37933eb24eb245e998..8abf8ee876e8ea301daa1e6d9f92063762719422 100644
+GIT binary patch
+delta 895
+zcmaiyy-Px26o=2N_nLx((UJ<9LM8=aOO35UI5h<gQed>!P(yL=W)V$yYHMyOh=v+k
+z8iPL8hW>zPXmrY+^XfH8!yi2Np7(sbpXX`1RrG2#nH6zL5;>2EBO(S;=h0uAalZ--
+z8sLvWb2PVKbp|bH_Xti+Zd_e;P-#gk@XcJXY~l%x*af?ulxvp`N1jhy(Fyag1!YJ>
+z6V(3=d!W7~tiT6o%<rPMDhC%(gD8B$D=fkpT!9NdP~#0uaM%gR1Ao;W=;V)Z0{fua
+zfMFXr>iVBG3Ejda7+3?1t2*`G;0cCJa6o|rdXgK^ll`}WV`93o7f|T|-k_)hv;bMy
+zgm#>duLKn{lm1fIA2iwspDPjeMDKy^(}!JBC)Y;2{)WJ5W!nJDA3?Z=Es_Z?PLFFO
+z#mDs75o>cT?v#mk{Un>1M1y-bZ%V<tJD+jHWbBI*a#JSTvnPX6tgsZJV6`_<xw$QR
+b&*VzHxhrEdT$Q>?XD@<nW7X@O*n08@ElzNc
+
+delta 622
+zcmZ9JKT88K7{=dMlWT_x{sDz5qQaqg(zBnzMZr$4x{8ZBh!sVOpjZcywi$I$aB^_z
+zHz=K*1t)dtptRzk9n>eeUWp0!BX6Gfd2)Bj*VKcb%;jj7NS>*d7giDz_TvXcR0K8f
+z2<l)LoPduG1s&vk`94se-VE=f;5M}BYzB^Bhf}QAz@4LOU(=*+oz4c<_Hg@eI@R|A
+zOZ=`^RhB~o!%*6m`fhyRmQsUn<X<xKG%QcUc=W%<yBkloYAL$23GA_rMV!!clv;39
+z-8lgBU=RENHx=-uKGGIGKjf?EnCH~B6#f$2H{cmG!4tRu=ODhFV;wVhI_?iLQ7?K-
+zI2-0p-H*D*)Pl&%t7Q>#QXPs+S{`wlqzRC>&ZFIWOV!0>fZced8!QxeC_$83#3uTZ
+O^(X<js8k)3tEoT0Y=)`;
+
+diff --git a/azooKeyMac/en@2x.tiff b/azooKeyMac/en@2x.tiff
+index cbc035bc6e6b893226d0aa941f89b44a6a59b353..ccc585df23c547a8e3f3bfe671456c9d812cd3c3 100644
+GIT binary patch
+delta 2027
+zcmcIlL1+^}6#bj+VnVyJYiZInYSI>Cv=WQQf{0PnOYu-VDjq~A=s}8tr=@r(crvV5
+z^kTfI;6>;`@Z?22X?oI=u=L<j#9Rb5`u^_z$!`>ihkSUMH*e<uKRYv-|L)Ycg_*@g
+zI!NSIDbvc(2oYI8rDgYc(_eR8h^s&w=!6$XPPm=4$Ew@(%T5C%3O#2jEZbQpLa)*E
+z3$ffyWv|#}8PLYD6UVka=|||XBDNa)w(W|`nZ!1Y$}1A<h??Wo#g-~HC+WSiXPvL0
+zZ^P&IT<#My0Dg9PIi7)^UkdD&0VaS5SO9pF#EyY{1hfzHFTf?h2gG<|XMqRER+tu5
+zdy19=IfTudm;?C%$Rz%(J=pByx0EP@kYbZQx7zqyR)D*}(Xf>*1$Wf&Jor=K1#nsE
+z1#lfvN7cG=q4hqWBWmz=Z!Dmf=-f-ehamy^n#=%VA3$VmkOh41n}1URq2(<|VueL}
+zXYd_ePW>Ku1B?P<uR#V)>-EiLzlRbCZ7*#Sa|7B*zFebCzZCpWCcaa8RsYJwyRD7y
+z?p~m-MWTR)wSe6!(S30KW60u9o3Vg~vVbj<fM^_?uazX{D`L(X`G>NApNPwe#jb(y
+zC3^-O5E1Qp=EFLIt9VHQe#DBLCAC44+38&V0@*fcA4wpz*VQ<G@eN=XAXXx((i8N~
+ziGr55L4t7`8!F4$Tm;G|*A4l#PIN9SZM((~V{GQ7kL!@AZF&D)T@_3P@pT2+R&|OI
+zLg=c)5gUN1Tn^tIQ_%jXb7fN@H!<(86|%W+92J1~)S?Q0EX6Z1$Dh-$g!TMks~TR&
+x*QY$PrieEHe!gdw44(`i=co7MNUbH~SX)~*B|E#eLOY1Y&cJVeV=I4U>^BJZC?fy>
+
+delta 827
+zcmYk4PiPZC6o>c4PEB>uR7u1xq7tNFMH$dTMQT7JLR<E*ha3u4^it82;z1PkWJM4h
+z7rgYUcn}XN6s2IbcwSJf7mLz}k>bCAQl+Bxdr7)9<YRyDH*aR%%)H-wlSA3TL2tX~
+z6|&A=b)|Dl|D)wL&+~fWBHV^?cno*oGL&H@2x!h6EViify$LLOyd#ge2H#y$G<C!?
+zmjrU%*<mxHcHAfZGUIH;=yG=nBUx}ZGAjrl#7|`??rry7>7ZPR`!d7Lpk#J4`qw3!
+zJAWXws7r7I-ngVkemWb<B*U8~u{Of;pVoW~<|#?)&i2b5Qq60uRn7(yrT!?s9B{TM
+z4^=gCpHshiPp+t6O8uIi>z=dSM%U-KK{J0r)tIwAGM##LRpaVaQ|}eZd}eBfb<JwT
+zpLA?YcNx(Aj->mADD#%IHPmc;#Ji<2V~FN-d<v0wcD-4Pm}s3VloP1D?sXpa!G1Uk
+zA6?R|Wrrq1G^N+CVPpcrDvwjquwsgYvyHbR95VXIPY6T##KU&z1w`;t-(przam(40
+zWs9ZHGyya46>2aI_u(|`0G+OdeSlxE2w$MpQ_CB**|BZg)-gvLMsxv@mfnKSG&Jp8
+zn2!f?yCfT5$nESZc+%zREitc9lOWaK;upEC0j@;p#DAk_wAcN^p0}a>k>7dB{|~<?
+B&eH$@
+
+diff --git a/azooKeyMac/main.tiff b/azooKeyMac/main.tiff
+index 65e71d07a1cbd98d9012ef36c60945829afe5316..5314c34e9530fdff07b5fb98399fb198183e7b5e 100644
+GIT binary patch
+delta 1074
+zcmaizKS)(k9LIm>-gjRXCQl+0gUsMPLQ#Z3ad0gm9u77-yv4wVhC*<=7aA0V0`C&E
+zxVA}-g5cud(AZdGElx%}lE}~Z-h1x5ir^PMoZtEVJAdxEUz^=Wal38fX0?_DJAu{A
+z%t2!(?Agq#8e{Sjl50?oa;xev>B9e#bUt`6C|3t0m2}hT;7L<nzgVvzFaAjEHT+8x
+zHyZoxT+W&&gTrOZoiYAWMKQ1DCisMWTJ<TsfLqWHLl8p~w4)E8yrM^3-i2?_CO8Sw
+zGgyZs_zY7ZX>&z`3-#XjiueHhspQRKe}Y~3Qu-%)AHx^_CO8NyWs;e0z|!6DUYuYE
+zpS^`GX^UD;t#!lFCipx*CisNrKS3+az)4}>WYnEWw;_SQP}E<%uWtnAU>|g`(hoR=
+zKDYzYbEs}WAKlOWc!)2AVYmy@F>J$o$nzHS2b{gM(&>YF!8`nGaBxLjUtYCR2lQGe
+zVtF;IN?F=wat+Gy9XYVe58<rA-{`Uf<#v$SHM8iU3kyHVu5Mv^5RJN4`aPN&shJzG
+zh?az+hPz+d!)dENHX9IFDjPlCST!1Ee|_J^Tf4!FU!ZOppM;&o7WUrMm;28FLFkp3
+
+delta 525
+zcmZY5JxfAS7{Kx8*gdA9p$!QcSc!%SIkZI$Z4DWeMMG_YQ$!><g)~*8*Si+9M=n8A
+zM9|AvAD~(ydLu%Iupy}b5s|RN{av1ybDqn&Ujx@MPdY6_B6`QEx>Ke0zW<N2uLFq=
+z5h>sr&#2-Zw>Uuw^XN2V)VW<A^wvo2Mk%V+?DB|yBTYHBj;J$I?+@t*;*`SPC!$k4
+z(o%b-6#OQggIVi%u**sHVp`*Oq~^T&a1dsNFop#zV+Ol0`~Iq!39)=j^^)AwW-)<L
+z#GPqZNL{f%q7Kas%$N*!jOrXwjeF`(f<;Qngr6vj1Ki*hrdz>1j<EuN>%Zm~cg4Dt
+zNE=-x-MmyI4iLNQu_fZpJ5yFld7KSvxJPfQ9?|s!;?AmYGhTHrto|g^RHk{bu$_~3
+V5#J<3wm4%}5$uxUQLkR|{Q^IaX5jz;
+
+diff --git a/azooKeyMac/main@2x.tiff b/azooKeyMac/main@2x.tiff
+index 49e010c7bbb0e58665ac90b31904e59e74d30305..b2b3142bb1cd365c3d4d32006f899d42c02e1bd2 100644
+GIT binary patch
+delta 1698
+zcmZ{lTSyd97{_PU9d*Ug9i&}#TUN7NYeVfu7?fpDK`bafL`Y#2geX!(_ELluSP;ZE
+zMHdK6BI+U0qL&~Dx<L;rfpmRXA_xk)V1-m#zi-;JI|KE>Z_odH-?`5@-;QmVUNtY7
+z)D~%4uvYU8`ZT|$X*yI5=H+zCI%k?V`(YfW>=9$VIhCo2*GyS4qXm(+JM%k?G^!<K
+zg&o(d9W2;cF)J=`n~a&Z_Y`(pX_VBI_1m5PxcP+YJ$MP<?4Z$XHy0J_6HaU+K4pg_
+zX3ENxO-UPlzTKL?IUwtFOneJJA!UPNQcC?d{DQ9;{fP1@trG@9(@^1ccM)gd8Vtix
+zP$uK-g0)Z#r{FV`gV<`ge%h$X4X1adtb}m_e{aev3&apZFe6iWTg5FomkTfn-B3ag
+zy}@oQakWf7CU6mCiG84~5OEX6;62Dz-N=^D!(31nuv<%WW7n9+Re*A<tS~Bvu>*SH
+zHhhD_5P&|<9%{@4K4o{D-tO^ay=pyg(O*2hW7Y%Jl`;y>37Pv{-Vu7lvu74F+g!1O
+z#3JSamuJ+|I$}L1=5xhgJ3WrLJXgFun%Z5lHE6Z^S7`Y>;)_8o%mHO5J>!I<4^<#j
+z-k_ARE`gut6evRUz&kp|k_gAtbgKN0SEf?77$I-%1>`FyrHm#^tA~7UkWq@bEW7>h
+z&~m3NP&SH?Y0oGJ<r4S-YB@tGD-!L%G3|1yAg;f!sp}(RFSLM)x(~h8<(IhBmC4I@
+z?^s^nGf?BG(rM2I6HWIWnfqCa+y-?ym!pRHm8-lZ<8PyPSnjlAPEIj?qTBd9E0!Z9
+zX~=Xlup7oQb+rU3v*`ytF3YKwUdNyr<g+M~vzEK+Oyo&t{Uo@R0hxLdJ}}BMNri@_
+z1}A}5q)}3Hn;fo_d=0q}*?jCt(Xnh|pP<b@6MJew8AqH)Sl6of(Ouf-Xg~L)%B~MJ
+z=(YCtP<>@k(<?Q3lJv8JdL*mM?W>{cxQ{@4wqxBuSN5N#aA2QSKn~qRzs6f{LOsQQ
+E0MY#L?*IS*
+
+delta 875
+zcmZ{jO=uHA6vt;$C#H~S(vPG~u(nvKSWyNFAqHYgzz8vZ(1Jpd>P@g035b<S@uVOq
+z!>R~gJbCouH;SSZzni0CB}&2SL8wxt4F;pXNwTFN4*Q$^zqfDS?7Vqf+FID|%jLvI
+zA;LbR&zSzPf3AUqM+lLDvv3#Q!dLhSrMfP1e-77R0)`-FbY7(p?@S>X_=va+J3tvd
+zqV^+xIVqWK{Dc~ZCZh+{2E+pHeT{aF!yt{$Ix`LZrr52nWBZLxs~$wfNqI(0(Wj;`
+zRvW!d9<O<V>KPt(l$1AXo)&rDTJK$}Y&w#md4m4H1sH?*dOmr|=y<DrVxc(I(awCy
+z`QS;LVyApUM3*gqjhKWexT6_y6sGJp<TpYSZ!q12KhP&32+KzY#v!-}k6;GMq)3~-
+zzBN}d+yw63uJ1s%(Q8}1h|n@@_Pi<d$VJwd1EvrQRd79pV-SaCqu0r5%qv@*+osUl
+zzKH(|Ov7t<3HRZFv&tJW#Ws0@P}PQKwpJ~_`i{|JtKaLK^G2MUXOFU9c+lvKiXrYf
+z59P2bqekrk??p_rt=-i_(nb#lY=>px7L-jP9{7#81G|9ZKa#LJvk?<ud+Y_wLJ8b*
+z%%N?~9>Wzl0MY++b!L5&6rzC$DK;_5y6!}Ks(J<g#DcRkxJCM$@!;lYSjebQ)fYtg
+ivy3h2IcGB16(gG*Tzau`IxkkzsWf}Ud&3_Z_5THa`M)#(
+
 diff --git a/pkgbuild.sh b/pkgbuild.sh
 index f7572e6..d834067 100755
 --- a/pkgbuild.sh

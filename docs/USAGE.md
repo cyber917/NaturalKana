@@ -52,8 +52,8 @@ Qwen 的中国站和国际站、不同地域的密钥与地址必须对应，以
 
 在“表达建议 → 表达 → 建议语言”里选日语或英语，再点**保存设置**。两种语言共用同一套服务商和密钥，默认是日语。Mac 和 iPhone 要分别设置。
 
-- **日语**：Mac 用 `NaturalKana（日本語）`，iPhone 用日语键盘。
-- **英语**：Mac 用 `NaturalKana (English)`，iPhone 在 NaturalKana 键盘里切到 `ABC` 布局。切到系统自带的英文键盘不会出建议。
+- **日语**：Mac 用 `NaturalKana（日本語）`（图标「な」），iPhone 用日语键盘。
+- **英语**：Mac 用 `NaturalKana (English)`（图标「na」），iPhone 在 NaturalKana 键盘里切到 `ABC` 布局。切到系统自带的英文键盘不会出建议。
 
 “建议语言”决定检查和输出哪种语言，键盘布局决定怎么打字，两者要对应。英语建议按 Casual／Polite 分组。可以用这几句试试：`Yesterday I go to school.`、`Can you explain me how to use this?`、`I need to 预约 a table for two.`
 

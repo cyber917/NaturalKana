@@ -204,6 +204,8 @@ cd ~/NaturalKana && bash tools/build_macos.sh --signed
 2. 点左下角 `+`，在左侧语言里选 **日语**，在右边找到 **NaturalKana**，点“添加”。
 3. 在菜单栏的输入法图标里选择 **NaturalKana（日本語）**。
 
+NaturalKana 的图标是方块里的 **「な」**（日语）和 **「na」**（英语）。方块里是「あ」「A」的是 macOS 自带的日语输入法，不是 NaturalKana。
+
 列表里找不到 NaturalKana 的话，先**退出登录再登录一次**（左上角  → 退出登录），通常就会出现。还是没有，看[常见问题](#常见问题)。
 
 ## 第 10 步：填写 API，开始使用
@@ -270,6 +272,7 @@ cd ~/NaturalKana && cp ~/NaturalKana-Brand.json Config/Brand.json && python3 too
 | `Unexpected app identity; nothing installed.` | 编译的程序和 `Brand.json` 里的标识对不上，通常是改完标识没重新编译。重新运行第 6 步的 `rebrand.py` 和第 7 步 |
 | `A staging app already exists` | 上次安装中断了。删掉提示里那个 `NaturalKana.installing.app` 后重新安装 |
 | 系统设置的列表里没有 NaturalKana | 先退出登录再登录。还不行就打开一次输入法列表，然后运行 `log show --last 5m --predicate 'process == "imklaunchagent"' \| grep 'Refusing connection'`，有输出说明标识缺少 `.inputmethod.`，按第 6 步改好后重新编译、安装 |
+| 切换输入法时 NaturalKana 显示成灰色键盘图标，或一切到 NaturalKana 微信等 App 就闪退 | 旧版本没有输入法图标，部分 macOS 版本会因此让当前 App 崩溃。[更新到新版本](#更新到新版本)后**退出登录再登录一次**，图标会变成「な」「na」 |
 | 菜单里找不到“NaturalKana 设置…” | 确认当前选中的是 NaturalKana 输入法；或在项目文件夹运行 `zsh tools/open_macos_settings.command` |
 | 用了一段时间后输入法突然不工作 | 重新执行[第 7 步](#第-7-步编译)和[第 8 步](#第-8-步安装)即可，设置和密钥不会丢 |
 | Intel 芯片的 Mac | 暂不支持 |
