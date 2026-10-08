@@ -3,24 +3,28 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         WindowStyle="None" AllowsTransparency="True" Background="Transparent"
         Topmost="True" ShowInTaskbar="False" ResizeMode="NoResize"
-        SizeToContent="WidthAndHeight" ShowActivated="True"
+        SizeToContent="WidthAndHeight"
         FontFamily="Microsoft YaHei UI, Segoe UI" Title="NaturalKana">
-    <Border Margin="18" Background="White" CornerRadius="14" Width="520">
+    <Border x:Name="Card" Margin="18" Background="White" CornerRadius="14" Width="520">
         <Border.Effect>
             <DropShadowEffect BlurRadius="24" ShadowDepth="4" Direction="270" Opacity="0.18" Color="Black"/>
         </Border.Effect>
-        <StackPanel Margin="20,16,20,14">
-            <DockPanel>
-                <TextBlock DockPanel.Dock="Right" Text="Esc 关闭" FontSize="12" Foreground="#AEAEB2"/>
+        <DockPanel Margin="20,14,20,14">
+            <!-- Header doubles as a drag handle. -->
+            <DockPanel DockPanel.Dock="Top" x:Name="Header" Background="Transparent" Cursor="SizeAll">
+                <TextBlock x:Name="CloseButton" DockPanel.Dock="Right" Text="✕" FontSize="13" Foreground="#AEAEB2" Cursor="Hand" Padding="8,0,0,0"
+                           ToolTip="关闭（Esc）"/>
                 <TextBlock Text="NaturalKana" FontSize="12" FontWeight="SemiBold" Foreground="#6E6E73"/>
+                <TextBlock x:Name="Mode" Margin="8,0,0,0" FontSize="12" Foreground="#AEAEB2"/>
             </DockPanel>
-            <TextBlock x:Name="Draft" Margin="0,10,0,0" FontSize="14" Foreground="#6E6E73"
+            <TextBlock DockPanel.Dock="Top" x:Name="Draft" Margin="0,10,0,0" FontSize="14" Foreground="#6E6E73"
                        TextWrapping="Wrap" FontFamily="Yu Gothic UI, Microsoft YaHei UI"/>
-            <Border Height="1" Background="#E5E5EA" Margin="0,12,0,8"/>
-            <TextBlock x:Name="Status" FontSize="14" Foreground="#6E6E73" TextWrapping="Wrap" Margin="0,4,0,4"/>
-            <StackPanel x:Name="Items"/>
-            <TextBlock x:Name="Hint" Margin="0,10,0,0" FontSize="12" Foreground="#AEAEB2"
-                       Text="点击或按数字键采用 · ↑↓ 选择，Enter 采用"/>
-        </StackPanel>
+            <Border DockPanel.Dock="Top" Height="1" Background="#E5E5EA" Margin="0,12,0,8"/>
+            <TextBlock DockPanel.Dock="Bottom" x:Name="Hint" Margin="0,10,0,0" FontSize="12" Foreground="#AEAEB2"/>
+            <TextBlock DockPanel.Dock="Top" x:Name="Status" FontSize="14" Foreground="#6E6E73" TextWrapping="Wrap" Margin="0,4,0,4"/>
+            <ScrollViewer x:Name="Scroller" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                <StackPanel x:Name="Items"/>
+            </ScrollViewer>
+        </DockPanel>
     </Border>
 </Window>

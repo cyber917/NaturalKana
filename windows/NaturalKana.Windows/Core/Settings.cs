@@ -11,6 +11,7 @@ public enum TokenParameter { Automatic, MaxTokens, MaxCompletionTokens }
 public enum RegisterPreference { Both, FriendsCasual, PoliteCasual }
 public enum SlangLevel { Off, Light, Trendy }
 public enum Register { Casual, Polite }
+public enum NoSelectionScope { WholeField, CurrentLine }
 
 public sealed record Suggestion(string Text, Register Register);
 
@@ -87,6 +88,12 @@ public sealed class AppSettings
     public int MaximumSuggestions { get; set; } = 5;
     public int DailyCap { get; set; } = 200;
     public string Hotkey { get; set; } = HotkeyPreset.Default;
+    /// What the hotkey checks when nothing is selected.
+    public NoSelectionScope NoSelection { get; set; } = NoSelectionScope.WholeField;
+    /// Experimental: suggest automatically after a typing pause (UI Automation; not every app exposes its text).
+    public bool AutoMode { get; set; }
+    public int AutoPauseMilliseconds { get; set; } = 800;
+    public int MinimumLength { get; set; } = 4;
     public bool HighlightChanges { get; set; } = true;
     public string BudgetDay { get; set; } = "";
     public int BudgetUsed { get; set; }
@@ -134,5 +141,4 @@ public sealed class AppSettings
 public static class HotkeyPreset
 {
     public const string Default = "Ctrl+Alt+J";
-    public static readonly string[] All = ["Ctrl+Alt+J", "Ctrl+Alt+Space", "Ctrl+Shift+Space", "Alt+Shift+J"];
 }

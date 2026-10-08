@@ -133,12 +133,32 @@
                 <StackPanel>
                     <DockPanel Style="{StaticResource Row}">
                         <TextBlock Text="快捷键" Style="{StaticResource Label}"/>
-                        <ComboBox x:Name="HotkeyBox" Width="200" HorizontalAlignment="Left"/>
+                        <TextBlock x:Name="HotkeyHint" DockPanel.Dock="Right" Margin="10,0,0,0" VerticalAlignment="Center" FontSize="12" Foreground="#6E6E73" Text="点一下，再按新的组合键"/>
+                        <TextBox x:Name="HotkeyBox" Width="200" HorizontalAlignment="Left" IsReadOnly="True" Cursor="Hand"
+                                 IsReadOnlyCaretVisible="False" InputMethod.IsInputMethodEnabled="False"/>
+                    </DockPanel>
+                    <Border Style="{StaticResource Divider}"/>
+                    <DockPanel Style="{StaticResource Row}">
+                        <TextBlock Text="没选中文字时" Style="{StaticResource Label}"/>
+                        <ComboBox x:Name="ScopeBox"/>
                     </DockPanel>
                     <Border Style="{StaticResource Divider}"/>
                     <DockPanel Style="{StaticResource Row}">
                         <TextBlock Text="每日请求上限" Style="{StaticResource Label}"/>
                         <TextBox x:Name="CapBox" Width="90" HorizontalAlignment="Left" ToolTip="0 表示不限；这不是服务商的费用上限"/>
+                    </DockPanel>
+                    <Border Style="{StaticResource Divider}"/>
+                    <DockPanel Style="{StaticResource Row}">
+                        <TextBlock Text="自动建议" Style="{StaticResource Label}" VerticalAlignment="Top" Margin="0,2,0,0"/>
+                        <StackPanel>
+                            <CheckBox x:Name="AutoBox" Content="停顿后自动给出建议（实验性）"/>
+                            <StackPanel Orientation="Horizontal" Margin="0,8,0,0">
+                                <TextBlock Text="停顿" VerticalAlignment="Center" Foreground="#6E6E73"/>
+                                <ComboBox x:Name="PauseBox" Width="110" Margin="8,0,0,0"/>
+                            </StackPanel>
+                            <TextBlock Margin="0,6,0,0" FontSize="12" Foreground="#6E6E73" TextWrapping="Wrap"
+                                       Text="只在能读取输入框内容的软件里生效（记事本、Word、浏览器等）；微信等软件读不到时请用快捷键。每次停顿都可能请求一次，受每日上限限制。"/>
+                        </StackPanel>
                     </DockPanel>
                     <Border Style="{StaticResource Divider}"/>
                     <DockPanel Style="{StaticResource Row}">

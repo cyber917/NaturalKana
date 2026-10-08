@@ -1,6 +1,7 @@
 using System.Collections.Specialized;
 using System.Windows;
 using System.Windows.Media.Imaging;
+using NaturalKana.Windows.Core;
 
 namespace NaturalKana.Windows.Win;
 
@@ -71,7 +72,8 @@ public static class TextBridge
         return null;
     }
 
-    public static async Task<Capture?> CaptureAsync()
+    /// Selected text, or (when nothing is selected) the whole input box / the line before the caret.
+    public static async Task<Capture?> CaptureAsync(NoSelectionScope scope)
     {
         var window = Native.GetForegroundWindow();
         var anchor = CaretPosition(window);
@@ -80,25 +82,31 @@ public static class TextBridge
         try
         {
             var text = await CopyAsync();
-            var autoSelected = false;
+            var hadSelection = text is not null;
+            if (text is null && scope == NoSelectionScope.WholeField)
+            {
+                Native.Chord(Native.VK_CONTROL, Native.VK_A);
+                await Task.Delay(30);
+                text = await CopyAsync();
+            }
+            // Current line, also the fallback for boxes that ignore Ctrl+A.
             if (text is null)
             {
-                // Nothing selected: select from the caret back to the start of the line.
                 Native.Chord(Native.VK_SHIFT, Native.VK_HOME);
                 await Task.Delay(30);
                 text = await CopyAsync();
-                autoSelected = text is not null;
             }
-            return text is null ? null : new Capture(window, text.Trim(), anchor, autoSelected);
+            return text is null ? null : new Capture(window, text.Trim(), anchor, AutoSelected: !hadSelection);
         }
         finally { saved.Restore(); }
     }
 
+    /// Replace the current selection in the foreground app with text.
     public static async Task PasteAsync(IntPtr window, string text)
     {
         var saved = ClipboardSnapshot.Take();
         Retry(() => Clipboard.SetDataObject(new DataObject(DataFormats.UnicodeText, text), true));
-        Native.ForceForeground(window);
+        if (window != IntPtr.Zero) Native.ForceForeground(window);
         await Task.Delay(80);
         await WaitForModifiersReleased();
         Native.Chord(Native.VK_CONTROL, VK_V);
@@ -107,10 +115,22 @@ public static class TextBridge
         saved.Restore();
     }
 
-    public static void Refocus(IntPtr window) => Native.ForceForeground(window);
+    /// Put text on the clipboard for the user to paste manually.
+    public static void Copy(string text) =>
+        Retry(() => Clipboard.SetDataObject(new DataObject(DataFormats.UnicodeText, text), true));
+
+    /// Return focus; collapse a selection we made ourselves so the user's text is not left highlighted.
+    public static async Task RefocusAsync(IntPtr window, bool collapseSelection)
+    {
+        Native.ForceForeground(window);
+        if (!collapseSelection) return;
+        await Task.Delay(60);
+        await WaitForModifiersReleased();
+        Native.SendKeys((Native.VK_RIGHT, false), (Native.VK_RIGHT, true));
+    }
 
     /// Text caret position in screen pixels; falls back to the mouse pointer for apps without a system caret.
-    static Native.POINT CaretPosition(IntPtr window)
+    public static Native.POINT CaretPosition(IntPtr window)
     {
         var thread = Native.GetWindowThreadProcessId(window, out _);
         var info = new Native.GUITHREADINFO { cbSize = System.Runtime.InteropServices.Marshal.SizeOf<Native.GUITHREADINFO>() };
