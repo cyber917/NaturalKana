@@ -18,6 +18,10 @@ public struct NaturalSettingsView: View {
     @ViewBuilder private func providerFields(_ kind: ProviderKind) -> some View {
         let config = configuration(kind)
         TextField("接口地址", text: config.baseURL)
+        if config.wrappedValue.baseURL.trimmingCharacters(in: .whitespaces).lowercased().hasPrefix("http://") {
+            Text("HTTP 不加密：草稿和密钥会以明文发送，只适合本机或可信局域网中的模型服务。公网地址请使用 HTTPS。")
+                .font(.caption).foregroundStyle(.orange)
+        }
         TextField("API 模型 ID", text: config.fastModel)
         SecureField("\(kind.title) 密钥（留空保留）", text: key(kind))
         if kind == .qwen { Toggle("非思考模式", isOn: config.disableThinking) }

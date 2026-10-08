@@ -94,6 +94,17 @@ struct ProviderTests {
             XCTAssertThrowsError(try ProviderConfiguration(baseURL: url).endpoint("chat/completions"))
         }
     }
+    @Test func testAllowsPlainHTTPOnlyForLocalNetwork() throws {
+        for url in ["http://localhost:11434/v1", "http://127.0.0.1:8080/v1", "http://192.168.1.20/v1", "http://10.0.0.5/v1",
+                    "http://172.20.0.2/v1", "http://strata.local/v1", "http://strata/v1", "http://[::1]:8000/v1", "http://[fd00::1]/v1"] {
+            XCTAssertEqual(try ProviderConfiguration(baseURL: url).endpoint("chat/completions").absoluteString, url + "/chat/completions")
+        }
+        for url in ["http://example.com/v1", "http://8.8.8.8/v1", "http://172.32.0.1/v1", "http://192.168.1.20.example.com/v1", "http://[2001:db8::1]/v1"] {
+            do { _ = try ProviderConfiguration(baseURL: url).endpoint("chat/completions"); Issue.record("Expected an error") }
+            catch { XCTAssertEqual(Diagnostics(error: error), .insecureEndpoint) }
+        }
+        XCTAssertThrowsError(try ProviderConfiguration(baseURL: "ftp://localhost/v1").endpoint("chat/completions"))
+    }
     @Test func testHTTPErrorAndTruncatedOutputFail() async {
         for transport in [MockTransport(status: 401), MockTransport(finish: "length")] {
             do {

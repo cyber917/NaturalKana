@@ -34,6 +34,8 @@ Qwen 的中国站和国际站、不同地域的密钥与地址必须对应，以
 
 自定义接口支持 OpenAI **Chat Completions** 和 **Claude Messages** 两种协议，可以填 `/v1` 这样的基础地址，也可以填完整的 `/chat/completions` 或 `/messages` 地址。只支持 Responses API 或 Gemini 原生协议的接口不能用。
 
+接口地址一般要用 `https://`。本机或局域网里自己搭的模型服务（Ollama、llama.cpp、vLLM 等）也可以直接填 `http://`，例如 `http://localhost:11434/v1`、`http://192.168.1.20:8080/v1`、`http://myserver.local/v1`。可以用 HTTP 的地址只有 `localhost`、`*.local`、不带点的主机名，以及 `127.x`、`10.x`、`172.16–31.x`、`192.168.x`、`169.254.x` 网段；其他地址仍然必须用 HTTPS。HTTP 不加密，草稿和密钥都会明文传输，只在可信的网络里用。第一次连接局域网地址时，系统可能会弹窗请求“本地网络”权限，要点允许。
+
 ## 日常使用
 
 选择 NaturalKana 键盘，打一句日语并完成假名／汉字转换，光标停在句尾，停顿一下就会出现建议。

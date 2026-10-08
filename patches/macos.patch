@@ -948,10 +948,10 @@ index ed689f8..f5477c2 100644
  </dict>
  </plist>
 diff --git a/azooKeyMac/Info.plist b/azooKeyMac/Info.plist
-index 27b5e67..291fb35 100644
+index 27b5e67..ac303e7 100644
 --- a/azooKeyMac/Info.plist
 +++ b/azooKeyMac/Info.plist
-@@ -2,98 +2,84 @@
+@@ -2,98 +2,91 @@
  <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
  <plist version="1.0">
  <dict>
@@ -1092,6 +1092,13 @@ index 27b5e67..291fb35 100644
  	</array>
 -	<key>tsInputMethodIconFileKey</key>
 -	<string>main.tiff</string>
++	<key>NSAppTransportSecurity</key>
++	<dict>
++		<key>NSAllowsLocalNetworking</key>
++		<true/>
++	</dict>
++	<key>NSLocalNetworkUsageDescription</key>
++	<string>仅在你把建议服务的接口地址设为本机或局域网地址时使用，用于连接自行搭建的模型服务（如 Ollama、llama.cpp）。</string>
  </dict>
  </plist>
 diff --git a/azooKeyMac/InputController/CandidateWindow/SuggestCandidatesViewController.swift b/azooKeyMac/InputController/CandidateWindow/SuggestCandidatesViewController.swift

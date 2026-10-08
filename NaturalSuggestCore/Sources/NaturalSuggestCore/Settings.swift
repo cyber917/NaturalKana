@@ -57,13 +57,25 @@ public struct ProviderConfiguration: Codable, Hashable, Sendable {
     public func endpoint(_ path: String) throws -> URL {
         var base = baseURL.trimmingCharacters(in: .whitespacesAndNewlines)
         while base.hasSuffix("/") { base.removeLast() }
-        guard let components = URLComponents(string: base), components.scheme == "https",
+        guard let components = URLComponents(string: base), let scheme = components.scheme?.lowercased(), ["https", "http"].contains(scheme),
               let host = components.host, !host.isEmpty, components.user == nil, components.password == nil,
               components.query == nil, components.fragment == nil,
               !baseURL.contains("{"), let url = components.url else { throw SuggestionError.configuration }
+        // Plain HTTP only for self-hosted models on this Mac/LAN (Ollama, llama.cpp, vLLM); the key would otherwise cross the internet unencrypted.
+        if scheme == "http" && !Self.isLocalNetworkHost(host) { throw SuggestionError.insecureEndpoint }
         if url.path.hasSuffix("/" + path) { return url }
         guard !url.path.hasSuffix("/responses"), !url.path.hasSuffix("/messages"), !url.path.hasSuffix("/chat/completions") else { throw SuggestionError.configuration }
         return url.appendingPathComponent(path)
+    }
+    /// Hosts App Transport Security treats as local with NSAllowsLocalNetworking, plus private/link-local IP ranges.
+    public static func isLocalNetworkHost(_ host: String) -> Bool {
+        let host = host.lowercased().trimmingCharacters(in: CharacterSet(charactersIn: "[]"))
+        if host == "localhost" || host.hasSuffix(".localhost") || host.hasSuffix(".local") { return true }
+        if host.contains(":") { return host == "::1" || host.hasPrefix("fc") || host.hasPrefix("fd") || ["fe8", "fe9", "fea", "feb"].contains(where: host.hasPrefix) }
+        let octets = host.split(separator: ".", omittingEmptySubsequences: false).map { Int($0) }
+        guard octets.count == 4, octets.allSatisfy({ $0.map { (0...255).contains($0) } ?? false }) else { return !host.contains(".") }
+        let a = octets[0]!, b = octets[1]!
+        return a == 127 || a == 10 || (a == 172 && (16...31).contains(b)) || (a == 192 && b == 168) || (a == 169 && b == 254)
     }
     private enum CodingKeys: String, CodingKey { case baseURL, fastModel, qualityModel, temperature, disableThinking, apiProtocol, responseMode, tokenParameter }
     public init(from decoder: Decoder) throws {
@@ -147,7 +159,7 @@ public struct SuggestionSettings: Codable, Hashable, Sendable {
 
 }
 public enum SuggestionError: Error, Sendable {
-    case configuration, missingKey, transport, invalidResponse, quota, timeout, truncated, refused, providerQuota
+    case configuration, insecureEndpoint, missingKey, transport, invalidResponse, quota, timeout, truncated, refused, providerQuota
     case invalidModelID, modelUnavailable, unsupportedParameter
     case httpStatus(Int)
 }
@@ -164,7 +176,7 @@ public enum InputFilterReason: Equatable, Sendable {
     }
 }
 public enum Diagnostics: Equatable, Sendable {
-    case idle, disabled, waiting, requesting, ready, natural, unsupportedDraft, noSuggestions, missingKey, configuration, quota, unavailable
+    case idle, disabled, waiting, requesting, ready, natural, unsupportedDraft, noSuggestions, missingKey, configuration, insecureEndpoint, quota, unavailable
     case filtered(InputFilterReason), rejectedSuggestions(Int)
     case network, timeout, invalidResponse, truncated, refused, providerQuota
     case invalidModelID, modelUnavailable, unsupportedParameter
@@ -182,6 +194,7 @@ public enum Diagnostics: Equatable, Sendable {
         case SuggestionError.unsupportedParameter: self = .unsupportedParameter
         case SuggestionError.missingKey: self = .missingKey
         case SuggestionError.configuration: self = .configuration
+        case SuggestionError.insecureEndpoint: self = .insecureEndpoint
         case SuggestionError.timeout: self = .timeout
         case SuggestionError.transport: self = .network
         case SuggestionError.invalidResponse, is DecodingError: self = .invalidResponse
@@ -213,7 +226,8 @@ public enum Diagnostics: Equatable, Sendable {
         case .modelUnavailable: "模型不存在或无访问权限，请核对 API 模型 ID"
         case .unsupportedParameter: "模型不支持当前参数；请在接口兼容设置中调整 JSON 格式或输出参数"
         case .missingKey: "请保存所选服务商的 API 密钥"
-        case .configuration: "请填写有效的 HTTPS 地址和模型 ID"
+        case .configuration: "请填写有效的接口地址（https://，本机或局域网服务可用 http://）和模型 ID"
+        case .insecureEndpoint: "公网接口必须使用 HTTPS；http:// 只支持本机或局域网地址（如 localhost、192.168.x.x、*.local）"
         case .quota: "已达到本机今日请求上限"
         case .network: "网络连接失败，请检查网络和接口地址后重试"
         case .timeout: "请求超时（20 秒），请稍后重试；兼容的 Qwen 模型可开启非思考模式"
