@@ -33,7 +33,8 @@ jobs:
           Copy-Item windows/publish/NaturalKana.exe dist/NaturalKana-Windows-x64.exe
           Compress-Archive -Path LICENSE, THIRD_PARTY_NOTICES.md, licenses -DestinationPath dist/NaturalKana-Windows-licenses.zip
           $sums = Get-ChildItem dist | ForEach-Object { "$((Get-FileHash $_.FullName -Algorithm SHA256).Hash.ToLower())  $($_.Name)" }
-          $sums | Set-Content -Encoding ascii dist/SHA256SUMS.txt
+          # LF endings so sha256sum -c / shasum -c work on Linux and macOS too.
+          [IO.File]::WriteAllText("$PWD/dist/SHA256SUMS.txt", ($sums -join "`n") + "`n")
           $exe = ($sums | Select-String 'NaturalKana-Windows-x64.exe').Line.Split(' ')[0]
           @(
             "**下载 ``NaturalKana-Windows-x64.exe`` 双击即可运行**，不用安装。需要 Windows 10/11（64 位）。使用说明：[docs/WINDOWS.md](https://github.com/${{ github.repository }}/blob/main/docs/WINDOWS.md)",
