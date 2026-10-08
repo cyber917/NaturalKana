@@ -40,11 +40,22 @@ public enum UIText {
         set { state.lock.withLock { state.language = newValue } }
     }
     public static let table: [String: [String: String]] = {
-        guard let url = Bundle.module.url(forResource: "ui_strings", withExtension: "json", subdirectory: "Resources"),
+        guard let url = Bundle.module.url(forResource: "ui_strings", withExtension: "json"),
               let data = try? Data(contentsOf: url),
               let table = try? JSONDecoder().decode([String: [String: String]].self, from: data) else { return [:] }
         return table
     }()
+
+    public static func keyboard(_ chinese: String, language: KeyboardSwitchLanguage) -> String {
+        let code: String = switch language {
+        case .japanese: "ja"
+        case .english: "en"
+        case .korean: "ko"
+        case .french: "fr"
+        case .russian: "ru"
+        }
+        return table[chinese]?[code] ?? table[chinese]?["en"] ?? chinese
+    }
 
     public static func t(_ chinese: String, _ arguments: String...) -> String {
         translate(chinese, arguments, into: language.resolved)

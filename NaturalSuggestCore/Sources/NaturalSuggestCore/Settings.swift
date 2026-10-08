@@ -121,8 +121,48 @@ public struct SuggestionSettings: Codable, Hashable, Sendable {
     /// Detect each draft's language; `language` stays the primary choice for ambiguous drafts.
     public var autoLanguage = false
     public var interfaceLanguage: InterfaceLanguage = .system
-    /// iPhone: the keyboard's language switch key also cycles to the Korean (dubeolsik) layout.
-    public var koreanKeyboard = false
+    public var extraKeyboardLayouts: [String] = []
+    /// Nil follows all enabled layouts; a saved list selects and orders the quick switch cycle.
+    public var keyboardSwitchOrder: [String]?
+    public var availableKeyboardLanguages: [KeyboardSwitchLanguage] {
+        [.japanese, .english] + enabledKeyboardLayouts.compactMap { KeyboardSwitchLanguage(rawValue: $0.rawValue) }
+    }
+    public var keyboardSwitchLanguages: [KeyboardSwitchLanguage] {
+        let available = availableKeyboardLanguages
+        guard let keyboardSwitchOrder else { return available }
+        var seen: Set<KeyboardSwitchLanguage> = []
+        let selected = keyboardSwitchOrder.compactMap(KeyboardSwitchLanguage.init(rawValue:))
+            .filter { available.contains($0) && seen.insert($0).inserted }
+        return selected.isEmpty ? available : selected
+    }
+    public mutating func setQuickSwitchLanguage(_ language: KeyboardSwitchLanguage, enabled: Bool) {
+        var selected = keyboardSwitchLanguages
+        guard availableKeyboardLanguages.contains(language) else { return }
+        if enabled {
+            if !selected.contains(language) { selected.append(language) }
+        } else if selected.count > 1 {
+            selected.removeAll { $0 == language }
+        }
+        keyboardSwitchOrder = selected.map(\.rawValue)
+    }
+    public mutating func moveQuickSwitchLanguage(_ language: KeyboardSwitchLanguage, by offset: Int) {
+        var selected = keyboardSwitchLanguages
+        guard let index = selected.firstIndex(of: language), selected.indices.contains(index + offset) else { return }
+        selected.swapAt(index, index + offset)
+        keyboardSwitchOrder = selected.map(\.rawValue)
+    }
+    /// Compatibility accessor for callers using the original Korean switch.
+    public var koreanKeyboard: Bool {
+        get { extraKeyboardLayouts.contains("korean") }
+        set { setKeyboardLayout(.korean, enabled: newValue) }
+    }
+    public var enabledKeyboardLayouts: [ExtraKeyboardLayout] {
+        ExtraKeyboardLayout.allCases.filter { extraKeyboardLayouts.contains($0.rawValue) }
+    }
+    public mutating func setKeyboardLayout(_ layout: ExtraKeyboardLayout, enabled: Bool) {
+        extraKeyboardLayouts.removeAll { $0 == layout.rawValue }
+        if enabled { extraKeyboardLayouts.append(layout.rawValue) }
+    }
     public var provider: ProviderKind = .openAI
     public var openAI = ProviderConfiguration(baseURL: "https://api.openai.com/v1")
     public var qwen = ProviderConfiguration(baseURL: "https://dashscope-intl.aliyuncs.com/compatible-mode/v1")
@@ -171,7 +211,8 @@ public struct SuggestionSettings: Codable, Hashable, Sendable {
         let encoder = JSONEncoder(); encoder.outputFormatting = .sortedKeys
         return SHA256.hash(data: (try? encoder.encode(self)) ?? Data()).map { String(format: "%02x", $0) }.joined()
     }
-    private enum CodingKeys: String, CodingKey { case enabled, consent, language, autoLanguage, interfaceLanguage, koreanKeyboard, provider, openAI, qwen, additionalProviders, highlightChanges, qualityPartner, registerPreference, slangLevel, dialect, debounceMilliseconds, minimumLength, maximumSuggestions, qualityMode, dailyCap, blockedApps, acceptKeys }
+    private enum LegacyCodingKeys: String, CodingKey { case koreanKeyboard }
+    private enum CodingKeys: String, CodingKey { case enabled, consent, language, autoLanguage, interfaceLanguage, extraKeyboardLayouts, keyboardSwitchOrder, provider, openAI, qwen, additionalProviders, highlightChanges, qualityPartner, registerPreference, slangLevel, dialect, debounceMilliseconds, minimumLength, maximumSuggestions, qualityMode, dailyCap, blockedApps, acceptKeys }
     public init(from decoder: Decoder) throws {
         let values = try decoder.container(keyedBy: CodingKeys.self)
         enabled = try values.decodeIfPresent(Bool.self, forKey: .enabled) ?? false
@@ -180,7 +221,10 @@ public struct SuggestionSettings: Codable, Hashable, Sendable {
         language = (try? values.decodeIfPresent(SuggestionLanguage.self, forKey: .language)) ?? .japanese
         autoLanguage = try values.decodeIfPresent(Bool.self, forKey: .autoLanguage) ?? false
         interfaceLanguage = (try? values.decodeIfPresent(InterfaceLanguage.self, forKey: .interfaceLanguage)) ?? .system
-        koreanKeyboard = try values.decodeIfPresent(Bool.self, forKey: .koreanKeyboard) ?? false
+        let legacy = try decoder.container(keyedBy: LegacyCodingKeys.self)
+        let korean = try legacy.decodeIfPresent(Bool.self, forKey: .koreanKeyboard) ?? false
+        extraKeyboardLayouts = try values.decodeIfPresent([String].self, forKey: .extraKeyboardLayouts) ?? (korean ? ["korean"] : [])
+        keyboardSwitchOrder = try values.decodeIfPresent([String].self, forKey: .keyboardSwitchOrder)
         provider = try values.decodeIfPresent(ProviderKind.self, forKey: .provider) ?? .openAI
         openAI = try values.decodeIfPresent(ProviderConfiguration.self, forKey: .openAI) ?? ProviderKind.openAI.defaultConfiguration
         qwen = try values.decodeIfPresent(ProviderConfiguration.self, forKey: .qwen) ?? ProviderKind.qwen.defaultConfiguration

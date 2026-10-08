@@ -25,6 +25,7 @@ public sealed class LanguagePack
         public string? Forbidden { get; init; }
         public List<string>? LatinAllowlist { get; init; }
         public List<string>? Denied { get; init; }
+        public string? RequiredPattern { get; init; }
     }
 
     public string Id { get; private set; } = "";
@@ -91,6 +92,7 @@ public static class GenericText
     static List<int> Letters(string text) => text.EnumerateRunes().Where(Rune.IsLetter).Select(r => r.Value).ToList();
     static bool IsOwn(LanguagePack.GenericRules rules, int scalar) => Regex.IsMatch(char.ConvertFromUtf32(scalar), rules.Letters);
     static bool Denied(LanguagePack.GenericRules rules, string text) => (rules.Denied ?? []).Any(text.ToLowerInvariant().Contains);
+    static bool MatchesLanguage(LanguagePack.GenericRules rules, string text) => rules.RequiredPattern is not { } pattern || Regex.IsMatch(text, pattern);
     static bool Repetitive(string text) => JapaneseText.Graphemes(text).Distinct().Count() <= 1;
 
     /// Share of own letters; with Latin foreign, each Latin word counts as at most two letters.
@@ -111,7 +113,7 @@ public static class GenericText
     {
         if (rules is null) return false;
         var normalized = JapaneseText.Nfkc(text);
-        if (Denied(rules, normalized) || normalized.Any(char.IsControl) || Repetitive(normalized)) return false;
+        if (Denied(rules, normalized) || !MatchesLanguage(rules, normalized) || normalized.Any(char.IsControl) || Repetitive(normalized)) return false;
         var (own, share) = Share(rules, normalized);
         return own >= (rules.MinLetters ?? 2) && share >= (rules.DraftShare ?? 0.5);
     }
@@ -120,7 +122,7 @@ public static class GenericText
     {
         if (rules is null) return false;
         var normalized = JapaneseText.Nfkc(text);
-        if (Denied(rules, normalized) || normalized.Any(char.IsControl) || Repetitive(normalized)) return false;
+        if (Denied(rules, normalized) || !MatchesLanguage(rules, normalized) || normalized.Any(char.IsControl) || Repetitive(normalized)) return false;
         if (rules.Forbidden is { } forbidden && Regex.IsMatch(normalized, forbidden)) return false;
         if (!IsOwn(rules, 'a'))
         {

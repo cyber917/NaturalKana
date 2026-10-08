@@ -26,6 +26,8 @@ public struct LanguagePack: Decodable, Sendable {
         public var latinAllowlist: [String]?
         /// Lowercase phrases that mark translation requests or instructions.
         public var denied: [String]?
+        /// Required words for languages that share a script, such as French and English.
+        public var requiredPattern: String?
     }
 
     public internal(set) var id = ""
@@ -57,7 +59,7 @@ public struct LanguagePack: Decodable, Sendable {
 
     /// All bundled packs, ordered for display.
     public static let bundled: [LanguagePack] = {
-        guard let root = Bundle.module.url(forResource: "Languages", withExtension: nil, subdirectory: "Resources"),
+        guard let root = Bundle.module.url(forResource: "Languages", withExtension: nil),
               let folders = try? FileManager.default.contentsOfDirectory(at: root, includingPropertiesForKeys: nil) else { return [] }
         return folders.compactMap { try? load($0) }.sorted { ($0.order, $0.id) < ($1.order, $1.id) }
     }()
@@ -85,6 +87,9 @@ public struct GenericProfile: LanguageProfile {
     private func isOwn(_ scalar: Unicode.Scalar) -> Bool { String(scalar).range(of: rules.letters, options: .regularExpression) != nil }
     private var latinIsOwn: Bool { isOwn("a") }
     private func denied(_ text: String) -> Bool { (rules.denied ?? []).contains(where: text.lowercased().contains) }
+    private func matchesLanguage(_ text: String) -> Bool {
+        rules.requiredPattern.map { text.range(of: $0, options: .regularExpression) != nil } ?? true
+    }
 
     /// Share of own letters; with Latin foreign, each Latin word counts as at most two letters.
     func share(_ text: String) -> (own: Int, share: Double) {
@@ -100,13 +105,13 @@ public struct GenericProfile: LanguageProfile {
     public func accepts(_ text: String, composingLatin: Bool = false) -> Bool {
         guard !composingLatin else { return false }
         let normalized = TextNormalization.nfkc(text)
-        guard !denied(normalized), !normalized.unicodeScalars.contains(where: CharacterSet.controlCharacters.contains), Set(normalized).count > 1 else { return false }
+        guard !denied(normalized), matchesLanguage(normalized), !normalized.unicodeScalars.contains(where: CharacterSet.controlCharacters.contains), Set(normalized).count > 1 else { return false }
         let (own, share) = share(normalized)
         return own >= (rules.minLetters ?? 2) && share >= (rules.draftShare ?? 0.5)
     }
     public func acceptsCandidate(_ text: String, original: String) -> Bool {
         let normalized = TextNormalization.nfkc(text)
-        guard !denied(normalized), Set(normalized).count > 1,
+        guard !denied(normalized), matchesLanguage(normalized), Set(normalized).count > 1,
               !normalized.unicodeScalars.contains(where: { CharacterSet.controlCharacters.contains($0) || CharacterSet.illegalCharacters.contains($0) }),
               rules.forbidden.map({ normalized.range(of: $0, options: .regularExpression) == nil }) ?? true else { return false }
         if !latinIsOwn {

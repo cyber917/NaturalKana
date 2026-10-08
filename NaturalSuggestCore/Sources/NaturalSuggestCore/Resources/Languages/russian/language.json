@@ -1,0 +1,43 @@
+{
+  "order": 5,
+  "title": "俄语",
+  "promptName": "Russian",
+  "locale": "ru",
+  "testDraft": "Я завтра идти на работу.",
+  "registerTitles": {
+    "casual": "Разговорно",
+    "polite": "Вежливо"
+  },
+  "closeTitle": "Закрыть",
+  "copyHint": "Нажмите, чтобы скопировать · Выделите исходный текст и вставьте",
+  "rules": "generic",
+  "generic": {
+    "letters": "[А-Яа-яЁё]",
+    "forbidden": "[\\u3040-\\u30FF\\u4E00-\\u9FFF\\uAC00-\\uD7A3]",
+    "denied": [
+      "translate",
+      "ignore instructions",
+      "system prompt",
+      "翻译",
+      "翻訳",
+      "переведи",
+      "переведите",
+      "игнорируй инструкции"
+    ],
+    "latinAllowlist": [
+      "OK",
+      "AI",
+      "PDF",
+      "URL",
+      "ID",
+      "Wi",
+      "Fi"
+    ]
+  },
+  "detect": {
+    "signal": "[А-Яа-яЁё]",
+    "priority": 0
+  },
+  "keepPunctuation": true,
+  "windowsFont": "Segoe UI"
+}

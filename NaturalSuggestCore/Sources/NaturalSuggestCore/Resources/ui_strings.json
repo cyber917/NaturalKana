@@ -103,13 +103,35 @@
   "en": "Previous suggestion",
   "ja": "前の候補"
  },
+ "上移%@": {
+  "en": "Move %@ up",
+  "ja": "%@を上へ"
+ },
+ "下一候选": {
+  "en": "Next",
+  "ja": "次候補",
+  "fr": "Suivant",
+  "ru": "Далее",
+  "ko": "다음 후보"
+ },
  "下一条": {
   "en": "Next suggestion",
   "ja": "次の候補"
  },
+ "下一步": {
+  "en": "next",
+  "ja": "次へ",
+  "fr": "suivant",
+  "ru": "далее",
+  "ko": "다음"
+ },
  "下划线": {
   "en": "Underline",
   "ja": "下線"
+ },
+ "下移%@": {
+  "en": "Move %@ down",
+  "ja": "%@を下へ"
  },
  "不使用学习历史": {
   "en": "Don't use history",
@@ -147,6 +169,10 @@
   "en": "General",
   "ja": "一般"
  },
+ "使用全部已开启语言": {
+  "en": "Use all enabled languages",
+  "ja": "有効な言語をすべて使う"
+ },
  "使用半角空格": {
   "en": "Use half-width space",
   "ja": "半角スペースを使う"
@@ -163,6 +189,14 @@
   "en": "Example: ",
   "ja": "例文："
  },
+ "俄语": {
+  "en": "Russian",
+  "ja": "ロシア語"
+ },
+ "俄语（ЙЦУКЕН）": {
+  "en": "Russian (ЙЦУКЕН)",
+  "ja": "ロシア語（ЙЦУКЕН）"
+ },
  "保存": {
   "en": "Save",
   "ja": "保存"
@@ -174,6 +208,10 @@
  "保存后，在英文键盘上切到韩语：全键盘点左下角的语言键（A／한），九宫格点左侧的“한”键。长按 ㅂㅈㄷㄱㅅ 后右滑输入 ㅃㅉㄸㄲㅆ，长按 ㅐㅔ 后右滑输入 ㅒㅖ。": {
   "en": "After saving, switch to Korean from the English keyboard: on QWERTY tap the language key (A／한) at the bottom left; on the 10-key layout tap the “한” key on the left. Long-press ㅂㅈㄷㄱㅅ and slide right for ㅃㅉㄸㄲㅆ, or ㅐㅔ for ㅒㅖ.",
   "ja": "保存後、英語キーボードから韓国語に切り替えます。QWERTY は左下の言語キー（A／한）、フリックは左列の「한」キーをタップします。ㅂㅈㄷㄱㅅ を長押しして右にスライドすると ㅃㅉㄸㄲㅆ、ㅐㅔ なら ㅒㅖ を入力できます。"
+ },
+ "保存后，语言键按日语 → 英语 → 已开启的韩语、法语、俄语 → 日语切换；九宫格英文键盘点左侧语言键进入额外布局。": {
+  "en": "After saving, the language key cycles through Japanese → English → enabled Korean, French and Russian layouts → Japanese. On the English flick keyboard, tap the language key on the left to enter extra layouts.",
+  "ja": "保存後、言語キーで日本語 → 英語 → 有効な韓国語・フランス語・ロシア語 → 日本語と切り替えます。英語フリックキーボードでは左側の言語キーから追加配列に移動します。"
  },
  "保存常用词的日语读音和写法，最多 50 条。": {
   "en": "Save the Japanese reading and spelling of words you use often (up to 50).",
@@ -231,6 +269,20 @@
   "en": "Select All",
   "ja": "すべてを選択"
  },
+ "全部删除": {
+  "en": "Delete all",
+  "ja": "全て削除",
+  "fr": "Tout supprimer",
+  "ru": "Удалить всё",
+  "ko": "모두 삭제"
+ },
+ "全部取消固定": {
+  "en": "Unpin all",
+  "ja": "全て解除",
+  "fr": "Tout détacher",
+  "ru": "Открепить всё",
+  "ko": "모두 고정 해제"
+ },
  "公网接口必须使用 HTTPS；http:// 只支持本机或局域网地址（如 localhost、192.168.x.x、*.local）": {
   "en": "Internet endpoints must use HTTPS; http:// only works for this device or local network addresses (localhost, 192.168.x.x, *.local)",
   "ja": "インターネット上のエンドポイントには HTTPS が必要です。http:// はこの端末かローカルネットワークのアドレス（localhost、192.168.x.x、*.local など）でのみ使えます"
@@ -244,8 +296,11 @@
   "ja": "共有設定を利用できません。署名を確認してください。"
  },
  "关闭": {
-  "en": "Off",
-  "ja": "オフ"
+  "en": "Close",
+  "ja": "閉じる",
+  "fr": "Fermer",
+  "ru": "Закрыть",
+  "ko": "닫기"
  },
  "关闭后，按空格转换，按回车确认。普通打字使用本地词典，无需联网。": {
   "en": "When off, press Space to convert and Return to confirm. Normal typing uses the local dictionary and needs no network.",
@@ -279,13 +334,27 @@
   "en": "Switch window",
   "ja": "ウインドウの切り替え"
  },
+ "切换语言": {
+  "en": "Switch language",
+  "ja": "言語を切り替える",
+  "fr": "Changer de langue",
+  "ru": "Сменить язык",
+  "ko": "언어 변경"
+ },
  "切换输入法": {
   "en": "Switch input method",
   "ja": "入力方式の切り替え"
  },
+ "切换顺序": {
+  "en": "Switch order",
+  "ja": "切り替え順"
+ },
  "删除": {
   "en": "Delete",
-  "ja": "削除"
+  "ja": "削除",
+  "fr": "Supprimer",
+  "ru": "Удалить",
+  "ko": "삭제"
  },
  "删除失败。": {
   "en": "Couldn't delete.",
@@ -315,21 +384,56 @@
   "en": "Refresh",
   "ja": "再読み込み"
  },
+ "前往": {
+  "en": "go",
+  "ja": "開く",
+  "fr": "aller",
+  "ru": "перейти",
+  "ko": "이동"
+ },
  "剪切": {
   "en": "Cut",
   "ja": "カット"
+ },
+ "剪贴板": {
+  "en": "Clipboard",
+  "ja": "クリップボード",
+  "fr": "Presse-papiers",
+  "ru": "Буфер обмена",
+  "ko": "클립보드"
  },
  "功能关闭，或尚未同意发送草稿": {
   "en": "Off, or sending drafts hasn't been allowed yet",
   "ja": "オフになっているか、下書きの送信がまだ許可されていません"
  },
+ "加入": {
+  "en": "join",
+  "ja": "参加",
+  "fr": "rejoindre",
+  "ru": "войти",
+  "ko": "참가"
+ },
  "加粗": {
   "en": "Bold",
   "ja": "太字"
  },
+ "动物与自然": {
+  "en": "Animals & Nature",
+  "ja": "生き物と自然",
+  "fr": "Animaux et nature",
+  "ru": "Животные и природа",
+  "ko": "동물과 자연"
+ },
  "协议": {
   "en": "Protocol",
   "ja": "プロトコル"
+ },
+ "历史记录": {
+  "en": "History",
+  "ja": "履歴",
+  "fr": "Historique",
+  "ru": "История",
+  "ko": "기록"
  },
  "原句已经变了或无法自动替换，建议已复制，请手动粘贴。": {
   "en": "The sentence changed or can't be replaced automatically. The suggestion was copied; paste it yourself.",
@@ -352,12 +456,22 @@
   "ja": "バックスラッシュキーで ¥ ではなく \\ を入力"
  },
  "发送": {
-  "en": "Send",
-  "ja": "送信"
+  "en": "send",
+  "ja": "送信",
+  "fr": "envoyer",
+  "ru": "отправить",
+  "ko": "보내기"
  },
  "取消": {
   "en": "Cancel",
   "ja": "キャンセル"
+ },
+ "取消固定": {
+  "en": "Unpin",
+  "ja": "固定解除",
+  "fr": "Détacher",
+  "ru": "Открепить",
+  "ko": "고정 해제"
  },
  "口语": {
   "en": "Casual",
@@ -399,6 +513,13 @@
   "en": "Sends to two providers at once, up to 3 requests each time.",
   "ja": "2 つのサービス提供元に同時に送信します（1 回につき最大 3 リクエスト）。"
  },
+ "固定": {
+  "en": "Pin",
+  "ja": "固定",
+  "fr": "Épingler",
+  "ru": "Закрепить",
+  "ko": "고정"
+ },
  "在任何软件里选中一句话（或把光标放在句尾），按 %@ 获取更自然的说法。": {
   "en": "In any app, select a sentence (or put the cursor at its end) and press %@ for more natural wording.",
   "ja": "どのアプリでも文を選択（またはカーソルを文末に置いて）%@ を押すと、より自然な言い方が表示されます。"
@@ -410,6 +531,13 @@
  "复制": {
   "en": "Copy",
   "ja": "コピー"
+ },
+ "复制的文字会显示在这里": {
+  "en": "Copied text appears here",
+  "ja": "テキストをコピーするとここに追加されます",
+  "fr": "Le texte copié apparaît ici",
+  "ru": "Скопированный текст появится здесь",
+  "ko": "복사한 텍스트가 여기에 표시됩니다"
  },
  "学习": {
   "en": "Learning",
@@ -424,8 +552,11 @@
   "ja": "学習履歴を消去しました"
  },
  "完成": {
-  "en": "Done",
-  "ja": "完了"
+  "en": "done",
+  "ja": "完了",
+  "fr": "OK",
+  "ru": "готово",
+  "ko": "완료"
  },
  "密钥保存在设备钥匙串。测试连接会发送一条固定例句。": {
   "en": "Keys are stored in the device keychain. Test Connection sends one fixed sample sentence.",
@@ -495,6 +626,13 @@
   "en": "Merged %@ entries; the lexicon now has %@. Takes effect immediately.",
   "ja": "%@ 件を結合しました。語彙は現在 %@ 件で、すぐに反映されます。"
  },
+ "已固定": {
+  "en": "Pinned",
+  "ja": "ピン留め",
+  "fr": "Épinglés",
+  "ru": "Закреплённое",
+  "ko": "고정됨"
+ },
  "已复制，选中原句后按 ⌘V 粘贴": {
   "en": "Copied. Select the original sentence and press ⌘V",
   "ja": "コピーしました。元の文を選択して ⌘V で貼り付けてください"
@@ -518,6 +656,13 @@
  "帮助": {
   "en": "Help",
   "ja": "ヘルプ"
+ },
+ "常用表情": {
+  "en": "Frequently Used",
+  "ja": "よく使う絵文字",
+  "fr": "Fréquemment utilisés",
+  "ru": "Часто используемые",
+  "ko": "자주 사용하는 이모티콘"
  },
  "建议": {
   "en": "Suggestions",
@@ -555,6 +700,13 @@
   "en": "Suggestions are turned off for this app or field",
   "ja": "このアプリまたは入力欄では提案が無効です"
  },
+ "当前语言": {
+  "en": "Current language",
+  "ja": "現在の言語",
+  "fr": "Langue actuelle",
+  "ru": "Текущий язык",
+  "ko": "현재 언어"
+ },
  "当前输入位置暂不支持建议": {
   "en": "Suggestions aren't available at this position",
   "ja": "この入力位置では提案を利用できません"
@@ -570,6 +722,10 @@
  "待机": {
   "en": "Idle",
   "ja": "待機中"
+ },
+ "快捷切换语言": {
+  "en": "Quick switch languages",
+  "ja": "切り替える言語"
  },
  "快捷键": {
   "en": "Shortcut",
@@ -619,6 +775,13 @@
   "en": "Each sentence's language is detected automatically; unclear ones (such as short kanji-only sentences) use the main language.",
   "ja": "文ごとに言語を自動で判別します。判別できない文（漢字だけの短い文など）はメインの言語として扱います。"
  },
+ "换行": {
+  "en": "return",
+  "ja": "改行",
+  "fr": "retour",
+  "ru": "ввод",
+  "ko": "줄바꿈"
+ },
  "接口兼容": {
   "en": "API Compatibility",
   "ja": "API 互換性"
@@ -634,6 +797,20 @@
  "提示": {
   "en": "Hint",
   "ja": "ヒント"
+ },
+ "搜索": {
+  "en": "search",
+  "ja": "検索",
+  "fr": "rechercher",
+  "ru": "поиск",
+  "ko": "검색"
+ },
+ "搜索表情": {
+  "en": "Search emoji",
+  "ja": "絵文字を検索",
+  "fr": "Rechercher des émojis",
+  "ru": "Поиск эмодзи",
+  "ko": "이모티콘 검색"
  },
  "搜索词语、读音或中文释义": {
   "en": "Search words, readings or meanings",
@@ -687,6 +864,20 @@
   "en": "Dialect",
   "ja": "方言"
  },
+ "旅行与地点": {
+  "en": "Travel & Places",
+  "ja": "旅行と場所",
+  "fr": "Voyages et lieux",
+  "ru": "Путешествия и места",
+  "ko": "여행과 장소"
+ },
+ "旗帜": {
+  "en": "Flags",
+  "ja": "旗",
+  "fr": "Drapeaux",
+  "ru": "Флаги",
+  "ko": "깃발"
+ },
  "无法保存到 Windows 凭据管理器": {
   "en": "Couldn't save to Windows Credential Manager",
   "ja": "Windows 資格情報マネージャーに保存できません"
@@ -718,6 +909,13 @@
  "日语、英语以外的句子：用系统自带的键盘打完一句后，切换到 NaturalKana 键盘即可看到建议。": {
   "en": "For languages other than Japanese and English: type a sentence with a built-in keyboard, then switch to the NaturalKana keyboard to see suggestions.",
   "ja": "日本語・英語以外の文：標準のキーボードで文を入力してから NaturalKana キーボードに切り替えると、候補が表示されます。"
+ },
+ "更多工具": {
+  "en": "More tools",
+  "ja": "その他のツール",
+  "fr": "Autres outils",
+  "ru": "Инструменты",
+  "ko": "도구 더 보기"
  },
  "最多发送当前句子 200 字及命中的词库参考。iPhone 需允许键盘完全访问。": {
   "en": "Sends at most 200 characters of the current sentence plus matching lexicon references. On iPhone, the keyboard needs Full Access.",
@@ -786,6 +984,10 @@
  "未保存": {
   "en": "Not saved",
   "ja": "未保存"
+ },
+ "未开启对应布局的语言：用系统键盘打完一句后，切换到 NaturalKana 键盘即可看到建议。": {
+  "en": "For a language without an enabled layout, type a sentence with the system keyboard, then switch to NaturalKana to see suggestions.",
+  "ja": "対応する配列が有効でない言語は、システムキーボードで一文を入力し、NaturalKanaに切り替えると候補を表示できます。"
  },
  "本次联网耗时 %.2f 秒": {
   "en": "Request took %.2f s",
@@ -923,6 +1125,25 @@
   "en": "When nothing is selected",
   "ja": "何も選択していないとき"
  },
+ "法语": {
+  "en": "French",
+  "ja": "フランス語"
+ },
+ "法语用 QWERTY，长按字母后右滑选重音字母或大写；俄语用 ЙЦУКЕН，长按 е 选 ё、ь 选 ъ，各字母长按可选大写。": {
+  "en": "French uses QWERTY: hold a letter and slide right for accents or capitals. Russian uses ЙЦУКЕН: hold е for ё, ь for ъ, or any letter for capitals.",
+  "ja": "フランス語はQWERTY配列です。文字を長押しして右にスライドするとアクセント付き文字や大文字を選べます。ロシア語はЙЦУКЕН配列で、еの長押しでё、ьでъ、各文字の長押しで大文字を選べます。"
+ },
+ "法语（QWERTY）": {
+  "en": "French (QWERTY)",
+  "ja": "フランス語（QWERTY）"
+ },
+ "活动": {
+  "en": "Activities",
+  "ja": "アクティビティ",
+  "fr": "Activités",
+  "ru": "Занятия",
+  "ko": "활동"
+ },
  "流行": {
   "en": "Trendy",
   "ja": "流行語も"
@@ -958,6 +1179,21 @@
  "点击或按数字键采用 · ↑↓ 选择，Enter 采用 · 可拖动": {
   "en": "Click or press a number to use · ↑↓ to choose, Enter to use · drag to move",
   "ja": "クリックか数字キーで採用 · ↑↓ で選択、Enter で採用 · ドラッグで移動"
+ },
+ "点语言键按自选顺序切换；长按后滑动，可直接选择任一已开启的语言。选两种就来回切，选五种就五种循环。": {
+  "en": "Tap the language key to cycle in your chosen order. Hold and slide to select any enabled language directly. Choose two to switch back and forth, or five to cycle through all five.",
+  "ja": "言語キーをタップすると選んだ順に切り替わります。長押ししてスライドすると、有効な言語を直接選べます。2言語なら往復、5言語なら5つを順に切り替えます。"
+ },
+ "点语言键按自选顺序切换；长按打开列表，再点选任一已开启的语言。选两种就来回切，选五种就五种循环。": {
+  "en": "Tap the language key to cycle in your chosen order. Hold to open the list, then tap any enabled language. Choose two to switch back and forth, or five to cycle through all five.",
+  "ja": "言語キーをタップすると選んだ順に切り替わります。長押しで一覧を開き、有効な言語をタップして選べます。2言語なら往復、5言語なら5つを順に切り替えます。"
+ },
+ "物品": {
+  "en": "Objects",
+  "ja": "物",
+  "fr": "Objets",
+  "ru": "Предметы",
+  "ko": "사물"
  },
  "现有自定义方案": {
   "en": "Current custom scheme",
@@ -999,6 +1235,13 @@
   "en": "Import",
   "ja": "読み込む"
  },
+ "确认输入": {
+  "en": "done",
+  "ja": "確定",
+  "fr": "OK",
+  "ru": "готово",
+  "ko": "확정"
+ },
  "礼貌": {
   "en": "Polite",
   "ja": "丁寧"
@@ -1006,6 +1249,20 @@
  "禁用应用 Bundle ID": {
   "en": "Blocked app bundle IDs",
   "ja": "提案しないアプリの Bundle ID"
+ },
+ "空格": {
+  "en": "space",
+  "ja": "空白",
+  "fr": "espace",
+  "ru": "пробел",
+  "ko": "스페이스"
+ },
+ "符号": {
+  "en": "Symbols",
+  "ja": "記号",
+  "fr": "Symboles",
+  "ru": "Символы",
+  "ko": "기호"
  },
  "第 %@ 行列数不一致；单元格内不要换行或插入制表符。": {
   "en": "Row %@ has a different number of columns; don't put line breaks or tabs inside a cell.",
@@ -1038,6 +1295,20 @@
  "粘贴": {
   "en": "Paste",
   "ja": "ペースト"
+ },
+ "紧急呼叫": {
+  "en": "Emergency Call",
+  "ja": "緊急連絡",
+  "fr": "Urgence",
+  "ru": "Экстренный вызов",
+  "ko": "긴급 통화"
+ },
+ "继续": {
+  "en": "continue",
+  "ja": "続行",
+  "fr": "continuer",
+  "ru": "продолжить",
+  "ko": "계속"
  },
  "缓存命中，无需联网": {
   "en": "From cache, no network needed",
@@ -1079,9 +1350,20 @@
   "en": "Custom",
   "ja": "カスタム"
  },
+ "至少保留一种。未加入快捷切换的语言仍可通过长按选择。返回上一页后点保存设置。": {
+  "en": "Keep at least one language. Other enabled languages remain available by holding the language key. Go back and tap Save settings.",
+  "ja": "少なくとも1言語を残してください。選んでいない言語も長押しで選べます。前の画面に戻り、設定を保存してください。"
+ },
  "英语": {
   "en": "English",
   "ja": "英語"
+ },
+ "表情": {
+  "en": "Emoji",
+  "ja": "絵文字",
+  "fr": "Émojis",
+  "ru": "Эмодзи",
+  "ko": "이모티콘"
  },
  "表达": {
   "en": "Expression",
@@ -1126,6 +1408,13 @@
  "词语与释义不能为空；字段过长或含控制字符，请检查词表。": {
   "en": "Word and meaning can't be empty, and fields can't be too long or contain control characters. Check the word list.",
   "ja": "語と意味は空にできません。長すぎる項目や制御文字がないか、語彙リストを確認してください。"
+ },
+ "详细信息": {
+  "en": "Details",
+  "ja": "詳細",
+  "fr": "Détails",
+  "ru": "Подробности",
+  "ko": "자세히"
  },
  "语体": {
   "en": "Register",
@@ -1195,6 +1484,13 @@
   "en": "Same as system",
   "ja": "システムと同じ"
  },
+ "路线": {
+  "en": "route",
+  "ja": "経路",
+  "fr": "itinéraire",
+  "ru": "маршрут",
+  "ko": "경로"
+ },
  "轻度": {
   "en": "Light",
   "ja": "控えめ"
@@ -1230,6 +1526,13 @@
  "输出长度参数": {
   "en": "Output length parameter",
   "ja": "出力長パラメータ"
+ },
+ "返回": {
+  "en": "Back",
+  "ja": "戻る",
+  "fr": "Retour",
+  "ru": "Назад",
+  "ko": "뒤로"
  },
  "这一行超过 200 字。请选中要检查的那一句，再按 %@。": {
   "en": "This line is longer than 200 characters. Select the sentence to check, then press %@.",
@@ -1299,6 +1602,10 @@
   "en": "Keyboard",
   "ja": "キーボード"
  },
+ "键盘加入%@布局": {
+  "en": "Add %@ keyboard layout",
+  "ja": "%@キーボード配列を追加"
+ },
  "键盘加入韩语布局": {
   "en": "Korean layout in the keyboard",
   "ja": "キーボードに韓国語レイアウトを追加"
@@ -1315,13 +1622,35 @@
   "en": "Non-thinking mode",
   "ja": "思考モードをオフ"
  },
+ "面孔与情感": {
+  "en": "Smileys & Emotion",
+  "ja": "顔と感情",
+  "fr": "Visages et émotions",
+  "ru": "Смайлики и эмоции",
+  "ko": "표정과 감정"
+ },
  "韩语": {
   "en": "Korean",
   "ja": "韓国語"
  },
+ "韩语长按 ㅂㅈㄷㄱㅅ 后右滑输入 ㅃㅉㄸㄲㅆ，长按 ㅐㅔ 后右滑输入 ㅒㅖ。": {
+  "en": "For Korean, hold ㅂㅈㄷㄱㅅ and slide right for ㅃㅉㄸㄲㅆ; hold ㅐㅔ and slide right for ㅒㅖ.",
+  "ja": "韓国語ではㅂㅈㄷㄱㅅを長押しして右にスライドするとㅃㅉㄸㄲㅆ、ㅐㅔではㅒㅖを入力できます。"
+ },
+ "韩语（QWERTY）": {
+  "en": "Korean (QWERTY)",
+  "ja": "韓国語（QWERTY）"
+ },
  "预览导入：%@ 条": {
   "en": "Import preview: %@ entries",
   "ja": "読み込みのプレビュー：%@ 件"
+ },
+ "食物与饮料": {
+  "en": "Food & Drink",
+  "ja": "食事",
+  "fr": "Aliments et boissons",
+  "ru": "Еда и напитки",
+  "ko": "음식과 음료"
  },
  "高级设置": {
   "en": "Advanced",
