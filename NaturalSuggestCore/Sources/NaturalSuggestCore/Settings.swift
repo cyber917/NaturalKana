@@ -121,6 +121,8 @@ public struct SuggestionSettings: Codable, Hashable, Sendable {
     /// Detect each draft's language; `language` stays the primary choice for ambiguous drafts.
     public var autoLanguage = false
     public var interfaceLanguage: InterfaceLanguage = .system
+    /// iPhone: the keyboard's language switch key also cycles to the Korean (dubeolsik) layout.
+    public var koreanKeyboard = false
     public var provider: ProviderKind = .openAI
     public var openAI = ProviderConfiguration(baseURL: "https://api.openai.com/v1")
     public var qwen = ProviderConfiguration(baseURL: "https://dashscope-intl.aliyuncs.com/compatible-mode/v1")
@@ -169,7 +171,7 @@ public struct SuggestionSettings: Codable, Hashable, Sendable {
         let encoder = JSONEncoder(); encoder.outputFormatting = .sortedKeys
         return SHA256.hash(data: (try? encoder.encode(self)) ?? Data()).map { String(format: "%02x", $0) }.joined()
     }
-    private enum CodingKeys: String, CodingKey { case enabled, consent, language, autoLanguage, interfaceLanguage, provider, openAI, qwen, additionalProviders, highlightChanges, qualityPartner, registerPreference, slangLevel, dialect, debounceMilliseconds, minimumLength, maximumSuggestions, qualityMode, dailyCap, blockedApps, acceptKeys }
+    private enum CodingKeys: String, CodingKey { case enabled, consent, language, autoLanguage, interfaceLanguage, koreanKeyboard, provider, openAI, qwen, additionalProviders, highlightChanges, qualityPartner, registerPreference, slangLevel, dialect, debounceMilliseconds, minimumLength, maximumSuggestions, qualityMode, dailyCap, blockedApps, acceptKeys }
     public init(from decoder: Decoder) throws {
         let values = try decoder.container(keyedBy: CodingKeys.self)
         enabled = try values.decodeIfPresent(Bool.self, forKey: .enabled) ?? false
@@ -178,6 +180,7 @@ public struct SuggestionSettings: Codable, Hashable, Sendable {
         language = (try? values.decodeIfPresent(SuggestionLanguage.self, forKey: .language)) ?? .japanese
         autoLanguage = try values.decodeIfPresent(Bool.self, forKey: .autoLanguage) ?? false
         interfaceLanguage = (try? values.decodeIfPresent(InterfaceLanguage.self, forKey: .interfaceLanguage)) ?? .system
+        koreanKeyboard = try values.decodeIfPresent(Bool.self, forKey: .koreanKeyboard) ?? false
         provider = try values.decodeIfPresent(ProviderKind.self, forKey: .provider) ?? .openAI
         openAI = try values.decodeIfPresent(ProviderConfiguration.self, forKey: .openAI) ?? ProviderKind.openAI.defaultConfiguration
         qwen = try values.decodeIfPresent(ProviderConfiguration.self, forKey: .qwen) ?? ProviderKind.qwen.defaultConfiguration

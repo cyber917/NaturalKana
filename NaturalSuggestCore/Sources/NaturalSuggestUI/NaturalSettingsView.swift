@@ -50,6 +50,13 @@ public struct NaturalSettingsView: View {
             }
         }
     }
+    /// Languages the NaturalKana keyboard or input method can type itself.
+    private func typedByNaturalKana(_ language: SuggestionLanguage) -> Bool {
+        #if os(iOS)
+        if model.settings.koreanKeyboard, language.rawValue == "korean" { return true }
+        #endif
+        return SuggestionLanguage.inputMethodLanguages.contains(language)
+    }
     public var body: some View {
         Form {
             Section {
@@ -91,13 +98,19 @@ public struct NaturalSettingsView: View {
                     Text(UIText.t("按每一句自动判断是哪种语言；分不清时（例如只有汉字的短句）按主要语言处理。")).font(.caption).foregroundStyle(.secondary)
                 }
                 // NaturalKana itself only types Japanese and English; other languages are typed with another keyboard or IME.
-                if !SuggestionLanguage.inputMethodLanguages.contains(model.settings.language) || model.settings.autoLanguage {
+                if !typedByNaturalKana(model.settings.language) || model.settings.autoLanguage {
                     #if os(macOS)
                     Text(UIText.t("日语、英语以外的句子请用菜单栏小助手检查：用任何输入法打完一句，按 ⌃⌥J。")).font(.caption).foregroundStyle(.secondary)
                     #else
                     Text(UIText.t("日语、英语以外的句子：用系统自带的键盘打完一句后，切换到 NaturalKana 键盘即可看到建议。")).font(.caption).foregroundStyle(.secondary)
                     #endif
                 }
+                #if os(iOS)
+                Toggle(UIText.t("键盘加入韩语布局"), isOn: $model.settings.koreanKeyboard)
+                if model.settings.koreanKeyboard {
+                    Text(UIText.t("保存后，在英文键盘上点左下角的语言键（A／한）切换到韩语。长按 ㅂㅈㄷㄱㅅ 输入 ㅃㅉㄸㄲㅆ，长按 ㅐㅔ 输入 ㅒㅖ。")).font(.caption).foregroundStyle(.secondary)
+                }
+                #endif
                 Picker(UIText.t("语体"), selection: $model.settings.registerPreference) {
                     Text(UIText.t("口语")).tag(RegisterPreference.friendsCasual)
                     Text(model.settings.language == .japanese ? UIText.t("敬语") : UIText.t("礼貌")).tag(RegisterPreference.politeCasual)

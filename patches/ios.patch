@@ -147,6 +147,121 @@ index 5ccfa08..5f7e9be 100644
  
      private static var appVersionString: String? {
          Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String
+diff --git a/AzooKeyCore/Sources/CustardKit/CustardActions.swift b/AzooKeyCore/Sources/CustardKit/CustardActions.swift
+index f8d7ff1..30f5eed 100644
+--- a/AzooKeyCore/Sources/CustardKit/CustardActions.swift
++++ b/AzooKeyCore/Sources/CustardKit/CustardActions.swift
+@@ -36,6 +36,9 @@ public enum TabData: Hashable, Sendable {
+         /// qwerty symbols input tab
+         case qwerty_symbols
+ 
++        /// qwerty korean (dubeolsik) input tab (NaturalKana)
++        case qwerty_korean
++
+         /// the last tab
+         case last_tab
+ 
+diff --git a/AzooKeyCore/Sources/KeyboardViews/Custard/QwertyCustards.swift b/AzooKeyCore/Sources/KeyboardViews/Custard/QwertyCustards.swift
+index 5478d73..77ad379 100644
+--- a/AzooKeyCore/Sources/KeyboardViews/Custard/QwertyCustards.swift
++++ b/AzooKeyCore/Sources/KeyboardViews/Custard/QwertyCustards.swift
+@@ -9,6 +9,9 @@ public extension Custard {
+         customKeys: .defaultValue
+     )
+     static let qwertySymbols = DefaultQwertyCustards.symbols
++    /// NaturalKana: dubeolsik Korean. Keys input compatibility jamo; the keyboard composes them into syllables.
++    static let qwertyKorean = DefaultQwertyCustards.korean
++    static let koreanIdentifier = "korean_qwerty"
+ 
+     static func qwertyEnglish(useShiftKey: Bool) -> Custard {
+         DefaultQwertyCustards.english(
+@@ -109,6 +112,39 @@ private enum DefaultQwertyCustards {
+         )
+     }
+ 
++    /// Standard dubeolsik layout. Instead of Shift, long-press gives the tense consonants (ㄲ ㄸ ㅃ ㅆ ㅉ) and ㅒ ㅖ.
++    static var korean: Custard {
++        var keys: [CustardKeyPositionSpecifier: CustardInterfaceKey] = [:]
++        let firstRow: [(String, String?)] = [("ㅂ", "ㅃ"), ("ㅈ", "ㅉ"), ("ㄷ", "ㄸ"), ("ㄱ", "ㄲ"), ("ㅅ", "ㅆ"),
++                                             ("ㅛ", nil), ("ㅕ", nil), ("ㅑ", nil), ("ㅐ", "ㅒ"), ("ㅔ", "ㅖ")]
++        for (index, key) in firstRow.enumerated() {
++            keys[position(Double(index), 0)] = inputKey(key.0, variations: key.1.map { [key.0, $0] } ?? [])
++        }
++        for (index, letter) in ["ㅁ", "ㄴ", "ㅇ", "ㄹ", "ㅎ", "ㅗ", "ㅓ", "ㅏ", "ㅣ"].enumerated() {
++            keys[position(Double(index), 1)] = inputKey(letter)
++        }
++        keys[position(9, 1)] = inputKey(".", variations: [".", ",", "?", "!", "~", "^^"])
++        keys[position(0, 2, width: 1.4)] = .system(.qwertyLanguageSwitch)
++        for (index, letter) in ["ㅋ", "ㅌ", "ㅊ", "ㅍ", "ㅠ", "ㅜ", "ㅡ"].enumerated() {
++            keys[position(1.5 + Double(index), 2)] = inputKey(letter)
++        }
++        keys[position(8.6, 2, width: 1.4)] = deleteKey
++        addBottomRow(
++            to: &keys,
++            leadingKey: tabKey(
++                label: .systemImage("textformat.123"),
++                destination: .qwerty_numbers
++            )
++        )
++        return custard(
++            identifier: Custard.koreanIdentifier,
++            displayName: "한국어",
++            language: .none,
++            inputStyle: .direct,
++            keys: keys
++        )
++    }
++
+     static func numbers(customKeys: QwertyCustomKeysValue) -> Custard {
+         var keys: [CustardKeyPositionSpecifier: CustardInterfaceKey] = [:]
+         let numberVariations = [
+diff --git a/AzooKeyCore/Sources/KeyboardViews/KeyboardTab.swift b/AzooKeyCore/Sources/KeyboardViews/KeyboardTab.swift
+index da988a8..fe6dc25 100644
+--- a/AzooKeyCore/Sources/KeyboardViews/KeyboardTab.swift
++++ b/AzooKeyCore/Sources/KeyboardViews/KeyboardTab.swift
+@@ -87,6 +87,12 @@ public enum KeyboardTab: Equatable {
+             }
+         }
+ 
++        /// NaturalKana: the dubeolsik Korean layout, whose jamo keys are composed into syllables.
++        public var isKorean: Bool {
++            if case let .custard(custard) = self { return custard.identifier == Custard.koreanIdentifier }
++            return false
++        }
++
+         public var replacementTarget: [ConverterBehaviorSemantics.ReplacementTarget] {
+             switch self {
+             case .special(.emoji):
+diff --git a/AzooKeyCore/Sources/KeyboardViews/SemiStaticStates.swift b/AzooKeyCore/Sources/KeyboardViews/SemiStaticStates.swift
+index b464ddb..d4ec684 100644
+--- a/AzooKeyCore/Sources/KeyboardViews/SemiStaticStates.swift
++++ b/AzooKeyCore/Sources/KeyboardViews/SemiStaticStates.swift
+@@ -40,6 +40,12 @@ public final class SemiStaticStates: @unchecked Sendable {
+         self.hasFullAccess = bool
+     }
+ 
++    /// NaturalKana: whether the language switch key also cycles to the Korean layout (set from NaturalKana settings).
++    private(set) public var koreanKeyboardEnabled = false
++    public func setKoreanKeyboardEnabled(_ bool: Bool) {
++        self.koreanKeyboardEnabled = bool
++    }
++
+     /// - do not  consider using screenHeight
+     /// - スクリーンそのもののサイズ。キーボードビューの幅は片手モードなどによって変更が生じうるため、`screenWidth`は限定的な場面でのみ使うことが望まし。
+     private(set) public var screenWidth: CGFloat = 0
+diff --git a/AzooKeyCore/Sources/KeyboardViews/TabManager.swift b/AzooKeyCore/Sources/KeyboardViews/TabManager.swift
+index 5e244a2..53b0938 100644
+--- a/AzooKeyCore/Sources/KeyboardViews/TabManager.swift
++++ b/AzooKeyCore/Sources/KeyboardViews/TabManager.swift
+@@ -31,6 +31,8 @@ extension TabData {
+                 return .existential(.qwerty_numbers)
+             case .qwerty_symbols:
+                 return .existential(.qwerty_symbols)
++            case .qwerty_korean:
++                return .existential(.custard(.qwertyKorean))
+             case .user_japanese:
+                 return .user_dependent(.japanese)
+             case .user_english:
 diff --git a/AzooKeyCore/Sources/KeyboardViews/View/KeyboardBar/KeyboardBarView.swift b/AzooKeyCore/Sources/KeyboardViews/View/KeyboardBar/KeyboardBarView.swift
 index 201a3b6..183b5c9 100644
 --- a/AzooKeyCore/Sources/KeyboardViews/View/KeyboardBar/KeyboardBarView.swift
@@ -262,6 +377,55 @@ index 407388f..13ee7e7 100644
  struct GenericThemeEnvironmentKey<Extension: ApplicationSpecificKeyboardViewExtensionLayoutDependentDefaultThemeProvidable>: EnvironmentKey {
      typealias Value = ThemeData<Extension>
  
+diff --git a/AzooKeyCore/Sources/KeyboardViews/View/UnifiedKey/KeyModels/Qwerty/QwertyDynamicChangeKeyModel.swift b/AzooKeyCore/Sources/KeyboardViews/View/UnifiedKey/KeyModels/Qwerty/QwertyDynamicChangeKeyModel.swift
+index 2349a9e..a7b8d7b 100644
+--- a/AzooKeyCore/Sources/KeyboardViews/View/UnifiedKey/KeyModels/Qwerty/QwertyDynamicChangeKeyModel.swift
++++ b/AzooKeyCore/Sources/KeyboardViews/View/UnifiedKey/KeyModels/Qwerty/QwertyDynamicChangeKeyModel.swift
+@@ -21,6 +21,9 @@ struct QwertyDynamicChangeKeyModel<Extension: ApplicationSpecificKeyboardViewExt
+             .english
+         case .qwerty_numbers, .qwerty_symbols:
+             .numberOrSymbol
++        case let .custard(custard) where custard.identifier == Custard.koreanIdentifier:
++            // NaturalKana: Korean letters behave like the Japanese letter tab.
++            .hiragana
+         case let .custard(custard):
+             switch custard.language {
+             case .ja_JP:
+diff --git a/AzooKeyCore/Sources/KeyboardViews/View/UnifiedKey/KeyModels/Qwerty/QwertyLanguageSwitchKeyModel.swift b/AzooKeyCore/Sources/KeyboardViews/View/UnifiedKey/KeyModels/Qwerty/QwertyLanguageSwitchKeyModel.swift
+index 1d9773b..3c549d0 100644
+--- a/AzooKeyCore/Sources/KeyboardViews/View/UnifiedKey/KeyModels/Qwerty/QwertyLanguageSwitchKeyModel.swift
++++ b/AzooKeyCore/Sources/KeyboardViews/View/UnifiedKey/KeyModels/Qwerty/QwertyLanguageSwitchKeyModel.swift
+@@ -11,6 +11,15 @@ struct QwertyLanguageSwitchKeyModel<Extension: ApplicationSpecificKeyboardViewEx
+     }
+ 
+     func pressActions(variableStates: VariableStates) -> [ActionType] {
++        // NaturalKana: with the Korean layout enabled, the key cycles あ → A → 한 → あ.
++        if SemiStaticStates.shared.koreanKeyboardEnabled {
++            if variableStates.tabManager.existentialTab().isKorean {
++                return [.moveTab(.system(.user_japanese))]
++            }
++            if currentTabLanguage(variableStates: variableStates) == .en_US {
++                return [.moveTab(.system(.qwerty_korean))]
++            }
++        }
+         let target: KeyboardLanguage
+         let current = currentTabLanguage(variableStates: variableStates)
+         if languages.0 == current {
+@@ -40,6 +49,14 @@ struct QwertyLanguageSwitchKeyModel<Extension: ApplicationSpecificKeyboardViewEx
+     }
+ 
+     func label<ThemeExtension>(width: CGFloat, theme _: ThemeData<ThemeExtension>, states: VariableStates, color: Color?) -> KeyLabel<Extension> where ThemeExtension: ApplicationSpecificKeyboardViewExtensionLayoutDependentDefaultThemeProvidable {
++        if SemiStaticStates.shared.koreanKeyboardEnabled {
++            if states.tabManager.existentialTab().isKorean {
++                return KeyLabel(.selectable("한", KeyboardLanguage.ja_JP.shortSymbol), width: width, textColor: color)
++            }
++            if currentTabLanguage(variableStates: states) == .en_US {
++                return KeyLabel(.selectable(KeyboardLanguage.en_US.shortSymbol, "한"), width: width, textColor: color)
++            }
++        }
+         let current = currentTabLanguage(variableStates: states)
+         if languages.0 == current {
+             return KeyLabel(.selectable(languages.0.shortSymbol, languages.1.shortSymbol), width: width, textColor: color)
 diff --git a/Keyboard/Display/InputManager.swift b/Keyboard/Display/InputManager.swift
 index 0a478af..7f39290 100644
 --- a/Keyboard/Display/InputManager.swift
@@ -276,10 +440,27 @@ index 0a478af..7f39290 100644
      private static let zenzXsmallWeightURL = Bundle.main.bundleURL.appendingPathComponent("zenz-v3.2-xsmall-gguf/ggml-model-Q5_K_M.gguf", isDirectory: false)
  
 diff --git a/Keyboard/Display/KeyboardActionManager.swift b/Keyboard/Display/KeyboardActionManager.swift
-index 5f55651..7e237a7 100644
+index 5f55651..50f1084 100644
 --- a/Keyboard/Display/KeyboardActionManager.swift
 +++ b/Keyboard/Display/KeyboardActionManager.swift
-@@ -68,6 +68,8 @@ final class KeyboardActionManager: UserActionManager, @unchecked Sendable {
+@@ -11,6 +11,7 @@ import Foundation
+ import KanaKanjiConverterModule
+ import enum KeyboardExtensionUtils.AnyTextDocumentProxy
+ import KeyboardViews
++import NaturalSuggestCore
+ import SwiftUI
+ import SwiftUtils
+ 
+@@ -25,6 +26,8 @@ final class KeyboardActionManager: UserActionManager, @unchecked Sendable {
+     private var tasks: [(type: LongpressActionType, task: Task<Void, any Error>)] = []
+     private var tempTextData: (left: String, center: String, right: String)?
+     private var pendingReportDismissTask: Task<Void, Never>?
++    /// NaturalKana: the Hangul syllable being typed on the Korean layout.
++    private var hangul = HangulComposer()
+ 
+     // キーボードを閉じる際に呼び出す
+     // inputManagerはキーボードを閉じる際にある種の操作を行う
+@@ -68,6 +71,8 @@ final class KeyboardActionManager: UserActionManager, @unchecked Sendable {
      ///   - candidate: 確定された候補。
      ///   - variableStates: 状態。
      override func notifyComplete(_ candidate: any ResultViewItemData, variableStates: VariableStates) {
@@ -288,7 +469,39 @@ index 5f55651..7e237a7 100644
          if let candidate = candidate as? Candidate {
              self.inputManager.complete(candidate: candidate)
              self.registerActions(candidate.actions.map(\.action), variableStates: variableStates)
-@@ -148,6 +150,15 @@ final class KeyboardActionManager: UserActionManager, @unchecked Sendable {
+@@ -143,12 +148,56 @@ final class KeyboardActionManager: UserActionManager, @unchecked Sendable {
+         self.dismissReportInterfacesIfNeeded(variableStates: variableStates)
+     }
+ 
++    /// Composes Hangul for a jamo key or backspace; false when the action is handled as usual.
++    @MainActor private func handleHangul(_ action: ActionType, variableStates: VariableStates) -> Bool {
++        // Only the block typed just now is edited: a moved cursor or a change by the app starts a new one.
++        if self.hangul.isComposing, !self.inputManager.getSurroundingText().leftText.hasSuffix(self.hangul.composingText) {
++            self.hangul.reset()
++        }
++        let edit: HangulComposer.Edit
++        switch action {
++        case let .input(text, _) where text.count == 1 && HangulComposer.isJamo(text.first!):
++            edit = self.hangul.input(text.first!)
++        case .delete(1):
++            guard let removal = self.hangul.deleteBackward() else { return false }
++            edit = removal
++        default:
++            self.hangul.reset()
++            return false
++        }
++        self.textEditingActionDidBegin(variableStates: variableStates)
++        if edit.delete > 0 {
++            self.inputManager.deleteBackward(convertTargetCount: edit.delete, requireSetResult: false)
++        }
++        if !edit.insert.isEmpty {
++            self.inputManager.input(text: edit.insert, requireSetResult: false, simpleInsert: true, inputStyle: .direct)
++        }
++        return true
++    }
++
+     @MainActor private func shiftStateOff(variableStates: VariableStates) {
+         variableStates.boolStates[VariableStates.BoolStates.isShiftedKey] = false
      }
  
      @MainActor private func doAction(_ action: ActionType, requireSetResult: Bool = true, variableStates: VariableStates) {
@@ -302,10 +515,19 @@ index 5f55651..7e237a7 100644
 +        }
 +        defer { delegate?.naturalDraftDidChange() }
          debug("doAction", action)
++        // NaturalKana: on the Korean layout, jamo keys and backspace edit the syllable being typed.
++        if variableStates.tabManager.existentialTab().isKorean, self.handleHangul(action, variableStates: variableStates) {
++            return
++        }
++        switch action {
++        case .input, .delete: break
++        default: self.hangul.reset()
++        }
          var undoAction: ActionType?
          switch action {
+         case let .input(text, simpleInsert):
 diff --git a/Keyboard/Display/KeyboardViewController.swift b/Keyboard/Display/KeyboardViewController.swift
-index e6038af..2386e15 100644
+index e6038af..193d31c 100644
 --- a/Keyboard/Display/KeyboardViewController.swift
 +++ b/Keyboard/Display/KeyboardViewController.swift
 @@ -14,6 +14,8 @@ import KeyboardViews
@@ -386,15 +608,18 @@ index e6038af..2386e15 100644
          SemiStaticStates.shared.setup()
          KeyboardViewController.loadedInstanceCount += 1
          // 初期化の順序としてこの位置に置くこと
-@@ -258,6 +303,7 @@ final class KeyboardViewController: UIInputViewController {
+@@ -258,6 +303,10 @@ final class KeyboardViewController: UIInputViewController {
  
      override func viewWillAppear(_ animated: Bool) {
          super.viewWillAppear(animated)
 +        guard sharedStorageReady else { return }
++        // NaturalKana: the language switch key includes the Korean layout when enabled in settings.
++        Self.naturalModel.reload()
++        SemiStaticStates.shared.setKoreanKeyboardEnabled(Self.naturalModel.settings.koreanKeyboard)
          // サイズに関する情報はこのタイミングで設定する
          if #available(iOS 26, *) {
              let size = self.currentKeyboardViewSize()
-@@ -276,6 +322,7 @@ final class KeyboardViewController: UIInputViewController {
+@@ -276,6 +325,7 @@ final class KeyboardViewController: UIInputViewController {
  
      override func viewDidAppear(_ animated: Bool) {
          super.viewDidAppear(animated)
@@ -402,7 +627,7 @@ index e6038af..2386e15 100644
          self.updateStates()
  
          // Floating Keyboardなどの一部の処理に限り、このタイミングにならないとウィンドウ幅が不明なケースが存在する
-@@ -306,6 +353,7 @@ final class KeyboardViewController: UIInputViewController {
+@@ -306,6 +356,7 @@ final class KeyboardViewController: UIInputViewController {
  
      override func viewDidLayoutSubviews() {
          super.viewDidLayoutSubviews()
@@ -410,7 +635,7 @@ index e6038af..2386e15 100644
          // iOS 26以上で、レイアウト確定後に向き・サイズを反映
          if #available(iOS 26, *) {
              let size = self.currentKeyboardViewSize()
-@@ -322,6 +370,7 @@ final class KeyboardViewController: UIInputViewController {
+@@ -322,6 +373,7 @@ final class KeyboardViewController: UIInputViewController {
          // キーボードタイプはviewDidAppearのタイミングで取得できる
          KeyboardViewController.variableStates.setKeyboardType(self.textDocumentProxy.keyboardType)
          KeyboardViewController.variableStates.setTextContentType(self.textDocumentProxy.textContentType)
@@ -418,7 +643,7 @@ index e6038af..2386e15 100644
  
          // クリップボード履歴を更新する
          KeyboardViewController.variableStates.clipboardHistoryManager.reload()
-@@ -412,15 +461,20 @@ final class KeyboardViewController: UIInputViewController {
+@@ -412,15 +464,20 @@ final class KeyboardViewController: UIInputViewController {
      }
  
      override func viewWillDisappear(_ animated: Bool) {
@@ -439,7 +664,7 @@ index e6038af..2386e15 100644
          if #available(iOS 26, *) {
              // 幅は即時反映しておき、向きは完了時のWindowSceneから決定する
              coordinator.animate(alongsideTransition: nil) { [weak self] _ in
-@@ -480,7 +534,7 @@ final class KeyboardViewController: UIInputViewController {
+@@ -480,7 +537,7 @@ final class KeyboardViewController: UIInputViewController {
  
      private func setKeyboardHeight(to height: CGFloat) {
          self.keyboardHeightConstraint?.isActive = true
@@ -448,7 +673,7 @@ index e6038af..2386e15 100644
          if self.view.window != nil {
              UIView.performWithoutAnimation {
                  self.view.layoutIfNeeded()
-@@ -492,20 +546,12 @@ final class KeyboardViewController: UIInputViewController {
+@@ -492,20 +549,12 @@ final class KeyboardViewController: UIInputViewController {
          }
      }
  
@@ -472,7 +697,7 @@ index e6038af..2386e15 100644
  
          let left = self.textDocumentProxy.documentContextBeforeInput ?? ""
          let center = self.textDocumentProxy.selectedText ?? ""
-@@ -518,6 +564,7 @@ final class KeyboardViewController: UIInputViewController {
+@@ -518,6 +567,7 @@ final class KeyboardViewController: UIInputViewController {
      /// 引数の`textInput`は常に`nil`
      override func textDidChange(_ textInput: (any UITextInput)?) {
          super.textDidChange(textInput)
@@ -480,7 +705,7 @@ index e6038af..2386e15 100644
  
          let left = self.textDocumentProxy.documentContextBeforeInput ?? ""
          let center = self.textDocumentProxy.selectedText ?? ""
-@@ -530,6 +577,7 @@ final class KeyboardViewController: UIInputViewController {
+@@ -530,6 +580,7 @@ final class KeyboardViewController: UIInputViewController {
          KeyboardViewController.variableStates.clipboardHistoryManager.checkUpdate()
          KeyboardViewController.variableStates.setUIReturnKeyType(type: self.textDocumentProxy.returnKeyType ?? .default)
          KeyboardViewController.variableStates.setTextContentType(self.textDocumentProxy.textContentType)
@@ -488,7 +713,7 @@ index e6038af..2386e15 100644
      }
  
      /// Reference: https://stackoverflow.com/questions/79077018/unable-to-open-main-app-from-action-extension-in-ios-18-previously-working-met
-@@ -558,4 +606,70 @@ final class KeyboardViewController: UIInputViewController {
+@@ -558,4 +609,70 @@ final class KeyboardViewController: UIInputViewController {
          }
          self.openURL(url)
      }
@@ -817,6 +1042,19 @@ index 1b84bb3..edd7a19 100644
 +        }
 +    }
  }
+diff --git a/MainApp/Features/Customization/Custard/Editing/CodableActionEditingService.swift b/MainApp/Features/Customization/Custard/Editing/CodableActionEditingService.swift
+index 4194897..d84a5e2 100644
+--- a/MainApp/Features/Customization/Custard/Editing/CodableActionEditingService.swift
++++ b/MainApp/Features/Customization/Custard/Editing/CodableActionEditingService.swift
+@@ -143,6 +143,8 @@ extension TabData {
+                 return "数字(ローマ字入力)"
+             case .qwerty_symbols:
+                 return "記号(ローマ字入力)"
++            case .qwerty_korean:
++                return "韓国語(QWERTY)"
+             case .last_tab:
+                 return "最後に表示していたタブ"
+             case .clipboard_history_tab:
 diff --git a/MainApp/Features/Customization/CustomizationHomeView.swift b/MainApp/Features/Customization/CustomizationHomeView.swift
 index ddac5d6..b116e6b 100644
 --- a/MainApp/Features/Customization/CustomizationHomeView.swift
