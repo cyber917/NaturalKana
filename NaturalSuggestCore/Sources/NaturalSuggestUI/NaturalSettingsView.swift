@@ -90,11 +90,12 @@ public struct NaturalSettingsView: View {
                     }
                     Text(UIText.t("按每一句自动判断是哪种语言；分不清时（例如只有汉字的短句）按主要语言处理。")).font(.caption).foregroundStyle(.secondary)
                 }
-                if model.settings.language == .chinese || model.settings.autoLanguage {
+                // NaturalKana itself only types Japanese and English; other languages are typed with another keyboard or IME.
+                if !SuggestionLanguage.inputMethodLanguages.contains(model.settings.language) || model.settings.autoLanguage {
                     #if os(macOS)
-                    Text(UIText.t("中文句子请用菜单栏小助手检查：用任何输入法打完一句，按 ⌃⌥J。")).font(.caption).foregroundStyle(.secondary)
+                    Text(UIText.t("日语、英语以外的句子请用菜单栏小助手检查：用任何输入法打完一句，按 ⌃⌥J。")).font(.caption).foregroundStyle(.secondary)
                     #else
-                    Text(UIText.t("用系统自带的中文键盘打完一句后，切换到 NaturalKana 键盘即可看到建议。")).font(.caption).foregroundStyle(.secondary)
+                    Text(UIText.t("日语、英语以外的句子：用系统自带的键盘打完一句后，切换到 NaturalKana 键盘即可看到建议。")).font(.caption).foregroundStyle(.secondary)
                     #endif
                 }
                 Picker(UIText.t("语体"), selection: $model.settings.registerPreference) {

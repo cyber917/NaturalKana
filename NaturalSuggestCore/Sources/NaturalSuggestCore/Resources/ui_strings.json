@@ -127,10 +127,6 @@
   "en": "Chinese",
   "ja": "中国語"
  },
- "中文句子请用菜单栏小助手检查：用任何输入法打完一句，按 ⌃⌥J。": {
-  "en": "Chinese sentences are checked by the menu-bar helper: type a sentence with any input method and press ⌃⌥J.",
-  "ja": "中国語の文はメニューバーのヘルパーでチェックします。どの入力方式でも文を入力して ⌃⌥J を押してください。"
- },
  "主应用：共享配置可读，密钥%@。键盘：%@。": {
   "en": "App: shared settings readable, key %@. Keyboard: %@.",
   "ja": "アプリ：共有設定は読み取り可能、キーは%@。キーボード：%@。"
@@ -711,6 +707,14 @@
   "en": "Japanese",
   "ja": "日本語"
  },
+ "日语、英语以外的句子请用菜单栏小助手检查：用任何输入法打完一句，按 ⌃⌥J。": {
+  "en": "For languages other than Japanese and English, use the menu-bar helper: type a sentence with any input method and press ⌃⌥J.",
+  "ja": "日本語・英語以外の文はメニューバーのヘルパーでチェックします。どの入力方式でも文を入力して ⌃⌥J を押してください。"
+ },
+ "日语、英语以外的句子：用系统自带的键盘打完一句后，切换到 NaturalKana 键盘即可看到建议。": {
+  "en": "For languages other than Japanese and English: type a sentence with a built-in keyboard, then switch to the NaturalKana keyboard to see suggestions.",
+  "ja": "日本語・英語以外の文：標準のキーボードで文を入力してから NaturalKana キーボードに切り替えると、候補が表示されます。"
+ },
  "最多发送当前句子 200 字及命中的词库参考。iPhone 需允许键盘完全访问。": {
   "en": "Sends at most 200 characters of the current sentence plus matching lexicon references. On iPhone, the keyboard needs Full Access.",
   "ja": "現在の文の最大 200 文字と、該当する語彙の参考情報だけを送信します。iPhone ではキーボードの「フルアクセスを許可」が必要です。"
@@ -962,10 +966,6 @@
  "用法：": {
   "en": "Usage: ",
   "ja": "用法："
- },
- "用系统自带的中文键盘打完一句后，切换到 NaturalKana 键盘即可看到建议。": {
-  "en": "Type a sentence with the built-in Chinese keyboard, then switch to the NaturalKana keyboard to see suggestions.",
-  "ja": "標準の中国語キーボードで文を入力してから NaturalKana キーボードに切り替えると、候補が表示されます。"
  },
  "用蓝色标出和原句不同的部分": {
   "en": "Show what differs from the original in blue",
@@ -1306,6 +1306,10 @@
  "非思考模式": {
   "en": "Non-thinking mode",
   "ja": "思考モードをオフ"
+ },
+ "韩语": {
+  "en": "Korean",
+  "ja": "韓国語"
  },
  "预览导入：%@ 条": {
   "en": "Import preview: %@ entries",

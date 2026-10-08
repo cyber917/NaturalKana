@@ -1,0 +1,47 @@
+{
+  "order": 3,
+  "title": "韩语",
+  "promptName": "Korean",
+  "locale": "ko",
+  "testDraft": "저는 어제 친구가 만났어요.",
+  "registerTitles": {
+    "casual": "반말",
+    "polite": "존댓말"
+  },
+  "closeTitle": "닫기",
+  "copyHint": "클릭해서 복사 · 원래 문장을 선택하고 붙여넣기",
+  "rules": "generic",
+  "generic": {
+    "letters": "[\\uAC00-\\uD7A3\\u1100-\\u11FF\\u3130-\\u318F]",
+    "forbidden": "[\\u3040-\\u30FF\\u4E00-\\u9FFF]",
+    "latinAllowlist": [
+      "OK",
+      "AI",
+      "App",
+      "app",
+      "PDF",
+      "URL",
+      "ID",
+      "Wi",
+      "Fi",
+      "SNS",
+      "DM"
+    ],
+    "denied": [
+      "번역",
+      "지시를 무시",
+      "시스템 프롬프트",
+      "translate",
+      "ignore instructions",
+      "system prompt",
+      "翻译",
+      "翻訳"
+    ]
+  },
+  "detect": {
+    "signal": "[\\uAC00-\\uD7A3\\u3131-\\u318E]",
+    "priority": 0
+  },
+  "keepPunctuation": true,
+  "windowsFont": "Malgun Gothic, Segoe UI"
+}
