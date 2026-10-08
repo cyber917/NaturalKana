@@ -122,6 +122,35 @@ public struct SuggestionSettings: Codable, Hashable, Sendable {
     public var autoLanguage = false
     public var interfaceLanguage: InterfaceLanguage = .system
     public var extraKeyboardLayouts: [String] = []
+    /// Nil follows all enabled layouts; a saved list selects and orders the quick switch cycle.
+    public var keyboardSwitchOrder: [String]?
+    public var availableKeyboardLanguages: [KeyboardSwitchLanguage] {
+        [.japanese, .english] + enabledKeyboardLayouts.compactMap { KeyboardSwitchLanguage(rawValue: $0.rawValue) }
+    }
+    public var keyboardSwitchLanguages: [KeyboardSwitchLanguage] {
+        let available = availableKeyboardLanguages
+        guard let keyboardSwitchOrder else { return available }
+        var seen: Set<KeyboardSwitchLanguage> = []
+        let selected = keyboardSwitchOrder.compactMap(KeyboardSwitchLanguage.init(rawValue:))
+            .filter { available.contains($0) && seen.insert($0).inserted }
+        return selected.isEmpty ? available : selected
+    }
+    public mutating func setQuickSwitchLanguage(_ language: KeyboardSwitchLanguage, enabled: Bool) {
+        var selected = keyboardSwitchLanguages
+        guard availableKeyboardLanguages.contains(language) else { return }
+        if enabled {
+            if !selected.contains(language) { selected.append(language) }
+        } else if selected.count > 1 {
+            selected.removeAll { $0 == language }
+        }
+        keyboardSwitchOrder = selected.map(\.rawValue)
+    }
+    public mutating func moveQuickSwitchLanguage(_ language: KeyboardSwitchLanguage, by offset: Int) {
+        var selected = keyboardSwitchLanguages
+        guard let index = selected.firstIndex(of: language), selected.indices.contains(index + offset) else { return }
+        selected.swapAt(index, index + offset)
+        keyboardSwitchOrder = selected.map(\.rawValue)
+    }
     /// Compatibility accessor for callers using the original Korean switch.
     public var koreanKeyboard: Bool {
         get { extraKeyboardLayouts.contains("korean") }
@@ -183,7 +212,7 @@ public struct SuggestionSettings: Codable, Hashable, Sendable {
         return SHA256.hash(data: (try? encoder.encode(self)) ?? Data()).map { String(format: "%02x", $0) }.joined()
     }
     private enum LegacyCodingKeys: String, CodingKey { case koreanKeyboard }
-    private enum CodingKeys: String, CodingKey { case enabled, consent, language, autoLanguage, interfaceLanguage, extraKeyboardLayouts, provider, openAI, qwen, additionalProviders, highlightChanges, qualityPartner, registerPreference, slangLevel, dialect, debounceMilliseconds, minimumLength, maximumSuggestions, qualityMode, dailyCap, blockedApps, acceptKeys }
+    private enum CodingKeys: String, CodingKey { case enabled, consent, language, autoLanguage, interfaceLanguage, extraKeyboardLayouts, keyboardSwitchOrder, provider, openAI, qwen, additionalProviders, highlightChanges, qualityPartner, registerPreference, slangLevel, dialect, debounceMilliseconds, minimumLength, maximumSuggestions, qualityMode, dailyCap, blockedApps, acceptKeys }
     public init(from decoder: Decoder) throws {
         let values = try decoder.container(keyedBy: CodingKeys.self)
         enabled = try values.decodeIfPresent(Bool.self, forKey: .enabled) ?? false
@@ -195,6 +224,7 @@ public struct SuggestionSettings: Codable, Hashable, Sendable {
         let legacy = try decoder.container(keyedBy: LegacyCodingKeys.self)
         let korean = try legacy.decodeIfPresent(Bool.self, forKey: .koreanKeyboard) ?? false
         extraKeyboardLayouts = try values.decodeIfPresent([String].self, forKey: .extraKeyboardLayouts) ?? (korean ? ["korean"] : [])
+        keyboardSwitchOrder = try values.decodeIfPresent([String].self, forKey: .keyboardSwitchOrder)
         provider = try values.decodeIfPresent(ProviderKind.self, forKey: .provider) ?? .openAI
         openAI = try values.decodeIfPresent(ProviderConfiguration.self, forKey: .openAI) ?? ProviderKind.openAI.defaultConfiguration
         qwen = try values.decodeIfPresent(ProviderConfiguration.self, forKey: .qwen) ?? ProviderKind.qwen.defaultConfiguration

@@ -79,3 +79,47 @@ struct ExtraKeyboardLayoutTests {
         #expect(!decoded.koreanKeyboard)
     }
 }
+
+@Suite struct KeyboardSwitchSettingsTests {
+    @Test func legacySettingsKeepTheirCycle() throws {
+        let settings = try JSONDecoder().decode(SuggestionSettings.self, from: Data(#"{"koreanKeyboard":true}"#.utf8))
+        #expect(settings.keyboardSwitchOrder == nil)
+        #expect(settings.keyboardSwitchLanguages == [.japanese, .english, .korean])
+    }
+    @Test func twoLanguagesCanExcludeJapaneseAndEnglishAndRoundTrip() throws {
+        var settings = SuggestionSettings()
+        for layout in ExtraKeyboardLayout.allCases { settings.setKeyboardLayout(layout, enabled: true) }
+        settings.keyboardSwitchOrder = ["russian", "korean"]
+        let decoded = try JSONDecoder().decode(SuggestionSettings.self, from: JSONEncoder().encode(settings))
+        #expect(decoded.keyboardSwitchLanguages == [.russian, .korean])
+        #expect(decoded.availableKeyboardLanguages == KeyboardSwitchLanguage.allCases)
+    }
+    @Test func selectionReorderAndLastLanguageProtection() {
+        var settings = SuggestionSettings()
+        for layout in ExtraKeyboardLayout.allCases { settings.setKeyboardLayout(layout, enabled: true) }
+        settings.moveQuickSwitchLanguage(.russian, by: -1)
+        #expect(settings.keyboardSwitchLanguages == [.japanese, .english, .korean, .russian, .french])
+        for language in [KeyboardSwitchLanguage.japanese, .english, .french] { settings.setQuickSwitchLanguage(language, enabled: false) }
+        #expect(settings.keyboardSwitchLanguages == [.korean, .russian])
+        settings.setQuickSwitchLanguage(.korean, enabled: false)
+        settings.setQuickSwitchLanguage(.russian, enabled: false)
+        #expect(settings.keyboardSwitchLanguages == [.russian])
+        settings.setQuickSwitchLanguage(.korean, enabled: true)
+        settings.setQuickSwitchLanguage(.korean, enabled: true)
+        #expect(settings.keyboardSwitchLanguages == [.russian, .korean])
+        settings.keyboardSwitchOrder = nil
+        #expect(settings.keyboardSwitchLanguages == KeyboardSwitchLanguage.allCases)
+    }
+    @Test func disabledUnknownDuplicateAndEmptySelectionsStayUsable() throws {
+        var settings = try JSONDecoder().decode(SuggestionSettings.self, from: Data(#"{"consent":true,"extraKeyboardLayouts":["korean","russian"],"keyboardSwitchOrder":["russian","future","russian","french","korean"]}"#.utf8))
+        #expect(settings.consent)
+        #expect(settings.keyboardSwitchLanguages == [.russian, .korean])
+        #expect(settings.keyboardSwitchOrder?.contains("future") == true)
+        settings.setKeyboardLayout(.russian, enabled: false)
+        #expect(settings.keyboardSwitchLanguages == [.korean])
+        settings.setKeyboardLayout(.korean, enabled: false)
+        #expect(settings.keyboardSwitchLanguages == [.japanese, .english])
+        settings.keyboardSwitchOrder = []
+        #expect(settings.keyboardSwitchLanguages == [.japanese, .english])
+    }
+}

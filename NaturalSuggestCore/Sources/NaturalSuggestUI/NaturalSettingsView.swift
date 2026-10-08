@@ -3,6 +3,7 @@ import NaturalSuggestCore
 
 public struct NaturalSettingsView: View {
     @ObservedObject private var model: SuggestionModel
+    @State private var hasLoadedSettings = false
     @State private var providerKeys: [ProviderKind: String] = [:]
     public init(model: SuggestionModel) { self.model = model }
     private func save() -> Bool {
@@ -57,6 +58,41 @@ public struct NaturalSettingsView: View {
         #endif
         return SuggestionLanguage.inputMethodLanguages.contains(language)
     }
+    #if os(iOS)
+    private var keyboardSwitchSettings: some View {
+        Form {
+            Section {
+                ForEach(model.settings.keyboardSwitchLanguages, id: \.self) { language in
+                    HStack {
+                        Text(language.title)
+                        Spacer()
+                        Button { model.settings.moveQuickSwitchLanguage(language, by: -1) } label: {
+                            Image(systemName: "arrow.up")
+                        }.buttonStyle(.borderless)
+                            .accessibilityLabel(UIText.t("上移%@", language.title))
+                            .disabled(model.settings.keyboardSwitchLanguages.first == language)
+                        Button { model.settings.moveQuickSwitchLanguage(language, by: 1) } label: {
+                            Image(systemName: "arrow.down")
+                        }.buttonStyle(.borderless)
+                            .accessibilityLabel(UIText.t("下移%@", language.title))
+                            .disabled(model.settings.keyboardSwitchLanguages.last == language)
+                    }
+                }
+            } header: { Text(UIText.t("切换顺序")) }
+            Section {
+                ForEach(model.settings.availableKeyboardLanguages, id: \.self) { language in
+                    Toggle(language.title, isOn: Binding(
+                        get: { model.settings.keyboardSwitchLanguages.contains(language) },
+                        set: { model.settings.setQuickSwitchLanguage(language, enabled: $0) }
+                    )).disabled(model.settings.keyboardSwitchLanguages == [language])
+                }
+                Button(UIText.t("使用全部已开启语言")) { model.settings.keyboardSwitchOrder = nil }
+            } footer: {
+                Text(UIText.t("至少保留一种。未加入快捷切换的语言仍可通过长按选择。返回上一页后点保存设置。"))
+            }
+        }.navigationTitle(UIText.t("快捷切换语言"))
+    }
+    #endif
     public var body: some View {
         Form {
             Section {
@@ -112,8 +148,11 @@ public struct NaturalSettingsView: View {
                         set: { model.settings.setKeyboardLayout(layout, enabled: $0) }
                     ))
                 }
+                NavigationLink(UIText.t("快捷切换语言")) {
+                    keyboardSwitchSettings
+                }
+                Text(UIText.t("点语言键按自选顺序切换；长按后滑动，可直接选择任一已开启的语言。选两种就来回切，选五种就五种循环。")).font(.caption).foregroundStyle(.secondary)
                 if !model.settings.enabledKeyboardLayouts.isEmpty {
-                    Text(UIText.t("保存后，语言键按日语 → 英语 → 已开启的韩语、法语、俄语 → 日语切换；九宫格英文键盘点左侧语言键进入额外布局。")).font(.caption).foregroundStyle(.secondary)
                     Text(UIText.t("法语用 QWERTY，长按字母后右滑选重音字母或大写；俄语用 ЙЦУКЕН，长按 е 选 ё、ь 选 ъ，各字母长按可选大写。")).font(.caption).foregroundStyle(.secondary)
                 }
                 if model.settings.enabledKeyboardLayouts.contains(.korean) {
@@ -169,6 +208,9 @@ public struct NaturalSettingsView: View {
             } footer: {
                 Text(UIText.t("密钥保存在设备钥匙串。测试连接会发送一条固定例句。"))
             }
-        }.formStyle(.grouped).onAppear { model.reload() }
+        }.formStyle(.grouped).onAppear {
+            // Returning from a settings subpage must preserve unsaved edits.
+            if !hasLoadedSettings { model.reload(); hasLoadedSettings = true }
+        }
     }
 }

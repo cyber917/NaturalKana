@@ -103,6 +103,10 @@
   "en": "Previous suggestion",
   "ja": "前の候補"
  },
+ "上移%@": {
+  "en": "Move %@ up",
+  "ja": "%@を上へ"
+ },
  "下一条": {
   "en": "Next suggestion",
   "ja": "次の候補"
@@ -110,6 +114,10 @@
  "下划线": {
   "en": "Underline",
   "ja": "下線"
+ },
+ "下移%@": {
+  "en": "Move %@ down",
+  "ja": "%@を下へ"
  },
  "不使用学习历史": {
   "en": "Don't use history",
@@ -146,6 +154,10 @@
  "使用": {
   "en": "General",
   "ja": "一般"
+ },
+ "使用全部已开启语言": {
+  "en": "Use all enabled languages",
+  "ja": "有効な言語をすべて使う"
  },
  "使用半角空格": {
   "en": "Use half-width space",
@@ -294,6 +306,10 @@
  "切换输入法": {
   "en": "Switch input method",
   "ja": "入力方式の切り替え"
+ },
+ "切换顺序": {
+  "en": "Switch order",
+  "ja": "切り替え順"
  },
  "删除": {
   "en": "Delete",
@@ -582,6 +598,10 @@
  "待机": {
   "en": "Idle",
   "ja": "待機中"
+ },
+ "快捷切换语言": {
+  "en": "Quick switch languages",
+  "ja": "切り替える言語"
  },
  "快捷键": {
   "en": "Shortcut",
@@ -987,6 +1007,10 @@
   "en": "Click or press a number to use · ↑↓ to choose, Enter to use · drag to move",
   "ja": "クリックか数字キーで採用 · ↑↓ で選択、Enter で採用 · ドラッグで移動"
  },
+ "点语言键按自选顺序切换；长按后滑动，可直接选择任一已开启的语言。选两种就来回切，选五种就五种循环。": {
+  "en": "Tap the language key to cycle in your chosen order. Hold and slide to select any enabled language directly. Choose two to switch back and forth, or five to cycle through all five.",
+  "ja": "言語キーをタップすると選んだ順に切り替わります。長押ししてスライドすると、有効な言語を直接選べます。2言語なら往復、5言語なら5つを順に切り替えます。"
+ },
  "现有自定义方案": {
   "en": "Current custom scheme",
   "ja": "現在のカスタム設定"
@@ -1106,6 +1130,10 @@
  "自定义": {
   "en": "Custom",
   "ja": "カスタム"
+ },
+ "至少保留一种。未加入快捷切换的语言仍可通过长按选择。返回上一页后点保存设置。": {
+  "en": "Keep at least one language. Other enabled languages remain available by holding the language key. Go back and tap Save settings.",
+  "ja": "少なくとも1言語を残してください。選んでいない言語も長押しで選べます。前の画面に戻り、設定を保存してください。"
  },
  "英语": {
   "en": "English",

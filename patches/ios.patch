@@ -252,10 +252,10 @@ index 5478d73..b5a3f32 100644
          let numberVariations = [
 diff --git a/AzooKeyCore/Sources/KeyboardViews/ExtraKeyboardLayout.swift b/AzooKeyCore/Sources/KeyboardViews/ExtraKeyboardLayout.swift
 new file mode 100644
-index 0000000..b9fd1ff
+index 0000000..4803da3
 --- /dev/null
 +++ b/AzooKeyCore/Sources/KeyboardViews/ExtraKeyboardLayout.swift
-@@ -0,0 +1,26 @@
+@@ -0,0 +1,62 @@
 +import CustardKit
 +
 +public enum ExtraKeyboardLayout: String, CaseIterable, Sendable {
@@ -276,10 +276,46 @@ index 0000000..b9fd1ff
 +        case .russian: .qwerty_russian
 +        }
 +    }
-+    public static func next(after current: Self?, enabled: [Self]) -> Self? {
-+        guard let current else { return enabled.first }
-+        guard let index = enabled.firstIndex(of: current), index + 1 < enabled.count else { return nil }
-+        return enabled[index + 1]
++}
++
++public enum KeyboardSwitchLanguage: String, CaseIterable, Sendable {
++    case japanese, english, korean, french, russian
++
++    public var symbol: String {
++        switch self {
++        case .japanese: "あ"
++        case .english: "A"
++        case .korean: "한"
++        case .french: "FR"
++        case .russian: "РУ"
++        }
++    }
++    public var title: String {
++        switch self {
++        case .japanese: "日本語"
++        case .english: "English"
++        case .korean: "한국어"
++        case .french: "Français"
++        case .russian: "Русский"
++        }
++    }
++    public var tab: TabData.SystemTab {
++        switch self {
++        case .japanese: .user_japanese
++        case .english: .user_english
++        case .korean: .qwerty_korean
++        case .french: .qwerty_french
++        case .russian: .qwerty_russian
++        }
++    }
++    public static func next(after current: Self?, order: [Self]) -> Self {
++        guard !order.isEmpty else { return .japanese }
++        guard let current, let index = order.firstIndex(of: current) else { return order[0] }
++        return order[(index + 1) % order.count]
++    }
++    public static func menu(current: Self?, available: [Self]) -> [Self] {
++        guard let current, available.contains(current) else { return available }
++        return [current] + available.filter { $0 != current }
 +    }
 +}
 diff --git a/AzooKeyCore/Sources/KeyboardViews/KeyboardTab.swift b/AzooKeyCore/Sources/KeyboardViews/KeyboardTab.swift
@@ -307,17 +343,18 @@ index da988a8..c2f394a 100644
              switch self {
              case .special(.emoji):
 diff --git a/AzooKeyCore/Sources/KeyboardViews/SemiStaticStates.swift b/AzooKeyCore/Sources/KeyboardViews/SemiStaticStates.swift
-index b464ddb..c63fb05 100644
+index b464ddb..7b10092 100644
 --- a/AzooKeyCore/Sources/KeyboardViews/SemiStaticStates.swift
 +++ b/AzooKeyCore/Sources/KeyboardViews/SemiStaticStates.swift
-@@ -40,6 +40,12 @@ public final class SemiStaticStates: @unchecked Sendable {
+@@ -40,6 +40,13 @@ public final class SemiStaticStates: @unchecked Sendable {
          self.hasFullAccess = bool
      }
  
-+    /// NaturalKana layouts enabled in the shared settings, in language-key order.
-+    private(set) public var extraKeyboardLayouts: [ExtraKeyboardLayout] = []
-+    public func setExtraKeyboardLayouts(_ identifiers: [String]) {
-+        self.extraKeyboardLayouts = ExtraKeyboardLayout.allCases.filter { identifiers.contains($0.rawValue) }
++    private(set) public var availableKeyboardLanguages: [KeyboardSwitchLanguage] = [.japanese, .english]
++    private(set) public var keyboardSwitchLanguages: [KeyboardSwitchLanguage] = [.japanese, .english]
++    public func setKeyboardLanguages(available: [String], order: [String]) {
++        self.availableKeyboardLanguages = available.compactMap(KeyboardSwitchLanguage.init(rawValue:))
++        self.keyboardSwitchLanguages = order.compactMap(KeyboardSwitchLanguage.init(rawValue:))
 +    }
 +
      /// - do not  consider using screenHeight
@@ -363,7 +400,7 @@ index 5e244a2..bc19738 100644
          case let .existential(tab):
              self.updateVariableStates(variableStates, inputStyle: tab.inputStyle, language: tab.language)
 diff --git a/AzooKeyCore/Sources/KeyboardViews/View/CustomKeyboard/CustomKeyboard.swift b/AzooKeyCore/Sources/KeyboardViews/View/CustomKeyboard/CustomKeyboard.swift
-index b6507a3..439a998 100644
+index b6507a3..3a8cc3d 100644
 --- a/AzooKeyCore/Sources/KeyboardViews/View/CustomKeyboard/CustomKeyboard.swift
 +++ b/AzooKeyCore/Sources/KeyboardViews/View/CustomKeyboard/CustomKeyboard.swift
 @@ -45,7 +45,7 @@ public extension CustardInterface {
@@ -371,7 +408,7 @@ index b6507a3..439a998 100644
          }
  
 -        func flickTabKeyModel(_ data: KeyFlickSetting.SettingData) -> any UnifiedKeyModelProtocol<Extension> {
-+        func flickTabKeyModel(_ data: KeyFlickSetting.SettingData, switchesToExtraLayoutInEnglish: Bool = false) -> any UnifiedKeyModelProtocol<Extension> {
++        func flickTabKeyModel(_ data: KeyFlickSetting.SettingData, switchesLanguages: Bool = false) -> any UnifiedKeyModelProtocol<Extension> {
              FlickTabKeyModel<Extension>(
                  labelType: data.labelType,
                  pressActions: data.actions,
@@ -381,7 +418,7 @@ index b6507a3..439a998 100644
                  showsTapBubble: false,
 -                colorRole: .special
 +                colorRole: .special,
-+                switchesToExtraLayoutInEnglish: switchesToExtraLayoutInEnglish
++                switchesLanguages: switchesLanguages
              )
          }
  
@@ -390,7 +427,7 @@ index b6507a3..439a998 100644
                      flickTabKeyModel(Extension.SettingProvider.hiraTabFlickCustomKey.compiled())
                  case .flickAbcTab:
 -                    flickTabKeyModel(Extension.SettingProvider.abcTabFlickCustomKey.compiled())
-+                    flickTabKeyModel(Extension.SettingProvider.abcTabFlickCustomKey.compiled(), switchesToExtraLayoutInEnglish: true)
++                    flickTabKeyModel(Extension.SettingProvider.abcTabFlickCustomKey.compiled(), switchesLanguages: true)
                  case .flickStar123Tab:
                      flickTabKeyModel(Extension.SettingProvider.symbolsTabFlickCustomKey.compiled())
                  }
@@ -510,15 +547,15 @@ index 407388f..13ee7e7 100644
      typealias Value = ThemeData<Extension>
  
 diff --git a/AzooKeyCore/Sources/KeyboardViews/View/UnifiedKey/KeyModels/Flick/FlickTabKeyModel.swift b/AzooKeyCore/Sources/KeyboardViews/View/UnifiedKey/KeyModels/Flick/FlickTabKeyModel.swift
-index 4f57f53..dc586c6 100644
+index 4f57f53..49124ad 100644
 --- a/AzooKeyCore/Sources/KeyboardViews/View/UnifiedKey/KeyModels/Flick/FlickTabKeyModel.swift
 +++ b/AzooKeyCore/Sources/KeyboardViews/View/UnifiedKey/KeyModels/Flick/FlickTabKeyModel.swift
-@@ -18,22 +18,34 @@ struct FlickTabKeyModel<Extension: ApplicationSpecificKeyboardViewExtension>: Un
+@@ -18,36 +18,53 @@ struct FlickTabKeyModel<Extension: ApplicationSpecificKeyboardViewExtension>: Un
      private let flickMap: [FlickDirection: UnifiedVariation]
      private let showsBubbleFlag: Bool
      private let colorRole: ColorRole
-+    /// NaturalKana: the ABC key shown while already in English moves to the first enabled extra layout.
-+    private let switchesToExtraLayoutInEnglish: Bool
++    /// NaturalKana: the ABC key shares the quick switch cycle and language menu.
++    private let switchesLanguages: Bool
  
      init(labelType: KeyLabelType,
           pressActions: [ActionType],
@@ -527,43 +564,51 @@ index 4f57f53..dc586c6 100644
           showsTapBubble: Bool,
 -         colorRole: ColorRole = .special) {
 +         colorRole: ColorRole = .special,
-+         switchesToExtraLayoutInEnglish: Bool = false) {
++         switchesLanguages: Bool = false) {
          self.labelType = labelType
          self.centerPress = pressActions
          self.centerLongpress = longPressActions
          self.flickMap = flick
          self.showsBubbleFlag = showsTapBubble
          self.colorRole = colorRole
-+        self.switchesToExtraLayoutInEnglish = switchesToExtraLayoutInEnglish
++        self.switchesLanguages = switchesLanguages
      }
  
 -    func pressActions(variableStates _: VariableStates) -> [ActionType] { centerPress }
-+    @MainActor
-+    private func extraLayout(states: VariableStates) -> ExtraKeyboardLayout? {
-+        guard switchesToExtraLayoutInEnglish, isMoveTabTargetSelected(states: states) == true else { return nil }
-+        return SemiStaticStates.shared.extraKeyboardLayouts.first
+-    func longPressActions(variableStates _: VariableStates) -> LongpressActionType { centerLongpress }
+-    func variationSpace(variableStates _: VariableStates) -> UnifiedVariationSpace { .fourWay(flickMap) }
++    private var languageKey: QwertyLanguageSwitchKeyModel<Extension> {
++        QwertyLanguageSwitchKeyModel(languages: (.ja_JP, .en_US))
 +    }
 +
 +    func pressActions(variableStates: VariableStates) -> [ActionType] {
-+        extraLayout(states: variableStates).map { [.moveTab(.system($0.tab))] } ?? centerPress
++        switchesLanguages ? languageKey.pressActions(variableStates: variableStates) : centerPress
 +    }
-     func longPressActions(variableStates _: VariableStates) -> LongpressActionType { centerLongpress }
-     func variationSpace(variableStates _: VariableStates) -> UnifiedVariationSpace { .fourWay(flickMap) }
++    func longPressActions(variableStates _: VariableStates) -> LongpressActionType {
++        switchesLanguages ? .none : centerLongpress
++    }
++    func variationSpace(variableStates: VariableStates) -> UnifiedVariationSpace {
++        switchesLanguages ? languageKey.variationSpace(variableStates: variableStates) : .fourWay(flickMap)
++    }
      @MainActor func showsTapBubble(variableStates _: VariableStates) -> Bool { showsBubbleFlag }
-@@ -41,13 +53,13 @@ struct FlickTabKeyModel<Extension: ApplicationSpecificKeyboardViewExtension>: Un
-     func isFlickAble(to direction: FlickDirection, variableStates _: VariableStates) -> Bool { flickMap.keys.contains(direction) }
+ 
+-    func isFlickAble(to direction: FlickDirection, variableStates _: VariableStates) -> Bool { flickMap.keys.contains(direction) }
++    func isFlickAble(to direction: FlickDirection, variableStates _: VariableStates) -> Bool { !switchesLanguages && flickMap.keys.contains(direction) }
      func flickSensitivity(to direction: FlickDirection) -> CGFloat { 25 / Extension.SettingProvider.flickSensitivity }
  
 -    func label<ThemeExtension>(width: CGFloat, theme _: ThemeData<ThemeExtension>, states _: VariableStates, color _: Color?) -> KeyLabel<Extension> where ThemeExtension: ApplicationSpecificKeyboardViewExtensionLayoutDependentDefaultThemeProvidable {
 -        KeyLabel(labelType, width: width)
-+    func label<ThemeExtension>(width: CGFloat, theme _: ThemeData<ThemeExtension>, states: VariableStates, color _: Color?) -> KeyLabel<Extension> where ThemeExtension: ApplicationSpecificKeyboardViewExtensionLayoutDependentDefaultThemeProvidable {
-+        KeyLabel(extraLayout(states: states).map { .text($0.symbol) } ?? labelType, width: width)
++    func label<ThemeExtension>(width: CGFloat, theme: ThemeData<ThemeExtension>, states: VariableStates, color: Color?) -> KeyLabel<Extension> where ThemeExtension: ApplicationSpecificKeyboardViewExtensionLayoutDependentDefaultThemeProvidable {
++        if switchesLanguages {
++            return languageKey.label(width: width, theme: theme, states: states, color: color)
++        }
++        return KeyLabel(labelType, width: width)
      }
  
      @MainActor
      func backgroundStyleWhenUnpressed<ThemeExtension>(states: VariableStates, theme: ThemeData<ThemeExtension>) -> UnifiedKeyBackgroundStyleValue where ThemeExtension: ApplicationSpecificKeyboardViewExtensionLayoutDependentDefaultThemeProvidable {
 -        if let isTabMoveSelected = isMoveTabTargetSelected(states: states), isTabMoveSelected {
-+        if extraLayout(states: states) == nil, let isTabMoveSelected = isMoveTabTargetSelected(states: states), isTabMoveSelected {
++        if !switchesLanguages, let isTabMoveSelected = isMoveTabTargetSelected(states: states), isTabMoveSelected {
              return (theme.pushedKeyFillColor.color, theme.pushedKeyFillColor.blendMode)
          }
          return switch colorRole {
@@ -600,71 +645,121 @@ index 2349a9e..b0935ab 100644
                  KeyLabel(.image("arrowtriangle.left.and.line.vertical.and.arrowtriangle.right"), width: width, textColor: color)
              }
 diff --git a/AzooKeyCore/Sources/KeyboardViews/View/UnifiedKey/KeyModels/Qwerty/QwertyLanguageSwitchKeyModel.swift b/AzooKeyCore/Sources/KeyboardViews/View/UnifiedKey/KeyModels/Qwerty/QwertyLanguageSwitchKeyModel.swift
-index 1d9773b..360b877 100644
+index 1d9773b..6f9d789 100644
 --- a/AzooKeyCore/Sources/KeyboardViews/View/UnifiedKey/KeyModels/Qwerty/QwertyLanguageSwitchKeyModel.swift
 +++ b/AzooKeyCore/Sources/KeyboardViews/View/UnifiedKey/KeyModels/Qwerty/QwertyLanguageSwitchKeyModel.swift
-@@ -11,6 +11,17 @@ struct QwertyLanguageSwitchKeyModel<Extension: ApplicationSpecificKeyboardViewEx
+@@ -6,50 +6,39 @@ import SwiftUI
+ struct QwertyLanguageSwitchKeyModel<Extension: ApplicationSpecificKeyboardViewExtension>: UnifiedKeyModelProtocol {
+     let languages: (KeyboardLanguage, KeyboardLanguage)
+ 
+-    @MainActor func currentTabLanguage(variableStates: VariableStates) -> KeyboardLanguage? {
+-        variableStates.tabManager.existentialTab().language
++    @MainActor private func currentLanguage(_ states: VariableStates) -> KeyboardSwitchLanguage? {
++        let tab = states.tabManager.existentialTab()
++        if let layout = states.tabManager.extraLayoutForSymbols ?? tab.extraKeyboardLayout {
++            return KeyboardSwitchLanguage(rawValue: layout.rawValue)
++        }
++        switch tab.language {
++        case .ja_JP: return .japanese
++        case .en_US: return .english
++        default: return nil
++        }
      }
  
      func pressActions(variableStates: VariableStates) -> [ActionType] {
+-        let target: KeyboardLanguage
+-        let current = currentTabLanguage(variableStates: variableStates)
+-        if languages.0 == current {
+-            target = languages.1
+-        } else if languages.1 == current {
+-            target = languages.0
+-        } else if SemiStaticStates.shared.needsInputModeSwitchKey && [.ja_JP, .en_US, .el_GR].contains(variableStates.keyboardLanguage) {
+-            target = variableStates.keyboardLanguage
+-        } else {
+-            target = .ja_JP
+-        }
+-        switch target {
+-        case .ja_JP:
+-            return [.moveTab(.system(.user_japanese))]
+-        case .en_US:
+-            return [.moveTab(.system(.user_english))]
+-        case .none, .el_GR:
+-            return []
 +        if let layout = variableStates.tabManager.extraLayoutForSymbols {
 +            return [.moveTab(.system(layout.tab))]
-+        }
-+        if let current = variableStates.tabManager.existentialTab().extraKeyboardLayout {
-+            let next = ExtraKeyboardLayout.next(after: current, enabled: SemiStaticStates.shared.extraKeyboardLayouts)
-+            return [.moveTab(.system(next?.tab ?? .user_japanese))]
-+        }
-+        if currentTabLanguage(variableStates: variableStates) == .en_US,
-+           let next = SemiStaticStates.shared.extraKeyboardLayouts.first {
-+            return [.moveTab(.system(next.tab))]
-+        }
-         let target: KeyboardLanguage
-         let current = currentTabLanguage(variableStates: variableStates)
-         if languages.0 == current {
-@@ -40,6 +51,17 @@ struct QwertyLanguageSwitchKeyModel<Extension: ApplicationSpecificKeyboardViewEx
+         }
++        let next = KeyboardSwitchLanguage.next(after: currentLanguage(variableStates), order: SemiStaticStates.shared.keyboardSwitchLanguages)
++        return [.moveTab(.system(next.tab))]
+     }
+ 
+-    func longPressActions(variableStates _: VariableStates) -> LongpressActionType {
+-        .none
+-    }
+-    func variationSpace(variableStates _: VariableStates) -> UnifiedVariationSpace {
+-        .none
++    func longPressActions(variableStates _: VariableStates) -> LongpressActionType { .none }
++    func variationSpace(variableStates: VariableStates) -> UnifiedVariationSpace {
++        let menu = KeyboardSwitchLanguage.menu(current: currentLanguage(variableStates), available: SemiStaticStates.shared.availableKeyboardLanguages)
++        return .linear(menu.map { .init(label: .text($0.title), actions: [.moveTab(.system($0.tab))]) }, direction: .right)
      }
  
      func label<ThemeExtension>(width: CGFloat, theme _: ThemeData<ThemeExtension>, states: VariableStates, color: Color?) -> KeyLabel<Extension> where ThemeExtension: ApplicationSpecificKeyboardViewExtensionLayoutDependentDefaultThemeProvidable {
+-        let current = currentTabLanguage(variableStates: states)
+-        if languages.0 == current {
+-            return KeyLabel(.selectable(languages.0.shortSymbol, languages.1.shortSymbol), width: width, textColor: color)
+-        } else if languages.1 == current {
+-            return KeyLabel(.selectable(languages.1.shortSymbol, languages.0.shortSymbol), width: width, textColor: color)
+-        } else if SemiStaticStates.shared.needsInputModeSwitchKey && [.ja_JP, .en_US, .el_GR].contains(states.keyboardLanguage) {
+-            return KeyLabel(.text(states.keyboardLanguage.symbol), width: width, textColor: color)
+-        } else {
+-            return KeyLabel(.text(KeyboardLanguage.ja_JP.symbol), width: width, textColor: color)
 +        if let layout = states.tabManager.extraLayoutForSymbols {
 +            return KeyLabel(.text(layout.symbol), width: width, textColor: color)
-+        }
-+        if let current = states.tabManager.existentialTab().extraKeyboardLayout {
-+            let next = ExtraKeyboardLayout.next(after: current, enabled: SemiStaticStates.shared.extraKeyboardLayouts)
-+            return KeyLabel(.selectable(current.symbol, next?.symbol ?? KeyboardLanguage.ja_JP.shortSymbol), width: width, textColor: color)
-+        }
-+        if currentTabLanguage(variableStates: states) == .en_US,
-+           let next = SemiStaticStates.shared.extraKeyboardLayouts.first {
-+            return KeyLabel(.selectable(KeyboardLanguage.en_US.shortSymbol, next.symbol), width: width, textColor: color)
-+        }
-         let current = currentTabLanguage(variableStates: states)
-         if languages.0 == current {
-             return KeyLabel(.selectable(languages.0.shortSymbol, languages.1.shortSymbol), width: width, textColor: color)
+         }
++        let current = currentLanguage(states)
++        let next = KeyboardSwitchLanguage.next(after: current, order: SemiStaticStates.shared.keyboardSwitchLanguages)
++        return KeyLabel(.selectable(current?.symbol ?? "↔", next.symbol), width: width, textColor: color)
+     }
+ 
+     func backgroundStyleWhenUnpressed<ThemeExtension>(states _: VariableStates, theme: ThemeData<ThemeExtension>) -> UnifiedKeyBackgroundStyleValue where ThemeExtension: ApplicationSpecificKeyboardViewExtensionLayoutDependentDefaultThemeProvidable {
 diff --git a/AzooKeyCore/Tests/KeyboardViewsTests/ExtraKeyboardLayoutTests.swift b/AzooKeyCore/Tests/KeyboardViewsTests/ExtraKeyboardLayoutTests.swift
 new file mode 100644
-index 0000000..96917e2
+index 0000000..de4216c
 --- /dev/null
 +++ b/AzooKeyCore/Tests/KeyboardViewsTests/ExtraKeyboardLayoutTests.swift
-@@ -0,0 +1,58 @@
+@@ -0,0 +1,70 @@
 +import CustardKit
 +@testable import KeyboardViews
 +import XCTest
 +
 +final class ExtraKeyboardLayoutTests: XCTestCase {
-+    func testEveryEnabledCombinationCyclesOnceThenReturnsToJapanese() {
-+        let all = ExtraKeyboardLayout.allCases
-+        for mask in 0..<(1 << all.count) {
-+            let enabled = all.enumerated().filter { mask & (1 << $0.offset) != 0 }.map(\.element)
-+            var visited: [ExtraKeyboardLayout] = []
-+            var next = ExtraKeyboardLayout.next(after: nil, enabled: enabled)
-+            while let current = next {
-+                visited.append(current)
-+                XCTAssertLessThanOrEqual(visited.count, enabled.count)
-+                if visited.count > enabled.count { break }
-+                next = ExtraKeyboardLayout.next(after: current, enabled: enabled)
++    func testEveryOrderedSelectionCyclesAndMenuKeepsOtherLanguagesReachable() {
++        func check(_ order: [KeyboardSwitchLanguage], remaining: [KeyboardSwitchLanguage]) {
++            if !order.isEmpty {
++                var current = order[0]
++                var visited = [current]
++                for _ in 1..<order.count {
++                    current = KeyboardSwitchLanguage.next(after: current, order: order)
++                    visited.append(current)
++                }
++                XCTAssertEqual(visited, order)
++                XCTAssertEqual(KeyboardSwitchLanguage.next(after: current, order: order), order[0])
++                XCTAssertEqual(KeyboardSwitchLanguage.next(after: nil, order: order), order[0])
++                for outside in remaining {
++                    XCTAssertEqual(KeyboardSwitchLanguage.next(after: outside, order: order), order[0])
++                }
++                let menu = KeyboardSwitchLanguage.menu(current: current, available: KeyboardSwitchLanguage.allCases)
++                XCTAssertEqual(menu.first, current)
++                XCTAssertEqual(Set(menu), Set(KeyboardSwitchLanguage.allCases))
++                XCTAssertEqual(menu.count, 5)
 +            }
-+            XCTAssertEqual(visited, enabled)
++            for language in remaining {
++                check(order + [language], remaining: remaining.filter { $0 != language })
++            }
 +        }
-+        XCTAssertNil(ExtraKeyboardLayout.next(after: .korean, enabled: [.french]))
++        check([], remaining: KeyboardSwitchLanguage.allCases)
++        XCTAssertEqual(KeyboardSwitchLanguage.next(after: nil, order: []), .japanese)
++        XCTAssertEqual(KeyboardSwitchLanguage.menu(current: .korean, available: [.japanese, .english]), [.japanese, .english])
 +    }
 +
 +    func testLayoutsContainEveryLetterAndVariant() {
@@ -804,7 +899,7 @@ index 5f55651..f43f8d7 100644
          switch action {
          case let .input(text, simpleInsert):
 diff --git a/Keyboard/Display/KeyboardViewController.swift b/Keyboard/Display/KeyboardViewController.swift
-index e6038af..d7eb695 100644
+index e6038af..45ebfee 100644
 --- a/Keyboard/Display/KeyboardViewController.swift
 +++ b/Keyboard/Display/KeyboardViewController.swift
 @@ -14,6 +14,8 @@ import KeyboardViews
@@ -885,18 +980,21 @@ index e6038af..d7eb695 100644
          SemiStaticStates.shared.setup()
          KeyboardViewController.loadedInstanceCount += 1
          // 初期化の順序としてこの位置に置くこと
-@@ -258,6 +303,10 @@ final class KeyboardViewController: UIInputViewController {
+@@ -258,6 +303,13 @@ final class KeyboardViewController: UIInputViewController {
  
      override func viewWillAppear(_ animated: Bool) {
          super.viewWillAppear(animated)
 +        guard sharedStorageReady else { return }
-+        // NaturalKana: the language switch key includes the Korean layout when enabled in settings.
++        // NaturalKana: reload the available layouts and the user's quick switch order.
 +        Self.naturalModel.reload()
-+        SemiStaticStates.shared.setExtraKeyboardLayouts(Self.naturalModel.settings.enabledKeyboardLayouts.map(\.rawValue))
++        SemiStaticStates.shared.setKeyboardLanguages(
++            available: Self.naturalModel.settings.availableKeyboardLanguages.map(\.rawValue),
++            order: Self.naturalModel.settings.keyboardSwitchLanguages.map(\.rawValue)
++        )
          // サイズに関する情報はこのタイミングで設定する
          if #available(iOS 26, *) {
              let size = self.currentKeyboardViewSize()
-@@ -276,6 +325,7 @@ final class KeyboardViewController: UIInputViewController {
+@@ -276,6 +328,7 @@ final class KeyboardViewController: UIInputViewController {
  
      override func viewDidAppear(_ animated: Bool) {
          super.viewDidAppear(animated)
@@ -904,7 +1002,7 @@ index e6038af..d7eb695 100644
          self.updateStates()
  
          // Floating Keyboardなどの一部の処理に限り、このタイミングにならないとウィンドウ幅が不明なケースが存在する
-@@ -306,6 +356,7 @@ final class KeyboardViewController: UIInputViewController {
+@@ -306,6 +359,7 @@ final class KeyboardViewController: UIInputViewController {
  
      override func viewDidLayoutSubviews() {
          super.viewDidLayoutSubviews()
@@ -912,7 +1010,7 @@ index e6038af..d7eb695 100644
          // iOS 26以上で、レイアウト確定後に向き・サイズを反映
          if #available(iOS 26, *) {
              let size = self.currentKeyboardViewSize()
-@@ -322,6 +373,7 @@ final class KeyboardViewController: UIInputViewController {
+@@ -322,6 +376,7 @@ final class KeyboardViewController: UIInputViewController {
          // キーボードタイプはviewDidAppearのタイミングで取得できる
          KeyboardViewController.variableStates.setKeyboardType(self.textDocumentProxy.keyboardType)
          KeyboardViewController.variableStates.setTextContentType(self.textDocumentProxy.textContentType)
@@ -920,7 +1018,7 @@ index e6038af..d7eb695 100644
  
          // クリップボード履歴を更新する
          KeyboardViewController.variableStates.clipboardHistoryManager.reload()
-@@ -412,15 +464,20 @@ final class KeyboardViewController: UIInputViewController {
+@@ -412,15 +467,20 @@ final class KeyboardViewController: UIInputViewController {
      }
  
      override func viewWillDisappear(_ animated: Bool) {
@@ -941,7 +1039,7 @@ index e6038af..d7eb695 100644
          if #available(iOS 26, *) {
              // 幅は即時反映しておき、向きは完了時のWindowSceneから決定する
              coordinator.animate(alongsideTransition: nil) { [weak self] _ in
-@@ -480,7 +537,7 @@ final class KeyboardViewController: UIInputViewController {
+@@ -480,7 +540,7 @@ final class KeyboardViewController: UIInputViewController {
  
      private func setKeyboardHeight(to height: CGFloat) {
          self.keyboardHeightConstraint?.isActive = true
@@ -950,7 +1048,7 @@ index e6038af..d7eb695 100644
          if self.view.window != nil {
              UIView.performWithoutAnimation {
                  self.view.layoutIfNeeded()
-@@ -492,20 +549,12 @@ final class KeyboardViewController: UIInputViewController {
+@@ -492,20 +552,12 @@ final class KeyboardViewController: UIInputViewController {
          }
      }
  
@@ -974,7 +1072,7 @@ index e6038af..d7eb695 100644
  
          let left = self.textDocumentProxy.documentContextBeforeInput ?? ""
          let center = self.textDocumentProxy.selectedText ?? ""
-@@ -518,6 +567,7 @@ final class KeyboardViewController: UIInputViewController {
+@@ -518,6 +570,7 @@ final class KeyboardViewController: UIInputViewController {
      /// 引数の`textInput`は常に`nil`
      override func textDidChange(_ textInput: (any UITextInput)?) {
          super.textDidChange(textInput)
@@ -982,7 +1080,7 @@ index e6038af..d7eb695 100644
  
          let left = self.textDocumentProxy.documentContextBeforeInput ?? ""
          let center = self.textDocumentProxy.selectedText ?? ""
-@@ -530,6 +580,7 @@ final class KeyboardViewController: UIInputViewController {
+@@ -530,6 +583,7 @@ final class KeyboardViewController: UIInputViewController {
          KeyboardViewController.variableStates.clipboardHistoryManager.checkUpdate()
          KeyboardViewController.variableStates.setUIReturnKeyType(type: self.textDocumentProxy.returnKeyType ?? .default)
          KeyboardViewController.variableStates.setTextContentType(self.textDocumentProxy.textContentType)
@@ -990,7 +1088,7 @@ index e6038af..d7eb695 100644
      }
  
      /// Reference: https://stackoverflow.com/questions/79077018/unable-to-open-main-app-from-action-extension-in-ios-18-previously-working-met
-@@ -558,4 +609,70 @@ final class KeyboardViewController: UIInputViewController {
+@@ -558,4 +612,70 @@ final class KeyboardViewController: UIInputViewController {
          }
          self.openURL(url)
      }
