@@ -1628,7 +1628,7 @@ index f5058d6..0000000
 -    }
 -}
 diff --git a/azooKeyMac/InputController/azooKeyMacInputController.swift b/azooKeyMac/InputController/azooKeyMacInputController.swift
-index f10ba35..b2cc6d1 100644
+index f10ba35..2cb3259 100644
 --- a/azooKeyMac/InputController/azooKeyMacInputController.swift
 +++ b/azooKeyMac/InputController/azooKeyMacInputController.swift
 @@ -1,9 +1,12 @@
@@ -1794,7 +1794,15 @@ index f10ba35..b2cc6d1 100644
          self.candidatesViewController.updateCandidatePresentations([], selectionIndex: nil, cursorLocation: .zero)
          super.deactivateServer(sender)
      }
-@@ -251,80 +186,12 @@ class azooKeyMacInputController: IMKInputController, NSMenuItemValidation { // s
+@@ -211,6 +146,7 @@ class azooKeyMacInputController: IMKInputController, NSMenuItemValidation { // s
+         if let value = value as? NSString {
+             self.client()?.overrideKeyboard(withKeyboardNamed: Config.KeyboardLayout().value.layoutIdentifier)
+             let englishMode = value == "com.apple.inputmethod.Roman"
++            naturalSession.reset()
+ 
+             if englishMode {
+                 // 英語モードへの切り替え通知（実際の処理はhandleで行う）
+@@ -251,80 +187,12 @@ class azooKeyMacInputController: IMKInputController, NSMenuItemValidation { // s
              return false
          }
  
@@ -1878,7 +1886,21 @@ index f10ba35..b2cc6d1 100644
              optionDirectInputText: event.characters(byApplyingModifiers: event.modifierFlags.subtracting(.option))
          )
      }
-@@ -394,19 +261,6 @@ class azooKeyMacInputController: IMKInputController, NSMenuItemValidation { // s
+@@ -348,6 +216,13 @@ class azooKeyMacInputController: IMKInputController, NSMenuItemValidation { // s
+             )
+         )
+         guard disposition == .sendToServer else {
++            // Direct English typing belongs to the host. Capture after it processes
++            // the event so English suggestions also work without a converter reply.
++            if self.inputLanguage == .english, !event.modifierFlags.contains(.command), let client = self.client() {
++                naturalSession.update(client: client, composition: "", unconvertedLatin: false) { [weak self] in
++                    self?.discardConverterServerComposition()
++                }
++            }
+             return false
+         }
+ 
+@@ -394,19 +269,6 @@ class azooKeyMacInputController: IMKInputController, NSMenuItemValidation { // s
          return true
      }
  
@@ -1898,14 +1920,14 @@ index f10ba35..b2cc6d1 100644
      @MainActor
      private func apply(_ response: ConverterServerResponse) {
          if let inputLanguage = response.inputLanguage {
-@@ -422,7 +276,13 @@ class azooKeyMacInputController: IMKInputController, NSMenuItemValidation { // s
+@@ -422,7 +284,13 @@ class azooKeyMacInputController: IMKInputController, NSMenuItemValidation { // s
          self.refreshMarkedText()
          self.refreshCandidateWindow()
          self.refreshPredictionWindow()
 -        self.refreshReplaceSuggestionWindow()
-+        if let client = self.client(), self.inputLanguage == .japanese {
++        if let client = self.client() {
 +            let composition = response.snapshot.markedText.elements.map(\.content).joined()
-+            let latin = JapaneseDraftProfile.hasPendingRomaji(response.snapshot.convertTarget)
++            let latin = self.inputLanguage == .japanese && JapaneseDraftProfile.hasPendingRomaji(response.snapshot.convertTarget)
 +            naturalSession.update(client: client, composition: composition, unconvertedLatin: latin) { [weak self] in
 +                self?.discardConverterServerComposition()
 +            }
@@ -1913,7 +1935,7 @@ index f10ba35..b2cc6d1 100644
      }
  
      @MainActor
-@@ -430,26 +290,15 @@ class azooKeyMacInputController: IMKInputController, NSMenuItemValidation { // s
+@@ -430,26 +298,15 @@ class azooKeyMacInputController: IMKInputController, NSMenuItemValidation { // s
      private func apply(_ effect: ConverterClientEffect, client: IMKTextInput) {
          switch effect {
          case .insertText(let text):
@@ -1946,7 +1968,7 @@ index f10ba35..b2cc6d1 100644
          case .fallthroughToApplication:
              break
          }
-@@ -472,20 +321,11 @@ class azooKeyMacInputController: IMKInputController, NSMenuItemValidation { // s
+@@ -472,20 +329,11 @@ class azooKeyMacInputController: IMKInputController, NSMenuItemValidation { // s
  
      private var converterServerSessionConfig: ConverterSessionConfig {
          ConverterSessionConfig(
@@ -1972,7 +1994,7 @@ index f10ba35..b2cc6d1 100644
          )
      }
  
-@@ -494,9 +334,9 @@ class azooKeyMacInputController: IMKInputController, NSMenuItemValidation { // s
+@@ -494,9 +342,9 @@ class azooKeyMacInputController: IMKInputController, NSMenuItemValidation { // s
          client.overrideKeyboard(withKeyboardNamed: Config.KeyboardLayout().value.layoutIdentifier)
          switch language {
          case .english:
@@ -1984,7 +2006,7 @@ index f10ba35..b2cc6d1 100644
          }
      }
  
-@@ -548,55 +388,6 @@ class azooKeyMacInputController: IMKInputController, NSMenuItemValidation { // s
+@@ -548,55 +396,6 @@ class azooKeyMacInputController: IMKInputController, NSMenuItemValidation { // s
          }
      }
  
@@ -2040,7 +2062,7 @@ index f10ba35..b2cc6d1 100644
      func refreshPredictionWindow() {
          guard self.inputState == .composing else {
              self.hidePredictionWindow()
-@@ -702,14 +493,6 @@ class azooKeyMacInputController: IMKInputController, NSMenuItemValidation { // s
+@@ -702,14 +501,6 @@ class azooKeyMacInputController: IMKInputController, NSMenuItemValidation { // s
          self.predictionHideWorkItem = nil
      }
  
@@ -2055,7 +2077,7 @@ index f10ba35..b2cc6d1 100644
      func getCursorLocation() -> CGPoint {
          var rect: NSRect = .zero
          self.client()?.attributes(forCharacterIndex: 0, lineHeightRectangle: &rect)
-@@ -840,117 +623,3 @@ extension azooKeyMacInputController {
+@@ -840,117 +631,3 @@ extension azooKeyMacInputController {
          return NSRange(location: 0, length: 0)
      }
  }
@@ -2289,7 +2311,7 @@ index 9b993b4..a8af8bd 100644
 -
  }
 diff --git a/azooKeyMac/Windows/ConfigWindow.swift b/azooKeyMac/Windows/ConfigWindow.swift
-index 099d430..22c6044 100644
+index 099d430..f690722 100644
 --- a/azooKeyMac/Windows/ConfigWindow.swift
 +++ b/azooKeyMac/Windows/ConfigWindow.swift
 @@ -1,983 +1,73 @@
@@ -3198,7 +3220,7 @@ index 099d430..22c6044 100644
 +                }.padding(.horizontal).padding(.bottom, 8)
 +                Divider()
 +                NaturalSettingsView(model: model)
-+            }.tabItem { Label("日语建议", systemImage: "sparkles") }
++            }.tabItem { Label("表达建议", systemImage: "sparkles") }
 +            Form {
 +                Section("打字与转换") {
 +                    Toggle("输入时自动转换", isOn: $liveConversion)
@@ -3322,7 +3344,7 @@ index 099d430..22c6044 100644
 -        }
 -        .formStyle(.grouped)
 -        .scrollContentBackground(.hidden)
-+                Text("键盘设置即时生效。日语建议的配置请在对应页点击“保存设置”。")
++                Text("键盘设置即时生效。表达建议的配置请在对应页点击“保存设置”。")
 +                    .font(.caption).foregroundStyle(.secondary)
 +            }.formStyle(.grouped).tabItem { Label("键盘", systemImage: "keyboard") }
 +            UserDictionaryEditorWindow().padding().tabItem { Label("词典", systemImage: "book") }
