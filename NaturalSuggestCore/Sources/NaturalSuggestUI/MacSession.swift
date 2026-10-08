@@ -25,18 +25,20 @@ import NaturalSuggestCore
 }
 
 /// Drag the suggestion panel by its handle; double-click puts it back next to the caret.
-private struct PanelDragHandle: NSViewRepresentable {
+/// Drags the panel it sits in; a double click calls `reset`. Shared with the menu-bar helper.
+public struct PanelDragHandle: NSViewRepresentable {
     let reset: () -> Void
-    final class HandleView: NSView {
+    public init(reset: @escaping () -> Void) { self.reset = reset }
+    public final class HandleView: NSView {
         var reset: (() -> Void)?
-        override func mouseDown(with event: NSEvent) {
+        public override func mouseDown(with event: NSEvent) {
             if event.clickCount == 2 { reset?() } else { window?.performDrag(with: event) }
         }
-        override func acceptsFirstMouse(for event: NSEvent?) -> Bool { true }
-        override func resetCursorRects() { addCursorRect(bounds, cursor: .openHand) }
+        public override func acceptsFirstMouse(for event: NSEvent?) -> Bool { true }
+        public override func resetCursorRects() { addCursorRect(bounds, cursor: .openHand) }
     }
-    func makeNSView(context: Context) -> HandleView { let view = HandleView(); view.reset = reset; return view }
-    func updateNSView(_ view: HandleView, context: Context) { view.reset = reset }
+    public func makeNSView(context: Context) -> HandleView { let view = HandleView(); view.reset = reset; return view }
+    public func updateNSView(_ view: HandleView, context: Context) { view.reset = reset }
 }
 
 private final class SuggestionPanel: NSPanel {

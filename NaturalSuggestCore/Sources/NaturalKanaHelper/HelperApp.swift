@@ -206,6 +206,37 @@ import NaturalSuggestUI
     }()
     private var anchor: NSRect?
     private var hideTask: Task<Void, Never>?
+    /// Where the user dragged the panel, relative to its automatic position; kept across checks.
+    private static let offsetKey = "NaturalKanaHelperPanelOffset"
+    private var offset = NSSize(width: UserDefaults.standard.double(forKey: "\(offsetKey).x"), height: UserDefaults.standard.double(forKey: "\(offsetKey).y"))
+    private var automaticOrigin = NSPoint.zero
+    private var positioning = false
+    private var moveObserver: NSObjectProtocol?
+
+    init() {
+        moveObserver = NotificationCenter.default.addObserver(forName: NSWindow.didMoveNotification, object: window, queue: .main) { [weak self] _ in
+            MainActor.assumeIsolated { self?.movedByUser() }
+        }
+    }
+    private func movedByUser() {
+        guard !positioning, window.isVisible else { return }
+        offset = NSSize(width: window.frame.minX - automaticOrigin.x, height: window.frame.minY - automaticOrigin.y)
+        UserDefaults.standard.set(offset.width, forKey: "\(Self.offsetKey).x")
+        UserDefaults.standard.set(offset.height, forKey: "\(Self.offsetKey).y")
+    }
+    /// Double-clicking the handle puts the panel back under the sentence.
+    func resetPosition() {
+        offset = .zero
+        UserDefaults.standard.removeObject(forKey: "\(Self.offsetKey).x")
+        UserDefaults.standard.removeObject(forKey: "\(Self.offsetKey).y")
+        fit()
+    }
+    var dragHandle: AnyView {
+        AnyView(PanelDragHandle { [weak self] in self?.resetPosition() }
+            .frame(width: 30, height: 24)
+            .overlay { Image(systemName: "line.3.horizontal").font(.system(size: 11, weight: .medium)).foregroundStyle(.secondary).allowsHitTesting(false) }
+            .help(UIText.t("拖动可移动建议框，双击恢复默认位置")))
+    }
 
     func show(model: SuggestionModel, original: String, near anchor: NSRect?, accept: @escaping (Int) -> Void, dismiss: @escaping () -> Void) {
         hideTask?.cancel()
@@ -217,7 +248,7 @@ import NaturalSuggestUI
             }
             return false
         }
-        present(HelperPanelView(model: model, original: original, accept: accept, dismiss: dismiss), near: anchor)
+        present(HelperPanelView(model: model, original: original, dragHandle: dragHandle, accept: accept, dismiss: dismiss), near: anchor)
     }
     /// A short message that closes by itself.
     func show(notice: String, near anchor: NSRect?) {
@@ -246,19 +277,27 @@ import NaturalSuggestUI
         let x = min(max(anchor.minX, screen.minX), screen.maxX - size.width)
         let below = anchor.minY - size.height - 6
         let y = below >= screen.minY ? below : min(anchor.maxY + 6, screen.maxY - size.height)
-        window.setFrame(NSRect(x: x, y: y, width: size.width, height: size.height), display: true)
+        automaticOrigin = NSPoint(x: x, y: y)
+        // Keep the top edge where the user left it while the content grows or shrinks.
+        let origin = NSPoint(x: min(max(x + offset.width, screen.minX), screen.maxX - size.width),
+                             y: min(max(y + offset.height, screen.minY), screen.maxY - size.height))
+        positioning = true
+        window.setFrame(NSRect(origin: origin, size: size), display: true)
+        positioning = false
     }
 }
 
 private struct HelperPanelView: View {
     @ObservedObject var model: SuggestionModel
     let original: String
+    let dragHandle: AnyView
     let accept: (Int) -> Void
     let dismiss: () -> Void
     var body: some View {
         VStack(alignment: .leading, spacing: 4) {
             if model.suggestions.isEmpty {
                 HStack(spacing: 8) {
+                    dragHandle
                     SuggestionStatusIndicator(status: model.status == .idle ? .requesting : model.status)
                     Text(model.status == .idle || model.status == .waiting ? UIText.t("正在获取建议…") : model.status.message)
                         .font(.callout).fixedSize(horizontal: false, vertical: true)
@@ -268,7 +307,7 @@ private struct HelperPanelView: View {
                 }.padding(10).background(.regularMaterial, in: RoundedRectangle(cornerRadius: 10))
             } else {
                 SuggestionStrip(suggestions: model.suggestions, language: model.suggestionLanguage, original: original,
-                                highlightChanges: model.settings.highlightChanges, dismiss: dismiss, accept: accept)
+                                highlightChanges: model.settings.highlightChanges, dragHandle: dragHandle, dismiss: dismiss, accept: accept)
                 Text(UIText.t("按数字键或点击采用 · Esc 关闭")).font(.caption).foregroundStyle(.secondary).padding(.horizontal, 8)
             }
         }.frame(width: 480)
