@@ -59,7 +59,7 @@ public struct LanguagePack: Decodable, Sendable {
 
     /// All bundled packs, ordered for display.
     public static let bundled: [LanguagePack] = {
-        guard let root = Bundle.module.url(forResource: "Languages", withExtension: nil, subdirectory: "Resources"),
+        guard let root = Bundle.module.url(forResource: "Languages", withExtension: nil),
               let folders = try? FileManager.default.contentsOfDirectory(at: root, includingPropertiesForKeys: nil) else { return [] }
         return folders.compactMap { try? load($0) }.sorted { ($0.order, $0.id) < ($1.order, $1.id) }
     }()

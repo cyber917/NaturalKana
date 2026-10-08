@@ -1320,7 +1320,7 @@ index 1b84bb3..edd7a19 100644
 +    }
  }
 diff --git a/MainApp/Features/Customization/Custard/Editing/CodableActionEditingService.swift b/MainApp/Features/Customization/Custard/Editing/CodableActionEditingService.swift
-index 4194897..d62b2f6 100644
+index 4194897..7dc4910 100644
 --- a/MainApp/Features/Customization/Custard/Editing/CodableActionEditingService.swift
 +++ b/MainApp/Features/Customization/Custard/Editing/CodableActionEditingService.swift
 @@ -1,6 +1,7 @@
@@ -1336,11 +1336,11 @@ index 4194897..d62b2f6 100644
              case .qwerty_symbols:
                  return "記号(ローマ字入力)"
 +            case .qwerty_korean:
-+                return UIText.t("韩语（QWERTY）")
++                return LocalizedStringKey(UIText.t("韩语（QWERTY）"))
 +            case .qwerty_french:
-+                return UIText.t("法语（QWERTY）")
++                return LocalizedStringKey(UIText.t("法语（QWERTY）"))
 +            case .qwerty_russian:
-+                return UIText.t("俄语（ЙЦУКЕН）")
++                return LocalizedStringKey(UIText.t("俄语（ЙЦУКЕН）"))
              case .last_tab:
                  return "最後に表示していたタブ"
              case .clipboard_history_tab:
