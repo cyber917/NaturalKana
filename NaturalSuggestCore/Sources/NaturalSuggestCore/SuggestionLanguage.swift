@@ -69,13 +69,6 @@ public enum SuggestionLanguage: String, Codable, CaseIterable, Sendable {
         case .chinese: "关闭"
         }
     }
-    public var copyHint: String {
-        switch self {
-        case .japanese: "クリックでコピー・元の文を選択して貼り付け"
-        case .english: "Click to copy · Select the original text and paste"
-        case .chinese: "点击复制 · 选中原句后粘贴"
-        }
-    }
 }
 
 /// Allows learner English, including a few unknown foreign words in an English sentence.

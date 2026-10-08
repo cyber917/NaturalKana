@@ -24,6 +24,21 @@ import NaturalSuggestCore
     }
 }
 
+/// Drag the suggestion panel by its handle; double-click puts it back next to the caret.
+private struct PanelDragHandle: NSViewRepresentable {
+    let reset: () -> Void
+    final class HandleView: NSView {
+        var reset: (() -> Void)?
+        override func mouseDown(with event: NSEvent) {
+            if event.clickCount == 2 { reset?() } else { window?.performDrag(with: event) }
+        }
+        override func acceptsFirstMouse(for event: NSEvent?) -> Bool { true }
+        override func resetCursorRects() { addCursorRect(bounds, cursor: .openHand) }
+    }
+    func makeNSView(context: Context) -> HandleView { let view = HandleView(); view.reset = reset; return view }
+    func updateNSView(_ view: HandleView, context: Context) { view.reset = reset }
+}
+
 private final class SuggestionPanel: NSPanel {
     override var canBecomeKey: Bool { false }
     override var canBecomeMain: Bool { false }
@@ -43,12 +58,21 @@ private final class SuggestionPanel: NSPanel {
     private var lastCaret = NSRect.zero
     private var captureTask: Task<Void, Never>?
     private var expectedCommittedEnd: Int?
+    private static let panelOffsetKey = "NaturalKanaSuggestionPanelOffset"
+    /// User drag offset from the automatic caret position, remembered across sessions.
+    private var panelOffset = NSSize(width: UserDefaults.standard.double(forKey: "\(panelOffsetKey).x"), height: UserDefaults.standard.double(forKey: "\(panelOffsetKey).y"))
+    private var automaticOrigin = NSPoint.zero
+    private var positioningPanel = false
+    private var noticeTask: Task<Void, Never>?
     public init() {
         // The host editor stays active while an IME displays candidates. A panel
         // that hides with our inactive application can disappear immediately.
         panel.isFloatingPanel = true; panel.level = .popUpMenu; panel.hidesOnDeactivate = false
         panel.backgroundColor = .clear; panel.isOpaque = false; panel.hasShadow = true
         panel.collectionBehavior = [.transient, .fullScreenAuxiliary]
+        NotificationCenter.default.addObserver(forName: NSWindow.didMoveNotification, object: panel, queue: .main) { [weak self] _ in
+            MainActor.assumeIsolated { self?.panelMovedByUser() }
+        }
         model.onStatusChange = { [weak self] status in
             NativeSuggestionActivity.shared.record(status)
             if let timing = self?.model.timingText, !timing.isEmpty { NativeSuggestionActivity.shared.timing = timing }
@@ -169,7 +193,7 @@ private final class SuggestionPanel: NSPanel {
                 }.buttonStyle(.plain).help(model.settings.language.closeTitle + " (Esc)").accessibilityLabel(model.settings.language.closeTitle)
             }.padding(5).background(.regularMaterial, in: RoundedRectangle(cornerRadius: 8)))
         } else {
-            panel.contentView = NSHostingView(rootView: SuggestionStrip(suggestions: items, language: model.settings.language, copiesOnly: replacement.location == NSNotFound || replacement != markedAnchor, original: model.suggestionDraft, highlightChanges: model.settings.highlightChanges, dismiss: { [weak self] in self?.dismiss() }) { [weak self] in self?.accept($0) }.frame(width: 480))
+            panel.contentView = NSHostingView(rootView: SuggestionStrip(suggestions: items, language: model.settings.language, original: model.suggestionDraft, highlightChanges: model.settings.highlightChanges, dragHandle: AnyView(dragHandle), dismiss: { [weak self] in self?.dismiss() }) { [weak self] in self?.accept($0) }.frame(width: 480))
         }
         let size = panel.contentView?.fittingSize ?? NSSize(width: 360, height: 90)
         var caret = NSRect.zero
@@ -184,7 +208,13 @@ private final class SuggestionPanel: NSPanel {
         let height = items.isEmpty ? 30 : min(340, max(45, size.height))
         let x = min(max(caret.minX, screen.minX), screen.maxX - width)
         let y = caret.maxY + height + 6 <= screen.maxY ? caret.maxY + 6 : caret.minY - height - 6
-        panel.setFrame(NSRect(x: x, y: max(screen.minY, y), width: width, height: height), display: true)
+        automaticOrigin = NSPoint(x: x, y: max(screen.minY, y))
+        let origin = NSPoint(x: min(max(automaticOrigin.x + panelOffset.width, screen.minX), screen.maxX - width),
+                             y: min(max(automaticOrigin.y + panelOffset.height, screen.minY), screen.maxY - height))
+        noticeTask?.cancel(); noticeTask = nil
+        positioningPanel = true
+        panel.setFrame(NSRect(origin: origin, size: NSSize(width: width, height: height)), display: true)
+        positioningPanel = false
         NativeSuggestionActivity.shared.message = items.isEmpty ? model.status.message : "已显示 \(items.count) 条建议"
         panel.alphaValue = 0; panel.orderFrontRegardless()
         NSAnimationContext.runAnimationGroup { $0.duration = 0.10; panel.animator().alphaValue = 1 }
@@ -192,9 +222,9 @@ private final class SuggestionPanel: NSPanel {
     private func accept(_ index: Int, fromKeyboard: Bool = false) {
         guard let client, let snapshot, !IsSecureEventInputEnabled(),
               client.selectedRange() == selectionAnchor, client.markedRange() == markedAnchor,
-              snapshot.appID == (NSWorkspace.shared.frontmostApplication?.bundleIdentifier ?? "") else { reset(); return }
+              snapshot.appID == (NSWorkspace.shared.frontmostApplication?.bundleIdentifier ?? "") else { reset(); showNotice("输入框里的文字或光标已经变了，这条建议没有替换"); return }
         if replacement.location != NSNotFound {
-            guard read(client, range: replacement) == original else { reset(); return }
+            guard read(client, range: replacement) == original else { reset(); showNotice("原句已经变了，这条建议没有替换"); return }
         }
         guard let text = model.accept(index, snapshot: snapshot) else { reset(); return }
         // Palette clicks occur outside the host's input-event dispatch. Some
@@ -205,8 +235,47 @@ private final class SuggestionPanel: NSPanel {
         } else {
             NSPasteboard.general.clearContents(); NSPasteboard.general.setString(text, forType: .string)
             NativeSuggestionActivity.shared.message = "此应用不支持这段文字的安全替换；建议已复制，请选中原句后粘贴"
+            self.snapshot = nil; showNotice("已复制，选中原句后按 ⌘V 粘贴"); return
         }
         panel.orderOut(nil); self.snapshot = nil
+    }
+    private var dragHandle: some View {
+        PanelDragHandle { [weak self] in self?.resetPanelOffset() }
+            .frame(width: 30, height: 24)
+            .overlay { Image(systemName: "line.3.horizontal").font(.system(size: 11, weight: .medium)).foregroundStyle(.secondary).allowsHitTesting(false) }
+            .help("拖动可移动建议框，双击恢复默认位置")
+    }
+    private func panelMovedByUser() {
+        guard !positioningPanel, panel.isVisible, noticeTask == nil else { return }
+        panelOffset = NSSize(width: panel.frame.minX - automaticOrigin.x, height: panel.frame.minY - automaticOrigin.y)
+        UserDefaults.standard.set(panelOffset.width, forKey: "\(Self.panelOffsetKey).x")
+        UserDefaults.standard.set(panelOffset.height, forKey: "\(Self.panelOffsetKey).y")
+    }
+    private func resetPanelOffset() {
+        panelOffset = .zero
+        UserDefaults.standard.removeObject(forKey: "\(Self.panelOffsetKey).x")
+        UserDefaults.standard.removeObject(forKey: "\(Self.panelOffsetKey).y")
+        positioningPanel = true
+        panel.setFrameOrigin(automaticOrigin)
+        positioningPanel = false
+    }
+    /// Briefly tells the user what a click did, where the panel already is.
+    private func showNotice(_ text: String) {
+        noticeTask?.cancel()
+        let view = NSHostingView(rootView: Text(text).font(.system(size: 13)).padding(.horizontal, 12).padding(.vertical, 8)
+            .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 8)))
+        let size = view.fittingSize
+        let frame = panel.frame
+        panel.contentView = view
+        positioningPanel = true
+        panel.setFrame(NSRect(x: frame.minX, y: frame.maxY - size.height, width: size.width, height: size.height), display: true)
+        positioningPanel = false
+        panel.alphaValue = 1; panel.orderFrontRegardless()
+        noticeTask = Task { @MainActor [weak self] in
+            do { try await Task.sleep(for: .seconds(2.5)) } catch { return }
+            guard let self, !Task.isCancelled else { return }
+            self.noticeTask = nil; self.panel.orderOut(nil)
+        }
     }
 }
 #endif
