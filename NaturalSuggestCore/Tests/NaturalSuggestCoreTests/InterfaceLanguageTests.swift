@@ -6,7 +6,7 @@ import Testing
 struct InterfaceLanguageTests {
     private static let root = URL(fileURLWithPath: #filePath).deletingLastPathComponent().deletingLastPathComponent().deletingLastPathComponent().deletingLastPathComponent()
 
-    /// Every UIText.t("…") literal in the shared package and the Mac patch.
+    /// Every UIText.t("…") literal in the shared package and the Mac/iPhone patches.
     private static func sourceKeys() throws -> [String: String] {
         var keys: [String: String] = [:]
         let pattern = try NSRegularExpression(pattern: #"UIText\.t\("((?:[^"\\]|\\.)*)""#)
@@ -20,8 +20,10 @@ struct InterfaceLanguageTests {
         let sources = root.appendingPathComponent("NaturalSuggestCore/Sources")
         let files = FileManager.default.enumerator(at: sources, includingPropertiesForKeys: nil)!.compactMap { $0 as? URL }.filter { $0.pathExtension == "swift" }
         for file in files { scan(try String(contentsOf: file, encoding: .utf8), file.lastPathComponent) }
-        let patch = try String(contentsOf: root.appendingPathComponent("patches/macos.patch"), encoding: .utf8)
-        scan(patch.split(separator: "\n").filter { $0.hasPrefix("+") }.joined(separator: "\n"), "macos.patch")
+        for name in ["macos.patch", "ios.patch"] {
+            let patch = try String(contentsOf: root.appendingPathComponent("patches/" + name), encoding: .utf8)
+            scan(patch.split(separator: "\n").filter { $0.hasPrefix("+") }.joined(separator: "\n"), name)
+        }
         return keys
     }
 

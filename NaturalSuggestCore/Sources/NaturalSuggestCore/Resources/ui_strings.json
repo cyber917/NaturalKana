@@ -163,6 +163,14 @@
   "en": "Example: ",
   "ja": "例文："
  },
+ "俄语": {
+  "en": "Russian",
+  "ja": "ロシア語"
+ },
+ "俄语（ЙЦУКЕН）": {
+  "en": "Russian (ЙЦУКЕН)",
+  "ja": "ロシア語（ЙЦУКЕН）"
+ },
  "保存": {
   "en": "Save",
   "ja": "保存"
@@ -174,6 +182,10 @@
  "保存后，在英文键盘上切到韩语：全键盘点左下角的语言键（A／한），九宫格点左侧的“한”键。长按 ㅂㅈㄷㄱㅅ 后右滑输入 ㅃㅉㄸㄲㅆ，长按 ㅐㅔ 后右滑输入 ㅒㅖ。": {
   "en": "After saving, switch to Korean from the English keyboard: on QWERTY tap the language key (A／한) at the bottom left; on the 10-key layout tap the “한” key on the left. Long-press ㅂㅈㄷㄱㅅ and slide right for ㅃㅉㄸㄲㅆ, or ㅐㅔ for ㅒㅖ.",
   "ja": "保存後、英語キーボードから韓国語に切り替えます。QWERTY は左下の言語キー（A／한）、フリックは左列の「한」キーをタップします。ㅂㅈㄷㄱㅅ を長押しして右にスライドすると ㅃㅉㄸㄲㅆ、ㅐㅔ なら ㅒㅖ を入力できます。"
+ },
+ "保存后，语言键按日语 → 英语 → 已开启的韩语、法语、俄语 → 日语切换；九宫格英文键盘点左侧语言键进入额外布局。": {
+  "en": "After saving, the language key cycles through Japanese → English → enabled Korean, French and Russian layouts → Japanese. On the English flick keyboard, tap the language key on the left to enter extra layouts.",
+  "ja": "保存後、言語キーで日本語 → 英語 → 有効な韓国語・フランス語・ロシア語 → 日本語と切り替えます。英語フリックキーボードでは左側の言語キーから追加配列に移動します。"
  },
  "保存常用词的日语读音和写法，最多 50 条。": {
   "en": "Save the Japanese reading and spelling of words you use often (up to 50).",
@@ -787,6 +799,10 @@
   "en": "Not saved",
   "ja": "未保存"
  },
+ "未开启对应布局的语言：用系统键盘打完一句后，切换到 NaturalKana 键盘即可看到建议。": {
+  "en": "For a language without an enabled layout, type a sentence with the system keyboard, then switch to NaturalKana to see suggestions.",
+  "ja": "対応する配列が有効でない言語は、システムキーボードで一文を入力し、NaturalKanaに切り替えると候補を表示できます。"
+ },
  "本次联网耗时 %.2f 秒": {
   "en": "Request took %.2f s",
   "ja": "今回の通信時間：%.2f 秒"
@@ -922,6 +938,18 @@
  "没选中文字时": {
   "en": "When nothing is selected",
   "ja": "何も選択していないとき"
+ },
+ "法语": {
+  "en": "French",
+  "ja": "フランス語"
+ },
+ "法语用 QWERTY，长按字母后右滑选重音字母或大写；俄语用 ЙЦУКЕН，长按 е 选 ё、ь 选 ъ，各字母长按可选大写。": {
+  "en": "French uses QWERTY: hold a letter and slide right for accents or capitals. Russian uses ЙЦУКЕН: hold е for ё, ь for ъ, or any letter for capitals.",
+  "ja": "フランス語はQWERTY配列です。文字を長押しして右にスライドするとアクセント付き文字や大文字を選べます。ロシア語はЙЦУКЕН配列で、еの長押しでё、ьでъ、各文字の長押しで大文字を選べます。"
+ },
+ "法语（QWERTY）": {
+  "en": "French (QWERTY)",
+  "ja": "フランス語（QWERTY）"
  },
  "流行": {
   "en": "Trendy",
@@ -1299,6 +1327,10 @@
   "en": "Keyboard",
   "ja": "キーボード"
  },
+ "键盘加入%@布局": {
+  "en": "Add %@ keyboard layout",
+  "ja": "%@キーボード配列を追加"
+ },
  "键盘加入韩语布局": {
   "en": "Korean layout in the keyboard",
   "ja": "キーボードに韓国語レイアウトを追加"
@@ -1318,6 +1350,14 @@
  "韩语": {
   "en": "Korean",
   "ja": "韓国語"
+ },
+ "韩语长按 ㅂㅈㄷㄱㅅ 后右滑输入 ㅃㅉㄸㄲㅆ，长按 ㅐㅔ 后右滑输入 ㅒㅖ。": {
+  "en": "For Korean, hold ㅂㅈㄷㄱㅅ and slide right for ㅃㅉㄸㄲㅆ; hold ㅐㅔ and slide right for ㅒㅖ.",
+  "ja": "韓国語ではㅂㅈㄷㄱㅅを長押しして右にスライドするとㅃㅉㄸㄲㅆ、ㅐㅔではㅒㅖを入力できます。"
+ },
+ "韩语（QWERTY）": {
+  "en": "Korean (QWERTY)",
+  "ja": "韓国語（QWERTY）"
  },
  "预览导入：%@ 条": {
   "en": "Import preview: %@ entries",

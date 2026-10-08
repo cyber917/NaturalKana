@@ -1,0 +1,36 @@
+{
+  "order": 4,
+  "title": "法语",
+  "promptName": "French",
+  "locale": "fr",
+  "testDraft": "Je suis aller au magasin hier.",
+  "registerTitles": {
+    "casual": "Familier",
+    "polite": "Poli"
+  },
+  "closeTitle": "Fermer",
+  "copyHint": "Cliquer pour copier · Sélectionner le texte original et coller",
+  "rules": "generic",
+  "generic": {
+    "letters": "[A-Za-zÀ-ÖØ-öø-ÿŒœŸ]",
+    "forbidden": "[\\u0400-\\u04FF\\u3040-\\u30FF\\u4E00-\\u9FFF\\uAC00-\\uD7A3]",
+    "denied": [
+      "translate",
+      "ignore instructions",
+      "system prompt",
+      "翻译",
+      "翻訳",
+      "traduis",
+      "traduisez",
+      "ignore les instructions"
+    ],
+    "requiredPattern": "(?i)\\b(je|tu|il|elle|nous|vous|ils|elles|bonjour|salut|merci|demain|aujourd'hui|suis|voudrais|peux|pouvez|c['’]est|j['’]ai|j['’]aime|d'accord|désolé|desole|très|tres|bientôt|bientot|ça|oui|non|bonsoir|bonne|beaucoup|désolée|desolee|pourrais|pourriez|où)\\b",
+    "candidateShare": 1.0
+  },
+  "detect": {
+    "signal": "(?i)\\b(je|tu|il|elle|nous|vous|ils|elles|bonjour|salut|merci|demain|aujourd'hui|suis|voudrais|peux|pouvez|c['’]est|j['’]ai|j['’]aime|d'accord|désolé|desole|très|tres|bientôt|bientot|ça|oui|non|bonsoir|bonne|beaucoup|désolée|desolee|pourrais|pourriez|où)\\b",
+    "priority": 2
+  },
+  "keepPunctuation": true,
+  "windowsFont": "Segoe UI"
+}

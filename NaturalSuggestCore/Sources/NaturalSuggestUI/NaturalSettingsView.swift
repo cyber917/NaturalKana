@@ -53,7 +53,7 @@ public struct NaturalSettingsView: View {
     /// Languages the NaturalKana keyboard or input method can type itself.
     private func typedByNaturalKana(_ language: SuggestionLanguage) -> Bool {
         #if os(iOS)
-        if model.settings.koreanKeyboard, language.rawValue == "korean" { return true }
+        if model.settings.enabledKeyboardLayouts.contains(where: { $0.rawValue == language.rawValue }) { return true }
         #endif
         return SuggestionLanguage.inputMethodLanguages.contains(language)
     }
@@ -97,18 +97,27 @@ public struct NaturalSettingsView: View {
                     }
                     Text(UIText.t("按每一句自动判断是哪种语言；分不清时（例如只有汉字的短句）按主要语言处理。")).font(.caption).foregroundStyle(.secondary)
                 }
-                // NaturalKana itself only types Japanese and English; other languages are typed with another keyboard or IME.
+                // Other languages may need a system keyboard or the Mac helper.
                 if !typedByNaturalKana(model.settings.language) || model.settings.autoLanguage {
                     #if os(macOS)
                     Text(UIText.t("日语、英语以外的句子请用菜单栏小助手检查：用任何输入法打完一句，按 ⌃⌥J。")).font(.caption).foregroundStyle(.secondary)
                     #else
-                    Text(UIText.t("日语、英语以外的句子：用系统自带的键盘打完一句后，切换到 NaturalKana 键盘即可看到建议。")).font(.caption).foregroundStyle(.secondary)
+                    Text(UIText.t("未开启对应布局的语言：用系统键盘打完一句后，切换到 NaturalKana 键盘即可看到建议。")).font(.caption).foregroundStyle(.secondary)
                     #endif
                 }
                 #if os(iOS)
-                Toggle(UIText.t("键盘加入韩语布局"), isOn: $model.settings.koreanKeyboard)
-                if model.settings.koreanKeyboard {
-                    Text(UIText.t("保存后，在英文键盘上切到韩语：全键盘点左下角的语言键（A／한），九宫格点左侧的“한”键。长按 ㅂㅈㄷㄱㅅ 后右滑输入 ㅃㅉㄸㄲㅆ，长按 ㅐㅔ 后右滑输入 ㅒㅖ。")).font(.caption).foregroundStyle(.secondary)
+                ForEach(ExtraKeyboardLayout.allCases, id: \.self) { layout in
+                    Toggle(UIText.t("键盘加入%@布局", layout.title), isOn: Binding(
+                        get: { model.settings.enabledKeyboardLayouts.contains(layout) },
+                        set: { model.settings.setKeyboardLayout(layout, enabled: $0) }
+                    ))
+                }
+                if !model.settings.enabledKeyboardLayouts.isEmpty {
+                    Text(UIText.t("保存后，语言键按日语 → 英语 → 已开启的韩语、法语、俄语 → 日语切换；九宫格英文键盘点左侧语言键进入额外布局。")).font(.caption).foregroundStyle(.secondary)
+                    Text(UIText.t("法语用 QWERTY，长按字母后右滑选重音字母或大写；俄语用 ЙЦУКЕН，长按 е 选 ё、ь 选 ъ，各字母长按可选大写。")).font(.caption).foregroundStyle(.secondary)
+                }
+                if model.settings.enabledKeyboardLayouts.contains(.korean) {
+                    Text(UIText.t("韩语长按 ㅂㅈㄷㄱㅅ 后右滑输入 ㅃㅉㄸㄲㅆ，长按 ㅐㅔ 后右滑输入 ㅒㅖ。")).font(.caption).foregroundStyle(.secondary)
                 }
                 #endif
                 Picker(UIText.t("语体"), selection: $model.settings.registerPreference) {
