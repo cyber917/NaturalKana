@@ -180,21 +180,22 @@ public struct SuggestionStrip: View {
     public let suggestions: [Suggestion]
     public let language: SuggestionLanguage
     public let accept: (Int) -> Void
-    public let copiesOnly: Bool
     public let original: String
     public let highlightChanges: Bool
     public let dismiss: (() -> Void)?
-    public init(suggestions: [Suggestion], language: SuggestionLanguage = .japanese, copiesOnly: Bool = false, original: String = "", highlightChanges: Bool = true, dismiss: (() -> Void)? = nil, accept: @escaping (Int) -> Void) {
+    public let dragHandle: AnyView?
+    public init(suggestions: [Suggestion], language: SuggestionLanguage = .japanese, original: String = "", highlightChanges: Bool = true, dragHandle: AnyView? = nil, dismiss: (() -> Void)? = nil, accept: @escaping (Int) -> Void) {
         self.language = language
         self.original = original; self.highlightChanges = highlightChanges
-        self.dismiss = dismiss
-        self.suggestions = suggestions; self.copiesOnly = copiesOnly; self.accept = accept
+        self.dismiss = dismiss; self.dragHandle = dragHandle
+        self.suggestions = suggestions; self.accept = accept
     }
     public var body: some View {
         if !suggestions.isEmpty {
             VStack(spacing: 0) {
               if let dismiss {
                 HStack {
+                    if let dragHandle { dragHandle }
                     Spacer()
                     Button(action: dismiss) {
                         Image(systemName: "xmark").font(.system(size: 11, weight: .medium))
@@ -202,7 +203,6 @@ public struct SuggestionStrip: View {
                     }.buttonStyle(.plain).help(language.closeTitle + " (Esc)").accessibilityLabel(language.closeTitle)
                 }.padding(.horizontal, 4).padding(.top, 2)
               }
-              if copiesOnly { Text(language.copyHint).font(.caption).foregroundStyle(.secondary).padding(6) }
               ScrollView(.vertical) {
               VStack(alignment: .leading, spacing: 5) {
                 ForEach(Array(suggestions.prefix(SuggestionSettings.suggestionCountRange.upperBound).enumerated()), id: \.offset) { index, suggestion in
