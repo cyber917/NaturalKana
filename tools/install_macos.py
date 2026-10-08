@@ -79,7 +79,18 @@ subprocess.run(['launchctl', 'bootout', domain, str(agent)], stdout=subprocess.D
 subprocess.run(['launchctl', 'bootstrap', domain, str(agent)], check=True)
 subprocess.run(['launchctl', 'kickstart', domain + '/' + service], check=True)
 registration = subprocess.run([str(args.registrar.resolve()), '--register', str(destination)])
+# A running input method keeps the replaced binary in memory until it exits; the system relaunches it on next use.
+executable = str(destination / 'Contents/MacOS' / plistlib.loads((destination / 'Contents/Info.plist').read_bytes())['CFBundleExecutable'])
+processes = subprocess.run(['ps', '-axo', 'pid=,command='], capture_output=True, text=True).stdout.splitlines()
+stale = [int(line.split(None, 1)[0]) for line in processes if line.split(None, 1)[1:] and (line.split(None, 1)[1] == executable or line.split(None, 1)[1].startswith(executable + ' '))]
+for pid in stale:
+    try:
+        os.kill(pid, 15)
+    except ProcessLookupError:
+        pass
 print('Installed:', destination)
+if stale:
+    print('Restarted the running input method so the new version takes effect.')
 print('Active input source was not changed.')
 if registration.returncode == 3:
     print('Manual setup required: add NaturalKana in System Settings > Keyboard > Text Input > Edit > +.')
