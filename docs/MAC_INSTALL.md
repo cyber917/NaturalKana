@@ -71,7 +71,15 @@ bash <(curl -fsSL https://raw.githubusercontent.com/cyber917/NaturalKana/main/to
    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
    ```
 
-   按提示输入密码、按回车。**装完后终端会提示“Next steps”，把它让你运行的两三条命令也照着运行一遍**，否则下一步会提示找不到 `brew`。
+   按提示输入密码、按回车。装完后终端会显示“Next steps”，**接着运行下面这两条**，让终端能找到 `brew`（跳过的话，下一步会提示 `brew: command not found`）：
+
+   ```sh
+   echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' | tee -a ~/.zprofile >> ~/.bash_profile
+   ```
+
+   ```sh
+   eval "$(/opt/homebrew/bin/brew shellenv)"
+   ```
 
 2. 安装 Git LFS：
 
@@ -249,7 +257,7 @@ cd ~/NaturalKana && cp ~/NaturalKana-Brand.json Config/Brand.json && python3 too
 | 现象 | 怎么办 |
 | --- | --- |
 | `xcrun: error: invalid active developer path` 或找不到 `xcodebuild` | Xcode 没装好，或者装好后没打开过。回到[第 1 步](#第-1-步安装-xcode) |
-| `brew: command not found` | Homebrew 装完后没运行它提示的“Next steps”命令。重新打开终端，按 brew.sh 的说明补上 |
+| `brew: command not found` | Homebrew 已经装了，但终端找不到它。运行[第 2 步](#第-2-步安装-homebrew-和-git-lfs)第 1 点最后那两条命令（`echo …` 和 `eval …`）后再试。一键脚本会自动处理这种情况 |
 | `Install git-lfs and rerun --weights`，或 `git-lfs: command not found` | 没装 Git LFS，回到[第 2 步](#第-2-步安装-homebrew-和-git-lfs) |
 | `macBundleIdentifier must contain ".inputmethod."` | `Config/Brand.json` 里的标识格式不对，按[第 6 步](#第-6-步设置你自己的应用标识)改好后重新运行 `rebrand.py` |
 | `json.decoder.JSONDecodeError` | `Brand.json` 里有弯引号或少了逗号。对照第 6 步的示例重新粘贴 |
