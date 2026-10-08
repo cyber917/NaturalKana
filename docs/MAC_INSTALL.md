@@ -263,6 +263,9 @@ cd ~/NaturalKana && cp ~/NaturalKana-Brand.json Config/Brand.json && python3 too
 | `json.decoder.JSONDecodeError` | `Brand.json` 里有弯引号或少了逗号。对照第 6 步的示例重新粘贴 |
 | `Set your actual Xcode development team ID before a signed build` | 没运行 `export NATURALKANA_TEAM_ID=…`，或者关过终端。重新运行那一行 |
 | 编译时提示 `No Account for Team` 或 `No signing certificate` | Xcode 里没登录 Apple ID，或者 Team ID 填错。回到[第 3 步](#第-3-步在-xcode-里登录-apple-id-并创建证书)、[第 4 步](#第-4-步查出你的-team-id)核对 |
+| 一键脚本提示“没有找到开发证书” | 按[第 3 步](#第-3-步在-xcode-里登录-apple-id-并创建证书)创建证书后，**重新运行一次脚本**（脚本只在运行时检查一次） |
+| 一键脚本提示“系统还不信任它”，或 `security find-identity -p codesigning` 显示 `CSSMERR_TP_NOT_TRUSTED` | 这台 Mac 缺少苹果的中间证书。下载 [AppleWWDRCAG3.cer](https://www.apple.com/certificateauthority/AppleWWDRCAG3.cer)，双击后选“登录”钥匙串并添加，再重新运行 |
+| 一键脚本提示“私钥不在这台 Mac 上” | 证书是在别的电脑上创建的。在 Xcode 的 Manage Certificates 里再点 `+` → Apple Development，在这台 Mac 上新建一个 |
 | 编译时下载依赖失败、超时 | 网络问题，换个网络或稍后重新运行编译命令 |
 | `Unexpected app identity; nothing installed.` | 编译的程序和 `Brand.json` 里的标识对不上，通常是改完标识没重新编译。重新运行第 6 步的 `rebrand.py` 和第 7 步 |
 | `A staging app already exists` | 上次安装中断了。删掉提示里那个 `NaturalKana.installing.app` 后重新安装 |

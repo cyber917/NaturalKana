@@ -71,9 +71,21 @@ for pem in "$tmp"/cert*.pem; do
   [[ -n "$team" ]] && teams="$teams$team"$'\n'
 done
 teams="$(printf '%s' "$teams" | sort -u | sed '/^$/d')"
-[[ -n "$teams" ]] || fail "没有找到可用的开发证书。" \
-  "打开 Xcode → Settings → Accounts，点 + 登录 Apple ID；" \
-  "选中账号 → Manage Certificates → 点 + → Apple Development。然后重新运行这个脚本。"
+if [[ -z "$teams" ]]; then
+  # Tell apart "no certificate", "not trusted" (missing Apple intermediate) and "private key not on this Mac".
+  found=0; for pem in "$tmp"/cert*.pem; do [[ -f "$pem" ]] && found=$((found + 1)); done
+  (( found > 0 )) || fail "没有找到开发证书。" \
+    "打开 Xcode → Settings → Accounts，点 + 登录 Apple ID；" \
+    "选中账号 → Manage Certificates → 点 + → Apple Development → Done。然后重新运行这个脚本。"
+  if security find-identity -p codesigning 2>/dev/null | grep "Apple Development" | grep -q "NOT_TRUSTED"; then
+    fail "找到了开发证书，但系统还不信任它（这台 Mac 缺少苹果的中间证书）。" \
+      "用浏览器打开 https://www.apple.com/certificateauthority/AppleWWDRCAG3.cer 下载，" \
+      "双击下载的文件，钥匙串选“登录”，点“添加”。然后重新运行这个脚本。"
+  fi
+  fail "找到了开发证书，但它的私钥不在这台 Mac 上（证书可能是在别的电脑上创建的，或已过期）。" \
+    "打开 Xcode → Settings → Accounts → 选中账号 → Manage Certificates，" \
+    "点 + → Apple Development 在这台 Mac 上再创建一个，然后重新运行这个脚本。"
+fi
 if [[ "$(wc -l <<< "$teams" | tr -d ' ')" == 1 ]]; then
   TEAM="$teams"
 else
