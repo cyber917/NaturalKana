@@ -82,6 +82,11 @@ public struct NaturalSettingsView: View {
                 Picker("网络用语", selection: $model.settings.slangLevel) {
                     Text("关闭").tag(SlangLevel.off); Text("轻度").tag(SlangLevel.light); Text("流行").tag(SlangLevel.trendy)
                 }
+                if model.settings.language == .japanese {
+                    Picker("方言", selection: $model.settings.dialect) {
+                        ForEach(Dialect.allCases, id: \.self) { dialect in Text(dialect.title).tag(dialect) }
+                    }
+                }
                 Toggle("标出改动", isOn: $model.settings.highlightChanges)
                 Stepper("建议上限：\(model.settings.suggestionLimit) 条", value: $model.settings.maximumSuggestions, in: SuggestionSettings.suggestionCountRange)
                 Stepper("停顿：\(model.settings.debounceMilliseconds) 毫秒", value: $model.settings.debounceMilliseconds, in: 100...2000, step: 100)

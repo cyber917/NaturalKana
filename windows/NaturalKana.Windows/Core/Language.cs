@@ -18,6 +18,7 @@ public static class Languages
 
     public static string RegisterTitle(SuggestionLanguage language, Register register) => (language, register) switch
     {
+        (_, Register.Kansai) => "関西弁",
         (SuggestionLanguage.Japanese, Register.Casual) => "口语",
         (SuggestionLanguage.Japanese, _) => "敬语",
         (_, Register.Casual) => "Casual",

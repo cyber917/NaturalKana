@@ -34,6 +34,7 @@ public partial class SettingsWindow : Window
         Fill(LanguageBox, [(SuggestionLanguage.Japanese, "日语"), (SuggestionLanguage.English, "英语")], settings.Language);
         Fill(RegisterBox, [(RegisterPreference.Both, "口语和敬语都要"), (RegisterPreference.FriendsCasual, "只要口语"), (RegisterPreference.PoliteCasual, "只要敬语")], settings.RegisterPreference);
         Fill(SlangBox, [(SlangLevel.Off, "不用"), (SlangLevel.Light, "轻度（只用常见说法）"), (SlangLevel.Trendy, "流行")], settings.SlangLevel);
+        Fill(DialectBox, [(Dialect.Off, "不用"), (Dialect.Kansai, "関西弁（另给一组关西话说法，仅日语）")], settings.Dialect);
         Fill(CountBox, Enumerable.Range(1, 10).Select(n => (n, n.ToString())), settings.SuggestionLimit);
         HotkeyBox.Text = hotkey;
         HotkeyBox.GotKeyboardFocus += (_, _) => { suspendHotkey(true); HotkeyHint.Text = "请按下组合键（需含 Ctrl / Alt / Win）"; };
@@ -151,6 +152,7 @@ public partial class SettingsWindow : Window
             Language = Get<SuggestionLanguage>(LanguageBox),
             RegisterPreference = Get<RegisterPreference>(RegisterBox),
             SlangLevel = Get<SlangLevel>(SlangBox),
+            Dialect = Get<Dialect>(DialectBox),
             MaximumSuggestions = Get<int>(CountBox),
         };
         TestButton.IsEnabled = false;
@@ -186,6 +188,7 @@ public partial class SettingsWindow : Window
         settings.Language = Get<SuggestionLanguage>(LanguageBox);
         settings.RegisterPreference = Get<RegisterPreference>(RegisterBox);
         settings.SlangLevel = Get<SlangLevel>(SlangBox);
+        settings.Dialect = Get<Dialect>(DialectBox);
         settings.MaximumSuggestions = Get<int>(CountBox);
         settings.HighlightChanges = HighlightBox.IsChecked == true;
         settings.Hotkey = hotkey;

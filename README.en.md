@@ -8,6 +8,7 @@ NaturalKana is derived from [azooKey](https://github.com/azooKey/azooKey) and [a
 
 - Bring your own API key: Qwen, OpenAI, DeepSeek, Kimi, Gemini, Claude, or any OpenAI-compatible / Claude Messages endpoint
 - Casual and polite groups, up to 10 candidates, with changes highlighted
+- Optional Kansai-ben: an extra 関西弁 group alongside standard Japanese; drafts typed in dialect are not treated as mistakes
 - Handles Japanese drafts that mix in English or Chinese words
 - Optional personal slang vocabulary (Mac)
 

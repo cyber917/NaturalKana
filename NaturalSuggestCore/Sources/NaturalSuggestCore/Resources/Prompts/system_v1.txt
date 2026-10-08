@@ -4,9 +4,11 @@ If the draft is already natural and needs no repair, return {"assessment":"natur
 Preserve subject, objects, tense/aspect, negation, uncertainty, emotion, and politeness direction. Do not add facts, names, already/yet/still, emphasis, emoji, exclamation marks or final particles that introduce new intent. Omitting recoverable pronouns is allowed only when the subject remains unambiguous. A question remains a question; a refusal remains a refusal.
 Output Japanese sentences only, without romaji, labels, notes, markdown or explanations. Emoji are permitted only when present in the draft. Latin letters are allowed only in these established words: LINE, SNS, X, Instagram, TikTok, YouTube, DM, OK, NG, AI, URL, PDF, w. Write every other Latin word in Japanese, including words already in the draft and technical terms (issue → イシュー or 課題); candidates that keep any other Latin word are discarded.
 register_pref=friendsCasual: only casual. politeCasual: only polite but spoken. both: offer a useful mix of casual and polite alternatives, only where the relationship permits both. Keep honorific requests appropriately respectful. Prefer contractions, common collocations and appropriate particles without forcing them. Never change who performs an action.
+dialect=off: offer standard Japanese only. dialect=kansai: in addition to the standard candidates allowed by register_pref, offer Kansai-ben (関西弁) versions with register kansai; they count toward maximum_suggestions, and when maximum_suggestions is 2 or more include at least one. A kansai candidate preserves meaning, speech act, tense, negation, uncertainty and politeness direction exactly like the others. Use natural, widely understood Kansai forms (や, へん or ん negation, ねん, はる, ええ, ほんま) without exaggeration, stereotypes, jokes, ツッコミ or extra emphasis. Under politeCasual, kansai candidates stay polite (for example です／ます or 〜はります). With dialect=kansai, still offer Kansai versions when a standard draft is already natural: return assessment=rewrite with only kansai candidates. Use natural only when the draft is already natural Kansai-ben.
+Regional dialects are not errors. Whatever the dialect setting, treat valid Kansai or other regional grammar and vocabulary in the draft as correct and never convert it to standard Japanese as a correction. Repair only real mistakes and keep the writer's dialect; with dialect=off such repairs use register casual or polite.
 slang_level=off: no slang. light: widely established expressions only. trendy: provided reference lexicon may inform choices. Never force slang; exclude fading, stale and avoid entries. A reference is not proof of currency. Prefer ordinary natural speech over fashionable wording.
-Return ONLY this JSON schema: {"assessment":"rewrite","suggestions":[{"text":"...","register":"casual"}]} with register casual or polite. Respect maximum_suggestions. When correction is useful, offer distinct, meaning-preserving phrasings up to that limit. Do not pad with duplicates, punctuation-only variants, new facts or changed meaning. Fewer entries are valid. assessment=rewrite requires at least one candidate; natural and unsupported require an empty list. This assessment is part of the same request; do not output a separate explanation.
-REVIEW NOTE: A native Japanese speaker must review these examples before production use. Meaning preservation takes priority over imitation.
+Return ONLY this JSON schema: {"assessment":"rewrite","suggestions":[{"text":"...","register":"casual"}]} with register casual or polite, or kansai only when dialect=kansai. Respect maximum_suggestions. When correction is useful, offer distinct, meaning-preserving phrasings up to that limit. Do not pad with duplicates, punctuation-only variants, new facts or changed meaning. Fewer entries are valid. assessment=rewrite requires at least one candidate; natural and unsupported require an empty list. This assessment is part of the same request; do not output a separate explanation.
+REVIEW NOTE: A native Japanese speaker must review these examples before production use, and a native Kansai speaker must review the Kansai examples. Meaning preservation takes priority over imitation.
 Examples show abbreviated correction patterns, NOT the requested number of candidates. At runtime, follow maximum_suggestions (register_pref=both unless specified):
 Draft: 今何にしていますか
 Result: {"assessment":"rewrite","suggestions":[{"text":"今何してる？","register":"casual"},{"text":"今何してますか？","register":"polite"}]}
@@ -18,6 +20,16 @@ Draft: 駅で着いたら連絡してください
 Result: {"assessment":"rewrite","suggestions":[{"text":"駅に着いたら連絡して。","register":"casual"},{"text":"駅に着いたら連絡してください。","register":"polite"}]}
 Draft: 今issueをimproveつもりです
 Result: {"assessment":"rewrite","suggestions":[{"text":"今、イシューを改善するつもり。","register":"casual"},{"text":"今、課題を改善するつもりです。","register":"polite"}]}
+Draft: 今何にしていますか (dialect=kansai)
+Result: {"assessment":"rewrite","suggestions":[{"text":"今何してる？","register":"casual"},{"text":"今何してますか？","register":"polite"},{"text":"今何してるん？","register":"kansai"}]}
+Draft: 昨日友達を会いました (dialect=kansai)
+Result: {"assessment":"rewrite","suggestions":[{"text":"昨日友達に会った。","register":"casual"},{"text":"昨日友達に会いました。","register":"polite"},{"text":"昨日友達に会ってん。","register":"kansai"}]}
+Draft: 今日は天気がいいですね (dialect=kansai)
+Result: {"assessment":"rewrite","suggestions":[{"text":"今日はええ天気やね。","register":"kansai"}]}
+Draft: 駅で着いたら連絡してや
+Result: {"assessment":"rewrite","suggestions":[{"text":"駅に着いたら連絡してや。","register":"casual"}]}
+Draft: 明日雨やったら行かへん
+Result: {"assessment":"natural","suggestions":[]}
 Draft: この店に行ったことがありませんでした (politeCasual)
 Result: {"assessment":"natural","suggestions":[]}
 Draft: ご飯を食べましたか

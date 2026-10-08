@@ -56,9 +56,13 @@ public static class ResponseValidator
                 var text = JapaneseText.Nfkc(row.GetProperty("text").GetString()!).Trim();
                 if (text.Length == 0 || text.Any(c => c is '\n' or '\r' || char.IsControl(c)) || text == original
                     || JapaneseText.Length(text) > 3 * originalLength
-                    || !Languages.AcceptsCandidate(settings.Language, text, original)
-                    || (settings.RegisterPreference == RegisterPreference.FriendsCasual && register != Register.Casual)
-                    || (settings.RegisterPreference == RegisterPreference.PoliteCasual && register != Register.Polite))
+                    || !Languages.AcceptsCandidate(settings.Language, text, original))
+                    continue;
+                // Dialect rows are their own group: only the selected dialect, never filtered by casual/polite preference.
+                if (Dialects.IsDialect(register)
+                        ? register != Dialects.RegisterOf(settings.ActiveDialect)
+                        : (settings.RegisterPreference == RegisterPreference.FriendsCasual && register != Register.Casual)
+                          || (settings.RegisterPreference == RegisterPreference.PoliteCasual && register != Register.Polite))
                     continue;
                 // Reject newly introduced emoji/symbols.
                 if (text.EnumerateRunes().Where(IsEmoji).Any(r => !original.EnumerateRunes().Contains(r))) continue;
@@ -66,8 +70,8 @@ public static class ResponseValidator
                 accepted.Add(new Suggestion(text, register));
                 if (accepted.Count >= settings.SuggestionLimit) break;
             }
-            // Keep model ranking within each register; casual first, same order for display and acceptance.
-            var grouped = accepted.Where(s => s.Register == Register.Casual).Concat(accepted.Where(s => s.Register == Register.Polite)).ToList();
+            // Keep model ranking within each register; casual, polite, then dialect. Same order for display and acceptance.
+            var grouped = Enum.GetValues<Register>().SelectMany(r => accepted.Where(s => s.Register == r)).ToList();
             return new ValidationReport(grouped, rows.GetArrayLength(), assessment);
         }
     }

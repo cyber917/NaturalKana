@@ -13,7 +13,9 @@ public sealed class Provider(ProviderKind kind, ProviderConfig config, string ke
         Timeout = TimeSpan.FromSeconds(20),
     };
 
-    internal static JsonObject Schema(int maximumSuggestions) => new()
+    static readonly Register[] StandardRegisters = [Register.Casual, Register.Polite];
+
+    internal static JsonObject Schema(int maximumSuggestions, IReadOnlyList<Register>? registers = null) => new()
     {
         ["type"] = "object",
         ["additionalProperties"] = false,
@@ -33,7 +35,7 @@ public sealed class Provider(ProviderKind kind, ProviderConfig config, string ke
                     ["properties"] = new JsonObject
                     {
                         ["text"] = new JsonObject { ["type"] = "string" },
-                        ["register"] = new JsonObject { ["type"] = "string", ["enum"] = new JsonArray("casual", "polite") },
+                        ["register"] = new JsonObject { ["type"] = "string", ["enum"] = new JsonArray((registers ?? StandardRegisters).Select(r => (JsonNode?)JsonValue.Create(r.ToString().ToLowerInvariant())).ToArray()) },
                     },
                 },
             },
@@ -66,7 +68,7 @@ public sealed class Provider(ProviderKind kind, ProviderConfig config, string ke
             body["response_format"] = new JsonObject
             {
                 ["type"] = "json_schema",
-                ["json_schema"] = new JsonObject { ["name"] = "natural_suggestions", ["strict"] = true, ["schema"] = Schema(prompt.MaximumSuggestions) },
+                ["json_schema"] = new JsonObject { ["name"] = "natural_suggestions", ["strict"] = true, ["schema"] = Schema(prompt.MaximumSuggestions, prompt.Registers) },
             };
         else if (mode == JsonResponseMode.Object)
             body["response_format"] = new JsonObject { ["type"] = "json_object" };

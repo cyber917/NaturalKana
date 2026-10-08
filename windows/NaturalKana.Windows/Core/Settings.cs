@@ -10,10 +10,21 @@ public enum JsonResponseMode { Automatic, Schema, Object, Prompt }
 public enum TokenParameter { Automatic, MaxTokens, MaxCompletionTokens }
 public enum RegisterPreference { Both, FriendsCasual, PoliteCasual }
 public enum SlangLevel { Off, Light, Trendy }
-public enum Register { Casual, Polite }
+/// Regional dialect offered as an extra candidate group (Japanese only). Mirrors Dialect in NaturalSuggestCore.
+public enum Dialect { Off, Kansai }
+/// Candidate group: standard registers first, then dialect groups.
+public enum Register { Casual, Polite, Kansai }
 public enum NoSelectionScope { WholeField, CurrentLine }
 
 public sealed record Suggestion(string Text, Register Register);
+
+public static class Dialects
+{
+    public static string Key(Dialect dialect) => dialect == Dialect.Kansai ? "kansai" : "off";
+    /// The candidate register for a dialect's group; null when off.
+    public static Register? RegisterOf(Dialect dialect) => dialect == Dialect.Kansai ? Register.Kansai : null;
+    public static bool IsDialect(Register register) => register == Register.Kansai;
+}
 
 public static class Providers
 {
@@ -85,6 +96,8 @@ public sealed class AppSettings
     public Dictionary<ProviderKind, ProviderConfig> ProviderConfigs { get; set; } = new();
     public RegisterPreference RegisterPreference { get; set; } = RegisterPreference.Both;
     public SlangLevel SlangLevel { get; set; } = SlangLevel.Light;
+    /// Missing in settings saved by older versions, so it defaults to off.
+    public Dialect Dialect { get; set; } = Dialect.Off;
     public int MaximumSuggestions { get; set; } = 5;
     public int DailyCap { get; set; } = 200;
     public string Hotkey { get; set; } = HotkeyPreset.Default;
@@ -98,6 +111,8 @@ public sealed class AppSettings
     public string BudgetDay { get; set; } = "";
     public int BudgetUsed { get; set; }
 
+    /// Dialects only apply to Japanese suggestions.
+    [JsonIgnore] public Dialect ActiveDialect => Language == SuggestionLanguage.Japanese ? Dialect : Dialect.Off;
     [JsonIgnore] public int SuggestionLimit => Math.Clamp(MaximumSuggestions, 1, 10);
 
     public ProviderConfig Config(ProviderKind kind) =>
