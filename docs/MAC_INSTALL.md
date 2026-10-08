@@ -6,6 +6,26 @@ Mac 版目前**没有现成的安装包**，需要在你自己的 Mac 上从源�
 
 > 为什么没有 DMG？给别人用的 Mac 程序必须用付费开发者账号（每年 99 美元）签名并交给苹果公证，否则会被系统拦截。自己编译则用免费 Apple ID 就行。
 
+## 最简单：一键安装脚本
+
+确认满足下面“开始前确认”里的要求，并做完这三件事：
+
+1. 从 App Store 安装 **Xcode**，打开一次并同意协议（[第 1 步](#第-1-步安装-xcode)）
+2. 在 Xcode 里登录 Apple ID 并创建 Apple Development 证书（[第 3 步](#第-3-步在-xcode-里登录-apple-id-并创建证书)）
+3. 安装 Homebrew（[第 2 步](#第-2-步安装-homebrew-和-git-lfs)的第 1 点；Git LFS 脚本会自动装）
+
+然后打开“终端”（[怎么打开](#第-0-步学会用终端)），粘贴下面这一整行，回车：
+
+```sh
+bash <(curl -fsSL https://raw.githubusercontent.com/cyber917/NaturalKana/main/tools/mac_install.sh)
+```
+
+脚本会自动检查环境、查出 Team ID、下载源码和模型、生成你自己的应用标识、编译并安装，中途只会问你一个英文名，并在安装前提醒你切换输入法。第一次大约 20～40 分钟。最后按屏幕提示在系统设置里添加输入法、填写 API 即可。
+
+**以后要更新，重新运行同一行命令**，它会沿用你的标识，设置和密钥都会保留。源码放在 `~/NaturalKana`，你的标识保存在 `~/.config/naturalkana/Brand.json`。
+
+脚本报错时，按屏幕上的提示处理；提问时附上红色 ✗ 下面的文字。也可以按下面的步骤手动安装。
+
 ## 开始前确认
 
 | 要求 | 怎么确认 |
@@ -15,6 +35,8 @@ Mac 版目前**没有现成的安装包**，需要在你自己的 Mac 上从源�
 | 可用磁盘空间 50 GB 以上 | Xcode 本身就很大 |
 | 一个 Apple ID | 免费的就可以，不需要付费开发者账号 |
 | 一个大模型服务商的 API 密钥 | 装好后才用到，见[配置与使用](USAGE.md#第一次配置) |
+
+以下是**手动安装**的完整步骤。用一键脚本的话，只需要看第 0～3 步和第 9、10 步。
 
 ## 第 0 步：学会用“终端”
 
@@ -228,7 +250,7 @@ cd ~/NaturalKana && cp ~/NaturalKana-Brand.json Config/Brand.json && python3 too
 | --- | --- |
 | `xcrun: error: invalid active developer path` 或找不到 `xcodebuild` | Xcode 没装好，或者装好后没打开过。回到[第 1 步](#第-1-步安装-xcode) |
 | `brew: command not found` | Homebrew 装完后没运行它提示的“Next steps”命令。重新打开终端，按 brew.sh 的说明补上 |
-| `Install git-lfs and rerun --weights` | 没装 Git LFS，回到[第 2 步](#第-2-步安装-homebrew-和-git-lfs) |
+| `Install git-lfs and rerun --weights`，或 `git-lfs: command not found` | 没装 Git LFS，回到[第 2 步](#第-2-步安装-homebrew-和-git-lfs) |
 | `macBundleIdentifier must contain ".inputmethod."` | `Config/Brand.json` 里的标识格式不对，按[第 6 步](#第-6-步设置你自己的应用标识)改好后重新运行 `rebrand.py` |
 | `json.decoder.JSONDecodeError` | `Brand.json` 里有弯引号或少了逗号。对照第 6 步的示例重新粘贴 |
 | `Set your actual Xcode development team ID before a signed build` | 没运行 `export NATURALKANA_TEAM_ID=…`，或者关过终端。重新运行那一行 |

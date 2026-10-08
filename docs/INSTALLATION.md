@@ -138,7 +138,7 @@ python3 tools/rebrand.py
 
 ## Mac 输入法
 
-> **第一次装、不熟悉终端？请看[Mac 详细安装教程](MAC_INSTALL.md)**，从安装 Xcode 开始一步步讲，包括更新、卸载和常见问题。下面是给熟悉开发的人的简略版。
+> **第一次装、不熟悉终端？请看[Mac 详细安装教程](MAC_INSTALL.md)**：装好 Xcode 后，用一条命令就能完成下载、编译和安装，教程里也有更新、卸载和常见问题。下面是给熟悉开发的人的简略版。
 
 需要 Apple 芯片的 Mac 和 macOS 13 以上。准备源码和应用标识同上面的第 1、2 步。Mac 的 `macAppGroup` 建议写成 `你的TeamID.` 加上 `macBundleIdentifier`，例如 `AB12CD34EF.com.yourname.inputmethod.naturalkana.mac`。然后：
 
