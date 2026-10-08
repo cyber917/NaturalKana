@@ -63,12 +63,13 @@ trap 'rm -rf "${tmp:?}"' EXIT
 security find-certificate -a -c "Apple Development" -p 2>/dev/null \
   | awk -v dir="$tmp" '/BEGIN CERTIFICATE/{n++} n{print > (dir "/cert" n ".pem")}' || true
 teams=""
+signers=""  # "TEAM SHA1" per usable certificate, to sign the menu-bar helper
 for pem in "$tmp"/cert*.pem; do
   [[ -f "$pem" ]] || continue
   sha1="$(openssl x509 -noout -fingerprint -sha1 -in "$pem" | sed 's/.*=//; s/://g')"
   grep -q "$sha1" <<< "$identities" || continue  # skip expired certificates or ones without a private key
   team="$(openssl x509 -noout -subject -in "$pem" | sed -nE 's/.*OU ?= ?([A-Z0-9]{10}).*/\1/p')"
-  [[ -n "$team" ]] && teams="$teams$team"$'\n'
+  [[ -n "$team" ]] && teams="$teams$team"$'\n' && signers="$signers$team $sha1"$'\n'
 done
 teams="$(printf '%s' "$teams" | sort -u | sed '/^$/d')"
 if [[ -z "$teams" ]]; then
@@ -95,14 +96,15 @@ else
   TEAM="$(sed -n "${choice}p" <<< "$teams")"
   [[ -n "$TEAM" ]] || fail "编号无效。"
 fi
-info "Team ID：$TEAM ✓"
+info "Team ID：${TEAM} ✓"
+IDENTITY="$(awk -v team="$TEAM" '$1 == team { print $2; exit }' <<< "$signers")"
 
 step "准备源码"
 if [[ -d "$DIR/.git" ]]; then
   cd "$DIR"
   [[ ! -f Config/LocalBrand.json ]] || fail "检测到 Config/LocalBrand.json（开发者配置），这个脚本不处理这种环境。"
   info "已有源码：${DIR}，更新到最新版"
-  allowed=$'Config/Brand.json\nConfig/GeneratedBrand.json\npatches/ios.patch\npatches/macos.patch'
+  allowed=$'Config/Brand.json\nConfig/GeneratedBrand.json\npatches/ios.patch\npatches/macos.patch\nNaturalSuggestCore/Sources/NaturalKanaHelper/Info.plist\nNaturalSuggestCore/Sources/NaturalKanaHelper/NaturalKanaHelper.entitlements'
   unexpected="$(git status --porcelain --untracked-files=no | cut -c4- | grep -vxF "$allowed" || true)"
   [[ -z "$unexpected" ]] || fail "源码里有你自己改过的文件，为避免覆盖，脚本已停止：" $unexpected
   for d in upstream/azooKey-macos upstream/azooKey-ios; do
@@ -190,10 +192,25 @@ xcrun swiftc tools/register_input_source.swift -o "$log_dir/bin/register-input-s
 python3 tools/install_macos.py --app "$APP" --registrar "$log_dir/bin/register-input-source" \
   || fail "安装失败。" "如果提示 Existing destination is another app，说明已经装过另一个标识的 NaturalKana，先按教程的“卸载”删掉旧版。"
 
+step "安装菜单栏小助手"
+# Checks sentences typed with any input method (Chinese, Japanese, English) via ⌃⌥J.
+bash tools/build_macos_helper.sh "$IDENTITY" >"$log_dir/helper.log" 2>&1 \
+  || { tail -n 15 "$log_dir/helper.log" >&2; fail "编译菜单栏小助手失败，完整记录：$log_dir/helper.log" "输入法已经装好，可以照常使用。"; }
+helper_app="$HOME/Applications/NaturalKana Helper.app"
+mkdir -p "$HOME/Applications"
+pkill -x NaturalKanaHelper 2>/dev/null || true
+rm -rf "$helper_app"
+ditto "$log_dir/helper/NaturalKana Helper.app" "$helper_app"
+open "$helper_app"
+info "菜单栏多了一个对话气泡图标 ✓"
+
 step "完成 🎉"
 info "接下来："
 info "1. 在打开的“键盘”设置里：输入法 → 编辑… → 点 + → 日语 → 添加 NaturalKana"
 info "   列表里没有的话，先退出登录再登录一次。"
 info "2. 菜单栏输入法图标 → NaturalKana 设置… → 表达建议，填写服务商和 API 密钥"
+info "3. 想用任何输入法（比如拼音）打字后检查：按 ⌃⌥J（Control+Option+J）。"
+info "   第一次会请你在“系统设置 → 隐私与安全性 → 辅助功能”里打开 NaturalKana Helper，"
+info "   第一次读取密钥时点“始终允许”。"
 info "以后要更新，重新运行同一条命令即可，设置和密钥会保留。"
 open "x-apple.systempreferences:com.apple.Keyboard-Settings.extension" 2>/dev/null || true

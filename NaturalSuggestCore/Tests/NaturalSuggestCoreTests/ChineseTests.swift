@@ -22,12 +22,10 @@ struct ChineseTests {
         var kansai = chinese; kansai.dialect = .kansai
         #expect(kansai.activeDialect == .off)
     }
-    @Test func macDoesNotOfferChinese() {
-        #if os(macOS)
-        #expect(SuggestionLanguage.available == [.japanese, .english])
-        #else
+    @Test func macInputMethodDoesNotCheckChinese() {
+        // Chinese is offered everywhere; on Mac the menu-bar helper checks it, not the input method.
         #expect(SuggestionLanguage.available.contains(.chinese))
-        #endif
+        #expect(SuggestionLanguage.inputMethodLanguages == [.japanese, .english])
     }
     @Test func learnerChineseDraftsPass() {
         for text in [draft, "我昨天在コンビニ买了饮料", "这个手紙是给你的", "我明天要meeting", "今天有点emo", "這個很好吃", "我对中国文化很感兴趣。", "我的iPhone坏了"] {

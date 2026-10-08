@@ -4,14 +4,10 @@ import NaturalLanguage
 public enum SuggestionLanguage: String, Codable, CaseIterable, Sendable {
     case japanese, english, chinese
 
-    /// The Mac input method only sees text typed through NaturalKana, so it cannot check Chinese typed with another IME.
-    public static var available: [SuggestionLanguage] {
-        #if os(macOS)
-        [.japanese, .english]
-        #else
-        allCases
-        #endif
-    }
+    /// Languages offered in settings. On Mac, Chinese is checked by the menu-bar helper; the input method itself
+    /// only sees text typed through NaturalKana (see `inputMethodLanguages`).
+    public static var available: [SuggestionLanguage] { allCases }
+    public static let inputMethodLanguages: [SuggestionLanguage] = [.japanese, .english]
     /// The language of one draft among `languages`, or nil if none fits.
     /// Hiragana means Japanese; common Chinese function words mean Chinese; otherwise the primary language wins.
     /// Kanji-only text without Chinese markers is not guessed as Chinese for a Japanese-primary user.
