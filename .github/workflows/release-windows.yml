@@ -1,0 +1,51 @@
+name: Windows release
+# Run from the Actions tab. Builds the version in NaturalKana.Windows.csproj and
+# creates a draft release windows-v<version>; review the notes, then publish it.
+on: workflow_dispatch
+permissions:
+  contents: write
+jobs:
+  release:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - name: Read version
+        id: version
+        shell: pwsh
+        run: |
+          $version = ([xml](Get-Content windows/NaturalKana.Windows/NaturalKana.Windows.csproj)).Project.PropertyGroup.Version | Where-Object { $_ } | Select-Object -First 1
+          if ($version -notmatch '^\d+\.\d+\.\d+$') { throw "Unexpected version: $version" }
+          gh release view "windows-v$version" 2>$null
+          if ($LASTEXITCODE -eq 0) { throw "windows-v$version already exists; bump <Version> first" }
+          $global:LASTEXITCODE = 0  # "not found" is the expected result above
+          "version=$version" >> $env:GITHUB_OUTPUT
+        env:
+          GH_TOKEN: ${{ github.token }}
+      - run: dotnet test windows/NaturalKana.Windows.Tests
+      - run: dotnet publish windows/NaturalKana.Windows -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true -p:EnableCompressionInSingleFile=true -p:DebugType=none -o windows/publish
+      - name: Package
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory dist | Out-Null
+          Copy-Item windows/publish/NaturalKana.exe dist/NaturalKana-Windows-x64.exe
+          Compress-Archive -Path LICENSE, THIRD_PARTY_NOTICES.md, licenses -DestinationPath dist/NaturalKana-Windows-licenses.zip
+          $sums = Get-ChildItem dist | ForEach-Object { "$((Get-FileHash $_.FullName -Algorithm SHA256).Hash.ToLower())  $($_.Name)" }
+          $sums | Set-Content -Encoding ascii dist/SHA256SUMS.txt
+          $exe = ($sums | Select-String 'NaturalKana-Windows-x64.exe').Line.Split(' ')[0]
+          @(
+            "**下载 ``NaturalKana-Windows-x64.exe`` 双击即可运行**，不用安装。需要 Windows 10/11（64 位）。使用说明：[docs/WINDOWS.md](https://github.com/${{ github.repository }}/blob/main/docs/WINDOWS.md)",
+            "",
+            "| 文件 | SHA256 |",
+            "| --- | --- |",
+            "| NaturalKana-Windows-x64.exe | ``$exe`` |",
+            "",
+            "构建自提交 ${{ github.sha }}。第三方许可见 ``NaturalKana-Windows-licenses.zip``。"
+          ) | Set-Content -Encoding utf8 notes.md
+      - name: Create draft release
+        shell: pwsh
+        run: gh release create "windows-v${{ steps.version.outputs.version }}" (Get-ChildItem dist).FullName --draft --target "${{ github.sha }}" --title "NaturalKana for Windows ${{ steps.version.outputs.version }}" --notes-file notes.md
+        env:
+          GH_TOKEN: ${{ github.token }}

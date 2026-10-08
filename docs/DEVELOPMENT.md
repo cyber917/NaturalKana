@@ -53,10 +53,16 @@ Release 里的 IPA 是“重签输入包”：在 Mac 上用 Release 配置构�
 2. 包里没有个人证书、描述文件或 Team ID。
 3. 附上 `LICENSE`、`THIRD_PARTY_NOTICES.md` 和 `licenses/`，并在发布说明里给出 IPA 的 SHA256。
 
+## 发布 Windows 版
+
+1. 把 `windows/NaturalKana.Windows/NaturalKana.Windows.csproj` 里的 `<Version>` 改成新版本号，合并到 `main`。
+2. 在 GitHub 的 Actions 页选 **Windows release** → **Run workflow**。它会在 Windows 机器上跑测试、打包，并创建草稿 Release `windows-v版本号`，附带 exe、许可证压缩包和 `SHA256SUMS.txt`。
+3. 在 Releases 页打开草稿，补上更新内容，确认后点 **Publish release**。
+
 ## 设计取舍
 
 - 保留 azooKey 的假名汉字转换；建议功能是独立的请求和候选 UI。
-- 建议默认关闭，需要用户同意发送当前句子并配置密钥。请求用 HTTPS、结构化输出、20 秒超时；草稿和回复不写入日志。
+- 建议默认关闭，需要用户同意发送当前句子并配置密钥。请求默认用 HTTPS（本机和局域网地址可用 HTTP）、结构化输出、20 秒超时；草稿和回复不写入日志。
 - 缓存只在内存中；设置、密钥或词库变化时失效。草稿变化会取消旧请求。
 - iPhone 只在输入框末尾做安全替换；Mac 确认不了替换范围时改为复制候选。
 - Mac 版转换用字典转换，因为神经网络 Metal 后端在实际输入测试中出过错。
