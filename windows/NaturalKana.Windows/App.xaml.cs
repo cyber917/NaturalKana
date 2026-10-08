@@ -204,7 +204,7 @@ public partial class App : Application
     {
         var config = settings.Config(settings.Provider);
         var key = string.Join("\u0001", draft, settings.Language, settings.Provider, config.BaseUrl, config.Model,
-            settings.RegisterPreference, settings.SlangLevel, settings.SuggestionLimit);
+            settings.RegisterPreference, settings.SlangLevel, settings.ActiveDialect, settings.SuggestionLimit);
         if (cache.TryGetValue(key, out var cached)) return cached;
         try
         {

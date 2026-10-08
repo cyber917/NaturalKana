@@ -11,6 +11,7 @@ import NaturalSuggestCore
                 settings.language = SuggestionLanguage(rawValue: object["language"] as? String ?? "japanese") ?? .japanese
                 settings.slangLevel = SlangLevel(rawValue: object["slang_level"] as? String ?? "light") ?? .light
                 settings.registerPreference = RegisterPreference(rawValue: object["register_pref"] as? String ?? "both") ?? .both
+                settings.dialect = Dialect(rawValue: object["dialect"] as? String ?? "off") ?? .off
                 let accepted = settings.language.draftProfile.accepts(draft, composingLatin: object["composingLatin"] as? Bool ?? false) && draft.count >= 4
                 var result: [String: Any] = ["gate": accepted, "suggestions": []]
                 if let candidates = object["response"] {

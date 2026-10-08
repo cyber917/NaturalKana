@@ -30,6 +30,7 @@ public enum SuggestionLanguage: String, Codable, CaseIterable, Sendable {
         case (.japanese, .polite): "丁寧"
         case (.english, .casual): "Casual"
         case (.english, .polite): "Polite"
+        case (_, .kansai): Dialect.kansai.title
         }
     }
     public var closeTitle: String { self == .japanese ? "閉じる" : "Close" }

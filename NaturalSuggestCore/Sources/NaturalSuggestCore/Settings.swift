@@ -35,7 +35,28 @@ public enum JSONResponseMode: String, Codable, CaseIterable, Sendable { case aut
 public enum TokenParameter: String, Codable, CaseIterable, Sendable { case automatic, maxTokens, maxCompletionTokens }
 public enum RegisterPreference: String, Codable, CaseIterable, Sendable { case both, friendsCasual, politeCasual }
 public enum SlangLevel: String, Codable, CaseIterable, Sendable { case off, light, trendy }
-public enum Register: String, Codable, Sendable { case casual, polite }
+/// Regional dialect offered as an extra candidate group. Japanese only; add a case plus prompt examples per dialect.
+public enum Dialect: String, Codable, CaseIterable, Sendable {
+    case off, kansai
+    public var title: String {
+        switch self {
+        case .off: "关闭"
+        case .kansai: "関西弁"
+        }
+    }
+    /// The candidate register used for this dialect's group; nil when off.
+    public var register: Register? {
+        switch self {
+        case .off: nil
+        case .kansai: .kansai
+        }
+    }
+}
+/// Candidate group. Standard registers come first; dialect registers are separate groups after them.
+public enum Register: String, Codable, CaseIterable, Sendable {
+    case casual, polite, kansai
+    public var isDialect: Bool { self == .kansai }
+}
 public struct Suggestion: Codable, Equatable, Hashable, Sendable {
     public var text: String
     public var register: Register
@@ -105,6 +126,9 @@ public struct SuggestionSettings: Codable, Hashable, Sendable {
     public var qualityPartner: ProviderKind = .qwen
     public var registerPreference: RegisterPreference = .both
     public var slangLevel: SlangLevel = .light
+    public var dialect: Dialect = .off
+    /// The dialect actually requested; dialects only apply to Japanese suggestions.
+    public var activeDialect: Dialect { language == .japanese ? dialect : .off }
     public var debounceMilliseconds = 600
     public var minimumLength = 4
     public static let suggestionCountRange = 1...10
@@ -134,7 +158,7 @@ public struct SuggestionSettings: Codable, Hashable, Sendable {
         let encoder = JSONEncoder(); encoder.outputFormatting = .sortedKeys
         return SHA256.hash(data: (try? encoder.encode(self)) ?? Data()).map { String(format: "%02x", $0) }.joined()
     }
-    private enum CodingKeys: String, CodingKey { case enabled, consent, language, provider, openAI, qwen, additionalProviders, highlightChanges, qualityPartner, registerPreference, slangLevel, debounceMilliseconds, minimumLength, maximumSuggestions, qualityMode, dailyCap, blockedApps, acceptKeys }
+    private enum CodingKeys: String, CodingKey { case enabled, consent, language, provider, openAI, qwen, additionalProviders, highlightChanges, qualityPartner, registerPreference, slangLevel, dialect, debounceMilliseconds, minimumLength, maximumSuggestions, qualityMode, dailyCap, blockedApps, acceptKeys }
     public init(from decoder: Decoder) throws {
         let values = try decoder.container(keyedBy: CodingKeys.self)
         enabled = try values.decodeIfPresent(Bool.self, forKey: .enabled) ?? false
@@ -148,6 +172,8 @@ public struct SuggestionSettings: Codable, Hashable, Sendable {
         qualityPartner = try values.decodeIfPresent(ProviderKind.self, forKey: .qualityPartner) ?? .qwen
         registerPreference = try values.decodeIfPresent(RegisterPreference.self, forKey: .registerPreference) ?? .both
         slangLevel = try values.decodeIfPresent(SlangLevel.self, forKey: .slangLevel) ?? .light
+        // A dialect added by a newer release falls back to off instead of discarding all settings.
+        dialect = (try? values.decodeIfPresent(Dialect.self, forKey: .dialect)) ?? .off
         debounceMilliseconds = try values.decodeIfPresent(Int.self, forKey: .debounceMilliseconds) ?? 600
         minimumLength = try values.decodeIfPresent(Int.self, forKey: .minimumLength) ?? 4
         maximumSuggestions = try values.decodeIfPresent(Int.self, forKey: .maximumSuggestions) ?? 5
