@@ -102,7 +102,7 @@ struct AutoLanguageTests {
     @Test func promptFollowsTheDetectedLanguage() throws {
         var settings = SuggestionSettings(); settings.autoLanguage = true
         let resolved = try #require(settings.resolvingLanguage(for: "我明天有工作，所以请等一点我"))
-        let prompt = try PromptBuilder().make(draft: "我明天有工作，所以请等一点我", settings: resolved, lexicon: .bundled())
+        let prompt = try PromptBuilder().make(draft: "我明天有工作，所以请等一点我", settings: resolved)
         #expect(prompt.system.contains("Chinese phrasing assistant"))
     }
 }

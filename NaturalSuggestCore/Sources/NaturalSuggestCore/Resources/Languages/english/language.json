@@ -1,0 +1,16 @@
+{
+  "order": 1,
+  "title": "英语",
+  "promptName": "English",
+  "locale": "en",
+  "testDraft": "I have work to do, please wait me a moment.",
+  "registerTitles": {
+    "casual": "Casual",
+    "polite": "Polite"
+  },
+  "closeTitle": "Close",
+  "copyHint": "Click to copy · Select the original text and paste",
+  "rules": "english",
+  "detect": {},
+  "windowsFont": "Segoe UI"
+}

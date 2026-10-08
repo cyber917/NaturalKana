@@ -92,4 +92,4 @@ dotnet publish windows/NaturalKana.Windows -c Release -r win-x64 --self-containe
 - `Win/`：快捷键、复制粘贴和剪贴板恢复，以及自动建议（`AutoWatcher`、`FieldReader`）。
 - `UI/`：建议卡片和设置窗口。
 
-提示词和网络用语词表直接引用 `NaturalSuggestCore` 里的同一份文件。修改建议逻辑时，请同时更新 Swift 和 C# 两边的测试。
+语言包（提示词、网络用语词表、识别规则）和界面翻译直接引用 `NaturalSuggestCore` 里的同一份文件，见[添加一种语言](DEVELOPMENT.md#添加一种语言)。修改建议逻辑时，请同时更新 Swift 和 C# 两边的测试。

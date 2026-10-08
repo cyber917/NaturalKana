@@ -9,8 +9,6 @@ enum ChineseText {
     /// Common Traditional or Japanese-only forms whose Simplified form is different.
     /// Candidates must be Simplified; drafts may contain them (learners often type Japanese kanji).
     static let notSimplified = CharacterSet(charactersIn: "們這說請謝飯嗎麼讓給還過聽歡話幫樣見來時國會學對個為與東車門開問間關長頭電體氣気動點認讀語書買賣覺親視駅図歩様済広辺発楽実経続紙網絡隣働売円応変戦検験録")
-    /// Characters that are frequent in Chinese but rare in kanji-only Japanese.
-    static let markers = CharacterSet(charactersIn: "的了吗呢吧们这那你我他她很没说么啊呀给让还过请谢")
     static let denied = ["翻译", "翻譯", "翻訳", "译成", "翻成", "忽略指令", "忽略之前", "系统提示", "提示词", "ignore instructions", "system prompt"]
 
     static func scalars(_ text: String) -> [Unicode.Scalar] {

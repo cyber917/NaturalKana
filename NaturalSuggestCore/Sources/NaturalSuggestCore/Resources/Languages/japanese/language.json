@@ -1,0 +1,20 @@
+{
+  "order": 0,
+  "title": "日语",
+  "promptName": "Japanese",
+  "locale": "ja",
+  "testDraft": "今日は仕事があるから、少し待ってください。",
+  "registerTitles": {
+    "casual": "カジュアル",
+    "polite": "丁寧"
+  },
+  "closeTitle": "閉じる",
+  "copyHint": "クリックでコピー・元の文を選択して貼り付け",
+  "rules": "japanese",
+  "detect": {
+    "signal": "[\\u3041-\\u3096]",
+    "priority": 0
+  },
+  "romanizedInput": true,
+  "windowsFont": "Yu Gothic UI, Microsoft YaHei UI, Segoe UI"
+}

@@ -19,6 +19,7 @@ public partial class SuggestionWindow : Window
     readonly bool highlight;
     readonly bool passive;
     readonly SuggestionLanguage language;
+    FontFamily Font => language.Pack.WindowsFont is { } font ? new FontFamily(font) : Theme.Japanese;
     readonly List<Border> rows = [];
     IReadOnlyList<Suggestion> suggestions = [];
     int selected = -1;
@@ -40,7 +41,7 @@ public partial class SuggestionWindow : Window
         this.passive = passive;
         ShowActivated = !passive;
         Draft.Text = draft;
-        if (language == SuggestionLanguage.Chinese) Draft.FontFamily = Theme.Chinese;
+        Draft.FontFamily = Font;
         Mode.Text = passive ? UIText.T("自动建议") : "";
         Hint.Text = passive ? UIText.T("点击或按 Ctrl+数字 采用 · Esc 关闭 · 可拖动") : UIText.T("点击或按数字键采用 · ↑↓ 选择，Enter 采用 · 可拖动");
         ShowRequesting();
@@ -113,7 +114,7 @@ public partial class SuggestionWindow : Window
 
     Border Row(int index, Suggestion item)
     {
-        var text = new TextBlock { FontFamily = language == SuggestionLanguage.Chinese ? Theme.Chinese : Theme.Japanese, FontSize = 16, TextWrapping = TextWrapping.Wrap, Foreground = Theme.Ink };
+        var text = new TextBlock { FontFamily = Font, FontSize = 16, TextWrapping = TextWrapping.Wrap, Foreground = Theme.Ink };
         foreach (var span in highlight ? SuggestionDiff.Spans(draft, item.Text) : [new SuggestionSpan(item.Text, false)])
             text.Inlines.Add(new Run(span.Text) { Foreground = span.Changed ? Theme.Blue : Theme.Ink });
 

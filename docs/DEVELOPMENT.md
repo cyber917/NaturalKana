@@ -7,6 +7,8 @@
 | 路径 | 内容 |
 | --- | --- |
 | `NaturalSuggestCore/` | 本项目新增的 Swift 包：建议引擎（`NaturalSuggestCore`）、设置与候选 UI（`NaturalSuggestUI`）、主程序与键盘共享存储（`NaturalKanaStorage`）、命令行调试工具 |
+| `NaturalSuggestCore/Sources/NaturalSuggestCore/Resources/Languages/` | 语言包：每种建议语言一个文件夹，iPhone、Mac、Windows 共用，见[添加一种语言](#添加一种语言) |
+| `NaturalSuggestCore/Sources/NaturalSuggestCore/Resources/ui_strings.json` | 界面文字的英文、日文翻译（以中文原文为索引），三端共用 |
 | `patches/ios.patch`、`patches/macos.patch` | 对上游 azooKey iOS／Desktop 的修改 |
 | `Config/Brand.json` | 公开的默认应用标识；`rebrand.py` 据此生成工程中的标识 |
 | `Config/Dependencies/*.resolved` | 固定的 Swift 依赖版本 |
@@ -15,6 +17,36 @@
 | `upstream/` | `bootstrap.py` 下载的上游源码（不提交到仓库） |
 
 上游固定版本写在 `tools/bootstrap.py` 里。`bootstrap.py` 下载上游和子模块，应用补丁，复制依赖锁文件；加 `--weights` 会下载模型。
+
+## 添加一种语言
+
+每种建议语言是 `Resources/Languages/<id>/` 下的一个文件夹，`<id>` 就是保存在设置里的名字（例如 `korean`）。三端都会自动读到它，不需要改 Swift 或 C# 代码：
+
+| 文件 | 内容 |
+| --- | --- |
+| `language.json` | 名称、例句、分组名、识别规则（字段见下表） |
+| `prompt.txt` | 给模型的说明（英文写），参考 `english/prompt.txt` 的结构；例句需要母语者审核 |
+| `lexicon.jsonl` | 可选：网络用语参考词库，格式同 `japanese/lexicon.jsonl`，释义写在 `gloss_<语言>` 字段 |
+
+`language.json` 的字段：
+
+| 字段 | 说明 |
+| --- | --- |
+| `order` | 设置里的排列顺序 |
+| `title` | 界面上的名称（中文，例如“韩语”）；英文、日文翻译加到 `ui_strings.json` |
+| `promptName` | 提示词里的语言名，例如 `Korean` |
+| `locale` | 语言代码，例如 `ko` |
+| `testDraft` | “测试连接”时发送的例句，最好带一个常见错误 |
+| `registerTitles` | 分组名，用这种语言写：`{"casual": "반말", "polite": "존댓말"}` |
+| `closeTitle`、`copyHint` | Mac 建议框的“关闭”和复制提示，用这种语言写 |
+| `rules` | 新语言写 `generic`；`japanese`、`english`、`chinese` 是三种已有语言专门调过的规则 |
+| `generic` | `rules` 为 `generic` 时的检查规则：`letters`（这种语言的字母，正则字符类，如 `[\\uAC00-\\uD7A3]`）、`forbidden`（候选里不能出现的字母）、`latinAllowlist`（候选里允许的英文词）、`denied`（翻译、指令类请求的关键词，小写）、`draftShare`／`candidateShare`（这种语言字母至少占多少，默认 0.5／0.6） |
+| `detect` | 建议语言选“自动”时用：`signal`（看到就判定为这种语言的字符，正则）、`priority`（数字小的优先）、`ambiguousWith`（没有 `signal` 时，主要语言是这些语言的用户不会被判定成这种语言） |
+| `keepPunctuation` | 候选保留全角标点（中文用） |
+| `romanizedInput` | 用罗马字或拼音输入，结尾是英文字母说明还在拼写（Windows 自动建议用） |
+| `windowsFont` | Windows 建议卡片的字体 |
+
+加完后运行 `swift test --package-path NaturalSuggestCore`：测试会检查每个语言包是否完整、例句能否通过检查、界面名称有没有翻译。Windows 的测试在 GitHub 上运行。iPhone 和 Mac 输入法要能直接打这种语言，还需要另外加键盘布局。
 
 ## 修改上游代码
 

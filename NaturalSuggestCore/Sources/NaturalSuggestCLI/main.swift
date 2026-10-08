@@ -18,7 +18,7 @@ import NaturalSuggestCore
                     let data = try JSONSerialization.data(withJSONObject: candidates)
                     result["suggestions"] = try ResponseValidator().validate(data, draft: draft, settings: settings).map { ["text": $0.text, "register": $0.register.rawValue] }
                 } else if accepted, object["action"] as? String == "prompt" {
-                    let prompt = try PromptBuilder(override: object["system_override"] as? String).make(draft: draft, settings: settings, lexicon: .bundled())
+                    let prompt = try PromptBuilder(override: object["system_override"] as? String).make(draft: draft, settings: settings)
                     result["system"] = prompt.system; result["user"] = prompt.user
                 } else if accepted, object["action"] as? String == "live" {
                     let configs = object["providers"] as? [String: [String: String]] ?? [:]
@@ -39,7 +39,7 @@ import NaturalSuggestCore
                     let selected = try client(kind)
                     let quality = object["quality_mode"] as? Bool ?? false
                     let provider: any SuggestionProvider = quality ? try QualityProvider(first: client(.openAI), second: client(.qwen), judge: selected) : selected
-                    let prompt = try PromptBuilder(override: object["system_override"] as? String).make(draft: draft, settings: settings, lexicon: .bundled())
+                    let prompt = try PromptBuilder(override: object["system_override"] as? String).make(draft: draft, settings: settings)
                     let response = try await provider.suggest(prompt, quality: quality || object["slot"] as? String == "quality")
                     let items = try ResponseValidator().validate(response.json, draft: draft, settings: settings)
                     result["suggestions"] = items.map { ["text": $0.text, "register": $0.register.rawValue] }
