@@ -7,7 +7,7 @@ public struct PinyinCandidate: Equatable, Sendable {
     public init(text: String, consumed: Int) { self.text = text; self.consumed = consumed }
 }
 
-/// Full-pinyin conversion for the Chinese keyboard, from the bundled frequency-ordered dictionary.
+/// Pinyin conversion for the Chinese keyboard, from the bundled frequency-ordered dictionary.
 /// Letters are lowercase a–z without separators; ü is typed as v.
 public struct PinyinLexicon: Sendable {
     private struct Entry: Sendable { let word: String; let letters: String; let rank: Int }
@@ -16,17 +16,51 @@ public struct PinyinLexicon: Sendable {
     private let exact: [String: [Int]]
     /// Entries ordered by letters, for prefix search.
     private let byLetters: [Int]
+    private struct Node: Sendable {
+        var children: [Int: Int] = [:]
+        var entries: [Int] = []
+        var edges: [(id: Int, child: Int)] = []
+    }
+    private struct Match {
+        let entry: Int
+        let end: Int
+        let penalty: Double
+        let corrected: Bool
+    }
     private let longestKey: Int
+    private let syllables: [[UInt8]]
+    private let nodes: [Node]
 
     /// Each line is a word, a tab and its syllables separated by spaces, most frequent first.
     public init(lines: [Substring]) {
         var entries: [Entry] = []
         var exact: [String: [Int]] = [:]
+        var syllables: [[UInt8]] = []
+        var syllableIDs: [String: Int] = [:]
+        var nodes = [Node()]
         for line in lines where !line.hasPrefix("#") {
             let parts = line.split(separator: "\t")
             guard parts.count == 2 else { continue }
             let letters = parts[1].replacingOccurrences(of: " ", with: "")
             guard !letters.isEmpty, letters.allSatisfy(Self.isLetter) else { continue }
+            var node = 0
+            for syllable in parts[1].split(separator: " ").map(String.init) {
+                let id: Int
+                if let existing = syllableIDs[syllable] { id = existing }
+                else {
+                    id = syllables.count
+                    syllableIDs[syllable] = id
+                    syllables.append(Array(syllable.utf8))
+                }
+                if let child = nodes[node].children[id] { node = child }
+                else {
+                    let child = nodes.count
+                    nodes.append(Node())
+                    nodes[node].children[id] = child
+                    node = child
+                }
+            }
+            nodes[node].entries.append(entries.count)
             exact[letters, default: []].append(entries.count)
             entries.append(Entry(word: String(parts[0]), letters: letters, rank: entries.count))
         }
@@ -34,6 +68,13 @@ public struct PinyinLexicon: Sendable {
         self.exact = exact
         byLetters = entries.indices.sorted { entries[$0].letters < entries[$1].letters }
         longestKey = entries.map(\.letters.count).max() ?? 0
+        self.syllables = syllables
+        self.nodes = nodes.map { node in
+            var node = node
+            node.edges = node.children.sorted { $0.key < $1.key }.map { ($0.key, $0.value) }
+            node.children = [:]
+            return node
+        }
     }
 
     public static func bundled() -> Self {
@@ -59,14 +100,25 @@ public struct PinyinLexicon: Sendable {
         func cost(_ index: Int) -> Double { Self.cost(rank: entries[index].rank, uses: uses(entries[index].word)) }
         func ranked(_ indices: [Int]) -> [Int] { indices.map { ($0, cost($0)) }.sorted { $0.1 < $1.1 }.map(\.0) }
 
-        if let sentence = sentence(letters, cost: cost), seen.insert(sentence).inserted {
+        let matches = matches(Array(input.utf8))
+        let sentences = sentences(letters.count, matches: matches, cost: cost, exactOnly: true).prefix(1)
+            + sentences(letters.count, matches: matches, cost: cost)
+        for sentence in sentences where result.count < limit && seen.insert(sentence).inserted {
             result.append(PinyinCandidate(text: sentence, consumed: letters.count))
         }
         for index in ranked(exact[input] ?? []) { add(index, consumed: letters.count) }
+        for match in (matches.first ?? []).filter({ $0.end == letters.count }).sorted(by: {
+            let left = cost($0.entry) + $0.penalty, right = cost($1.entry) + $1.penalty
+            return left == right ? $0.entry < $1.entry : left < right
+        }) { add(match.entry, consumed: letters.count) }
         for index in ranked(longer(than: input, cost: cost, limit: 6)) { add(index, consumed: letters.count) }
         for length in stride(from: letters.count - 1, through: 1, by: -1) {
             for index in ranked(exact[String(letters[..<length])] ?? []).prefix(8) { add(index, consumed: length) }
         }
+        for match in (matches.first ?? []).filter({ $0.end < letters.count && !$0.corrected }).sorted(by: {
+            if $0.end != $1.end { return $0.end > $1.end }
+            return cost($0.entry) + $0.penalty < cost($1.entry) + $1.penalty
+        }) { add(match.entry, consumed: match.end) }
         return result
     }
 
@@ -77,40 +129,126 @@ public struct PinyinLexicon: Sendable {
         log(Double(rank) + 100) - 1.5 * log(1 + Double(uses))
     }
 
-    /// The cheapest split of all letters into dictionary words; the last word may be spelled only in part.
-    /// Nil unless it needs two or more words, since single words are listed on their own.
-    private func sentence(_ letters: [Character], cost: (Int) -> Double) -> String? {
-        let count = letters.count
-        var best = [Double](repeating: .infinity, count: count + 1)
-        var back = [(start: Int, entry: Int)?](repeating: nil, count: count + 1)
-        best[0] = 0
-        for start in 0..<count where best[start].isFinite {
-            for end in (start + 1)...min(count, start + longestKey) {
-                guard let words = exact[String(letters[start..<end])],
-                      let word = words.min(by: { cost($0) < cost($1) }) else { continue }
-                // Each extra word costs a little, so a known phrase beats the same letters split up.
-                // A sentence-final particle is likelier at the end than a word spelled the same (吧, not 把).
-                let particle = end == count ? words.first(where: { Self.finalParticles.contains(entries[$0].word) }) : nil
-                let total = particle.map { best[start] + cost($0) - 2.5 } ?? best[start] + cost(word) + 1
-                if total < best[end] { best[end] = total; back[end] = (start, particle ?? word) }
+    /// Match syllables as full spelling or initials. A single typo may be corrected per sentence.
+    /// The trie shares syllable prefixes, so mixed spelling needs no exponential list of aliases.
+    private func matches(_ input: [UInt8]) -> [[Match]] {
+        let count = input.count
+        // Exact spelling must stay available even when the mixed-spelling search reaches its bound.
+        var result: [[Match]] = (0..<count).map { start in
+            guard longestKey > 0 else { return [] }
+            return ((start + 1)...min(count, start + longestKey)).flatMap { end in
+                (exact[String(decoding: input[start..<end], as: UTF8.self)] ?? []).map {
+                    Match(entry: $0, end: end, penalty: 0, corrected: false)
+                }
             }
         }
-        var end = count
-        var lowest = best[count]
-        var tail: Int?
-        // Unfinished last syllable: complete it with the best word starting with the remaining letters.
-        for start in 0..<count where best[start].isFinite {
-            guard let word = longer(than: String(letters[start...]), cost: cost, limit: 1).first else { continue }
-            let total = best[start] + cost(word) + 3
-            if total < lowest { lowest = total; end = start; tail = word }
+        guard count <= 64 else { return result }
+        for start in 0..<count {
+            struct State {
+                let node: Int
+                let position: Int
+                let penalty: Double
+                let corrected: Bool
+            }
+            struct Key: Hashable { let node: Int; let position: Int; let corrected: Bool }
+            var queue = [State(node: 0, position: start, penalty: 0, corrected: false)]
+            var visited: [Key: Double] = [:]
+            var cursor = 0
+            // Very long runs of initials are ambiguous; bound the work on the keyboard thread.
+            while cursor < queue.count && cursor < 4_096 {
+                let state = queue[cursor]
+                cursor += 1
+                let key = Key(node: state.node, position: state.position, corrected: state.corrected)
+                if let previous = visited[key], previous <= state.penalty { continue }
+                visited[key] = state.penalty
+                if state.penalty > 0 && (!state.corrected || state.position - start >= 4) {
+                    for entry in nodes[state.node].entries {
+                        result[start].append(Match(entry: entry, end: state.position,
+                                                   penalty: state.penalty, corrected: state.corrected))
+                    }
+                }
+                guard state.position < count else { continue }
+                for (id, child) in nodes[state.node].edges {
+                    let syllable = syllables[id]
+                    let remaining = count - state.position
+                    func append(_ length: Int, penalty: Double = 0, corrected: Bool = false) {
+                        queue.append(State(node: child, position: state.position + length,
+                                           penalty: state.penalty + penalty,
+                                           corrected: state.corrected || corrected))
+                    }
+                    if remaining >= syllable.count,
+                       input[state.position..<(state.position + syllable.count)].elementsEqual(syllable) {
+                        append(syllable.count)
+                    }
+                    if syllable.count > 1, input[state.position] == syllable[0] {
+                        append(1, penalty: 0.8)
+                        if syllable.count > 2, syllable[1] == 104, remaining >= 2,
+                           input[state.position + 1] == 104, [99, 115, 122].contains(syllable[0]) {
+                            append(2, penalty: 0.8)
+                        }
+                    }
+                    if remaining < syllable.count,
+                       syllable.starts(with: input[state.position...]) {
+                        append(remaining, penalty: 2)
+                    }
+                    guard !state.corrected, count >= 4, syllable.count >= 2, remaining >= syllable.count - 1 else { continue }
+                    for length in max(1, syllable.count - 1)...min(remaining, syllable.count + 1) {
+                        if Self.oneEdit(input[state.position..<(state.position + length)], syllable) {
+                            append(length, penalty: 3, corrected: true)
+                        }
+                    }
+                }
+            }
         }
-        guard lowest.isFinite else { return nil }
-        var words: [String] = tail.map { [entries[$0].word] } ?? []
-        while end > 0, let step = back[end] {
-            words.insert(entries[step.entry].word, at: 0)
-            end = step.start
+        return result
+    }
+
+    /// One missing, extra, substituted or transposed letter within a syllable.
+    private static func oneEdit(_ typed: ArraySlice<UInt8>, _ expected: [UInt8]) -> Bool {
+        let a = Array(typed), b = expected
+        guard abs(a.count - b.count) <= 1 else { return false }
+        var index = 0
+        while index < min(a.count, b.count), a[index] == b[index] { index += 1 }
+        if index == min(a.count, b.count) { return a.count != b.count }
+        if a.count == b.count {
+            if a.dropFirst(index + 1).elementsEqual(b.dropFirst(index + 1)) { return true }
+            return index + 1 < a.count && a[index] == b[index + 1] && a[index + 1] == b[index]
+                && a.dropFirst(index + 2).elementsEqual(b.dropFirst(index + 2))
         }
-        return words.count > 1 ? words.joined() : nil
+        if a.count > b.count { return a.dropFirst(index + 1).elementsEqual(b.dropFirst(index)) }
+        return a.dropFirst(index).elementsEqual(b.dropFirst(index + 1))
+    }
+
+    /// Keep several complete paths: initials can represent more than one word or sentence.
+    private func sentences(_ count: Int, matches: [[Match]], cost: (Int) -> Double, exactOnly: Bool = false) -> [String] {
+        guard matches.count == count else { return [] }
+        struct Path { let text: String; let cost: Double }
+        func ranked(_ paths: [Path]) -> [Path] {
+            var seen = Set<String>()
+            return paths.sorted { $0.cost == $1.cost ? $0.text < $1.text : $0.cost < $1.cost }
+                .filter { seen.insert($0.text).inserted }.prefix(24).map { $0 }
+        }
+        var paths = [[[Path]]](repeating: [[], []], count: count + 1)
+        paths[0][0] = [Path(text: "", cost: 0)]
+        for start in 0..<count {
+            for budget in 0...1 {
+                let previous = ranked(paths[start][budget])
+                paths[start][budget] = []
+                guard !previous.isEmpty else { continue }
+                for match in matches[start] where !exactOnly || match.penalty == 0 {
+                    let next = budget + (match.corrected ? 1 : 0)
+                    guard next <= 1 else { continue }
+                    let particle = match.end == count && match.penalty == 0
+                        && Self.finalParticles.contains(entries[match.entry].word)
+                    let addition = cost(match.entry) + match.penalty + (particle ? -2.5 : 1)
+                    for path in previous {
+                        paths[match.end][next].append(Path(text: path.text + entries[match.entry].word,
+                                                          cost: path.cost + addition))
+                    }
+                }
+            }
+        }
+        return ranked(paths[count][0] + paths[count][1]).map(\.text)
     }
 
     /// Words whose letters start with `prefix` and are longer, cheapest first.

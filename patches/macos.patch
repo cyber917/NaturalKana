@@ -2555,10 +2555,10 @@ index 9b993b4..4af80a1 100644
 -
  }
 diff --git a/azooKeyMac/Windows/ConfigWindow.swift b/azooKeyMac/Windows/ConfigWindow.swift
-index 099d430..a5f6039 100644
+index 099d430..eae5b1b 100644
 --- a/azooKeyMac/Windows/ConfigWindow.swift
 +++ b/azooKeyMac/Windows/ConfigWindow.swift
-@@ -1,983 +1,74 @@
+@@ -1,983 +1,59 @@
  import Cocoa
  import Core
  import SwiftUI
@@ -2568,7 +2568,6 @@ index 099d430..a5f6039 100644
 +/// The only settings surface for the installed input method.
  struct ConfigWindow: View {
 +    @ObservedObject var model: SuggestionModel
-+    @ObservedObject private var activity = NativeSuggestionActivity.shared
      @ConfigState private var liveConversion = Config.LiveConversion()
      @ConfigState private var inputStyle = Config.InputStyle()
 -    @ConfigState private var zenzaiProfile = Config.ZenzaiProfile()
@@ -3404,9 +3403,7 @@ index 099d430..a5f6039 100644
 -    private var advancedTabView: some View {
 -        Form {
 -            Section {
-+        TabView {
-+            VStack(spacing: 0) {
-                 HStack {
+-                HStack {
 -                    TextField("変換プロフィール", text: $zenzaiProfile, prompt: Text("例：田中太郎/高校生"))
 -                    helpButton(
 -                        helpContent: """
@@ -3452,46 +3449,7 @@ index 099d430..a5f6039 100644
 -                            if self.debugTypoCorrectionDownloadInProgress {
 -                                ProgressView()
 -                                    .controlSize(.small)
-+                    Text(UIText.t("输入状态：") + activity.message).font(.callout)
-+                    if !activity.timing.isEmpty { Text(activity.timing).font(.caption).foregroundStyle(.secondary) }
-+                    Spacer()
-+                }.padding()
-+                DisclosureGroup(UIText.t("检查详情（仅在内存中显示，不写日志）")) {
-+                    VStack(alignment: .leading, spacing: 6) {
-+                        Text(UIText.t("文字来源：") + activity.contextSource + UIText.t("，共 %@ 字", "\(activity.inspectedText.count)"))
-+                        Text(activity.inspectedText.isEmpty ? UIText.t("（空）") : activity.inspectedText).textSelection(.enabled)
-+                        Text(UIText.t("最近请求：") + activity.lastRequest).foregroundStyle(.secondary)
-+                    }.font(.callout).frame(maxWidth: .infinity, alignment: .leading)
-+                }.padding(.horizontal).padding(.bottom, 8)
-+                Divider()
-+                NaturalSettingsView(model: model)
-+            }.tabItem { Label(UIText.t("表达建议"), systemImage: "sparkles") }
-+            Form {
-+                Section(UIText.t("打字与转换")) {
-+                    Toggle(UIText.t("输入时自动转换"), isOn: $liveConversion)
-+                    Text(UIText.t("关闭后，按空格转换，按回车确认。普通打字使用本地词典，无需联网。"))
-+                        .font(.caption).foregroundStyle(.secondary)
-+                    Picker(UIText.t("输入方式"), selection: $inputStyle) {
-+                        Text(UIText.t("罗马字转假名（默认）")).tag(Config.InputStyle.Value.default)
-+                        Text(UIText.t("假名输入（日式键盘）")).tag(Config.InputStyle.Value.defaultKanaJIS)
-+                        Text(UIText.t("假名输入（美式键盘）")).tag(Config.InputStyle.Value.defaultKanaUS)
-+                        Text(UIText.t("AZIK 罗马字方案")).tag(Config.InputStyle.Value.defaultAZIK)
-+                        if inputStyle.value == .custom { Text(UIText.t("现有自定义方案")).tag(Config.InputStyle.Value.custom) }
-+                    }
-+                    Toggle(UIText.t("使用半角空格"), isOn: $halfSpace)
-+                    Toggle(UIText.t("反斜杠键输入 \\ 而非 ¥"), isOn: $backSlash)
-+                }
-+                Section(UIText.t("学习")) {
-+                    Picker(UIText.t("词典学习"), selection: $learning) {
-+                        Text(UIText.t("学习并使用历史")).tag(Config.Learning.Value.inputAndOutput)
-+                        Text(UIText.t("停止学习，保留历史")).tag(Config.Learning.Value.onlyOutput)
-+                        Text(UIText.t("不使用学习历史")).tag(Config.Learning.Value.nothing)
-+                    }
-+                    Button(UIText.t("清除学习记录"), role: .destructive) { showReset = true }
-+                        .confirmationDialog(UIText.t("清除后无法恢复，是否继续？"), isPresented: $showReset) {
-+                            Button(UIText.t("清除学习记录"), role: .destructive) {
-+                                client.resetLearningData { ok in resetMessage = ok ? UIText.t("学习记录已清除") : UIText.t("清除失败，请重试") }
-                             }
+-                            }
 -                            Spacer()
 -                            switch self.debugTypoCorrectionState {
 -                            case .downloaded:
@@ -3546,11 +3504,9 @@ index 099d430..a5f6039 100644
 -                    HStack {
 -                        Button("Finderで開く") {
 -                            self.openAzooKeyDataDirectoryInFinder()
-+                            Button(UIText.t("取消"), role: .cancel) {}
-                         }
+-                        }
 -                    }
-+                    if !resetMessage.isEmpty { Text(resetMessage) }
-                 }
+-                }
 -                LabeledContent("Converter Process") {
 -                    VStack(alignment: .trailing, spacing: 4) {
 -                        Button("再起動") {
@@ -3589,6 +3545,39 @@ index 099d430..a5f6039 100644
 -        }
 -        .formStyle(.grouped)
 -        .scrollContentBackground(.hidden)
++        TabView {
++            NaturalSettingsView(model: model)
++                .tabItem { Label(UIText.t("表达建议"), systemImage: "sparkles") }
++            Form {
++                Section(UIText.t("打字与转换")) {
++                    Toggle(UIText.t("输入时自动转换"), isOn: $liveConversion)
++                    Text(UIText.t("关闭后，按空格转换，按回车确认。普通打字使用本地词典，无需联网。"))
++                        .font(.caption).foregroundStyle(.secondary)
++                    Picker(UIText.t("输入方式"), selection: $inputStyle) {
++                        Text(UIText.t("罗马字转假名（默认）")).tag(Config.InputStyle.Value.default)
++                        Text(UIText.t("假名输入（日式键盘）")).tag(Config.InputStyle.Value.defaultKanaJIS)
++                        Text(UIText.t("假名输入（美式键盘）")).tag(Config.InputStyle.Value.defaultKanaUS)
++                        Text(UIText.t("AZIK 罗马字方案")).tag(Config.InputStyle.Value.defaultAZIK)
++                        if inputStyle.value == .custom { Text(UIText.t("现有自定义方案")).tag(Config.InputStyle.Value.custom) }
++                    }
++                    Toggle(UIText.t("使用半角空格"), isOn: $halfSpace)
++                    Toggle(UIText.t("反斜杠键输入 \\ 而非 ¥"), isOn: $backSlash)
++                }
++                Section(UIText.t("学习")) {
++                    Picker(UIText.t("词典学习"), selection: $learning) {
++                        Text(UIText.t("学习并使用历史")).tag(Config.Learning.Value.inputAndOutput)
++                        Text(UIText.t("停止学习，保留历史")).tag(Config.Learning.Value.onlyOutput)
++                        Text(UIText.t("不使用学习历史")).tag(Config.Learning.Value.nothing)
++                    }
++                    Button(UIText.t("清除学习记录"), role: .destructive) { showReset = true }
++                        .confirmationDialog(UIText.t("清除后无法恢复，是否继续？"), isPresented: $showReset) {
++                            Button(UIText.t("清除学习记录"), role: .destructive) {
++                                client.resetLearningData { ok in resetMessage = ok ? UIText.t("学习记录已清除") : UIText.t("清除失败，请重试") }
++                            }
++                            Button(UIText.t("取消"), role: .cancel) {}
++                        }
++                    if !resetMessage.isEmpty { Text(resetMessage) }
++                }
 +                Text(UIText.t("键盘设置即时生效。表达建议的配置请在对应页点击“保存设置”。"))
 +                    .font(.caption).foregroundStyle(.secondary)
 +            }.formStyle(.grouped).tabItem { Label(UIText.t("键盘"), systemImage: "keyboard") }
