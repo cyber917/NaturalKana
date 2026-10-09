@@ -1,47 +1,37 @@
 # NaturalKana
 
-[中文](README.md)
+[中文](README.md) · [Latest release](https://github.com/cyber917/NaturalKana/releases/latest) · [User guide](docs/USAGE.md)
 
-A Japanese keyboard for iPhone, an input method for macOS and a suggestion helper for Windows, with AI phrasing suggestions. Type a Japanese sentence, pause, and NaturalKana offers more natural casual or polite alternatives above the keyboard. Tap one to replace your draft.
+Write a sentence, get more natural alternatives, and choose one to replace your draft. Supports Japanese, Chinese, English, Korean, French and Russian. Bring your own provider API key.
 
-NaturalKana is derived from [azooKey](https://github.com/azooKey/azooKey) and [azooKey-Desktop](https://github.com/azooKey/azooKey-Desktop). It keeps their Japanese input engine and keyboard and adds the suggestion feature. It is not an official azooKey release.
+## Download and install
 
-- Bring your own API key: Qwen, OpenAI, DeepSeek, Kimi, Gemini, Claude, or any OpenAI-compatible / Claude Messages endpoint
-- Casual and polite groups, up to 10 candidates, with changes highlighted
-- Optional Kansai-ben: an extra 関西弁 group alongside standard Japanese; drafts typed in dialect are not treated as mistakes
-- Handles Japanese drafts that mix in English or Chinese words
-- Also suggests for English, Simplified Chinese and Korean drafts, helping learners sound natural, including everyday internet slang; "Automatic" detects each sentence's language
-- Interface in Chinese, English or Japanese
-- Mac menu-bar helper: type with any input method (e.g. Pinyin) and press ⌃⌥J to check the sentence
-- Optional personal slang vocabulary (Mac)
+| Platform | What you get | Installation |
+| --- | --- | --- |
+| **iPhone** | Multilingual keyboard, iOS 17.6+ | [Download the IPA](https://github.com/cyber917/NaturalKana/releases/latest), then re-sign with SideStore / AltStore → [Guide](docs/INSTALLATION.md#iphone不需要-mac) |
+| **Windows** | Suggestion helper, Windows 10/11 x64 | [Download the exe](https://github.com/cyber917/NaturalKana/releases/tag/windows-v0.1.3), use with your existing input method → [Guide](docs/WINDOWS.md) |
+| **Mac** | Input method and menu-bar helper, Apple silicon, macOS 13+ | [Download the source installer](https://github.com/cyber917/NaturalKana/releases/latest); full Xcode and your own development signing setup required → [Guide](docs/MAC_INSTALL.md) |
 
-## Install
+The Mac installer builds from source; it is not a DMG. Free-account iPhone installations require regular renewal; see [signing and renewal](docs/INSTALLATION.md#签名与续期). Detailed guides are currently in Chinese.
 
-- **iPhone, no Mac needed (Windows / macOS / Linux):** download the IPA from [Releases](https://github.com/cyber917/NaturalKana/releases), install [SideStore](https://github.com/SideStore/SideStore) with [iloader](https://github.com/nab138/iloader), then import the IPA in SideStore. Requires iOS 17.6+.
-- **Windows 10/11:** download the exe from Releases. It works alongside any Japanese IME: select a sentence and press Ctrl+Alt+J. See [docs/WINDOWS.md](docs/WINDOWS.md).
-- **Build from source (Mac + Xcode):** iPhone app and macOS input method.
+## Features
 
-Step-by-step guides are in Chinese: [docs/INSTALLATION.md](docs/INSTALLATION.md). Configuration and troubleshooting: [docs/USAGE.md](docs/USAGE.md).
+- **Phrasing suggestions:** casual and polite alternatives with changes highlighted; optional Kansai-ben suggestions for Japanese.
+- **Multilingual iPhone input:** Chinese pinyin, Japanese, English, Korean, French and Russian; configurable language switching and remembered keyboard language.
+- **Offline candidates and learning:** mixed full/initial Chinese pinyin and limited typo correction; French, Russian and Korean word completion and local word memory.
+- **Desktop shortcuts:** configurable check and select-all-and-check shortcuts on Mac and Windows; verify the original text before replacement, click outside to dismiss.
+- **Providers and interface:** Qwen, OpenAI, DeepSeek, Kimi, Gemini, Claude and compatible endpoints; interface in Chinese, English or Japanese.
 
-## Signing and the 7-day limit
+## Guides
 
-iOS only runs apps signed through Apple. Apps signed with a free Apple ID expire after **7 days**. With SideStore you renew them on the phone (LocalDevVPN connected → SideStore → Refresh All), with no computer needed. A paid Apple Developer account extends this to one year. Free accounts are limited to 3 sideloaded apps per device, including SideStore, and 10 App IDs per 7 days. NaturalKana uses 2 App IDs: the app and its keyboard. macOS is far more permissive with locally built apps; the input method normally does not need weekly renewal (rebuild and reinstall if it ever stops loading).
+| Topic | Documentation |
+| --- | --- |
+| Provider setup, keyboard settings, everyday use and troubleshooting | [User guide](docs/USAGE.md) |
+| Personal slang vocabulary on Mac | [SNS vocabulary](docs/USAGE.md#sns-词库mac) |
+| Building, repository structure, language packs, patches and releases | [Development](docs/DEVELOPMENT.md) |
 
-## Privacy
+## Privacy and license
 
-Only the current sentence (up to 200 characters), your style preferences and matching vocabulary entries are sent, directly to the provider you configure. There is no NaturalKana server. API keys are stored in the device Keychain.
+Input conversion runs locally. Online suggestions send only the current sentence (up to 200 characters), style preferences and matching vocabulary entries directly to your configured provider. There is no NaturalKana server. Keys are stored in the device Keychain or Windows Credential Manager.
 
-## Build
-
-```sh
-git clone https://github.com/cyber917/NaturalKana.git
-cd NaturalKana
-python3 tools/bootstrap.py --weights
-open NaturalKana.xcworkspace
-```
-
-Requires full Xcode, Python 3, Git and Git LFS. See [docs/DEVELOPMENT.md](docs/DEVELOPMENT.md).
-
-## License
-
-Original NaturalKana code is MIT ([LICENSE](LICENSE)). Upstream code, dictionaries, models and dependencies keep their own licenses. See [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) and [licenses/](licenses/).
+NaturalKana derives from [azooKey](https://github.com/azooKey/azooKey) and [azooKey-Desktop](https://github.com/azooKey/azooKey-Desktop); it is not an official upstream release. Original additions use the [MIT license](LICENSE). Upstream code, dictionaries, models and data retain their own licenses; see [third-party sources and notices](THIRD_PARTY_NOTICES.md) and [licenses/](licenses/).

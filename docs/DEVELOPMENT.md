@@ -2,6 +2,19 @@
 
 [返回首页](../README.md)
 
+## 准备源码
+
+需要完整 Xcode、Python 3、Git 和 Git LFS；Windows 小助手使用 .NET 8 SDK。
+
+```sh
+git clone https://github.com/cyber917/NaturalKana.git
+cd NaturalKana
+python3 tools/bootstrap.py --weights
+open NaturalKana.xcworkspace
+```
+
+签名与安装分别见 [iPhone 教程](INSTALLATION.md#从源码构建-iphone-版)、[Mac 教程](MAC_INSTALL.md) 和 [Windows 构建说明](WINDOWS.md#从源码构建)。
+
 ## 仓库结构
 
 | 路径 | 内容 |

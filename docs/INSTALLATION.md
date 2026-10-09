@@ -6,7 +6,8 @@
 - [从源码构建 iPhone 版](#从源码构建-iphone-版)：需要 Mac 和 Xcode
 - [Mac 输入法](#mac-输入法)：需要 Mac 和 Xcode
 
-为什么需要签名、为什么每 7 天要续一次，见[首页说明](../README.md#为什么要签名为什么-7-天要续一次)。
+- [Windows 小助手](WINDOWS.md)：下载 exe 即可使用
+- [签名与续期](#签名与续期)：iPhone 免费账户需要定期续签
 
 ## iPhone（不需要 Mac）
 
@@ -138,40 +139,24 @@ python3 tools/rebrand.py
 
 ## Mac 输入法
 
-> **第一次装、不熟悉终端？请看[Mac 详细安装教程](MAC_INSTALL.md)**：装好 Xcode 后，用一条命令就能完成下载、编译和安装，教程里也有更新、卸载和常见问题。下面是给熟悉开发的人的简略版。
-
-需要 Apple 芯片的 Mac 和 macOS 13 以上。准备源码和应用标识同上面的第 1、2 步。Mac 的 `macAppGroup` 建议写成 `你的TeamID.` 加上 `macBundleIdentifier`，例如 `AB12CD34EF.com.yourname.inputmethod.naturalkana.mac`。然后：
-
-1. 在 Xcode → Settings → Accounts 登录 Apple ID，并在 Manage Certificates 里确认有 Apple Development 证书。用 `security find-certificate -c "Apple Development" -p | openssl x509 -noout -subject` 查 Team ID（`OU=` 后面的 10 位）。
-2. 先检查模型，再构建：
-
-   ```sh
-   python3 tools/verify_mac_models.py
-   export NATURALKANA_TEAM_ID='你的 Team ID'
-   bash tools/build_macos.sh --signed
-   ```
-
-3. 切换到系统自带的输入法，然后安装：
-
-   ```sh
-   mkdir -p .build-local/bin
-   xcrun swiftc tools/register_input_source.swift -o .build-local/bin/register-input-source
-   python3 tools/install_macos.py \
-     --app .build-local/macos/native/Build/Products/Release/azooKeyMac.app \
-     --registrar .build-local/bin/register-input-source
-   ```
-
-4. 系统设置 → 键盘 → 文字输入 → 编辑… → `+` → 日语 → 添加 NaturalKana。列表里没有的话，退出登录再登录一次。还是没有，就打开一次上面的输入法列表，然后在终端运行：
-
-   ```sh
-   log show --last 5m --predicate 'process == "imklaunchagent"' | grep 'Refusing connection'
-   ```
-
-   有输出说明系统拒绝了这个 Bundle ID：检查 `Config/Brand.json` 里的 `macBundleIdentifier` 是否包含 `.inputmethod.`，改好后重新运行 `rebrand.py`、构建和安装。
-5. 菜单栏选 **NaturalKana（日本語）**，在输入法菜单里打开“NaturalKana 设置…”，填写 API。
-
-输入法菜单中的 **NaturalKana（English）** 是英文模式，在设置里把建议语言改成英语后也会给出英文建议；Apple 自带的“日语”输入法不会显示本项目的建议。找不到设置入口时运行 `zsh tools/open_macos_settings.command`。
+Mac 需要 Apple 芯片、macOS 13+、完整 Xcode 和自己的开发签名配置。请看 [Mac 安装教程](MAC_INSTALL.md)，里面包含一键脚本、手动构建、菜单栏小助手、更新和卸载步骤。
 
 ## 反馈问题
 
 提交 Issue 时写清安装方式、设备和系统版本、进行到哪一步、完整报错文字。截图前遮住邮箱、设备标识和 API 密钥，不要上传证书或描述文件。
+
+## 签名与续期
+
+**iPhone 不允许运行没有 Apple 签名的 App**，自己编译的也不例外。不经过 App Store 安装时，App 要用某个 Apple 账户签名，签名的有效期取决于账户类型：
+
+| 签名方式 | 有效期 | 费用 | 到期前要做什么 |
+| --- | --- | --- | --- |
+| 免费 Apple ID + SideStore（本项目推荐） | 7 天 | 免费 | 在手机上打开 SideStore 点刷新，不需要电脑 |
+| 免费 Apple ID + Xcode | 7 天 | 免费 | 用 Mac 重新运行一次 |
+| 付费开发者账户（99 美元／年） | 1 年 | 付费 | 一年重装一次 |
+
+- 过期后 App 和键盘会打不开，但**设置和密钥一般不会丢**，刷新或重新安装同一个 App 后就能继续用。
+- 免费账户的限制：同一台手机最多同时装 3 个自签 App（SideStore 自己占 1 个）；每 7 天最多注册 10 个 App ID（NaturalKana 主程序和键盘共用 2 个）。
+- SideStore 本身也是 7 天签名。只要在到期前点过刷新，它就会连同自己一起续期。如果已经过期，要回到电脑上用 iloader 重装 SideStore，NaturalKana 不用重装。
+- **Mac 版**：macOS 对本地构建的程序宽松得多，通常不需要每周续期；如果哪天输入法加载不了，重新执行一遍构建和安装即可。
+- **Windows 版**：没有有效期，下载就能一直用。第一次运行时 Windows 可能提示“已保护你的电脑”，点“更多信息 → 仍要运行”即可（程序没有购买代码签名证书）。
