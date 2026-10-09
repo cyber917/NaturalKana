@@ -1129,6 +1129,10 @@
   "en": "French",
   "ja": "フランス語"
  },
+ "法语、俄语、韩语可离线补全词语；记忆只保存在本机，关闭后只使用内置词库。": {
+  "en": "French, Russian and Korean support offline word completion. Learned words stay on this device; turning learning off uses only the built-in vocabulary.",
+  "ja": "フランス語・ロシア語・韓国語の単語をオフラインで補完します。学習内容はこの端末だけに保存され、オフにすると内蔵辞書のみを使います。"
+ },
  "法语用 QWERTY，长按字母后右滑选重音字母或大写；俄语用 ЙЦУКЕН，长按 е 选 ё、ь 选 ъ，各字母长按可选大写。": {
   "en": "French uses QWERTY: hold a letter and slide right for accents or capitals. Russian uses ЙЦУКЕН: hold е for ё, ь for ъ, or any letter for capitals.",
   "ja": "フランス語はQWERTY配列です。文字を長押しして右にスライドするとアクセント付き文字や大文字を選べます。ロシア語はЙЦУКЕН配列で、еの長押しでё、ьでъ、各文字の長押しで大文字を選べます。"
@@ -1155,6 +1159,10 @@
  "添加": {
   "en": "Add",
   "ja": "追加"
+ },
+ "清空键盘词语记忆": {
+  "en": "Clear learned keyboard words",
+  "ja": "キーボードの単語学習を消去"
  },
  "清除后无法恢复，是否继续？": {
   "en": "This can't be undone. Continue?",
@@ -1372,6 +1380,10 @@
  "表达建议": {
   "en": "Suggestions",
   "ja": "表現の提案"
+ },
+ "记住键盘常用词": {
+  "en": "Learn frequently used keyboard words",
+  "ja": "よく使う単語を学習"
  },
  "设置…": {
   "en": "Settings…",
@@ -1613,6 +1625,10 @@
  "键盘设置即时生效。表达建议的配置请在对应页点击“保存设置”。": {
   "en": "Keyboard settings apply immediately. For suggestion settings, click Save Settings on that tab.",
   "ja": "キーボードの設定はすぐに反映されます。提案の設定は、そのタブで「設定を保存」をクリックしてください。"
+ },
+ "键盘词语记忆已清空": {
+  "en": "Learned keyboard words cleared",
+  "ja": "キーボードの単語学習を消去しました"
  },
  "関西弁（另给一组关西话说法，仅日语）": {
   "en": "Kansai-ben (an extra Kansai group, Japanese only)",

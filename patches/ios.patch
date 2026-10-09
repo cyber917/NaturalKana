@@ -1825,36 +1825,235 @@ index 0a478af..7f39290 100644
      private static let zenzXsmallWeightURL = Bundle.main.bundleURL.appendingPathComponent("zenz-v3.2-xsmall-gguf/ggml-model-Q5_K_M.gguf", isDirectory: false)
  
 diff --git a/Keyboard/Display/KeyboardActionManager.swift b/Keyboard/Display/KeyboardActionManager.swift
-index 5f55651..f43f8d7 100644
+index 5f55651..f271abd 100644
 --- a/Keyboard/Display/KeyboardActionManager.swift
 +++ b/Keyboard/Display/KeyboardActionManager.swift
-@@ -11,6 +11,7 @@ import Foundation
+@@ -11,7 +11,9 @@ import Foundation
  import KanaKanjiConverterModule
  import enum KeyboardExtensionUtils.AnyTextDocumentProxy
  import KeyboardViews
 +import NaturalSuggestCore
  import SwiftUI
++import UIKit
  import SwiftUtils
  
-@@ -25,6 +26,8 @@ final class KeyboardActionManager: UserActionManager, @unchecked Sendable {
+ /// キーボードへのアクション部門の動作を担う。
+@@ -25,11 +27,170 @@ final class KeyboardActionManager: UserActionManager, @unchecked Sendable {
      private var tasks: [(type: LongpressActionType, task: Task<Void, any Error>)] = []
      private var tempTextData: (left: String, center: String, right: String)?
      private var pendingReportDismissTask: Task<Void, Never>?
 +    /// NaturalKana: the Hangul syllable being typed on the Korean layout.
 +    private var hangul = HangulComposer()
++
++    private var wordLexicons: [CompletionLanguage: WordCompletionLexicon] = [:]
++    private var loadingWordLexicons: Set<CompletionLanguage> = []
++    private var wordMemory = WordCompletionMemory()
++    private var wordMemoryDirty = false
++    private var wordMemoryLoaded = false
++    private var wordMemoryReset: String?
++    private var wordLearning = true
++    private var wordSaveTask: Task<Void, Never>?
++    private var showingWordCompletions = false
++    private var typedWordContext: (field: UUID, before: String, language: CompletionLanguage)?
++
++    @MainActor private func completionLanguage(_ states: VariableStates) -> CompletionLanguage? {
++        switch states.tabManager.existentialTab().extraKeyboardLayout {
++        case .french: .french
++        case .russian: .russian
++        case .korean: .korean
++        default: nil
++        }
++    }
++
++    @MainActor private var wordFieldAllowed: Bool {
++        guard let proxy = delegate?.textDocumentProxy, proxy.isSecureTextEntry != true,
++              (proxy.selectedText ?? "").isEmpty, proxy.documentContextBeforeInput != nil else { return false }
++        let denied: Set<UIKeyboardType> = [.URL, .emailAddress, .numberPad, .phonePad, .namePhonePad, .decimalPad, .asciiCapableNumberPad, .numbersAndPunctuation]
++        let privateTypes: [UITextContentType] = [.password, .newPassword, .oneTimeCode, .creditCardNumber, .emailAddress, .username]
++        return !denied.contains(proxy.keyboardType ?? .default) && !privateTypes.contains(proxy.textContentType ?? .init(rawValue: ""))
++    }
++
++    @MainActor func reloadWordCompletionSettings() {
++        let defaults = SharedStore.userDefaults
++        let reset = defaults.string(forKey: WordCompletionMemory.resetKey)
++        if !wordMemoryLoaded || reset != wordMemoryReset {
++            wordSaveTask?.cancel()
++            wordMemory = WordCompletionMemory.load(from: defaults)
++            wordMemoryDirty = false
++            wordMemoryLoaded = true
++            wordMemoryReset = reset
++        }
++        wordLearning = defaults.data(forKey: "nk.settings").flatMap { try? JSONDecoder().decode(SuggestionSettings.self, from: $0) }?.keyboardWordLearning ?? true
++        if !wordLearning { wordSaveTask?.cancel(); typedWordContext = nil }
++    }
++
++    @MainActor private func saveWordMemory() {
++        wordSaveTask?.cancel()
++        wordSaveTask = Task { @MainActor [weak self] in
++            do { try await Task.sleep(for: .milliseconds(300)) } catch { return }
++            self?.persistWordMemory()
++        }
++    }
++
++    @MainActor private func persistWordMemory() {
++        guard wordMemoryDirty, wordLearning,
++              wordMemory.save(to: SharedStore.userDefaults, resetToken: wordMemoryReset) else { return }
++        wordMemoryDirty = false
++    }
++
++    @MainActor private func learnWord(_ word: String, before text: String, language: CompletionLanguage) {
++        guard wordLearning, wordFieldAllowed else { return }
++        wordMemoryDirty = true
++        wordMemory.record(word, after: CompletionWords.previous(before: text), language: language)
++        saveWordMemory()
++    }
++
++    @MainActor private func prepareWordLearning(_ action: ActionType, states: VariableStates) {
++        guard wordLearning, wordFieldAllowed, let language = completionLanguage(states), let proxy = delegate?.textDocumentProxy else {
++            typedWordContext = nil
++            return
++        }
++        switch action {
++        case let .input(text, _):
++            if text.first.map({ !CompletionWords.isWordCharacter($0) }) == true,
++               let pending = typedWordContext, pending.language == language, pending.field == proxy.documentIdentifier,
++               pending.before == proxy.documentContextBeforeInput {
++                learnWord(CompletionWords.fragment(before: pending.before), before: pending.before, language: language)
++            }
++        case .enter:
++            if let pending = typedWordContext, pending.language == language, pending.field == proxy.documentIdentifier,
++               pending.before == proxy.documentContextBeforeInput {
++                learnWord(CompletionWords.fragment(before: pending.before), before: pending.before, language: language)
++            }
++            typedWordContext = nil
++        case .delete: break
++        default: typedWordContext = nil
++        }
++    }
++
++    @MainActor private func finishWordAction(_ action: ActionType, states: VariableStates) {
++        switch action {
++        case .input, .delete:
++            if wordFieldAllowed, let language = completionLanguage(states), let proxy = delegate?.textDocumentProxy,
++               let before = proxy.documentContextBeforeInput, !CompletionWords.fragment(before: before).isEmpty {
++                typedWordContext = (proxy.documentIdentifier, before, language)
++            } else { typedWordContext = nil }
++        default: break
++        }
++        refreshWordCompletions(states)
++    }
++
++    @MainActor func refreshWordCompletions(_ states: VariableStates) {
++        guard let language = completionLanguage(states) else {
++            if showingWordCompletions { states.resultModel.setPredictionResults([]); showingWordCompletions = false }
++            return
++        }
++        guard wordFieldAllowed, states.upsideComponent == nil,
++              let proxy = delegate?.textDocumentProxy, let before = proxy.documentContextBeforeInput,
++              !(proxy.documentContextAfterInput?.first.map(CompletionWords.isWordCharacter) ?? false) else {
++            states.resultModel.setResults([])
++            states.resultModel.setPredictionResults([])
++            showingWordCompletions = true
++            return
++        }
++        if wordLexicons[language] == nil, !loadingWordLexicons.contains(language) {
++            loadingWordLexicons.insert(language)
++            Task { @MainActor [weak self, weak states] in
++                let lexicon = await Task.detached(priority: .userInitiated) { WordCompletionLexicon.bundled(language) }.value
++                guard let self, let states else { return }
++                self.wordLexicons[language] = lexicon
++                self.loadingWordLexicons.remove(language)
++                self.refreshWordCompletions(states)
++            }
++        }
++        let fragment = CompletionWords.fragment(before: before)
++        guard fragment.count <= 40 else { states.resultModel.setResults([]); states.resultModel.setPredictionResults([]); return }
++        let previous = CompletionWords.previous(before: before)
++        let learned = wordLearning ? wordMemory.suggestions(prefix: fragment, after: previous, language: language) : []
++        let common = wordLexicons[language]?.suggestions(prefix: fragment) ?? []
++        var seen = Set<String>()
++        let words = (learned + common).filter { seen.insert($0.lowercased()).inserted }.prefix(8)
++        let candidates = words.map {
++            WordCompletionCandidate(word: $0, fragment: fragment, before: before, after: proxy.documentContextAfterInput ?? "", field: proxy.documentIdentifier, language: language)
++        }
++        states.resultModel.setResults([])
++        states.resultModel.setPredictionResults(candidates)
++        showingWordCompletions = true
++    }
++
++    @MainActor private func acceptWordCompletion(_ candidate: WordCompletionCandidate, states: VariableStates) {
++        guard wordFieldAllowed, completionLanguage(states) == candidate.language,
++              let proxy = delegate?.textDocumentProxy, proxy.documentIdentifier == candidate.field,
++              proxy.documentContextBeforeInput == candidate.before,
++              (proxy.documentContextAfterInput ?? "") == candidate.after else { refreshWordCompletions(states); return }
++        hangul.reset()
++        typedWordContext = nil
++        inputManager.stopComposition()
++        if !candidate.fragment.isEmpty { inputManager.deleteBackward(convertTargetCount: candidate.fragment.count, requireSetResult: false) }
++        inputManager.input(text: candidate.word + " ", requireSetResult: false, simpleInsert: true, inputStyle: .direct)
++        learnWord(candidate.word, before: candidate.before, language: candidate.language)
++        let (left, center, right) = inputManager.getSurroundingText()
++        states.setSurroundingText(leftSide: left, center: center, rightSide: right)
++        states.textChangedCount = inputManager.getTextChangedCount()
++        states.setEnterKeyState(inputManager.getEnterKeyState())
++        refreshWordCompletions(states)
++    }
  
      // キーボードを閉じる際に呼び出す
      // inputManagerはキーボードを閉じる際にある種の操作を行う
-@@ -68,6 +71,8 @@ final class KeyboardActionManager: UserActionManager, @unchecked Sendable {
+     @MainActor func closeKeyboard() {
++        wordSaveTask?.cancel()
++        persistWordMemory()
+         self.inputManager.closeKeyboard()
++        typedWordContext = nil
+         for (_, task) in self.tasks {
+             task.cancel()
+         }
+@@ -51,6 +212,7 @@ final class KeyboardActionManager: UserActionManager, @unchecked Sendable {
+             if let variableStates {
+                 update(&variableStates.resultModel)
+                 self?.refreshUpsideComponent(for: variableStates)
++                self?.refreshWordCompletions(variableStates)
+             }
+         }
+     }
+@@ -68,6 +230,12 @@ final class KeyboardActionManager: UserActionManager, @unchecked Sendable {
      ///   - candidate: 確定された候補。
      ///   - variableStates: 状態。
      override func notifyComplete(_ candidate: any ResultViewItemData, variableStates: VariableStates) {
 +        delegate?.naturalKeystroke()
 +        defer { delegate?.naturalDraftDidChange() }
++        if let candidate = candidate as? WordCompletionCandidate {
++            acceptWordCompletion(candidate, states: variableStates)
++            return
++        }
          if let candidate = candidate as? Candidate {
              self.inputManager.complete(candidate: candidate)
              self.registerActions(candidate.actions.map(\.action), variableStates: variableStates)
-@@ -143,12 +148,56 @@ final class KeyboardActionManager: UserActionManager, @unchecked Sendable {
+@@ -107,7 +275,13 @@ final class KeyboardActionManager: UserActionManager, @unchecked Sendable {
+     }
+ 
+     override func notifyForgetCandidate(_ candidate: any ResultViewItemData, variableStates: VariableStates) {
+-        if let candidate = candidate as? Candidate {
++        if let candidate = candidate as? WordCompletionCandidate {
++            wordMemory.forget(candidate.word, language: candidate.language)
++            wordMemoryDirty = true
++            saveWordMemory()
++            refreshWordCompletions(variableStates)
++            variableStates.temporalMessage = .doneForgetCandidate
++        } else if let candidate = candidate as? Candidate {
+             self.inputManager.forgetMemory(candidate)
+             variableStates.temporalMessage = .doneForgetCandidate
+         }
+@@ -118,6 +292,7 @@ final class KeyboardActionManager: UserActionManager, @unchecked Sendable {
+     }
+ 
+     @MainActor override func prepareReportSuggestion(candidate: any ResultViewItemData, index: Int, variableStates: VariableStates) {
++        if candidate is WordCompletionCandidate { return }
+         handlePrepareReportSuggestion(candidate: candidate, index: index, variableStates: variableStates)
+     }
+ 
+@@ -143,12 +318,58 @@ final class KeyboardActionManager: UserActionManager, @unchecked Sendable {
          self.dismissReportInterfacesIfNeeded(variableStates: variableStates)
      }
  
@@ -1890,6 +2089,8 @@ index 5f55651..f43f8d7 100644
      }
  
      @MainActor private func doAction(_ action: ActionType, requireSetResult: Bool = true, variableStates: VariableStates) {
++        prepareWordLearning(action, states: variableStates)
++        defer { finishWordAction(action, states: variableStates) }
 +        // Opening a toolbar or changing Shift does not invalidate an unchanged draft.
 +        switch action {
 +        case .input, .insertMainDisplay, .delete, .smoothDelete, .smartDelete, .paste,
@@ -1911,8 +2112,26 @@ index 5f55651..f43f8d7 100644
          var undoAction: ActionType?
          switch action {
          case let .input(text, simpleInsert):
+@@ -784,3 +1005,17 @@ final class KeyboardActionManager: UserActionManager, @unchecked Sendable {
+         // TODO: Provide up-to-date implementation
+     }
+ }
++
++private struct WordCompletionCandidate: ResultViewItemData {
++    let word: String
++    let fragment: String
++    let before: String
++    let after: String
++    let field: UUID
++    let language: CompletionLanguage
++    var label: ResultViewItemLabelStyle { .text(word) }
++    var inputable: Bool { true }
++    #if DEBUG
++    func getDebugInformation() -> String { "Local word completion" }
++    #endif
++}
 diff --git a/Keyboard/Display/KeyboardViewController.swift b/Keyboard/Display/KeyboardViewController.swift
-index e6038af..42e789e 100644
+index e6038af..cf8caf7 100644
 --- a/Keyboard/Display/KeyboardViewController.swift
 +++ b/Keyboard/Display/KeyboardViewController.swift
 @@ -14,6 +14,8 @@ import KeyboardViews
@@ -2006,11 +2225,12 @@ index e6038af..42e789e 100644
          KeyboardViewController.variableStates
              .$interfaceSize
              .combineLatest(
-@@ -258,6 +309,13 @@ final class KeyboardViewController: UIInputViewController {
+@@ -258,6 +309,14 @@ final class KeyboardViewController: UIInputViewController {
  
      override func viewWillAppear(_ animated: Bool) {
          super.viewWillAppear(animated)
 +        guard sharedStorageReady else { return }
++        Self.action.reloadWordCompletionSettings()
 +        // NaturalKana: reload the available layouts and the user's quick switch order.
 +        Self.naturalModel.reload()
 +        SemiStaticStates.shared.setKeyboardLanguages(
@@ -2020,7 +2240,7 @@ index e6038af..42e789e 100644
          // サイズに関する情報はこのタイミングで設定する
          if #available(iOS 26, *) {
              let size = self.currentKeyboardViewSize()
-@@ -276,6 +334,7 @@ final class KeyboardViewController: UIInputViewController {
+@@ -276,6 +335,7 @@ final class KeyboardViewController: UIInputViewController {
  
      override func viewDidAppear(_ animated: Bool) {
          super.viewDidAppear(animated)
@@ -2028,7 +2248,7 @@ index e6038af..42e789e 100644
          self.updateStates()
  
          // Floating Keyboardなどの一部の処理に限り、このタイミングにならないとウィンドウ幅が不明なケースが存在する
-@@ -306,6 +365,7 @@ final class KeyboardViewController: UIInputViewController {
+@@ -306,6 +366,7 @@ final class KeyboardViewController: UIInputViewController {
  
      override func viewDidLayoutSubviews() {
          super.viewDidLayoutSubviews()
@@ -2036,7 +2256,7 @@ index e6038af..42e789e 100644
          // iOS 26以上で、レイアウト確定後に向き・サイズを反映
          if #available(iOS 26, *) {
              let size = self.currentKeyboardViewSize()
-@@ -322,6 +382,7 @@ final class KeyboardViewController: UIInputViewController {
+@@ -322,6 +383,7 @@ final class KeyboardViewController: UIInputViewController {
          // キーボードタイプはviewDidAppearのタイミングで取得できる
          KeyboardViewController.variableStates.setKeyboardType(self.textDocumentProxy.keyboardType)
          KeyboardViewController.variableStates.setTextContentType(self.textDocumentProxy.textContentType)
@@ -2044,7 +2264,7 @@ index e6038af..42e789e 100644
  
          // クリップボード履歴を更新する
          KeyboardViewController.variableStates.clipboardHistoryManager.reload()
-@@ -412,15 +473,20 @@ final class KeyboardViewController: UIInputViewController {
+@@ -412,15 +474,20 @@ final class KeyboardViewController: UIInputViewController {
      }
  
      override func viewWillDisappear(_ animated: Bool) {
@@ -2065,7 +2285,7 @@ index e6038af..42e789e 100644
          if #available(iOS 26, *) {
              // 幅は即時反映しておき、向きは完了時のWindowSceneから決定する
              coordinator.animate(alongsideTransition: nil) { [weak self] _ in
-@@ -480,7 +546,7 @@ final class KeyboardViewController: UIInputViewController {
+@@ -480,7 +547,7 @@ final class KeyboardViewController: UIInputViewController {
  
      private func setKeyboardHeight(to height: CGFloat) {
          self.keyboardHeightConstraint?.isActive = true
@@ -2074,7 +2294,7 @@ index e6038af..42e789e 100644
          if self.view.window != nil {
              UIView.performWithoutAnimation {
                  self.view.layoutIfNeeded()
-@@ -492,20 +558,12 @@ final class KeyboardViewController: UIInputViewController {
+@@ -492,20 +559,12 @@ final class KeyboardViewController: UIInputViewController {
          }
      }
  
@@ -2098,7 +2318,7 @@ index e6038af..42e789e 100644
  
          let left = self.textDocumentProxy.documentContextBeforeInput ?? ""
          let center = self.textDocumentProxy.selectedText ?? ""
-@@ -518,6 +576,7 @@ final class KeyboardViewController: UIInputViewController {
+@@ -518,6 +577,7 @@ final class KeyboardViewController: UIInputViewController {
      /// 引数の`textInput`は常に`nil`
      override func textDidChange(_ textInput: (any UITextInput)?) {
          super.textDidChange(textInput)
@@ -2106,15 +2326,16 @@ index e6038af..42e789e 100644
  
          let left = self.textDocumentProxy.documentContextBeforeInput ?? ""
          let center = self.textDocumentProxy.selectedText ?? ""
-@@ -530,6 +589,7 @@ final class KeyboardViewController: UIInputViewController {
+@@ -530,6 +590,8 @@ final class KeyboardViewController: UIInputViewController {
          KeyboardViewController.variableStates.clipboardHistoryManager.checkUpdate()
          KeyboardViewController.variableStates.setUIReturnKeyType(type: self.textDocumentProxy.returnKeyType ?? .default)
          KeyboardViewController.variableStates.setTextContentType(self.textDocumentProxy.textContentType)
++        Self.action.refreshWordCompletions(Self.variableStates)
 +        naturalDraftDidChange()
      }
  
      /// Reference: https://stackoverflow.com/questions/79077018/unable-to-open-main-app-from-action-extension-in-ios-18-previously-working-met
-@@ -558,4 +618,70 @@ final class KeyboardViewController: UIInputViewController {
+@@ -558,4 +620,70 @@ final class KeyboardViewController: UIInputViewController {
          }
          self.openURL(url)
      }

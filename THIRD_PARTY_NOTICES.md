@@ -38,3 +38,6 @@ Windows build (NaturalKana-Windows-x64.exe):
 - Uses the same prompt files and lexicon as NaturalSuggestCore; contains no dictionaries or models.
 
 Transitive binary targets (including the llama.cpp XCFramework), dictionary sources, emoji data terms and embedded model components still need a full release audit before distributing compiled apps. Root MIT licenses do not cover every data/model artifact. No statement of license-complete distribution is made.
+
+Offline keyboard completion data:
+- French, Russian and Korean word lists are adapted from wordfreq 3.1.1 (Robyn Speer), CC BY-SA 4.0. Script filtering and a Korean polite-form supplement are described in `NaturalSuggestCore/Sources/NaturalSuggestCore/Resources/KeyboardLexicons/ATTRIBUTION.md`, which retains the upstream source notices. These data files retain CC BY-SA 4.0; the root MIT license does not replace their license. The exporter uses the Apache-2.0 licensed wordfreq package.

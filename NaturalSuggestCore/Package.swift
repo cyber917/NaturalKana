@@ -7,7 +7,7 @@ let package = Package(
                .executable(name: "NaturalKanaHelper", targets: ["NaturalKanaHelper"]),
                .executable(name: "NaturalKanaPreview", targets: ["NaturalKanaPreview"]),
                .executable(name: "natural-suggest", targets: ["NaturalSuggestCLI"])],
-    targets: [.target(name: "NaturalKanaStorage"), .target(name: "NaturalSuggestCore", dependencies: ["NaturalKanaStorage"], resources: [.copy("Resources/Languages"), .copy("Resources/ui_strings.json")]),
+    targets: [.target(name: "NaturalKanaStorage"), .target(name: "NaturalSuggestCore", dependencies: ["NaturalKanaStorage"], resources: [.copy("Resources/Languages"), .copy("Resources/ui_strings.json"), .copy("Resources/KeyboardLexicons")]),
               .target(name: "NaturalSuggestUI", dependencies: ["NaturalSuggestCore", "NaturalKanaStorage"]),
               .executableTarget(name: "NaturalKanaPreview", dependencies: ["NaturalSuggestUI"]),
               .executableTarget(name: "NaturalSuggestCLI", dependencies: ["NaturalSuggestCore", "NaturalKanaStorage"]),
