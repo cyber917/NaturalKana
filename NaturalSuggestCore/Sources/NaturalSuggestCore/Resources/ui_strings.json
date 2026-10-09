@@ -1702,5 +1702,37 @@
  "固定键盘顶部标签栏": {
   "en": "Keep the keyboard tab bar visible",
   "ja": "キーボード上部のタブバーを常に表示"
+ },
+ "两个快捷键不能相同。": {
+  "en": "The two shortcuts must be different.",
+  "ja": "2 つのショートカットは別の組み合わせにしてください。"
+ },
+ "全选输入框并检查": {
+  "en": "Select All and Check",
+  "ja": "入力欄を全選択してチェック"
+ },
+ "原句或选区已经变了，未替换。建议已复制，请重新选中原句。": {
+  "en": "The original text or selection changed, so nothing was replaced. The suggestion was copied; select the original text again.",
+  "ja": "原文または選択範囲が変わったため、置き換えませんでした。候補をコピーしました。原文を選び直してください。"
+ },
+ "快捷键…": {
+  "en": "Shortcuts…",
+  "ja": "ショートカット…"
+ },
+ "快捷键已保存，立即生效。": {
+  "en": "Shortcuts saved and applied.",
+  "ja": "ショートカットを保存し、適用しました。"
+ },
+ "恢复默认快捷键": {
+  "en": "Restore Default Shortcuts",
+  "ja": "初期ショートカットに戻す"
+ },
+ "请先把光标放进输入框。全选检查会选中全部文字；一次限一行、200 字以内。": {
+  "en": "Place the cursor in the text field first. Select All and Check selects all its text; check one line of up to 200 characters at a time.",
+  "ja": "先に入力欄にカーソルを置いてください。全選択チェックは入力欄の全文を選択します。1 回につき 1 行、200 文字までです。"
+ },
+ "请选择字母或数字，并搭配 Control、Option 或 Command；不要使用常用编辑快捷键。": {
+  "en": "Choose a letter or number with Control, Option, or Command. Avoid common editing shortcuts.",
+  "ja": "英数字と Control、Option、Command のいずれかを組み合わせてください。一般的な編集ショートカットは使えません。"
  }
 }
