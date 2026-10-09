@@ -246,6 +246,76 @@ index f8d7ff1..05e3df4 100644
          /// the last tab
          case last_tab
  
+diff --git a/AzooKeyCore/Sources/KeyboardExtensionUtils/DisplayedTextManager.swift b/AzooKeyCore/Sources/KeyboardExtensionUtils/DisplayedTextManager.swift
+index 55443a4..9fbba5e 100644
+--- a/AzooKeyCore/Sources/KeyboardExtensionUtils/DisplayedTextManager.swift
++++ b/AzooKeyCore/Sources/KeyboardExtensionUtils/DisplayedTextManager.swift
+@@ -148,10 +148,12 @@ final public class DisplayedTextManager {
+         let cursorPosition = self.displayedLiveConversionText.map(NSString.init(string:))?.length ?? NSString(string: String(self.composingText.convertTarget.prefix(self.composingText.convertTargetCursorPosition))).length
+         let before = self.observedTextState()
+         self.proxy?.setMarkedText(text, selectedRange: NSRange(location: cursorPosition, length: 0))
+-        let after = before.map {
++        let predictedAfter = before.map {
+             self.observedStateByApplyingMarkedText(text, selectedRange: NSRange(location: cursorPosition, length: 0), to: $0)
+         }
+-        self.expectedEditTracker.record(before: before, after: after)
++        // Hosts may expose the marked text in their context, omit it, or update it later.
++        // Even an unchanged context can be a callback from our own marked-text edit.
++        self.expectedEditTracker.record(before: before, after: self.observedTextState(), alternativeAfter: predictedAfter, includingUnchanged: true)
+     }
+ 
+     @MainActor
+diff --git a/AzooKeyCore/Sources/KeyboardExtensionUtils/ExpectedEditTracker.swift b/AzooKeyCore/Sources/KeyboardExtensionUtils/ExpectedEditTracker.swift
+index ece4a00..e52cc38 100644
+--- a/AzooKeyCore/Sources/KeyboardExtensionUtils/ExpectedEditTracker.swift
++++ b/AzooKeyCore/Sources/KeyboardExtensionUtils/ExpectedEditTracker.swift
+@@ -20,7 +20,7 @@ public struct ExpectedEditTracker: Sendable {
+ 
+     private struct ExpectedEdit: Equatable, Sendable {
+         var before: ObservedTextState
+-        var after: ObservedTextState
++        var after: [ObservedTextState]
+     }
+ 
+     private let maxStoredEdits: Int
+@@ -30,11 +30,13 @@ public struct ExpectedEditTracker: Sendable {
+         self.maxStoredEdits = maxStoredEdits
+     }
+ 
+-    public mutating func record(before: ObservedTextState?, after: ObservedTextState?) {
+-        guard let before, let after, before != after else {
+-            return
+-        }
+-        self.expectedEdits.append(.init(before: before, after: after))
++    public mutating func record(before: ObservedTextState?, after: ObservedTextState?, alternativeAfter: ObservedTextState? = nil, includingUnchanged: Bool = false) {
++        guard let before, let after else { return }
++        var outcomes = [after]
++        if let alternativeAfter, alternativeAfter != after { outcomes.append(alternativeAfter) }
++        if !includingUnchanged { outcomes.removeAll { $0 == before } }
++        guard !outcomes.isEmpty else { return }
++        self.expectedEdits.append(.init(before: before, after: outcomes))
+         if self.expectedEdits.count > self.maxStoredEdits {
+             self.expectedEdits.removeFirst(self.expectedEdits.count - self.maxStoredEdits)
+         }
+@@ -44,15 +46,15 @@ public struct ExpectedEditTracker: Sendable {
+         for startIndex in self.expectedEdits.indices where self.expectedEdits[startIndex].before == before {
+             var endIndex = startIndex
+             var currentAfter = self.expectedEdits[endIndex].after
+-            if currentAfter == after {
++            if currentAfter.contains(after) {
+                 self.expectedEdits.removeFirst(endIndex + 1)
+                 return .matched(hasMoreEdits: self.expectedEdits.first?.before == after)
+             }
+ 
+-            while endIndex + 1 < self.expectedEdits.endIndex, currentAfter == self.expectedEdits[endIndex + 1].before {
++            while endIndex + 1 < self.expectedEdits.endIndex, currentAfter.contains(self.expectedEdits[endIndex + 1].before) {
+                 endIndex += 1
+                 currentAfter = self.expectedEdits[endIndex].after
+-                if currentAfter == after {
++                if currentAfter.contains(after) {
+                     self.expectedEdits.removeFirst(endIndex + 1)
+                     return .matched(hasMoreEdits: self.expectedEdits.first?.before == after)
+                 }
 diff --git a/AzooKeyCore/Sources/KeyboardThemes/ThemeData.swift b/AzooKeyCore/Sources/KeyboardThemes/ThemeData.swift
 index 699173c..15f21de 100644
 --- a/AzooKeyCore/Sources/KeyboardThemes/ThemeData.swift
@@ -2047,13 +2117,37 @@ index f659d9d..fce84cb 100644
  
      var body: some View {
 diff --git a/AzooKeyCore/Tests/KeyboardExtensionUtilsTests/DisplayedTextManagerTests.swift b/AzooKeyCore/Tests/KeyboardExtensionUtilsTests/DisplayedTextManagerTests.swift
-index 8fd943d..08a5951 100644
+index 8fd943d..20b24a8 100644
 --- a/AzooKeyCore/Tests/KeyboardExtensionUtilsTests/DisplayedTextManagerTests.swift
 +++ b/AzooKeyCore/Tests/KeyboardExtensionUtilsTests/DisplayedTextManagerTests.swift
-@@ -7,6 +7,33 @@ final class DisplayedTextManagerTests: XCTestCase {
+@@ -7,6 +7,57 @@ final class DisplayedTextManagerTests: XCTestCase {
          .init(left: left, center: center, right: right)
      }
  
++    @MainActor
++    func testEachPinyinLetterConsumesHostCallbackWithoutEndingComposition() {
++        for excludesMarkedText in [false, true] {
++            let manager = DisplayedTextManager(isLiveConversionEnabled: false, isMarkedTextEnabled: true)
++            let proxy = MockTextDocumentProxy()
++            proxy.excludesMarkedTextFromContext = excludesMarkedText
++            proxy.insertText("🙂")
++            manager.setTextDocumentProxy(.mainProxy(proxy))
++            var composing = ComposingText()
++            for letter in "nihao" {
++                let before = makeObservedState(proxy.documentContextBeforeInput ?? "")
++                composing.insertAtCursorPosition(String(letter), inputStyle: .direct)
++                manager.updateComposingText(composingText: composing, newLiveConversionText: nil)
++                let after = makeObservedState(proxy.documentContextBeforeInput ?? "")
++                XCTAssertEqual(manager.consumeExpectedEdit(before: before, after: after), .matched(hasMoreEdits: false))
++            }
++            XCTAssertEqual(String(utf16CodeUnits: proxy.utf16String, count: proxy.utf16String.count), "🙂nihao")
++            manager.updateComposingText(completedPrefix: "你好", composingText: ComposingText(), newLiveConversionText: nil)
++            manager.stopComposition()
++            XCTAssertEqual(proxy.documentContextBeforeInput, "🙂你好")
++            XCTAssertNil(proxy.utf16MarkedRange)
++        }
++    }
++
 +    @MainActor
 +    func testPinyinPartialConversionAndDeletionPreserveSurroundingText() {
 +        for marked in [false, true] {
@@ -2084,6 +2178,64 @@ index 8fd943d..08a5951 100644
      @MainActor
      func testOperation() throws {
          let manager = DisplayedTextManager(isLiveConversionEnabled: false, isMarkedTextEnabled: false)
+diff --git a/AzooKeyCore/Tests/KeyboardExtensionUtilsTests/ExpectedEditTrackerTests.swift b/AzooKeyCore/Tests/KeyboardExtensionUtilsTests/ExpectedEditTrackerTests.swift
+index 5427f8a..81d2b41 100644
+--- a/AzooKeyCore/Tests/KeyboardExtensionUtilsTests/ExpectedEditTrackerTests.swift
++++ b/AzooKeyCore/Tests/KeyboardExtensionUtilsTests/ExpectedEditTrackerTests.swift
+@@ -2,6 +2,29 @@
+ import XCTest
+ 
+ final class ExpectedEditTrackerTests: XCTestCase {
++    func testMarkedTextOutcomesAreConsumedAsOneEdit() {
++        let before = ObservedTextState(left: "", center: "", right: "")
++        let marked = ObservedTextState(left: "n", center: "", right: "")
++        for after in [before, marked] {
++            var tracker = ExpectedEditTracker()
++            tracker.record(before: before, after: before, alternativeAfter: marked, includingUnchanged: true)
++            XCTAssertEqual(tracker.consume(before: before, after: after), .matched(hasMoreEdits: false))
++            XCTAssertEqual(tracker.consume(before: before, after: marked), .noMatch)
++            XCTAssertEqual(tracker.consume(before: before, after: before), .noMatch)
++        }
++    }
++
++    func testDelayedMarkedCallbackCanChainWithFollowingEdit() {
++        var tracker = ExpectedEditTracker()
++        let before = ObservedTextState(left: "", center: "", right: "")
++        let marked = ObservedTextState(left: "n", center: "", right: "")
++        let after = ObservedTextState(left: "ni", center: "", right: "")
++        tracker.record(before: before, after: before, alternativeAfter: marked, includingUnchanged: true)
++        tracker.record(before: marked, after: after)
++        XCTAssertEqual(tracker.consume(before: before, after: after), .matched(hasMoreEdits: false))
++        XCTAssertEqual(tracker.consume(before: before, after: before), .noMatch)
++    }
++
+     func testConsumeSingleEdit() {
+         var tracker = ExpectedEditTracker()
+         let before = ObservedTextState(left: "a", center: "", right: "")
+diff --git a/AzooKeyCore/Tests/KeyboardExtensionUtilsTests/MockTextDocumentProxy.swift b/AzooKeyCore/Tests/KeyboardExtensionUtilsTests/MockTextDocumentProxy.swift
+index 5bff6f2..6f162b0 100644
+--- a/AzooKeyCore/Tests/KeyboardExtensionUtilsTests/MockTextDocumentProxy.swift
++++ b/AzooKeyCore/Tests/KeyboardExtensionUtilsTests/MockTextDocumentProxy.swift
+@@ -1,13 +1,17 @@
+ import UIKit
+ 
+ final class MockTextDocumentProxy: NSObject, UITextDocumentProxy {
++    var excludesMarkedTextFromContext = false
++
+     var documentContextBeforeInput: String? {
+-        let prefix = utf16String.prefix(utf16CursorRange.startPosition)
++        let position = excludesMarkedTextFromContext ? utf16MarkedRange?.location ?? utf16CursorRange.startPosition : utf16CursorRange.startPosition
++        let prefix = utf16String.prefix(position)
+         return String(utf16CodeUnits: Array(prefix), count: prefix.count)
+     }
+ 
+     var documentContextAfterInput: String? {
+-        let suffix = utf16String.dropFirst(utf16CursorRange.startPosition + utf16CursorRange.length)
++        let position = excludesMarkedTextFromContext ? utf16MarkedRange.map { $0.location + $0.length } ?? (utf16CursorRange.startPosition + utf16CursorRange.length) : utf16CursorRange.startPosition + utf16CursorRange.length
++        let suffix = utf16String.dropFirst(position)
+         return String(utf16CodeUnits: Array(suffix), count: suffix.count)
+     }
+ 
 diff --git a/AzooKeyCore/Tests/KeyboardViewsTests/ExtraKeyboardLayoutTests.swift b/AzooKeyCore/Tests/KeyboardViewsTests/ExtraKeyboardLayoutTests.swift
 new file mode 100644
 index 0000000..12e0e99
