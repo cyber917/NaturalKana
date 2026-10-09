@@ -1,66 +1,37 @@
 # NaturalKana
 
-[English](README.en.md)
+[English](README.en.md) · [下载最新版](https://github.com/cyber917/NaturalKana/releases/latest) · [使用说明](docs/USAGE.md)
 
-带 AI 表达建议的日语输入工具：iPhone 键盘、macOS 输入法，以及 Windows 建议小助手。打完一句日语，就能得到更自然的口语／敬语说法，点一下即可替换。
+打完一句话，给你更自然的表达建议，点一下替换原句。支持日语、中文、英语、韩语、法语和俄语，自备服务商 API 密钥。
 
-基于 [azooKey](https://github.com/azooKey/azooKey) 与 [azooKey-Desktop](https://github.com/azooKey/azooKey-Desktop) 的衍生项目，日语输入引擎和键盘沿用上游，新增了表达建议功能。不是 azooKey 官方版本。
+## 下载与安装
 
-- 支持 Qwen／百炼、OpenAI、DeepSeek、Kimi、Gemini、Claude 和自定义兼容接口（自备 API 密钥）
-- 口语和敬语分组，最多 10 条建议，标出改动的部分
-- 可选关西弁：在标准日语之外，再给一组関西弁说法；用方言打字也不会被当成错误
-- 句子里夹着不会说的英文、中文词，也能给出日语说法
-- 也能给英语、中文、韩语句子提建议；中文、韩语建议适合学这门语言的人，口语和网络用语更地道；“自动”模式按句子识别语言
-- 界面可切换中文、English、日本語
-- Mac 菜单栏小助手：用拼音等任何输入法打完一句，按 ⌃⌥J 检查
-- 可导入自己的网络用语词库（Mac）
+| 平台 | 提供什么 | 安装方式 |
+| --- | --- | --- |
+| **iPhone** | 多语言键盘，iOS 17.6+ | [下载 IPA](https://github.com/cyber917/NaturalKana/releases/latest)，用 SideStore／AltStore 安装 → [教程](docs/INSTALLATION.md#iphone不需要-mac) |
+| **Windows** | 建议小助手，Windows 10/11 64 位 | [下载 exe](https://github.com/cyber917/NaturalKana/releases/tag/windows-v0.1.3)，配合现有输入法使用 → [教程](docs/WINDOWS.md) |
+| **Mac** | 输入法与菜单栏小助手，Apple 芯片、macOS 13+ | [下载源码安装器](https://github.com/cyber917/NaturalKana/releases/latest)，需要完整 Xcode 和自己的开发签名配置 → [教程](docs/MAC_INSTALL.md) |
 
-## 安装
+Mac 提供的是源码编译安装器，不是 DMG。iPhone 免费账户安装后需定期续签，详见[签名与续期](docs/INSTALLATION.md#签名与续期)。
 
-| 你有的设备 | 推荐方式 |
+## 可以做什么
+
+- **表达建议**：按口语、敬语分组，标出修改；日语可额外给出关西弁说法。
+- **iPhone 多语言输入**：中文拼音、日语、英文、韩语、法语和俄语；可自定义语言切换顺序，记住上次使用的语言。
+- **离线候选与记忆**：中文支持全拼／简拼混输和有限拼写纠错；法语、俄语、韩语支持词语补全和常用词记忆。
+- **桌面快捷键**：Mac、Windows 都可一键全选输入框并检查，快捷键可改；采用建议前核对原文，点击窗口外部收起。
+- **服务与界面**：支持 Qwen／百炼、OpenAI、DeepSeek、Kimi、Gemini、Claude 和兼容接口；界面可选中文、English、日本語。
+
+## 使用与开发
+
+| 内容 | 文档 |
 | --- | --- |
-| **Windows / Mac / Linux 电脑 + iPhone** | 下载现成的 IPA，用 SideStore 安装，不需要 Mac 和 Xcode → [教程](docs/INSTALLATION.md#iphone不需要-mac) |
-| Mac + iPhone，想自己改代码 | 用 Xcode 从源码构建 → [教程](docs/INSTALLATION.md#从源码构建-iphone-版) |
-| Mac（输入法，Apple 芯片） | 用 Xcode 从源码构建 → [详细教程](docs/MAC_INSTALL.md) |
-| **Windows 电脑** | 下载 exe，配合任何日语输入法使用：按 Ctrl+Alt+J，或打开自动建议 → [说明](docs/WINDOWS.md) |
+| 配置接口、键盘设置、日常使用、排错 | [配置与使用](docs/USAGE.md) |
+| 导入个人网络用语词库（Mac） | [SNS 词库](docs/USAGE.md#sns-词库mac) |
+| 编译、项目结构、语言包和补丁、发布流程 | [开发说明](docs/DEVELOPMENT.md) |
 
-iPhone 版需要 iOS 17.6 或更高；Windows 版需要 Windows 10/11（64 位）。安装包都在 [Releases](https://github.com/cyber917/NaturalKana/releases) 页面。
+## 隐私与许可
 
-装好后到 App 里填写服务商、模型 ID 和 API 密钥，再在系统键盘设置里打开“允许完全访问”。详见[配置与使用](docs/USAGE.md)。
+输入转换在本地完成。联网建议只发送当前句子（最多 200 字）、表达偏好和命中的词库条目，直接发给你配置的服务商；本项目没有服务器。密钥保存在设备钥匙串或 Windows 凭据管理器中。
 
-## 为什么要“签名”，为什么 7 天要续一次
-
-**iPhone 不允许运行没有 Apple 签名的 App**，自己编译的也不例外。不经过 App Store 安装时，App 要用某个 Apple 账户签名，签名的有效期取决于账户类型：
-
-| 签名方式 | 有效期 | 费用 | 到期前要做什么 |
-| --- | --- | --- | --- |
-| 免费 Apple ID + SideStore（本项目推荐） | 7 天 | 免费 | 在手机上打开 SideStore 点刷新，不需要电脑 |
-| 免费 Apple ID + Xcode | 7 天 | 免费 | 用 Mac 重新运行一次 |
-| 付费开发者账户（99 美元／年） | 1 年 | 付费 | 一年重装一次 |
-
-- 过期后 App 和键盘会打不开，但**设置和密钥一般不会丢**，刷新或重新安装同一个 App 后就能继续用。
-- 免费账户的限制：同一台手机最多同时装 3 个自签 App（SideStore 自己占 1 个）；每 7 天最多注册 10 个 App ID（NaturalKana 主程序和键盘共用 2 个）。
-- SideStore 本身也是 7 天签名。只要在到期前点过刷新，它就会连同自己一起续期。如果已经过期，要回到电脑上用 iloader 重装 SideStore，NaturalKana 不用重装。
-- **Mac 版**：macOS 对本地构建的程序宽松得多，通常不需要每周续期；如果哪天输入法加载不了，重新执行一遍构建和安装即可。
-- **Windows 版**：没有有效期，下载就能一直用。第一次运行时 Windows 可能提示“已保护你的电脑”，点“更多信息 → 仍要运行”即可（程序没有购买代码签名证书）。
-
-## 隐私
-
-联网建议只发送当前这一句（最多 200 字）、表达偏好和命中的词库条目，直接发到你自己配置的服务商；本项目没有服务器。API 密钥保存在设备钥匙串（Windows 上是凭据管理器）里。键盘的“完全访问”只用于联网获取建议。
-
-## 从源码构建
-
-需要 Mac、完整 Xcode、Python 3、Git 和 Git LFS。
-
-```sh
-git clone https://github.com/cyber917/NaturalKana.git
-cd NaturalKana
-python3 tools/bootstrap.py --weights
-open NaturalKana.xcworkspace
-```
-
-`bootstrap.py` 会下载固定版本的上游源码和模型，再应用 `patches/` 里的修改。签名和安装步骤见[安装教程](docs/INSTALLATION.md#从源码构建-iphone-版)，仓库结构和开发说明见 [docs/DEVELOPMENT.md](docs/DEVELOPMENT.md)。
-
-## 许可
-
-NaturalKana 新增的代码使用 MIT 许可（[LICENSE](LICENSE)）。上游 azooKey、转换引擎、字典、模型和其他依赖各自保留原许可，见 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)、[licenses/](licenses/) 和[来源核对](docs/PROVENANCE.md)。
+NaturalKana 基于 [azooKey](https://github.com/azooKey/azooKey) 与 [azooKey-Desktop](https://github.com/azooKey/azooKey-Desktop)，不是上游官方版本。新增代码使用 [MIT 许可](LICENSE)；上游代码、字典、模型和数据各自保留原许可，见[第三方来源与说明](THIRD_PARTY_NOTICES.md)及 [licenses/](licenses/)。
