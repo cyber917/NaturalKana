@@ -1,0 +1,2074 @@
+# CC-CEDICT
+# Community maintained free Chinese-English dictionary.
+# 
+# Published by MDBG
+# 
+# License:
+# Creative Commons Attribution-ShareAlike 4.0 International License
+# https://creativecommons.org/licenses/by-sa/4.0/
+# 
+# Referenced works:
+# CEDICT - Copyright (C) 1997, 1998 Paul Andrew Denisowski
+# 
+# CC-CEDICT can be downloaded from:
+# https://www.mdbg.net/chinese/dictionary?page=cc-cedict
+# 
+# Additions and corrections can be sent through:
+# https://cc-cedict.org/editor/editor.php
+# 
+# For more information about CC-CEDICT see:
+# https://cc-cedict.org/wiki/
+# 
+# Extracted labeled chat entries for NaturalKana; original snapshot date in cedict-snapshot.json.
+一丟丟 一丢丢 [yi1 diu1 diu1] /(coll.) a tiny bit/
+一個頭兩個大 一个头两个大 [yi1 ge5 tou2 liang3 ge5 da4] /(coll.) to feel as though one's head could explode (Tw)/
+一哥 一哥 [yi1 ge1] /(coll.) top-ranked male; leading male; top male personality (in a particular field, esp. in entertainment or sports)/
+一塊 一块 [yi1 kuai4] /a piece; a chunk/(fig.) (coll.) (typically preceded by a specifier such as 這|这[zhe4]) aspect; area; dimension (Example: 情感這一塊|情感这一块[qing2 gan3 zhe4 yi1 kuai4] "the emotional aspect (of it)")/(coll.) one yuan; a dollar/together; in the same place; in company/
+一大通 一大通 [yi1 da4 tong1] /(coll.) a whole lot of ...; an endless stream of ... (used in relation to excessive or tedious amounts of talk, explanations, complaints etc)/
+一姐 一姐 [yi1 jie3] /(coll.) top-ranked female; leading female; top female personality (in a particular field, esp. in entertainment or sports)/
+一抓一大把 一抓一大把 [yi1 zhua1 yi1 da4 ba3] /(coll.) to be a dime a dozen; easy to come by/
+一毛一樣 一毛一样 [yi1 mao2 yi1 yang4] /(coll.) exactly alike; identical/
+一水兒 一水儿 [yi1 shui3 r5] /(coll.) of the same type/identical/
+一等一 一等一 [yi1 deng3 yi1] /(coll.) top-notch; first-rate; outstanding/
+一號 一号 [yi1 hao4] /first day of the month/toilet/(slang) top (in a homosexual relationship)/
+丁丁 丁丁 [ding1 ding1] /(neologism) (slang) penis (丁丁 resembles "JJ", which is short for 雞雞|鸡鸡[ji1 ji1])/
+三七仔 三七仔 [san1 qi1 zi3] /(slang) pimp/
+三人行 三人行 [san1 ren2 xing2] /(slang) threesome/
+三八大蓋 三八大盖 [San1 ba1 Da4 gai4] /(coll.) Arisaka Type 38 rifle (Japanese army rifle used 1905-1945)/
+三字經 三字经 [san1 zi4 jing1] /(slang) swearword/four-letter word/
+三炮 三炮 [san1 pao4] /(Northeastern dialect) simple-minded person/
+三觀 三观 [san1 guan1] /(neologism) the three core personal values: worldview (世界觀|世界观[shi4 jie4 guan1]), view of life (人生觀|人生观[ren2 sheng1 guan1]) and value system (價值觀|价值观[jia4 zhi2 guan1])/
+三蹦子 三蹦子 [san1 beng4 zi5] /(coll.) motorized three-wheeler/
+三點全露 三点全露 [san1 dian3 quan2 lou4] /(slang) naked/nude/
+上一號 上一号 [shang4 yi1 hao4] /(coll.) to go pee/to go to the bathroom/
+上分 上分 [shang4 fen1] /(coll.) (gaming) to progress to the next level/to level up/
+上大號 上大号 [shang4 da4 hao4] /(coll.) to defecate; to poop/
+上床 上床 [shang4 chuang2] /to go to bed/(coll.) to have sex/
+上熱搜 上热搜 [shang4 re4 sou1] /(Internet) (of a search query) to be trending/
+上環 上环 [shang4 huan2] /(coll.) to be fitted with an IUD; (of a doctor) to insert an IUD/
+下乳 下乳 [xia4 ru3] /to promote lactation (TCM)/(coll.) underboob/
+下人 下人 [xia4 ren2] /(old) servant/(dialect) children; grandchildren/
+下毛毛雨 下毛毛雨 [xia4 mao2 mao5 yu3] /to drizzle; to rain lightly/(fig.) (coll.) to give (sb) a heads-up; to break (some bad news) gently; to scold mildly/
+下頭 下头 [xia4 tou2] /(slang) (of a person or manner) off-putting/(slang) to feel put off/
+不作死就不會死 不作死就不会死 [bu4 zuo4 si3 jiu4 bu4 hui4 si3] /serves you right for doing sth so stupid (Internet slang)/
+不兒 不儿 [bu2 r5] /(coll.) no (contracted form of 不是[bu4 shi4])/
+不兒道 不儿道 [bu1 r5 dao4] /(dialect) contracted form of 不知道[bu4 zhi1 dao4]/
+不分 不分 [bu4 fen1] /not to distinguish; to make no distinction/(LGBT slang) versatile (open to either penetrative or receptive role)/
+不咋地 不咋地 [bu4 za3 de5] /(dialect) not that great/not up to much/nothing special/
+不咋的 不咋的 [bu4 za3 de5] /(dialect) not that great/not up to much/nothing special/
+不喜勿噴 不喜勿喷 [bu4 xi3 wu4 pen1] /(Internet slang) if you don't like it, don't flame; please don't attack me if you disagree/
+不拉幾 不拉几 [bu4 la1 ji1] /(dialect) extremely/
+不明覺厲 不明觉厉 [bu4 ming2 jue2 li4] /although I don't understand it, it seems pretty awesome (Internet slang)/
+不會 不会 [bu4 hui4] /improbable/unlikely/will not (act, happen etc)/not able/not having learned to do sth/(coll.) (Tw) don't mention it/not at all/
+不濟 不济 [bu4 ji4] /(coll.) no good; of no use/
+不行了 不行了 [bu4 xing2 le5] /(coll.) on the point of death/dying/
+不賴 不赖 [bu4 lai4] /(coll.) not bad/good/fine/
+不香嗎 不香吗 [bu4 xiang1 ma5] /(slang) would be better (abbr. for 這錢買排骨它不香嗎|这钱买排骨它不香吗[zhe4 qian2 mai3 pai2 gu3 ta1 bu4 xiang1 ma5] for that money, a pork cutlet would be more appetizing, would it not?)/
+丐版 丐版 [gai4 ban3] /(slang) basic version (of a product)/
+世界波 世界波 [shi4 jie4 bo1] /(soccer slang) spectacular, world-class goal; wonder goal (originally Cantonese: 波 is borrowed from English "ball", Jyutping [bo1])/
+丟份子 丢份子 [diu1 fen4 zi5] /(coll.) to lose face; to be disgraced/
+丫挺 丫挺 [ya1 ting3] /(Beijing dialect) bastard/damned/
+丫頭片子 丫头片子 [ya1 tou5 pian4 zi5] /(coll.) silly girl/little girl/
+中二病 中二病 [zhong1 er4 bing4] /(neologism) strange behavior characteristic of a teenager going through puberty (loanword from Japanese "chūnibyō")/
+中央空調 中央空调 [zhong1 yang1 kong1 tiao2] /central air conditioning/(fig.) (neologism) ladies' man (contrasted with 暖男[nuan3 nan2], a guy who is attentive to his partner rather than to all and sundry)/
+中毒者 中毒者 [zhong4 du2 zhe3] /poisoned person (food poisoning, drug overdose or toxic exposure)/(coll.) addict; junkie; enthusiast (video games, shopping etc)/
+串串 串串 [chuan4 chuan4] /(coll.) skewers; barbecued food on sticks; (in Sichuan) Sichuan-style hotpot skewers (abbr. for 串串香[chuan4 chuan4 xiang1])/(coll.) non-pedigree pet (esp. dog or cat); mutt; mixed-breed cat/
+串串狗 串串狗 [chuan4 chuan4 gou3] /(coll.) mixed-breed dog; mutt/
+串串貓 串串猫 [chuan4 chuan4 mao1] /(coll.) mixed-breed cat; moggy/
+主播 主播 [zhu3 bo1] /(news) anchor; (program) host; (Internet) streamer/
+主理人 主理人 [zhu3 li3 ren2] /(coll.) person in charge, manager (originally, chiefly in Hong Kong, Macau); (esp.) creative director or founder of a boutique brand (newer, mainstream sense)/
+乃們 乃们 [nai3 men5] /you (plural) (slang alternative for 你們|你们[ni3 men5])/
+么兒 幺儿 [yao1 er2] /(coll.) youngest son/
+么女 幺女 [yao1 nu:3] /(coll.) youngest daughter/
+乖順 乖顺 [guai1 shun4] /obedient (colloquial)/
+乙女 乙女 [yi3 nu:3] /(slang) maiden; young lady (orthographic borrowing from Japanese 乙女 "otome", used esp. to refer to romantic media and games aimed at women)/
+也有今天 也有今天 [ye3 you3 jin1 tian1] /(coll.) to get one's just deserts/to serve sb right/to get one's share of (good or bad things)/every dog has its day/
+乳滑 乳滑 [ru3 hua2] /(Internet slang) variant of 辱華|辱华[ru3 Hua2], to insult China/
+乾貨 干货 [gan1 huo4] /dried food (including dried fruits, mushrooms and seafoods such as shrimp and abalone)/(fig.) (coll.) knowledge presented in readily assimilable form; just what you want to know: no more, no less (no padding 水分[shui3 fen4])/
+乾麵 干面 [gan1 mian4] /noodles mixed with a sauce and served with toppings (not in a soup)/(dialect) flour/
+亂咕攘 乱咕攘 [luan4 gu1 rang5] /to disturb (dialect)/
+了去了 了去了 [le5 qu4 le5] /(coll.) (after adjectives such as 多[duo1], 大[da4], 遠|远[yuan3], 高[gao1]) very/extremely/
+事兒 事儿 [shi4 r5] /one's employment/business/matter that needs to be settled/(northern dialect) (of a person) demanding/trying/troublesome/erhua variant of 事[shi4]/CL:件[jian4],樁|桩[zhuang1]/
+事兒媽 事儿妈 [shi4 r5 ma1] /(coll.) fussbudget/pain in the ass/
+事業線 事业线 [shi4 ye4 xian4] /(palmistry) fate line; career prospects line (running vertically up the palm to the base of the middle finger)/(slang) cleavage/
+二哈 二哈 [er4 ha1] /(coll.) silly but cute husky (dog)/
+二婚 二婚 [er4 hun1] /(coll.) (usu. of women in former times) to marry for a second time/second marriage/person who remarries/
+二屄 二屄 [er4 bi1] /(slang) idiot/idiotic/
+二愣子 二愣子 [er4 leng4 zi5] /stupid person/dolt/rash (slang)/
+二毛子 二毛子 [er4 mao2 zi5] /lit. secondary foreigner/(derogatory term for Chinese Christians and others associated with foreigners, used at the time of the Boxer Rebellion)/(coll.) westernized Chinese person/(derog.) person of mixed Chinese and Russian blood/(slang) Ukraine/German shepherd dog/(dialect) two-year-old goat/
+二貨 二货 [er4 huo4] /(slang) fool/dunce/foolishly cute person/
+二進宮 二进宫 [er4 jin4 gong1] /name of a famous opera/(slang) to go to jail for a second offense/
+五五開 五五开 [wu3 wu3 kai1] /(coll.) fifty-fifty (equally divided or equally likely)/
+五打一 五打一 [wu3 da3 yi1] /to masturbate (slang)/
+五毛黨 五毛党 [wu3 mao2 dang3] /fifty cents party (person supposed to relay government propaganda on Internet sites)/
+交朋友 交朋友 [jiao1 peng2 you5] /to make friends/(dialect) to start an affair with sb/
+人品 人品 [ren2 pin3] /character; moral strength; integrity/(coll.) looks; appearance; bearing/
+人礦 人矿 [ren2 kuang4] /(neologism, attested by 2023) (slang) the Chinese people, seen as a resource that is exploited for its value to the nation/
+人肉搜索引擎 人肉搜索引擎 [ren2 rou4 sou1 suo3 yin3 qing2] /(neologism, attested by 2003) human flesh search engine; crowdsourced online search for information about a person or event, typically resulting in doxing (now largely replaced by the clipped form 人肉搜索[ren2 rou4 sou1 suo3])/
+人艱不拆 人艰不拆 [ren2 jian1 bu4 chai1] /life is hard enough as it is; don't burst my bubble (Internet slang)/
+人間清醒 人间清醒 [ren2 jian1 qing1 xing3] /(neologism c. 2021) to keep one's senses; not get carried away; not let success go to one's head/
+什麼事 什么事 [shen2 me5 shi4] /What's up?; Is something the matter?/(coll.) (used in rhetorical questions of the form 關|关[guan1] + {person} + 什麼事|什么事[shen2 me5 shi4] "what business is it of {person}'s?; what's it to {person}?")/
+什麼鬼 什么鬼 [shen2 me5 gui3] /(coll.) what the hell?; what on earth? (expression of confusion, disbelief or annoyance)/
+今兒 今儿 [jin1 r5] /(coll.) today/
+今兒個 今儿个 [jin1 r5 ge5] /(coll.) today/
+今時今日 今时今日 [jin1 shi2 jin1 ri4] /this day and age (dialect)/
+今朝 今朝 [jin1 zhao1] /(dialect) today/(literary) the present; this age/
+仔細 仔细 [zi3 xi4] /careful; attentive; cautious/to be careful; to look out/(dialect) thrifty; frugal/
+仙女棒 仙女棒 [xian1 nu:3 bang4] /sparkler (handheld firework)/(slang) vibrator (sex toy)/
+代誌 代志 [dai4 zhi4] /(Tw) (coll.) matter; thing (from Taiwanese, Tai-lo pr. [tāi-tsì], equivalent to Mandarin 事情[shi4 qing5])/
+伢子 伢子 [ya2 zi5] /(dialect) child/
+伢崽 伢崽 [ya2 zai3] /(dialect) child/
+伯媽 伯妈 [bo2 ma1] /(dialect) wife of father's older brother; aunt/
+伯爺 伯爷 [bo2 ye2] /(dialect) father's older brother; uncle/
+伯都 伯都 [bo2 dou1] /(archaic) (dialect) tiger/
+估計 估计 [gu1 ji4] /to estimate; to assess; to calculate/(coll.) to reckon; to think (that ...)/
+住海邊 住海边 [zhu4 hai3 bian1] /(fig.) (slang) to stick one's nose in other people's affairs (i.e. the scope of other people's business that one concerns oneself with is as wide as an ocean vista)/
+佛媛 佛媛 [fo2 yuan2] /Buddhist griftress (female Internet influencer who exploits Buddhist imagery for self-promotion or commercial purposes)/
+佛系 佛系 [fo2 xi4] /(neologism, attested by 2017) (coll.) chill about everything (typically used to describe young people who don't buy into aspirational society)/
+作妖 作妖 [zuo4 yao1] /(dialect) to cause trouble; to act up/
+你個頭 你个头 [ni3 ge5 tou2] /(coll.) my ass!; yeah, right! (used to mock a claim sb just made, as in 專家你個頭|专家你个头[zhuan1 jia1 ni3 ge5 tou2] "expert", my ass!)/
+使喚 使唤 [shi3 huan5] /to order sb around/(coll.) to handle (a draught animal, tool, machine etc)/Taiwan pr. [shi3 huan4]/
+來事 来事 [lai2 shi4] /(coll.) (esp. after 會|会[hui4]) to be socially adept; to know how to handle people/
+來勁 来劲 [lai2 jin4] /(dialect) to be full of zeal/high-spirited/exhilarating/to stir sb up/
+來錢 来钱 [lai2 qian2] /(coll.) to make money/
+侵刪 侵删 [qin1 shan1] /(Internet slang) if this is an infringement of copyright, please notify me and I will remove it/
+便所 便所 [bian4 suo3] /(dialect) toilet/privy/
+促狹 促狭 [cu4 xia2] /(coll.) teasing; mischievous/(coll.) cunning; sly/
+俗辣 俗辣 [su2 la4] /(slang) (Tw) coward; paper tiger; a nobody (from Taiwanese 卒仔, Tai-lo pr. [tsut-á])/
+信息繭房 信息茧房 [xin4 xi1 jian3 fang2] /(Internet) echo chamber/filter bubble/
+修理 修理 [xiu1 li3] /to repair/to fix/to prune/to trim/(coll.) to sort sb out/to fix sb/
+修羅場 修罗场 [xiu1 luo2 chang3] /(Indian mythology) battlefield where Asuras 修羅|修罗[xiu1 luo2] fought the gods; (fig.) a scene of cruelty and carnage; (slang) emotionally charged confrontation (esp. one involving a love triangle)/
+俺們 俺们 [an3 men5] /(dialect) we; us; our/
+個把 个把 [ge4 ba3] /(coll.) about one; one or so/
+個頂個 个顶个 [ge4 ding3 ge4] /(dialect) each one; every one/
+個頭 个头 [ge5 tou2] /(coll.) my ass!; yeah, right! (used to mock a claim sb just made, as in 專家個頭|专家个头[zhuan1 jia1 ge5 tou2] "expert", my ass!)/
+倍兒 倍儿 [bei4 r5] /(coll.) very; really/
+倍兒棒 倍儿棒 [bei4 r5 bang4] /(dialect) awesome/excellent/
+倒爺 倒爷 [dao3 ye2] /(coll.) a profiteer/(business) wheeler-dealer/
+倒逼 倒逼 [dao4 bi1] /(neologism c. 2006) (of circumstances) to stimulate (change, esp. innovation, reform etc)/
+倒霉蛋 倒霉蛋 [dao3 mei2 dan4] /(coll.) poor devil/unfortunate man/
+倭瓜 倭瓜 [wo1 gua1] /(dialect) pumpkin/
+值當 值当 [zhi2 dang5] /(coll.) worth it; worthwhile/
+偏生 偏生 [pian1 sheng1] /(dialect) see 偏偏[pian1 pian1]/
+做雞 做鸡 [zuo4 ji1] /(slang) (of a woman) to work as a prostitute/
+做鴨 做鸭 [zuo4 ya1] /(slang) (of a man) to work as a prostitute/
+偷吃 偷吃 [tou1 chi1] /to sneak food; to eat sth on the sly/(coll.) to cheat on one's partner/
+偷油婆 偷油婆 [tou1 you2 po2] /(dialect) cockroach/
+備胎 备胎 [bei4 tai1] /spare tire/(slang) fallback guy (or girl)/
+催更 催更 [cui1 geng1] /(slang) (of a follower) to urge (a blogger etc) to post some fresh content (abbr. for 催促更新[cui1 cu4 geng1 xin1])/
+傲嬌 傲娇 [ao4 jiao1] /(coll.) presenting as unfriendly and blunt, but warm and tender inside (loanword from Japanese "tsundere")/
+傷不起 伤不起 [shang1 bu4 qi3] /(slang) it's just the pits!/so unfair!/unbearable/
+傻爆眼 傻爆眼 [sha3 bao4 yan3] /(slang) stunned; flabbergasted (emphatic form of 傻眼[sha3 yan3])/
+傻白甜 傻白甜 [sha3 bai2 tian2] /(Internet slang) sweet, naive young woman/
+傻眼 傻眼 [sha3 yan3] /(coll.) stunned; dumbfounded; flabbergasted/
+傻缺 傻缺 [sha3 que1] /(slang) idiot; fool/
+僵屍車 僵尸车 [jiang1 shi1 che1] /(coll.) abandoned car/
+充電頭 充电头 [chong1 dian4 tou2] /(coll.) wall charger; charging adapter/
+先不先 先不先 [xian1 bu4 xian1] /(dialect) first of all; in the first place/
+先生 先生 [xian1 sheng5] /teacher/gentleman; sir; mister (Mr.)/husband/(dialect) doctor/CL:位[wei4]/
+光棍 光棍 [guang1 gun4] /gangster; hoodlum/bachelor; single man/(dialect) wise person; astute person/
+光腚腫菊 光腚肿菊 [Guang1 ding4 Zhong3 ju2] /(Internet slang) punning reference to 廣電總局|广电总局[Guang3 dian4 Zong3 ju2], the National Radio and Television Administration (NRTA)/
+兒馬 儿马 [er2 ma3] /(coll.) male horse; stallion/
+兜底 兜底 [dou1 di3] /to provide a safety net/(coll.) to reveal; to expose (sth disreputable)/
+內內 内内 [nei4 nei5] /(coll.) panties/
+內卷 内卷 [nei4 juan3] /(embryology) to involute; involution/(neologism, attested by 2017) (of a society) to become more and more of a rat race; to become increasingly competitive (due to limited resources)/
+內容管理系統 内容管理系统 [nei4 rong2 guan3 li3 xi4 tong3] /content management system (CMS) (Internet)/
+全乎 全乎 [quan2 hu5] /(coll.) complete/comprehensive/
+全鬚全尾兒 全须全尾儿 [quan2 xu1 quan2 yi3 r5] /(Beijing dialect) intact/in one piece/
+兩情兩願 两情两愿 [liang3 qing2 liang3 yuan4] /by mutual consent (north China dialect)/
+八加一 八加一 [ba1 jia1 yi1] /(slang) alcohol; liquor (euphemistic substitute for 酒[jiu3], from 8+1=9, 九[jiu3] being a homophone of 酒[jiu3])/
+八家將 八家将 [ba1 jia1 jiang4] /Ba Jia Jiang, the eight generals that guard the godly realm in Taiwanese folklore, represented by troupes of dancers in temple processions/(slang) lowlife gangster or young hoodlum, often written as "8+9", [ba1 jia1 jiu3]/
+八帶蛸 八带蛸 [ba1 dai4 shao1] /(Shandong dialect) octopus/
+八竿子打不著 八竿子打不着 [ba1 gan1 zi5 da3 bu4 zhao2] /(coll.) unrelated; lacking any connection/
+八點檔 八点档 [ba1 dian3 dang4] /8:00 p.m. time slot (on television)/(Tw) (coll.) television drama series that airs in the prime time slot of 8:00 p.m./
+公主病 公主病 [gong1 zhu3 bing4] /(neologism c. 1997) (coll.) self-entitlement/
+公婆 公婆 [gong1 po2] /husband's parents; parents-in-law/(dialect) a couple; husband and wife/
+冤種 冤种 [yuan1 zhong3] /(slang) sucker; dupe; patsy (often used humorously or self-deprecatingly)/
+冰坨子 冰坨子 [bing1 tuo2 zi5] /(coll.) chunks of ice/
+冷戰 冷战 [leng3 zhan5] /(coll.) shiver/shudder/
+凡爾賽 凡尔赛 [Fan2 er3 sai4] /Versailles (near Paris)/(slang) to humblebrag/ostensibly modest, but in fact boastful/
+凡爾賽文學 凡尔赛文学 [Fan2 er3 sai4 wen2 xue2] /(slang) social media post whose purpose is to humblebrag/
+凱子 凯子 [kai3 zi5] /(slang) rich, good-looking guy/
+凸槌 凸槌 [tu1 chui2] /(slang) (Tw) to mess up/to screw up/
+凹造型 凹造型 [ao1 zao4 xing2] /(coll.) to strike a pose/
+出攤兒 出摊儿 [chu1 tan1 r5] /(coll.) to set up a vendor's stall (in the street or at a night market etc)/
+出海 出海 [chu1 hai3] /to go out to sea/(neologism) to expand into overseas markets/
+出片 出片 [chu1 pian4] /(coll.) (of a photographic subject) to photograph well; to yield good shots/
+出糗 出糗 [chu1 qiu3] /(coll.) to have sth embarrassing happen/
+出糧 出粮 [chu1 liang2] /(dialect) to pay salary/
+出飯 出饭 [chu1 fan4] /(coll.) (of rice) to rise well (with cooking)/
+刀螂 刀螂 [dao1 lang5] /(dialect) mantis/
+分手炮 分手炮 [fen1 shou3 pao4] /(slang) breakup sex/
+分鍋 分锅 [fen1 guo1] /(dialect) to set up separate households/(sports etc) to analyze the reasons for a defeat/
+別苗頭 别苗头 [bie2 miao2 tou5] /(dialect) to compete with/to pit oneself against/
+刷屏 刷屏 [shua1 ping2] /to flood (on an Internet forum etc)/
+前司 前司 [qian2 si1] /(coll.) previous company one worked at/
+前擺 前摆 [qian2 bai3] /(dialect) last time/
+前方高能 前方高能 [qian2 fang1 gao1 neng2] /(slang) Something awesome is about to happen! (originally, in a Japanese space battleship anime, it meant "Danger! High energy up ahead!" — a warning to either prepare for battle or take evasive action)/
+前晌 前晌 [qian2 shang3] /(dialect) morning/forenoon/
+剝皮 剥皮 [bao1 pi2] /to skin; to flay; to peel/(fig.) (coll.) to haul (sb) over the coals/also pr. [bo1pi2]/
+剩女 剩女 [sheng4 nu:3] /(coll.) "leftover woman" – a woman who remains single beyond the typical marrying age/
+剩男 剩男 [sheng4 nan2] /(coll.) "leftover man" – a man who remains single beyond the typical marrying age/
+副乳 副乳 [fu4 ru3] /accessory breast; supernumerary breast/(coll.) bra bulge; armpit fat/
+割肉 割肉 [ge1 rou4] /to cut some meat/to cut off a piece of flesh/(fig.) (coll.) to sell at a loss/
+割韭菜 割韭菜 [ge1 jiu3 cai4] /(fig.) (coll.) to fleece a group of people repeatedly (esp. small investors, consumers or fans), treating them as an endlessly renewable resource to harvest for profit/
+劇荒 剧荒 [ju4 huang1] /(neologism, attested by 2016) TV drama drought; nothing good to watch/
+劇集 剧集 [ju4 ji2] /(serialized TV or Internet drama) show; series/
+劐弄 劐弄 [huo1 leng5] /(dialect) to mix/to stir/to make trouble/
+加菲貓 加菲猫 [Jia1 fei1 mao1] /Garfield (the comic-strip cat)/(coll.) flat-faced Persian-type cat (esp. an exotic shorthair)/
+加麻大 加麻大 [Jia1 ma2 da4] /(slang) Canada/
+勁爆 劲爆 [jing4 bao4] /(coll.) awesome/stunning/electrifying/breathtaking/(originally Cantonese)/also pr. [jin4 bao4]/
+動態更新 动态更新 [dong4 tai4 geng1 xin1] /dynamic update (Internet)/
+動手腳 动手脚 [dong4 shou3 jiao3] /(coll.) to tamper with/to mess around with/
+勞什子 劳什子 [lao2 shi2 zi5] /(dialect) nuisance/pain/
+勵志哥 励志哥 [li4 zhi4 ge1] /(coll.) a guy who is admired for having overcome challenges to achieve success/
+勾八 勾八 [gou1 ba1] /(slang) see 雞巴|鸡巴[ji1 ba5]/
+包包 包包 [bao1 bao1] /(coll.) handbag; purse/(Tw) (coll.) bag one carries (e.g. shoulder bag or backpack)/(coll.) small bump on the skin (pimple, mosquito bite etc)/
+包夜 包夜 [bao1 ye4] /to book a service for overnight use (karaoke room, internet café etc)/(euphemism) to hire a companion or escort for the night/
+包穀 包谷 [bao1 gu3] /(dialect) corn; maize/
+包粟 包粟 [bao1 su4] /(dialect) corn; maize/
+北車 北车 [Bei3 che1] /(coll.) Taipei Railway Station (abbr. for 台北車站|台北车站[Tai2 bei3 Che1 zhan4]) (Tw)/
+十一路 十一路 [shi2 yi1 lu4] /(coll.) going on foot/
+十動然拒 十动然拒 [shi2 dong4 ran2 ju4] /to reject sb after being deeply touched by them (Internet slang)/
+十大神獸 十大神兽 [shi2 da4 shen2 shou4] /the Baidu 10 mythical creatures (a set of hoax animals and puns linked to PRC Internet censorship)/
+千兒八百 千儿八百 [qian1 r5 ba1 bai3] /(coll.) one thousand or almost one thousand/
+半拉 半拉 [ban4 la3] /(coll.) half/
+半桶水 半桶水 [ban4 tong3 shui3] /(coll.) (of one's skills, knowledge etc) limited/superficial/half-baked/sb with a smattering of knowledge (of sth)/dabbler/
+南波萬 南波万 [nan2 bo1 wan4] /(Internet slang) number one (loanword)/
+卯起來 卯起来 [mao3 qi3 lai5] /(coll.) to get enthusiastic; to put in all one's energy/
+卵蛋 卵蛋 [luan3 dan4] /(coll.) testicle; balls/
+原諒色 原谅色 [yuan2 liang4 se4] /(slang) green/
+又雙叒叕 又双叒叕 [you4 shuang1 ruo4 zhuo2] /(Internet slang) time after time/again and again and again/
+友商 友商 [you3 shang1] /(slang) business competitor; industry peer/
+友盡 友尽 [you3 jin4] /(Internet slang) end of friendship/friendship over!/
+反倒 反倒 [fan3 dao4] /(coll.) but on the contrary; but instead/
+反文旁 反文旁 [fan3 wen2 pang2] /(colloquial) grapheme 攵 (variant form of Kangxi radical 66, 攴)/
+反映論 反映论 [fan3 ying4 lun4] /theory of reflection (in dialectic materialism), i.e. every perception reflects physical reality/
+反賊 反贼 [fan3 zei2] /(imperial China) rebel; traitor/(post-1949) enemy of the state; counter-revolutionary/(slang) dissident (used self-referentially, esp. in pro-democracy circles)/
+叔娘 叔娘 [shu1 niang2] /(dialect) wife of father's younger brother; aunt/
+取燈兒 取灯儿 [qu3 deng1 r5] /(dialect) match (for lighting fire)/
+口嗨 口嗨 [kou3 hai1] /(Internet slang) to talk a big game; to be all talk and no action/
+口條 口条 [kou3 tiao2] /(ox etc) tongue (as food)/(dialect) elocution; articulation/
+口爆 口爆 [kou3 bao4] /(slang) to ejaculate inside sb's mouth/
+口皮 口皮 [kou3 pi2] /(coll.) lip/
+只當 只当 [zhi3 dang4] /(coll.) to take (sth) as …; to treat as …; to assume; to act as if …/Taiwan pr. [zhi3dang1]/
+叫板 叫板 [jiao4 ban3] /to signal the musicians (in Chinese opera, by prolonging a spoken word before attacking a song)/(coll.) to challenge/
+叫雞 叫鸡 [jiao4 ji1] /rooster/cock/(slang) (Cantonese) to visit a prostitute/
+叫驢 叫驴 [jiao4 lu:2] /(coll.) male donkey/
+叮叮貓 叮叮猫 [ding1 ding1 mao1] /(dialect) dragonfly/
+可不是 可不是 [ke3 bu5 shi4] /(coll.) exactly!; indeed; that's for sure/
+可憐見 可怜见 [ke3 lian2 jian4] /(coll.) pitiable; to have pity on sb/
+可蠢 可蠢 [ke3 chun3] /(dialect) unbearable/embarrassing/
+吃乾飯 吃干饭 [chi1 gan1 fan4] /(coll.) to be incompetent/useless/good-for-nothing/
+吃喝拉撒 吃喝拉撒 [chi1 he1 la1 sa1] /(coll.) eating, drinking, defecating and urinating; the mundane necessities of everyday life/
+吃喝拉撒睡 吃喝拉撒睡 [chi1 he1 la1 sa1 shui4] /(coll.) eating, drinking, defecating, urinating and sleeping; the mundane necessities of everyday life/
+吃土 吃土 [chi1 tu3] /(neologism c. 2015) (slang) (used jokingly) to live on dirt (typically because one has spent all one's money on consumer items)/
+吃席 吃席 [chi1 xi2] /to attend a banquet (funeral, wedding etc)/(neologism c. 2020) (slang) (jocular) lit. to attend sb's funeral banquet (used to imply that things are going to go badly for sb)/
+吃灰 吃灰 [chi1 hui1] /(neologism c. 2019) (coll.) to gather dust/
+吃煙 吃烟 [chi1 yan1] /(dialect) to smoke (tobacco)/
+吃牢飯 吃牢饭 [chi1 lao2 fan4] /(coll.) to serve time in prison; (Tw) (sarcastic) to live off the prison system (getting free meals)/
+吃瓜 吃瓜 [chi1 gua1] /(neologism c. 2016) (slang) to watch an entertaining spectacle from the sidelines and-or engage in gossip about it/
+吃瓜群眾 吃瓜群众 [chi1 gua1 qun2 zhong4] /peanut gallery (esp. in online forums)/onlookers who are interested in the spectacle but don't have anything knowledgeable to say about it/(neologism c. 2016)/
+吃瓦片 吃瓦片 [chi1 wa3 pian4] /(coll.) to live off income from rental properties/
+吃癟 吃瘪 [chi1 bie3] /(coll.) to suffer a humiliation/
+吃的 吃的 [chi1 de5] /(coll.) food/
+吃藕 吃藕 [chi1 ou3] /(slang) unattractive; ugly (derived from near homophone 醜|丑[chou3])/
+合扇 合扇 [he2 shan4] /(dialect) hinge/
+合著 合着 [he2 zhe5] /(dialect) (implying sudden realization) so/after all/
+吊打 吊打 [diao4 da3] /to hang sb up and beat him/(fig.) (slang) to own (one's opponent)/to thoroughly dominate/
+吊死鬼 吊死鬼 [diao4 si3 gui3] /ghost of a person who died by hanging/hanged person/(coll.) inchworm/hangman (word game)/
+吊水 吊水 [diao4 shui3] /to draw water (from a well)/(coll.) to receive an IV drip/
+吊胃口 吊胃口 [diao4 wei4 kou3] /(coll.) to keep sb in suspense/to tantalize/to keep on tenterhooks/
+吊膀子 吊膀子 [diao4 bang4 zi5] /(dialect) to flirt (derog.)/
+吊車尾 吊车尾 [diao4 che1 wei3] /(coll.) lowest-ranking (student, participant etc)/to rank at the bottom of the list/to finish last/
+吊鹽水 吊盐水 [diao4 yan2 shui3] /(dialect) to put sb on an intravenous drip/
+同一掛 同一挂 [tong2 yi1 gua4] /(coll.) to have a lot in common (with sb)/to get along well with each other/
+同妻 同妻 [tong2 qi1] /(neologism, attested by 2009) wife of a gay man (the man may marry to conform with social expectations, and the woman often enters the marriage not knowing he is gay)/
+同志 同志 [tong2 zhi4] /comrade/(slang) homosexual/CL:位[wei4]/
+同擔 同担 [tong2 dan1] /(slang) fan of the same character or idol as oneself/
+吐便當 吐便当 [tu3 bian4 dang1] /(slang) (of a character) to reappear in a story line after having been supposedly killed off/cf. 領盒飯|领盒饭[ling3 he2 fan4]/
+吐槽 吐槽 [tu3 cao2] /(coll.) to complain humorously; to gripe about (sth) in a teasing way/also pr. [tu4cao2]/
+吐血 吐血 [tu4 xie3] /to cough up blood/(coll.) (used figuratively to indicate an extreme degree of anger or frustration etc)/
+向著 向着 [xiang4 zhe5] /towards/facing (sb or sth)/(coll.) to side with/to favor/
+吸貓 吸猫 [xi1 mao1] /(neologism c. 2017) to dote on cats/
+吹喇叭 吹喇叭 [chui1 la3 ba5] /(lit.) blowing the trumpet/(fig.) to praise sb/(slang) to give a blowjob/
+吹水 吹水 [chui1 shui3] /(coll.) to chat casually; to shoot the breeze (originally Cantonese)/
+吹牛 吹牛 [chui1 niu2] /to talk big; to brag; to shoot off one's mouth/(dialect) to chat idly/
+吹簫 吹箫 [chui1 xiao1] /to play the xiao 簫|箫[xiao1], a vertical bamboo flute/(literary) to beg on the streets (abbr. for 吳市吹簫|吴市吹箫[wu2 shi4 chui1 xiao1])/(slang) to give a blowjob/
+吹臺 吹台 [chui1 tai2] /(coll.) to fall through/to result in failure/(of a relationship) to break up/
+告兒 告儿 [gao4 r5] /(coll.) to tell/
+告送 告送 [gao4 song5] /(dialect) to tell/to inform/
+味道 味道 [wei4 dao5] /flavor; taste/(fig.) feeling (of ...); sense (of ...); hint (of ...)/(fig.) interest; delight/(dialect) smell; odor/
+呼哱哱 呼哱哱 [hu1 bo1 bo1] /(coll.) hoopoe/
+命根 命根 [ming4 gen1] /lifeblood/the thing that one cherishes most in life/(coll.) family jewels (male genitals)/
+咂摸 咂摸 [za1 mo5] /(dialect) to savor/to test the taste of/(fig.) to ponder upon/to mull over/
+咔嚓 咔嚓 [ka1 cha1] /(onom.) breaking or snapping/(coll.) cut it out/stop it/also written 喀嚓[ka1 cha1]/
+咖位 咖位 [ka1 wei4] /(coll.) prestige; level of prominence (esp. in the entertainment industry, from 大咖[da4 ka1])/
+咖逼 咖逼 [ka1 bi1] /(coll.) coffee (loanword) (Tw)/
+咧咧 咧咧 [lie1 lie1] /(dialect) to cry; to whimper/(dialect) to talk drivel/
+咪咪 咪咪 [mi1 mi1] /oboe-like musical instrument used in folk music of Gansu, Qinghai etc/(onom.) meow/kitty kitty!/Mimi (Western name)/tits (i.e. slang for breasts)/
+咬耳朵 咬耳朵 [yao3 er3 duo5] /(coll.) to whisper in sb's ear/
+咯咯噠 咯咯哒 [ge1 ge1 da1] /(slang) chicken (playful term, from the sound a chicken makes)/(slang) prostitute; hooker (via 雞|鸡[ji1] "prostitute")/
+咱們 咱们 [zan2 men5] /we or us (including both the speaker and the person(s) spoken to)/(dialect) I or me/(dialect) (in a coaxing or familiar way) you/also pr. [za2 men5]/
+咳嗆 咳呛 [ke2 qiang4] /(dialect) to cough/
+哇塞 哇塞 [wa1 sai1] /(slang) wow!/also pr. [wa1sei1]/
+哈喇子 哈喇子 [ha1 la2 zi5] /(dialect) saliva/
+哈基米 哈基米 [ha1 ji1 mi3] /(slang) cat/
+哈拉子 哈拉子 [ha1 la1 zi5] /(dialect) saliva/also written 哈喇子[ha1 la2 zi5]/
+哈棒 哈棒 [ha1 bang4] /(Tw) (slang) to give a blowjob/
+哈迷 哈迷 [Ha1 mi2] /Harry Potter fan (slang)/
+哥倆 哥俩 [ge1 lia3] /(coll.) two brothers; two close male friends/
+哥們 哥们 [ge1 men5] /(coll.) dude; buddy; bro/
+哦豁 哦豁 [o4 huo1] /(dialect) oops!; oh no!; oh snap!/
+哪兒的話 哪儿的话 [na3 r5 de5 hua4] /(coll.) not at all (humble expression denying compliment)/don't mention it/
+哪門子 哪门子 [na3 men2 zi5] /(coll.) (emphasizing a rhetorical question) what/what kind/why on earth/
+唉姐 唉姐 [ai1 jie3] /granny (dialect)/
+唬爛 唬烂 [hu3 lan4] /(slang) (Tw) to bullshit/to fool/
+唯二 唯二 [wei2 er4] /(slang) (adjective) (of one thing) one of the only two; (of two things) the only two/
+啃老 啃老 [ken3 lao3] /(coll.) to live with and depend on one's parents even upon reaching adulthood/
+啃老族 啃老族 [ken3 lao3 zu2] /(coll.) adults still living with and depending on their parents/
+問候 问候 [wen4 hou4] /to give one's respects/to send a greeting/(fig.) (coll.) to make offensive reference to (somebody dear to the person to whom one is speaking)/
+啞子 哑子 [ya3 zi5] /(dialect) a mute (person)/
+啥子 啥子 [sha2 zi5] /(dialect) what/
+啪啪啪 啪啪啪 [pa1 pa1 pa1] /(slang) to have sex/jig-a-jig/
+啷當 啷当 [lang1 dang1] /(dialect) (of age) more or less; or so/(dialect) and so on/
+喇賽 喇赛 [la1 sai4] /(Tw) (slang) to chat idly; to gossip (from Taiwanese 抐屎, Tai-lo pr. [lā-sái])/
+喜大普奔 喜大普奔 [xi3 da4 pu3 ben1] /(of news etc) so thrilling that everyone is rejoicing and spreading the word (Internet slang)/acronym from 喜聞樂見|喜闻乐见[xi3 wen2 le4 jian4], 大快人心[da4 kuai4 ren2 xin1], 普天同慶|普天同庆[pu3 tian1 tong2 qing4] and 奔走相告[ben1 zou3 xiang1 gao4]/
+喜提 喜提 [xi3 ti2] /(neologism c. 2018) to be thrilled to receive; to excitedly take delivery of/
+喜當爹 喜当爹 [xi3 dang1 die1] /(neologism c. 2012) (slang) to become a stepfather when one's partner turns out to be pregnant with a child she conceived with another lover/
+喝掛 喝挂 [he1 gua4] /(coll.) to get drunk/to get hammered/
+喝斷片 喝断片 [he1 duan4 pian4] /to get blackout drunk (slang)/
+喝涼水都塞牙 喝凉水都塞牙 [he1 liang2 shui3 dou1 sai1 ya2] /(coll.) to be out of luck/
+喝茫 喝茫 [he1 mang2] /(slang) to get drunk (Tw)/
+單身汪 单身汪 [dan1 shen1 wang1] /(Internet slang) person who is neither married nor in a relationship (used self-deprecatingly)/
+單身狗 单身狗 [dan1 shen1 gou3] /(Internet slang) person who is neither married nor in a relationship (used self-deprecatingly)/
+單車 单车 [dan1 che1] /(coll.) bicycle; bike (esp. in Hong Kong, Taiwan and southern China and, more generally, used across China to refer to a bike-share bicycle)/
+喵星人 喵星人 [miao1 xing1 ren2] /cat (Internet slang)/
+嗆咕 呛咕 [qiang1 gu5] /to discuss (dialect)/
+嗉子 嗉子 [su4 zi5] /the crop of a bird/(dialect) wine flask made of tin or porcelain/
+嗎嘍 吗喽 [ma5 lou5] /(slang) monkey (often used humorously or self-deprecatingly by overworked laborers)/
+嗔著 嗔着 [chen1 zhe5] /(coll.) to blame sb for sth/
+嗝屁 嗝屁 [ge2 pi4] /(dialect) (loanword) to die; to give up the ghost/
+嗨皮 嗨皮 [hai1 pi2] /(Internet slang) (loanword) happy/
+嗨藥 嗨药 [hai1 yao4] /(slang) to take drugs/recreational drug/
+嘉豪 嘉豪 [jia1 hao2] /(slang) try-hard poser; cringe attention-seeker who acts overly cool or self-confident/
+嘎了 嘎了 [ga3 le5] /(slang) (I'm, you're) toast; so screwed; it's game over (for sb); (sth) bit the dust/
+嘎嘎 嘎嘎 [ga1 ga1] /(onom.) quack/honk/(northern dialect) very/also pr. [ga1 ga5], [ga2 ga5] etc/
+嘚啵 嘚啵 [de1 bo5] /(coll.) to run off at the mouth/to jabber on/
+嘟嘴 嘟嘴 [du1 zui3] /(coll.) to pout (esp. in sulky displeasure)/
+嘩兒嘩兒 哗儿哗儿 [hua2 r5 hua2 r5] /(dialect) sound used to call cats/
+嘮嗑 唠嗑 [lao4 ke1] /(dialect) to chat; to gossip/
+嘰嘰歪歪 叽叽歪歪 [ji1 ji5 wai1 wai1] /(coll.) to go on and on (annoyingly); to mouth off; to make a fuss/
+嘴乖 嘴乖 [zui3 guai1] /(coll.) to speak in a clever and lovable way/
+嘴損 嘴损 [zui3 sun3] /(dialect) sharp-tongued/harsh/
+嘴替 嘴替 [zui3 ti4] /(slang) sb who effectively articulates others' thoughts or feelings on their behalf/
+嘴欠 嘴欠 [zui3 qian4] /(coll.) unable to control one's tongue/prone to say sth nasty/
+嘴炮 嘴炮 [zui3 pao4] /(Internet slang) to mouth off/to shoot one's mouth off/sb who does that/
+嘴瓢 嘴瓢 [zui3 piao2] /(coll.) to get one's words mixed up; to misspeak/
+嘴秋 嘴秋 [zui3 qiu1] /(Tw) (coll.) mouthy; cocky and verbally provocative/
+嘿咻 嘿咻 [hei1 xiu1] /(coll.) to make love/
+噓噓 嘘嘘 [xu1 xu1] /to pee pee (kiddie or feminine slang)/
+噴子 喷子 [pen1 zi5] /sprayer; spraying apparatus/(slang) firearm/Internet troll; hater/
+噴飯 喷饭 [pen1 fan4] /(coll.) to burst out laughing/
+噹噹車 当当车 [dang1 dang1 che1] /(coll.) tram, especially Beijing trams during period of operation 1924-1956/also written 鐺鐺車|铛铛车[dang1 dang1 che1]/
+回家吃自己 回家吃自己 [hui2 jia1 chi1 zi4 ji3] /(coll.) (Tw) to get sacked/to be fired/
+回帖 回帖 [hui2 tie3] /to reply to an invitation/(Internet) to post a comment on a forum topic/
+回懟 回怼 [hui2 dui3] /(Internet slang) to retaliate verbally; to hit back (at critics)/
+圈粉 圈粉 [quan1 fen3] /(neologism c. 2015) (coll.) to win (sb) over as a fan/to garner new fans/
+圈錢 圈钱 [quan1 qian2] /(coll.) (neologism, attested by 2006) to extract money unscrupulously (e.g. through IPOs, fandom, or game mechanics) while offering little genuine value; to grift; to fleece/
+國家漢辦 国家汉办 [Guo2 jia1 Han4 ban4] /Office of Chinese Language Council International (known colloquially as "Hanban"), an organ of the PRC government which develops Chinese language and culture teaching resources worldwide, and has established Confucius Institutes 孔子學院|孔子学院[Kong3 zi3 Xue2 yuan4] internationally/abbr. to 漢辦|汉办[Han4 ban4]/
+國服 国服 [guo2 fu2] /national dress; traditional attire/(Internet gaming) domestic gaming server; (esp.) Chinese server (abbr. for 國內服務器|国内服务器[guo2 nei4 fu2 wu4 qi4])/
+圖樣圖森破 图样图森破 [tu2 yang4 tu2 sen1 po4] /(Internet slang) to have a simplistic view of sth (transcription of "too young, too simple" – English words spoken by Jiang Zemin 江澤民|江泽民[Jiang1 Ze2 min2] in chastizing Hong Kong reporters in 2000)/
+土共 土共 [Tu3 gong4] /(coll.) commie (derog., used by the KMT)/CCP, the party of the people (used by CCP supporters)/pro-Beijing camp (HK)/(abbr.) Communist Party of Turkey/(abbr.) Communist Party of Turkmenistan/
+土坷垃 土坷垃 [tu3 ke1 la1] /(dialect) clod of earth/
+土得掉渣 土得掉渣 [tu3 de5 diao4 zha1] /(coll.) rustic; uncouth/
+土澳 土澳 [Tu3 Ao4] /Australia (slang term reflecting a perception of Australia as something of a backwater)/
+土狗 土狗 [tu3 gou3] /native dog/mole cricket (colloquial word for agricultural pest Gryllotalpa 螻蛄|蝼蛄[lou2 gu1])/
+土豪 土豪 [tu3 hao2] /local tyrant/local strong man/(slang) nouveau riche/
+土鱉 土鳖 [tu3 bie1] /ground beetle/(coll.) professional or entrepreneur who, unlike a 海歸|海归[hai3 gui1], has never studied overseas/(dialect) country bumpkin/
+在線 在线 [zai4 xian4] /online; connected to the Internet/(fig.) (coll.) (of a person) mentally focused; engaged; (of skills, performance etc) sharp; on point; functioning at a high level/
+地中海 地中海 [di4 zhong1 hai3] /(coll.) bald crown; bald spot on the crown of the head/
+地牛翻身 地牛翻身 [di4 niu2 fan1 shen1] /(Tw) (coll.) earthquake (According to a folk tale, earthquakes are caused by the occasional movements of an ox that lives under the earth.)/
+地獄 地狱 [di4 yu4] /hell; underworld; (Buddhism) Naraka/(coll.) (of humor, jokes, content etc) extremely dark or morally transgressive/
+地獄笑話 地狱笑话 [di4 yu4 xiao4 hua4] /(coll.) transgressive humor that treats tragedy, suffering, or other morally sensitive topics as jokes (implying that laughing would send one to hell)/
+地腳 地脚 [di4 jiao3] /(page) footer/(dialect) foundation (of a building)/base/
+坎坎 坎坎 [kan3 kan3] /(dialect) just now/
+坑人 坑人 [keng1 ren2] /(coll.) to cheat; to swindle; to rip sb off; to screw sb over/
+坡國 坡国 [Po1 guo2] /(coll.) Singapore/
+坡縣 坡县 [Po1 xian4] /(slang) Singapore/
+坦克 坦克 [tan3 ke4] /(loanword) tank (military vehicle)/(derog.) (slang) overweight woman/
+坨兒 坨儿 [tuo2 r5] /classifier for lumps of soft things (colloquial)/
+坷垃 坷垃 [ke1 la1] /(dialect) clod (of earth)/
+垃圾 垃圾 [la1 ji1] /trash/refuse/garbage/(coll.) of poor quality/Taiwan pr. [le4 se4]/
+型男 型男 [xing2 nan2] /fashionable and good-looking guy (slang)/
+埋汰 埋汰 [mai2 tai5] /(dialect) dirty/to mock sb/
+城巴佬 城巴佬 [cheng2 ba5 lao3] /(slang) (jocular) "city bumpkin", city person lacking basic rural or natural-world knowledge (play on 鄉巴佬|乡巴佬[xiang1 ba5 lao3])/
+埡口 垭口 [ya1 kou3] /(dialect) narrow mountain pass/
+執拾 执拾 [zhi2 shi2] /to tidy up (dialect)/
+基佬 基佬 [ji1 lao3] /(slang) gay guy/
+基友 基友 [ji1 you3] /(slang) very close same-sex friend/gay partner/
+基情 基情 [ji1 qing2] /(slang) bromance/gay love/
+基操 基操 [ji1 cao1] /(slang) the norm; typical behavior; nothing out of the ordinary; just what you'd expect (often used ironically) (abbr. for 基本操作[ji1 ben3 cao1 zuo4])/
+基民 基民 [ji1 min2] /fund investor/(coll.) gay person/
+堪達罕 堪达罕 [kan1 da2 han3] /(dialect) moose (loanword via Manchu)/
+場子 场子 [chang3 zi5] /(coll.) gathering place/public venue/
+堵床上 堵床上 [du3 chuang2 shang4] /(coll.) to catch an adulterous couple in the act/
+塌房 塌房 [ta1 fang2] /(neologism c. 2020) (of a celebrity) to have one's reputation tank due to a scandal/
+塑料姐妹花 塑料姐妹花 [su4 liao4 jie3 mei4 hua1] /(neologism, 2017) (slang) a pair of women whose seemingly close friendship is actually shallow, insincere and subtly competitive; fake besties; frenemies/
+塑料普通話 塑料普通话 [su4 liao4 pu3 tong1 hua4] /(coll.) bad or awkward Mandarin (spoken with heavy accent, incorrect tones or other non-standard features)/
+墊補 垫补 [dian4 bu5] /(coll.) to cover a shortfall by using funds intended for another purpose or by borrowing some money/(coll.) to snack/
+壁咚 壁咚 [bi4 dong1] /(slang) to kabedon; to corner (sb in whom one has a romantic interest) against a wall (loanword from Japanese 壁ドン "kabedon")/
+士多 士多 [shi4 duo1] /(dialect) store (loanword)/
+士巴拿 士巴拿 [shi4 ba1 na2] /(dialect) spanner (loanword)/
+外公 外公 [wai4 gong1] /(coll.) mother's father/maternal grandfather/
+外婆 外婆 [wai4 po2] /(coll.) mother's mother/maternal grandmother/
+外孫子 外孙子 [wai4 sun1 zi5] /(coll.) daughter's son/grandson/
+外爺 外爷 [wai4 ye5] /(dialect) maternal grandfather/
+多了去了 多了去了 [duo1 le5 qu4 le5] /(coll.) aplenty/millions of/
+多動症 多动症 [duo1 dong4 zheng4] /(coll.) attention deficit hyperactivity disorder (ADHD)/
+多咱 多咱 [duo1 zan5] /(dialect) when?/what time?/whenever/
+夜飯 夜饭 [ye4 fan4] /(dialect) dinner; supper/
+夠朋友 够朋友 [gou4 peng2 you5] /(coll.) to be a true friend/
+大不列蹀 大不列蹀 [da4 bu5 lie1 die1] /(dialect) full of oneself; too big for one's boots/
+大伯子 大伯子 [da4 bai3 zi5] /(coll.) husband's elder brother/
+大個兒 大个儿 [da4 ge4 r5] /(coll.) tall person/
+大咖 大咖 [da4 ka1] /(coll.) major figure; celebrity; big shot/
+大大 大大 [da4 da4] /greatly/enormously/(dialect) dad/uncle/
+大姨媽 大姨妈 [da4 yi2 ma1] /mother's eldest sister (older than one's mother)/(coll.) (euphemism) Aunt Flo (i.e. menstrual period)/
+大娘 大娘 [da4 niang2] /(coll.) father's older brother's wife/aunt (polite address)/
+大家夥兒 大家伙儿 [da4 jia1 huo3 r5] /(coll.) everyone; all of us; you folks/
+大小聲 大小声 [da4 xiao3 sheng1] /(Tw) (coll.) to speak loudly and emotionally; to raise one's voice; to yell and shout/
+大尾巴狼 大尾巴狼 [da4 yi3 ba5 lang2] /(coll.) person who puts on an act: feigning ignorance, pretending to be solicitous, acting innocent etc/
+大巴 大巴 [da4 ba1] /(coll.) large bus/coach/(abbr. for 大型巴士)/
+大廠 大厂 [da4 chang3] /large factory; major manufacturer/(coll.) major tech company/
+大拿 大拿 [da4 na2] /(coll.) man in power/boss/authority/expert/
+大洋 大洋 [da4 yang2] /ocean/(old) silver dollar/(slang) Chinese yuan/
+大爺 大爷 [da4 ye5] /(coll.) father's older brother/uncle/term of respect for older man/
+大牛 大牛 [da4 niu2] /(coll.) leading light/superstar/badass/(coll.) higher-priced model of Lamborghini/
+大白 大白 [da4 bai2] /(of facts or truth) to become fully revealed; to come to light/(old) wine cup/(coll.) whiting (used in whitewash)/(coll.) (neologism, attested by 2020) healthcare worker in a full-body protective suit (from the white robot Baymax in Disney's "Big Hero 6", called "大白" in Chinese)/
+大神 大神 [da4 shen2] /deity/(Internet slang) guru/expert/whiz/
+大秘 大秘 [da4 mi4] /(coll.) top aide; senior personal secretary (to a senior official)/
+大笨象 大笨象 [da4 ben4 xiang4] /(slang) elephant/
+大腕 大腕 [da4 wan4] /(coll.) big shot; big name; bigwig; heavyweight/
+大舅哥 大舅哥 [da4 jiu4 ge1] /(coll.) wife's older brother/
+大舅子 大舅子 [da4 jiu4 zi5] /(coll.) wife's older brother/
+大舌頭 大舌头 [da4 she2 tou5] /(coll.) lisp/one who lisps/
+大號 大号 [da4 hao4] /(music) tuba/(of clothes, print etc) large size; large format/(polite) your (given) name/(coll.) number two; poop; to defecate/
+大蝦 大虾 [da4 xia1] /prawn/(Internet slang) expert/whiz/
+大長腿 大长腿 [da4 chang2 tui3] /(coll.) (a person's) long legs/
+大雷 大雷 [da4 lei2] /(slang) large breasts/
+天花 天花 [tian1 hua1] /smallpox/ceiling/stamen of corn/(old) snow/(dialect) sesame oil/
+天花板 天花板 [tian1 hua1 ban3] /ceiling (of a room)/(fig.) upper limit; (slang) the very best (in a given field)/
+天道 天道 [tian1 dao4] /natural law/heavenly law/weather (dialect)/
+天龍人 天龙人 [Tian1 long2 ren2] /(Tw) (slang) privileged people oblivious to the hardships of others; Taipei residents or urban dwellers who consider themselves superior to others (orthographic borrowing from Japanese 天竜人 "Tenryūjin", an arrogant, privileged group in the manga "One Piece")/
+天龍國 天龙国 [Tian1 long2 guo2] /(Tw) (slang) nickname for Taipei (implying that the residents are privileged, having access to abundant resources)/
+太爺爺 太爷爷 [tai4 ye2 ye5] /(coll.) father's father's father; paternal great-grandfather/
+太長不看 太长不看 [tai4 chang2 bu4 kan4] /(Internet slang) TL;DR/
+夯漢 夯汉 [hang1 han4] /carrier who carries heavy loads on his shoulder (dialect)/
+夾娃娃 夹娃娃 [jia1 wa2 wa5] /(coll.) to induce an abortion (Tw)/
+夾子音 夹子音 [jia1 zi5 yin1] /(coll.) (neologism, attested by 2021) cutesy high-pitched voice/
+奇差 奇差 [qi2 cha4] /(coll.) extremely poor (in quality); shockingly bad/
+奇葩 奇葩 [qi2 pa1] /exotic flower/(fig.) marvel/prodigy/(slang) weirdo/outlandish/
+奔現 奔现 [ben1 xian4] /(neologism) to meet sb in real life after forming a relationship online/
+套兒 套儿 [tao4 r5] /(coll.) loop of rope/noose/scheme/ploy/condom/
+套套 套套 [tao4 tao5] /methods/the old tricks/(slang) condom/
+套子 套子 [tao4 zi5] /sheath/case/cover/conventional method/cliché/trick/(coll.) condom/
+套磁 套磁 [tao4 ci2] /(coll.) to cultivate good relations with sb/to try to gain favor with sb/
+奧利給 奥利给 [ao4 li4 gei3] /(neologism c. 2020) come on, you can do it!/
+奧客 奥客 [ao4 ke4] /(Tw) (coll.) troublesome customer; obnoxious guest (from Taiwanese 漚客, Tai-lo pr. [àu-kheh])/
+女同 女同 [nu:3 tong2] /a lesbian (coll.)/
+女大 女大 [nu:3 da4] /(slang) female university student; female college student/
+女娃 女娃 [nu:3 wa2] /(dialect) girl/
+女票 女票 [nu:3 piao4] /(slang) girlfriend/
+女高 女高 [nu:3 gao1] /(slang) female high school student/all-girls high school/
+奶奶 奶奶 [nai3 nai5] /(informal) grandma (paternal grandmother)/(respectful) mistress of the house/CL:位[wei4]/(coll.) boobies/breasts/
+奶娘 奶娘 [nai3 niang2] /(dialect) wet nurse/
+奶子 奶子 [nai3 zi5] /(coll.) milk/(coll.) breast/booby/tit/
+奶帥 奶帅 [nai3 shuai4] /(slang) (of a young man) sweet and boyish in appearance/having soft, feminine features/
+奶拽 奶拽 [nai3 zhuai3] /(slang) (of a young man) cute, with a touch of swagger/
+奶油 奶油 [nai3 you2] /cream/butter/(coll.) effeminate/
+好不好 好不好 [hao3 bu5 hao3] /(coll.) all right?/OK?/
+好久 好久 [hao3 jiu3] /(coll.) a long time/
+好壞 好坏 [hao3 huai4] /good or bad/good and bad/standard; quality/(coll.) very bad/
+好朋友 好朋友 [hao3 peng2 you5] /good friend/(slang) a visit from Aunt Flo (menstrual period)/
+好氣 好气 [hao3 qi4] /(coll.) good mood (usu. used in the negative)/angry (usu. used in combination with 好笑[hao3 xiao4])/
+好活當賞 好活当赏 [hao3 huo2 dang1 shang3] /(coll.) bravo/nice one/lovely/
+好生 好生 [hao3 sheng1] /(dialect) very; quite; properly; well; thoroughly/
+如意套 如意套 [ru2 yi4 tao4] /(dialect) condom/
+妥妥的 妥妥的 [tuo3 tuo3 de5] /(neologism c. 2009) don't worry, it's all taken care of/
+妮子 妮子 [ni1 zi5] /(coll.) lass/(dialect) little girl/
+妹子 妹子 [mei4 zi5] /(dialect) younger sister/girl/
+妹紙 妹纸 [mei4 zhi3] /(Internet slang) (pun on 妹子[mei4 zi5])/
+姆媽 姆妈 [m1 ma1] /(dialect) mom; mother/
+姐倆 姐俩 [jie3 lia3] /(coll.) two sisters; two close female friends/
+姐們 姐们 [jie3 men5] /(coll.) close female friend; sis (between female friends)/
+姐夫 姐夫 [jie3 fu5] /(coll.) older sister's husband/
+姑奶奶 姑奶奶 [gu1 nai3 nai5] /paternal great-aunt (father's father's sister)/(respectful form of address for a married woman used by members of her parents' family) married daughter/(brassy self-reference used by a woman in an altercation) I; me; this lady here/(coll.) form of address for an unmarried girl or woman, expressing affection or reproach/
+姑姥姥 姑姥姥 [gu1 lao3 lao5] /mother's father's sister (coll.)/great aunt/
+姑媽 姑妈 [gu1 ma1] /(coll.) father's married sister/paternal aunt/
+姑子 姑子 [gu1 zi5] /husband's sister/(coll.) Buddhist nun/
+姥姥 姥姥 [lao3 lao5] /(coll.) mother's mother; maternal grandmother/
+姥娘 姥娘 [lao3 niang2] /maternal grandmother (dialectal)/
+姥爺 姥爷 [lao3 ye5] /(coll.) mother's father; maternal grandfather/
+姨奶奶 姨奶奶 [yi2 nai3 nai5] /father's mother's sister (coll.)/great aunt/
+姨媽 姨妈 [yi2 ma1] /(coll.) mother's sister/maternal aunt/
+姨媽巾 姨妈巾 [yi2 ma1 jin1] /(coll.) sanitary towel/
+姨母笑 姨母笑 [yi2 mu3 xiao4] /(neologism c. 2017) (slang) kindly, indulgent smile (usu. on the face of a woman)/
+姬佬 姬佬 [ji1 lao3] /(slang) lesbian/
+威客 威客 [wei1 ke4] /(neologism c. 2005) freelancer/
+娃兒 娃儿 [wa2 er2] /children (colloquial)/
+娘倆 娘俩 [niang2 lia3] /(coll.) mother and her child/
+娘兒們 娘儿们 [niang2 r5 men5] /(dialect) woman/wife/
+娘媽 娘妈 [niang2 ma1] /(coll.) woman/
+娘子 娘子 [niang2 zi3] /(dialect) form of address for one's wife/polite form of address for a woman/
+娘希匹 娘希匹 [niang2 xi1 pi3] /(dialect) fuck!/
+娘炮 娘炮 [niang2 pao4] /(slang) effeminate man/sissy/effeminate/
+娭姐 娭姐 [ai1 jie3] /father's mother/granny (dialect)/respectful form of address for older lady/
+婆姨 婆姨 [po2 yi2] /(dialect) wife/married woman/
+婆娘 婆娘 [po2 niang5] /(dialect) wife/(derog.) woman/
+婚驢 婚驴 [hun1 lu:2] /(derog.) (slang) married woman (term used by some feminists to imply that by marrying, women make themselves subservient to the patriarchal order)/
+媚男 媚男 [mei4 nan2] /(slang) to pander to men/
+媳婦 媳妇 [xi2 fu5] /(dialect) wife/(dialect) young married woman/
+嫂子 嫂子 [sao3 zi5] /(coll.) older brother's wife; sister-in-law/
+嫚子 嫚子 [man1 zi5] /(dialect) girl/
+嬎蛋 嬎蛋 [fan4 dan4] /(dialect) (of birds) to lay eggs/
+嬤嬤 嬷嬷 [mo2 mo5] /(dialect) elderly lady/wet nurse/Catholic nun/
+嬸子 婶子 [shen3 zi5] /(coll.) wife of father's younger brother; aunt/
+子兒 子儿 [zi3 r5] /(coll.) penny/buck/
+孔方兄 孔方兄 [kong3 fang1 xiong1] /(coll., humorous) money (so named because in former times, Chinese coins had a square hole in the middle)/
+孔雀女 孔雀女 [kong3 que4 nu:3] /(Internet slang) spoiled city girl from a rich family/
+孕寶寶 孕宝宝 [yun4 bao3 bao3] /(coll.) child in the womb/
+字典 字典 [zi4 dian3] /Chinese character dictionary (containing entries for single characters, contrasted with a 詞典|词典[ci2 dian3], which has entries for words of one or more characters)/(coll.) dictionary/CL:本[ben3]/
+季經 季经 [ji4 jing1] /(coll.) menstruation that comes only once every three months/
+孱頭 孱头 [can4 tou5] /(dialect) weakling; coward/
+學渣 学渣 [xue2 zha1] /(coll.) unenthusiastic, mediocre student/underachiever/
+學霸 学霸 [xue2 ba4] /(slang) straight-A student; academic prodigy/
+安全措施 安全措施 [an1 quan2 cuo4 shi1] /safety measure; precaution/(coll.) (euphemism) contraception; protection/
+安安 安安 [an1 an1] /(Tw) (Internet slang) Greetings! (used when it's unknown what time the reader will see one's post, or just to be cute)/
+安老院 安老院 [an1 lao3 yuan4] /(dialect) old people's home; nursing home/
+完爆 完爆 [wan2 bao4] /(neologism c. 2010) (coll.) to kick (one's opponent's) ass/
+完犢子 完犊子 [wan2 du2 zi5] /(coll.) to be done for/
+完蛋 完蛋 [wan2 dan4] /(coll.) to be done for/
+官宣 官宣 [guan1 xuan1] /(neologism, attested by 2018) official announcement; to officially announce/
+定規 定规 [ding4 gui1] /to decide/to determine/established practice/(dialect) firmly resolved (to do sth)/
+客家語 客家语 [Ke4 jia1 yu3] /Hakka (a Chinese dialect)/
+宰了 宰了 [zai3 le5] /(coll.) (typically used hyperbolically) to kill (sb)/
+家伙 家伙 [jia1 huo5] /household dish, implement or furniture/domestic animal/(coll.) guy/chap/weapon/
+家去 家去 [jia1 qu4] /(dialect) to go home; to return home/
+家娘 家娘 [jia1 niang2] /(dialect) husband's mother/
+家婆 家婆 [jia1 po2] /(dialect) mother-in-law/(house)wife/
+家雀兒 家雀儿 [jia1 qiao3 r5] /(coll.) sparrow/
+寒腿 寒腿 [han2 tui3] /(coll.) arthritic condition affecting the legs, esp. one aggravated by cold or damp weather/
+實名制 实名制 [shi2 ming2 zhi4] /system for identifying users (on a rail network, the Internet etc)/
+實打實 实打实 [shi2 da3 shi2] /(coll.) rock-solid; no-nonsense; undeniably genuine (esp. of skills, effort, performance or service)/
+實錘 实锤 [shi2 chui2] /(neologism c. 2014) (slang) solid proof/irrefutable evidence/
+寶子 宝子 [bao3 zi5] /(coll.) babe; darling; (Internet slang) (term of endearment used to address one's followers) bestie; fam/
+封禁 封禁 [feng1 jin4] /to ban (narcotics, a movie etc)/to block (a road etc)/(Internet) to block (a user)/
+對不對 对不对 [dui4 bu4 dui4] /right or wrong?/Is it right?/OK, yes? (colloquial)/
+對付 对付 [dui4 fu5] /to handle; to deal with; to tackle/to get by with; to make do/(dialect) (usu. used in the negative) to get along with (sb)/
+導員 导员 [dao3 yuan2] /(coll.) student counselor (in Chinese universities) (abbr. for 輔導員|辅导员[fu3 dao3 yuan2])/
+小三 小三 [xiao3 san1] /mistress/the other woman (coll.)/grade 3 in elementary school/
+小仙女 小仙女 [xiao3 xian1 nu:3] /girl fairy/beautiful girl or young woman/(neologism) (slang) irrational and egocentric young woman/
+小兒 小儿 [xiao3 r5] /(coll.) early childhood/(coll.) baby boy/
+小兒科 小儿科 [xiao3 er2 ke1] /pediatrics/pediatric (department)/sth of little importance/trifle/a child's play/(slang) childish/petty/stingy/
+小兩口 小两口 [xiao3 liang3 kou3] /(coll.) young married couple/
+小叔子 小叔子 [xiao3 shu1 zi5] /(coll.) husband's younger brother/
+小受 小受 [xiao3 shou4] /(slang) bottom (in a homosexual relationship)/
+小哥 小哥 [xiao3 ge1] /(coll.) young man; polite or friendly form of address or reference for a young male/
+小哥哥 小哥哥 [xiao3 ge1 ge5] /little boy who is older than another young child (e.g. his playmate)/(neologism c. 2017) (slang) amiable form of address for a young man of about one's own age or a little older/
+小夥子 小伙子 [xiao3 huo3 zi5] /(coll.) young man; young fellow; lad/
+小奶狗 小奶狗 [xiao3 nai3 gou3] /(slang) naive, clingy, emotionally dependent, cute young guy (type of boyfriend)/
+小妹妹 小妹妹 [xiao3 mei4 mei5] /little sister/little girl/(coll.) vulva/
+小姐 小姐 [xiao3 jie5] /young lady/miss/(slang) prostitute/CL:個|个[ge4],位[wei4]/
+小姐姐 小姐姐 [xiao3 jie3 jie5] /little girl who is older than another young child (e.g. her playmate)/(neologism c. 2017) (slang) young lady (amiable form of address for a young woman of about one's own age or a little older)/
+小姑子 小姑子 [xiao3 gu1 zi5] /(coll.) husband's younger sister; sister-in-law/
+小姨子 小姨子 [xiao3 yi2 zi5] /(coll.) wife's younger sister; sister-in-law (term not used to directly address her)/
+小婊砸 小婊砸 [xiao3 biao3 za2] /(slang) little biyatch (variation of 小婊子)/
+小媽 小妈 [xiao3 ma1] /father's concubine/(coll.) stepmother (esp. a young stepmother)/
+小子 小子 [xiao3 zi5] /(coll.) boy/(derog.) joker/guy/(despicable) fellow/
+小孩哥 小孩哥 [xiao3 hai2 ge1] /(slang) young boy who displays skills, maturity, or coolness beyond his age/
+小孩姐 小孩姐 [xiao3 hai2 jie3] /(slang) young girl who displays skills, maturity, or coolness beyond her age/
+小年夜 小年夜 [xiao3 nian2 ye4] /(coll.) the night before lunisolar New Year's Eve/(Tw) the night before New Year's Eve (either lunisolar or Gregorian)/(old) Little New Year's Eve (the 23rd or 24th of the 12th lunisolar month, when people offer sacrifices to the kitchen god)/
+小年輕 小年轻 [xiao3 nian2 qing1] /(coll.) young person; youngster/
+小弟弟 小弟弟 [xiao3 di4 di5] /little brother/little boy/(coll.) penis/
+小強 小强 [Xiao3 Qiang2] /(slang) cockroach ("Little Qiang" was originally the name given to a dead cockroach that had supposedly been a pet of the lead character in the 1993 Hong Kong comedy movie "Flirting Scholar". Subsequently, it came to be used as a name for any cockroach, and also for characters in film and television who are seemingly indestructible or repeatedly resurrected.)/
+小改改 小改改 [xiao3 gai3 gai3] /(Internet slang) young lady (Cantonese-influenced alternative to 小姐姐[xiao3 jie3 jie5])/
+小攻 小攻 [xiao3 gong1] /(slang) top (in a homosexual relationship)/
+小日子 小日子 [xiao3 ri4 zi5] /simple life/(Internet slang) euphemistic substitute for 日本[Ri4 ben3] or 日本人[Ri4 ben3 ren2]/
+小樣 小样 [xiao3 yang4] /galley proof (printing)/unimpressive/(coll.) little guy (mild insult also used as an affectionate term)/
+小毛頭 小毛头 [xiao3 mao2 tou5] /(coll.) new-born baby/young boy/
+小牛 小牛 [xiao3 niu2] /calf/(coll.) lower-priced model of Lamborghini/
+小登 小登 [xiao3 deng1] /(slang) youngster; kid (humorous or self-deprecating neologism derived from 老登[lao3 deng1], established since c. 2022)/
+小發財 小发财 [xiao3 fa1 cai2] /(coll.) (Tw) mini truck/Kei truck/
+小白 小白 [xiao3 bai2] /(slang) novice; greenhorn/(old) (slang) fool; idiot/abbr. for 小白臉|小白脸[xiao3 bai2 lian3], pretty boy/
+小白兔 小白兔 [xiao3 bai2 tu4] /small white rabbit/(fig.) innocent and naive person/(fig.) (slang) breast/
+小的 小的 [xiao3 de5] /(coll.) young child; the little one(s) of the family/(old) (humble) I; me; my (used by a commoner when speaking to an official)/
+小瞧 小瞧 [xiao3 qiao2] /(coll.) to look down on; to underestimate/
+小老婆 小老婆 [xiao3 lao3 po2] /concubine/mistress/(dialect) woman/
+小胖爪 小胖爪 [xiao3 pang4 zhua3] /(coll.) hand/
+小舅子 小舅子 [xiao3 jiu4 zi5] /(coll.) wife's younger brother/
+小花 小花 [xiao3 hua1] /(coll.) popular young actress/
+小蘿蔔頭 小萝卜头 [xiao3 luo2 bo5 tou5] /(coll.) kid; little tyke/
+小號 小号 [xiao3 hao4] /trumpet/small size (clothes etc)/(coll.) a number one; a piss/(humble) our store/alternate account (for an Internet forum etc)/
+小輩子 小辈子 [xiao3 bei4 zi5] /(Sichuan dialect) member of the younger generation/
+小鋼砲 小钢炮 [xiao3 gang1 pao4] /(coll.) piece of light artillery such as a mortar/(fig.) person who speaks boldly and frankly/hot hatch (car)/(also used figuratively with various meanings in other contexts)/
+小開 小开 [xiao3 kai1] /(dialect) boss's son/rich man's son/young master/
+小雨傘 小雨伞 [xiao3 yu3 san3] /(slang) condom/
+小電影 小电影 [xiao3 dian4 ying3] /(slang) adult movie; pornographic film/
+小電驢 小电驴 [xiao3 dian4 lu:2] /(coll.) electric scooter; electric moped/(dialect) scooter/
+小鮮肉 小鲜肉 [xiao3 xian1 rou4] /(coll.) teen idol (male)/
+小黃 小黄 [xiao3 huang2] /(Tw) (coll.) taxicab/
+少來 少来 [shao3 lai2] /refrain (from doing sth)/(coll.) Come on!/Give me a break!/Save it!/
+少塊肉 少块肉 [shao3 kuai4 rou4] /(coll.) (usually used in the negative) (can't) hurt (to do sth)/(won't) hurt (to do sth)/
+少根筋 少根筋 [shao3 gen1 jin1] /(coll.) dim-witted/foolish/absent-minded/
+尬笑 尬笑 [ga4 xiao4] /(coll.) to laugh or smile out of awkwardness/
+尬聊 尬聊 [ga4 liao2] /(slang) awkward conversation; to have a cringeworthy conversation/
+尬舞 尬舞 [ga4 wu3] /(slang) to battle each other in street dancing (derived from Taiwanese 較, which sounds similar to Mandarin 尬[ga4])/(slang) to perform weird dance moves/
+尬電 尬电 [ga4 dian4] /(Tw) (Internet slang) (loanword) goddamn/
+就晚了 就晚了 [jiu4 wan3 le5] /then it's too late (colloquial)/
+就算 就算 [jiu4 suan4] /(coll.) even if/
+尺寸 尺寸 [chi3 cun5] /size; dimensions; measurements (esp. of clothes)/(coll.) propriety/
+尻門子 尻门子 [kao1 men2 zi5] /anus (rural coll.)/
+尼特族 尼特族 [ni2 te4 zu2] /(Tw) (neologism c. 2007) young person who is not studying, working or being trained for work (loanword from NEET: not in education, employment or training)/
+尼瑪 尼玛 [ni2 ma3] /(Internet slang) alternative for 你媽|你妈[ni3 ma1]/(transcription from Tibetan) the sun/
+尿不濕 尿不湿 [niao4 bu4 shi1] /(coll.) disposable diaper/
+尿泡 尿泡 [sui1 pao5] /(dialect) bladder/
+尿遁 尿遁 [niao4 dun4] /(slang) pretext of needing to urinate (used to slip away to avoid having to do sth)/
+屁墩兒 屁墩儿 [pi4 dun1 r5] /(dialect) a fall on the buttocks/
+屁民 屁民 [pi4 min2] /(slang) shitizen/commoner/hoi polloi/
+屁精 屁精 [pi4 jing1] /(slang) gay/sissy/poof/abbr. for 馬屁精|马屁精[ma3 pi4 jing1]/
+屁股蹲兒 屁股蹲儿 [pi4 gu5 dun1 r5] /(dialect) a fall on the buttocks/pratfall/
+屁顛屁顛 屁颠屁颠 [pi4 dian1 pi4 dian1] /lit. jolting buttocks/(colloquial intensifier) groveling/eager/compliant/smug/
+屌爆 屌爆 [diao3 bao4] /(slang) awesome/
+屌絲 屌丝 [diao3 si1] /loser (Internet slang)/
+山包 山包 [shan1 bao1] /(dialect) hill/
+山溝溝 山沟沟 [shan1 gou1 gou1] /(coll.) remote valley; backwoods/
+山炮 山炮 [shan1 pao4] /mountain gun (portable artillery piece used in mountainous terrain)/(dialect) bumpkin; simpleton; idiot/
+山藥 山药 [shan1 yao5] /Chinese yam (Dioscorea polystachya)/(dialect) sweet potato/(dialect) potato/
+山藥蛋 山药蛋 [shan1 yao5 dan4] /(dialect) potato/(dialect) rube; yokel/
+山雞 山鸡 [shan1 ji1] /Reeves's pheasant (Syrmaticus reevesii)/(dialect) pheasant/
+崩老頭 崩老头 [beng1 lao3 tou2] /(slang) to trick older men into repeatedly sending small sums of money by feigning romantic interest/
+嶄勁 崭劲 [zhan3 jin4] /(dialect) to apply oneself; to make a strong effort/
+工具人 工具人 [gong1 ju4 ren2] /(neologism, attested by 2010) (slang) a person used by sb as a means to an end/
+巨嬰 巨婴 [ju4 ying1] /large infant; macrosomic baby/(slang) emotionally immature adult; adult who behaves like a spoiled child/
+巨魔 巨魔 [ju4 mo2] /(gaming) troll/(Internet) troll/
+巨龍 巨龙 [ju4 long2] /gigantic dragon (lit. and fig.)/titanosaur (abbr. for 泰坦巨龍|泰坦巨龙[tai4 tan3 ju4 long2])/(slang) big dick/schlong/
+差生文具多 差生文具多 [cha4 sheng1 wen2 ju4 duo1] /(neologism, attested by 2021) underachieving students tend to buy lots of stationery; (fig.) all the gear and no idea/
+巴不得 巴不得 [ba1 bu5 de5] /(coll.) to be eager for/to long for/to look forward to/
+巴心巴肝 巴心巴肝 [ba1 xin1 ba1 gan1] /with all one's heart (dialect)/
+巴蛸 巴蛸 [ba1 shao1] /(dialect) octopus/
+巴適 巴适 [ba1 shi4] /(Sichuan dialect) comfortable; suitable; excellent; really good/(Sichuan dialect) to be close to (sb); to curry favor with/
+巴鐵 巴铁 [Ba1 tie3] /Transit Elevated Bus (TEB)/(coll.) Pakistani brethren/Pakistani comrades/abbr. for 巴基斯坦鐵哥們|巴基斯坦铁哥们[Ba1 ji1 si1 tan3 tie3 ge1 men5]/
+帶大 带大 [dai4 da4] /(coll.) to raise (a child or animal) to adulthood; to bring up/
+帶子 带子 [dai4 zi5] /belt; band; ribbon; strap; girdle/(coll.) audio or video tape/Farrer's scallop (Chlamys farreri)/comb pen shell (Atrina pectinata)/
+帶感 带感 [dai4 gan3] /(neologism) (slang) (of music, visual style, movement or experiences) powerfully engaging in a way that excites or resonates deeply; electrifying; intense; pulse-pounding/
+帶歪 带歪 [dai4 wai1] /(coll.) to lead astray/
+帶種 带种 [dai4 zhong3] /(coll.) to have character/to have guts/plucky/
+帶貨 带货 [dai4 huo4] /(coll.) to smuggle/
+帶賽 带赛 [dai4 sai4] /(slang) (Tw) to bring bad luck/
+帽子叔叔 帽子叔叔 [mao4 zi5 shu1 shu5] /(slang) police officer/
+幫子 帮子 [bang1 zi5] /outer (of cabbage etc)/upper (of a shoe)/(coll.) group/gang/
+平替 平替 [ping2 ti4] /(neologism c. 2021) cheaper alternative; affordable alternative/
+平頭哥 平头哥 [ping2 tou2 ge1] /(slang) honey badger (Mellivora capensis)/
+年上 年上 [nian2 shang4] /(slang) the older person in a romantic relationship; an older partner/
+年下 年下 [nian2 xia4] /(slang) the younger person in a romantic relationship; a younger partner/
+年下 年下 [nian2 xia5] /(coll.) the period around the end of the lunar year; the run-up to and days surrounding Spring Festival/
+年根 年根 [nian2 gen1] /(coll.) end of the year/
+幹仗 干仗 [gan4 zhang4] /to quarrel (dialect)/
+幹架 干架 [gan4 jia4] /(dialect) to come to blows/to have a row/
+幹話 干话 [gan4 hua4] /(Tw) (slang) remark that sounds like it makes sense but is actually nonsense/
+幹飯 干饭 [gan4 fan4] /(coll.) to have a meal/
+幾多 几多 [ji3 duo1] /(dialect) how much/how many/how (smart etc)/such .../
+幾號 几号 [ji3 hao4] /(slang) heroin/
+幾進宮 几进宫 [ji3 jin4 gong1] /(slang) to have served several sentences; recidivist; old lag/
+床友 床友 [chuang2 you3] /(slang) friend with benefits/casual sex partner/
+底褲 底裤 [di3 ku4] /(coll.) underpants/
+店家 店家 [dian4 jia1] /(old) shopkeeper; innkeeper/(dialect) shop; store/
+座兒 座儿 [zuo4 r5] /rickshaw seat (Beijing dialect)/patron (of teahouse, cinema)/passenger (in taxi, rickshaw etc)/
+廚司 厨司 [chu2 si1] /(dialect) cook; chef/
+廠子 厂子 [chang3 zi5] /(coll.) factory/mill/yard/depot/
+廠家 厂家 [chang3 jia1] /factory; manufacturer/(coll.) a factory owner; the factory management/
+廠狗 厂狗 [chang3 gou3] /(slang) (often used self-deprecatingly) factory worker/
+廢柴 废柴 [fei4 chai2] /(Cantonese) (coll.) good-for-nothing/loser/
+廢物點心 废物点心 [fei4 wu4 dian3 xin5] /(coll.) a good-for-nothing; a loser/
+廣子 广子 [guang3 zi5] /(slang) advertisement; ad/
+弄堂 弄堂 [long4 tang2] /(dialect) alley/lane/
+弄走 弄走 [nong4 zou3] /(coll.) to take (sth) away/to get rid of/
+引戰 引战 [yin3 zhan4] /(Internet slang) to bait others into an argument; to ragebait/
+引線 引线 [yin3 xian4] /fuse (for an explosive device)/electrical lead/intermediary/catalyst/(dialect) sewing needle/
+弱爆 弱爆 [ruo4 bao4] /(slang) weak/pathetic/subpar/sucks/
+張三 张三 [Zhang1 San1] /Zhang San, name for an unspecified person, first of a series of three: 張三|张三[Zhang1 San1], 李四[Li3 Si4], 王五[Wang2 Wu3] Tom, Dick and Harry/(dialect) wolf/
+彩虹屁 彩虹屁 [cai3 hong2 pi4] /(neologism c. 2017) (slang) over-the-top praise/
+彪子 彪子 [biao1 zi5] /(dialect) idiot; simpleton/
+往死裡 往死里 [wang3 si3 li3] /(coll.) (to beat etc) to death/
+待見 待见 [dai4 jian5] /(coll.) to like/
+後娘 后娘 [hou4 niang2] /stepmother (coll.)/
+後媽 后妈 [hou4 ma1] /(coll.) stepmother/
+後庭 后庭 [hou4 ting2] /backyard/imperial harem/(slang) anus/
+後爸 后爸 [hou4 ba4] /(coll.) stepfather/
+後續 后续 [hou4 xu4] /follow-up/(dialect) to remarry/
+後鉤 后钩 [hou4 gou1] /(dialect) unfinished business/trailing sound/
+得可以 得可以 [de5 ke3 yi3] /(coll.) (stative verb suffix) very; awfully/
+得瑟 得瑟 [de4 se5] /(dialect) cocky; smug/to show off/
+從先 从先 [cong2 xian1] /(dialect) before/in the past/previously/
+微劈恩 微劈恩 [wei1 pi1 en1] /(coll.) (loanword) VPN/
+德性 德性 [de2 xing5] /(coll.) revolting behavior/CL:副[fu4]/
+心動女 心动女 [xin1 dong4 nu:3] /(coll.) the girl of your dreams/
+心塞 心塞 [xin1 sai1] /(coll.) to feel sick at heart; to feel stifled; to feel crushed/
+心慌 心慌 [xin1 huang1] /to be flustered/(dialect) irregular heart-beat/
+心說 心说 [xin1 shuo1] /(coll.) to think to oneself/
+忙乎 忙乎 [mang2 hu1] /to be busy (colloquial)/
+念想 念想 [nian4 xiang3] /to miss (the presence of); to cherish the memory of/aspiration; desire; sth one keeps thinking about/(coll.) keepsake; memento/(coll.) impression (of sb or sth in one's mind)/
+念想兒 念想儿 [nian4 xiang5 r5] /(coll.) keepsake; memento/(coll.) impression (of sb or sth in one's mind)/
+怒懟 怒怼 [nu4 dui3] /(Internet slang) to chastise/to angrily denounce/
+思密達 思密达 [si1 mi4 da2] /(slang) (used at the end of a sentence to mimic Korean speech) (loanword from Korean verb ending "seumnida")/(jocular) a Korean/
+急婚族 急婚族 [ji2 hun1 zu2] /(coll.) those who are in a rush to get married/
+性福 性福 [xing4 fu2] /(neologism c. 2008) (slang) (coined as a pun on 幸福[xing4 fu2]) satisfied with one's sex life/
+性轉 性转 [xing4 zhuan3] /(slang) to be genderswapped (abbr. for 性別轉換|性别转换[xing4 bie2 zhuan3 huan4])/
+怪叔叔 怪叔叔 [guai4 shu1 shu5] /queer uncle, referring to a young to middle-aged male pedophile (Internet slang)/
+怪咖 怪咖 [guai4 ka1] /(Tw) (slang) oddball; eccentric person; weirdo/
+恐艾 恐艾 [kong3 ai4] /(slang) to have an obsessive fear of contracting HIV AIDS/
+恐龍 恐龙 [kong3 long2] /dinosaur (CL:頭|头[tou2],隻|只[zhi1])/(old) (slang) ugly person/
+恐龍妹 恐龙妹 [kong3 long2 mei4] /ugly girl (slang)/
+恨天高 恨天高 [hen4 tian1 gao1] /(slang) sky-high heels; ultra-high-heeled shoes/
+悄悄咪咪 悄悄咪咪 [qiao1 qiao1 mi1 mi1] /(dialect) quietly; stealthily/
+悖晦 悖晦 [bei4 hui4] /(coll.) muddleheaded/
+悲催 悲催 [bei1 cui1] /(slang) miserable; wretched; unfortunate (often humorous or self-deprecating)/
+悶騷 闷骚 [men1 sao1] /(coll.) outwardly cold or retiring but deep and passionate inside/
+情兒 情儿 [qing2 r5] /(dialect) mistress; paramour/
+想頭 想头 [xiang3 tou5] /(coll.) idea/hope/
+惹毛 惹毛 [re3 mao2] /(coll.) to irritate/to annoy/to piss sb off/
+愛愛 爱爱 [ai4 ai5] /(coll.) to make love/
+愛現 爱现 [ai4 xian4] /(coll.) to enjoy showing off/
+愛瘋 爱疯 [ai4 Feng1] /iPhone (slang)/
+愛誰誰 爱谁谁 [ai4 shei2 shei2] /(coll.) whatever/who cares/
+愛豆 爱豆 [ai4 dou4] /(loanword) (coll.) idol/
+感冒 感冒 [gan3 mao4] /to catch cold/(common) cold/CL:場|场[chang2],次[ci4]/(coll.) to be interested in (often used in the negative)/(Tw) to detest/can't stand/
+愣說 愣说 [leng4 shuo1] /(coll.) to insist; to allege; to assert/
+慕洋犬 慕洋犬 [mu4 yang2 quan3] /(slang) (derog.) person who uncritically admires the West while disparaging China (pun on 牧羊犬[mu4 yang2 quan3])/
+憤青 愤青 [fen4 qing1] /angry youth – highly nationalistic young Chinese people (abbr. for 憤怒青年|愤怒青年[feng4 nu4 qing1 nian2]) (neologism c. 1970s)/
+憨子 憨子 [han1 zi5] /(dialect) simpleton/idiot/fool/
+懂哥 懂哥 [dong3 ge1] /(slang) Mr. Know-it-all/
+懂眼 懂眼 [dong3 yan3] /(coll.) to know the ropes/an expert/
+懵逼 懵逼 [meng3 bi1] /(dialect) stupefied/dumbfounded/
+懶人包 懒人包 [lan3 ren2 bao1] /(Tw) (neologism c. 2007) information presented in easily assimilable form (digest, summary, infographic etc)/
+懶癌 懒癌 [lan3 ai2] /(humorous) extreme laziness/(coll.) indolent cancer (esp. thyroid cancer)/
+懶蟲 懒虫 [lan3 chong2] /(coll.) lazybones/
+戀愛腦 恋爱脑 [lian4 ai4 nao3] /(slang) tendency to become excessively preoccupied with romantic love/
+戇督 戆督 [gang4 du1] /stupid, ignorant (Wu dialect)/
+戇頭戇腦 戆头戆脑 [gang4 tou2 gang4 nao3] /stupid (Wu dialect)/
+成天 成天 [cheng2 tian1] /(coll.) all day long/all the time/
+我也是醉了 我也是醉了 [wo3 ye3 shi4 zui4 le5] /(Internet slang) I can't even.../Are you kidding me!/OMG!/
+我勒個去 我勒个去 [wo3 le4 ge5 qu4] /(slang) shoot!/crap!/
+我去 我去 [wo3 qu4] /(slang) what the ...!; oh my god!; that's insane!/
+我曹 我曹 [wo3 cao2] /(archaic) we/us/(Internet slang) (substitute for 我肏[wo3 cao4]) fuck/WTF/
+戲精 戏精 [xi4 jing1] /(neologism c. 2017) melodramatic person/drama queen/
+戴高帽子 戴高帽子 [dai4 gao1 mao4 zi5] /(coll.) to be the object of flattery/to be placed on a pedestal/
+扁食 扁食 [bian3 shi5] /(dialect) Chinese-style dumpling (such as wonton, jiaozi etc)/
+手欠 手欠 [shou3 qian4] /(coll.) prone to touch things one should keep one's hands off of/
+手殘 手残 [shou3 can2] /(coll.) klutz/
+手筋 手筋 [shou3 jin1] /flexor tendon (coll.)/tesuji (a skillful move in the game of Go) (orthographic borrowing from Japanese 手筋 "tesuji")/
+手脖子 手脖子 [shou3 bo2 zi5] /wrist (dialect)/
+手賤 手贱 [shou3 jian4] /(coll.) prone to touch things one should keep one's hands off of/
+手頸 手颈 [shou3 jing3] /(dialect) wrist/
+扎款 扎款 [zha1 kuan3] /(slang) to obtain money; to earn money/
+扒拉 扒拉 [ba1 la5] /(coll.) to push lightly/to flick to one side/to get rid of/
+扒拉 扒拉 [pa2 la5] /(coll.) to push food from one's bowl into one's mouth with chopsticks (usu. hurriedly)/
+打兌 打兑 [da3 dui4] /to arrange (colloquial)/to transfer creditor's rights (in a debt case)/
+打哪兒指哪兒 打哪儿指哪儿 [da3 na3 r5 zhi3 na3 r5] /(coll.) to act first and then claim the outcome was intended; to act without a clear aim and justify it afterward (ironic reversal of 指哪兒打哪兒|指哪儿打哪儿[zhi3 na3 r5 da3 na3 r5], where one aims clearly and executes with precision)/
+打啵 打啵 [da3 bo1] /(dialect) to kiss/
+打小 打小 [da3 xiao3] /(dialect) from childhood; from a young age/
+打小報告 打小报告 [da3 xiao3 bao4 gao4] /(coll.) to tattletale; to rat on sb/
+打屁 打屁 [da3 pi4] /(coll.) to fart/(coll.) to shoot the breeze/
+打悶雷 打闷雷 [da3 men4 lei2] /(coll.) to wonder secretly/to make wild conjectures/
+打擺子 打摆子 [da3 bai3 zi5] /(coll.) to suffer from malaria/
+打擾了 打扰了 [da3 rao3 le5] /sorry to interrupt you, but .../sorry to have bothered you/sorry, I have to go/(slang) (coined c. 2017) used facetiously to terminate a conversation (esp. online) when the other person is being insufferable/
+打棚 打棚 [da3 peng2] /(dialect) to joke/
+打水漂 打水漂 [da3 shui3 piao1] /to skip stones (on water)/(coll.) to squander one's money on a bad investment/
+打游擊 打游击 [da3 you2 ji1] /to wage guerrilla warfare; to fight as a guerrilla/(fig.) (coll.) to live or eat at no fixed place/
+打炮 打炮 [da3 pao4] /to open fire with artillery/to set off firecrackers/to make one's stage debut/(slang) to have sex/to masturbate/
+打的 打的 [da3 di1] /(coll.) to take a taxi/to go by taxi/
+打臉 打脸 [da3 lian3] /to paint one's face with stage makeup/(neologism, attested by 2014) to expose sb as wrong; to put egg on sb's face/
+打野炮 打野炮 [da3 ye3 pao4] /(slang) to have sex outdoors or in a public place/
+打鑔 打镲 [da3 cha3] /(dialect) to joke/to make fun of (sb)/
+打雞血 打鸡血 [da3 ji1 xue4] /lit. to inject chicken blood/(coll.) extremely excited or energetic (often used mockingly)/
+打飛機 打飞机 [da3 fei1 ji1] /(slang) (of a male) to masturbate; to jerk off/
+打饢 打馕 [da3 nang2] /(dialect) to bake naan/
+托兒 托儿 [tuo1 r5] /(coll.) shill; tout; phony customer who pretends to buys things so as to lure real customers/
+托尼老師 托尼老师 [Tuo1 ni2 lao3 shi1] /(neologism) (slang) barber; hairdresser/
+扣屎盔子 扣屎盔子 [kou4 shi3 kui1 zi5] /(northern dialect) lit. to cap in excrement/fig. to discredit with absurd unfounded accusations/to vilify/
+扣扣 扣扣 [Kou4 kou4] /(Internet slang) QQ instant messenger/
+扦腳 扦脚 [qian1 jiao3] /(dialect) pedicure/to trim one's toenails/
+扯犢子 扯犊子 [che3 du2 zi5] /(dialect) to talk nonsense/to chat idly/
+扯談 扯谈 [che3 tan2] /to talk nonsense (dialect)/
+扳不倒兒 扳不倒儿 [ban1 bu4 dao3 r5] /(dialect) roly-poly toy/
+扶弟魔 扶弟魔 [fu2 di4 mo2] /(coll.) (neologism c. 2017, a play on 伏地魔[Fu2 di4 mo2]) woman who devotes herself to supporting her little brother (assisting him with his studies, giving money to help him buy a house etc)/
+找抽 找抽 [zhao3 chou1] /(coll.) to look for trouble/
+找贖 找赎 [zhao3 shu2] /(dialect) to give change/
+找錢 找钱 [zhao3 qian2] /to give change/to seek funding/(dialect) to make money; to earn a living/
+抄手 抄手 [chao1 shou3] /to fold one's arms/copyist/(dialect) wonton/
+抄靶子 抄靶子 [chao1 ba3 zi5] /(dialect) to do a body search/to frisk/
+把心放在肚子裡 把心放在肚子里 [ba3 xin1 fang4 zai4 du4 zi5 li3] /(coll.) to be completely at ease/
+把拔 把拔 [ba3 ba2] /(Tw) (slang) daddy (pun on 爸爸[ba4 ba5])/
+把細 把细 [ba3 xi4] /(dialect) see 仔細|仔细[zi3 xi4]/
+抓狂 抓狂 [zhua1 kuang2] /(coll.) to be driven crazy (with frustration, stress, anger etc); to tear one's hair out; to freak out (from Taiwanese 掠狂, Tai-lo pr. [lia̍h-kông])/
+抓馬 抓马 [zhua1 ma3] /(coll.) (loanword) drama; dramatic; exaggerated/
+抱大腿 抱大腿 [bao4 da4 tui3] /(coll.) to cling to sb influential or famous/
+抱窩 抱窝 [bao4 wo1] /(coll.) to incubate/to brood/
+抽冷子 抽冷子 [chou1 leng3 zi5] /(coll.) unexpectedly/
+抽水 抽水 [chou1 shui3] /to pump water/(coll.) to shrink in the wash/
+拆家 拆家 [chai1 jia1] /(slang) low-level drug dealer/(slang) (of a pet) to wreck the house (scattering trash, chewing on furniture etc)/
+拉仇恨 拉仇恨 [la1 chou2 hen4] /(gaming) to draw attention or attacks from the enemy towards oneself/(slang) (neologism) to court envy and resentment by flaunting one's wealth, travel photos or weight loss etc/
+拉倒 拉倒 [la1 dao3] /(coll.) forget it; drop it; let it go/to pull down/
+拉呱 拉呱 [la1 gua5] /(dialect) to chat/to gossip/
+拉大條 拉大条 [la1 da4 tiao2] /to defecate (slang)/
+拉後鉤兒 拉后钩儿 [la1 hou4 gou1 r5] /(dialect) to leave unfinished business/
+拉扯大 拉扯大 [la1 che5 da4] /(coll.) to bring up/to rear/to raise/
+拉拉 拉拉 [la1 la1] /(slang) lesbian/(coll.) Labrador retriever/
+拉活 拉活 [la1 huo2] /(northern dialect) to pick up a fare (as a taxi driver)/to pick up a piece of work (as a courier)/
+拉稀 拉稀 [la1 xi1] /(coll.) to have diarrhea/to shrink back/to cower/
+拉肚子 拉肚子 [la1 du4 zi5] /(coll.) to have diarrhea/
+拉胯 拉胯 [la1 kua4] /(slang) disappointing; lackluster; lame; performing poorly/
+拉話 拉话 [la1 hua4] /(dialect) to chat/
+拍婆子 拍婆子 [pai1 po2 zi5] /(Beijing slang, 1960s–70s) to chat up girls; to flirt with unfamiliar girls/
+拍拖 拍拖 [pai1 tuo1] /(dialect) to date sb/
+拍演 拍演 [pai1 yan3] /(dialect) to perform; to act (in a play etc)/
+拍磚 拍砖 [pai1 zhuan1] /(slang) to throw brickbats/to criticize harshly/
+拎包 拎包 [lin1 bao1] /handbag or shopping bag (dialect)/
+拎包黨 拎包党 [lin1 bao1 dang3] /(coll.) purse snatcher/
+拔尖 拔尖 [ba2 jian1] /top-notch (colloquial)/to push oneself to the front/
+拔涼拔涼 拔凉拔凉 [ba2 liang2 ba2 liang2] /(dialect) very cold/chilled/
+拗斷 拗断 [ao3 duan4] /(dialect) to break (by twisting, bending, snapping etc)/
+拜拜 拜拜 [bai2 bai2] /(loanword) bye-bye/also pr. [bai1 bai1] etc/(coll.) to part ways (with sb)/(fig.) to have nothing further to do (with sb or sth)/
+拜金女 拜金女 [bai4 jin1 nu:3] /materialistic woman/(slang) gold-digger/
+拱火 拱火 [gong3 huo3] /(dialect) (fig.) to fan the flames; to fuel sb's anger/
+拼爹 拼爹 [pin1 die1] /(slang) to rely on one's father's wealth or prestige to get ahead/
+拽姐 拽姐 [zhuai3 jie3] /(slang) confident and assertive young woman; badass woman/
+拿一血 拿一血 [na2 yi1 xue4] /(gaming) to get first blood/(slang) to take (sb's) virginity/
+拿捏 拿捏 [na2 nie1] /(lit. and fig.) to grasp; to control/(dialect) affecting shyness; coy/(dialect) to deliberately create difficulties; to threaten/
+挖坑 挖坑 [wa1 keng1] /to dig a hole/(fig.) to make things difficult for sb/(neologism) (slang) (of a writer) to start work on a new project/
+挖墳 挖坟 [wa1 fen2] /to dig a grave/(lit.) to dig up a grave; (fig.) (slang) to dig up an old thread (in an online forum etc)/
+挨呲 挨呲 [ai2 ci1] /(coll.) to get scolded; to be told off/
+挪窩兒 挪窝儿 [nuo2 wo1 r5] /(dialect) to move (after being some time in the same place); to move (house)/
+挺屍 挺尸 [ting3 shi1] /(lit.) to lie stiff like a corpse/(coll.) to sleep/
+挽尊 挽尊 [wan3 zun1] /(neologism) (slang) to salvage a bit of dignity (abbr. for 挽回尊嚴|挽回尊严[wan3 hui2 zun1 yan2])/
+捧臭腳 捧臭脚 [peng3 chou4 jiao3] /(coll.) to bootlick/
+捯飭 捯饬 [dao2 chi5] /(coll.) to doll up/to spruce up/to zhoosh up/
+掉線 掉线 [diao4 xian4] /to get disconnected (from the Internet)/
+掉馬甲 掉马甲 [diao4 ma3 jia3] /(Internet slang) to have one’s hidden identity exposed/
+排檔 排档 [pai2 dang4] /(coll.) row of vendor stalls; street stall area/(Tw) gear shift; gear selector; transmission control (in cars or motorcycles)/
+排雷 排雷 [pai2 lei2] /(military) to clear landmines/(fig.) (slang) to give people a heads-up; to warn others about bad experiences/
+排面 排面 [pai2 mian4] /a row of things facing oneself (esp. a row of products on a shelf facing customers in a store)/(neologism c. 2019) (coll.) ostentation; showiness; impressiveness/
+排骨 排骨 [pai2 gu3] /pork chop/pork cutlet/spare ribs/(coll.) skinny person/
+探花 探花 [tan4 hua1] /candidate who came third in the Hanlin examination (cf. 狀元|状元[zhuang4 yuan2])/(slang) to secretly film sex with a prostitute to share on the Internet/
+接盤 接盘 [jie1 pan2] /(of an entrepreneur) to buy up a struggling business/(finance) to snap up shares sold off by others/(neologism) (slang) to take as a girlfriend a woman who was dumped by her ex for sleeping around/
+接茬 接茬 [jie1 cha2] /(coll.) to respond; to offer a comment; to jump into the conversation/
+接頭 接头 [jie1 tou2] /connector; joint; coupling/(coll.) to contact; to get in touch with/to have knowledge of; to be familiar with/
+推搪 推搪 [tui1 tang2] /to offer excuses (colloquial)/to stall/
+掰彎 掰弯 [bai1 wan1] /to bend/(slang) to turn a straight person gay/
+掰扯 掰扯 [bai1 che5] /to debate/to dispute/to wrangle (dialect)/
+掰直 掰直 [bai1 zhi2] /to straighten/(slang) to turn a gay person straight/
+提溜 提溜 [di1 liu5] /(coll.) to carry/Taiwan pr. [ti2 liu5]/
+插喉 插喉 [cha1 hou2] /(coll.) to intubate/
+揦子 揦子 [la2 zi5] /(dialect) glass bottle/
+援交妹 援交妹 [yuan2 jiao1 mei4] /prostitute (slang)/see also 援助交際|援助交际[yuan2 zhu4 jiao1 ji4]/
+搓板 搓板 [cuo1 ban3] /washboard/(slang) flat-chested (woman)/
+搞不好 搞不好 [gao3 bu5 hao3] /(coll.) maybe/perhaps/
+搞基 搞基 [gao3 ji1] /(slang) to engage in male homosexual practices/
+搞毛 搞毛 [gao3 mao2] /(dialect) what are you doing?/what the hell?/
+搞頭 搞头 [gao3 tou5] /(coll.) likelihood of being worthwhile/cf. 有搞頭|有搞头[you3 gao3 tou5] and 沒搞頭|没搞头[mei2 gao3 tou5]/
+搬運 搬运 [ban1 yun4] /to transport; to carry/(coll.) to repost (content, esp. from another platform)/
+搭子 搭子 [da1 zi5] /(slang) companion/
+搵錢 揾钱 [wen4 qian2] /(dialect) to make money/
+摟錢 搂钱 [lou1 qian2] /(coll.) to grab money/to rake in money/
+摩挲 摩挲 [ma1 sa5] /(coll.) to remove (crinkles, dirt) with the palm of the hand/Taiwan pr. [mo2suo1]/
+摳搜 抠搜 [kou1 sou5] /(coll.) stingy; miserly/
+摳腳 抠脚 [kou1 jiao3] /to scratch one's foot/(fig.) to be stingy/(slang) (of a celebrity) to twiddle one's thumbs (i.e. not release any new material etc)/
+摳門 抠门 [kou1 men2] /(coll.) stingy/
+撂挑子 撂挑子 [liao4 tiao1 zi5] /(coll.) to quit one's job in disgust/
+撇大條 撇大条 [pie3 da4 tiao2] /(slang) to take a dump/
+撇條 撇条 [pie3 tiao2] /(slang) to go to the toilet/
+撈什子 捞什子 [lao1 shi2 zi5] /encumbrance/burden/that awful thing (colloquial)/nuisance/
+撈女 捞女 [lao1 nu:3] /(slang) gold digger; woman who pursues men for money/
+撈油水 捞油水 [lao1 you2 shui3] /(coll.) to gain profit (usu. by underhand means)/
+撐死 撑死 [cheng1 si3] /full to the point of bursting/(coll.) at most/
+撒丫子 撒丫子 [sa1 ya1 zi5] /(dialect) to scamper off; to take to one's heels; to make oneself scarce/
+撒囈掙 撒呓挣 [sa1 yi4 zheng5] /(coll.) to talk in one's sleep; to sleepwalk/
+撒村 撒村 [sa1 cun1] /(dialect) to curse; to speak vulgarly/
+撒狗糧 撒狗粮 [sa3 gou3 liang2] /(slang) to be lovey-dovey in public/
+撕逼 撕逼 [si1 bi1] /(slang) (lit.) to tear cunt/(fig.) (of females) to have a catfight/to have a bitch fight/
+撞臉 撞脸 [zhuang4 lian3] /(coll.) to look alike/to be a spitting image of/
+撞鬼 撞鬼 [zhuang4 gui3] /to encounter a ghost or supernatural being/(coll.) to experience sth strange, eerie or unlucky/
+撥接 拨接 [bo1 jie1] /dial-up (Internet connection)/
+撩妹 撩妹 [liao2 mei4] /(coll.) to flirt; to hit on girls/
+撲街 扑街 [pu1 jie1] /(slang) (originally Cantonese) to flop; to bomb/
+撿屍 捡尸 [jian3 shi1] /(slang) to target an intoxicated person for sexual assault/
+撿漏 捡漏 [jian3 lou4] /to repair a leaky roof/(dialect) to find fault; to nitpick/(slang) to score a bargain (esp. when the seller is unaware of the item's true value)/(slang) to take advantage of an unexpected opportunity/
+擋瑯 挡琅 [dang3 lang2] /(slang) to ask for money/to lend money/
+擋郎 挡郎 [dang3 lang2] /(slang) to ask for money/to lend money/
+擋鋃 挡锒 [dang3 lang2] /(slang) to ask for money/to lend money/
+擠對 挤对 [ji3 dui4] /(coll.) to mock/to bully/to force (a concession out of sb)/
+擠落 挤落 [ji3 luo4] /(coll.) to push aside/
+擦屁股 擦屁股 [ca1 pi4 gu5] /to wipe one’s ass/(fig.) (coll.) to clean up sb else's mess/
+擦邊 擦边 [ca1 bian1] /to make light contact with the edge of sth/(fig.) to be nearly (a certain age); to be close to (danger)/(fig.) to push the boundaries of what is acceptable; to operate in a gray area/(Internet slang) sexually suggestive; provocative while skirting platform rules or censorship/
+擦黑兒 擦黑儿 [ca1 hei1 r5] /(dialect) dusk/
+擰巴 拧巴 [ning3 ba5] /(dialect) awkward; uncomfortable/(dialect) obstinate; contrary; argumentative/
+擴列 扩列 [kuo4 lie4] /(Internet slang) to add a friend (on a social network etc)/
+擺爛 摆烂 [bai3 lan4] /(neologism, attested by 2014) (slang) to stop striving (esp. when one knows one cannot succeed); to let it all go to hell; (sports) to tank/
+擺龍門陣 摆龙门阵 [bai3 long2 men2 zhen4] /(dialect) to chat; to gossip; to spin a yarn/
+擼串 撸串 [lu1 chuan4] /(coll.) to eat grilled skewers/
+擼管 撸管 [lu1 guan3] /(slang) to masturbate/
+擼貓 撸猫 [lu1 mao1] /(slang) to pet a cat/
+擼鐵 撸铁 [lu1 tie3] /(coll.) to pump iron/to work out/
+攀高枝 攀高枝 [pan1 gao1 zhi1] /(coll.) to try to improve one's social standing by marrying or affiliating with people of higher status/
+攔精靈 拦精灵 [lan2 jing1 ling2] /(slang) condom (pun on 藍精靈|蓝精灵[Lan2 jing1 ling2])/
+攢勁 攒劲 [zan3 jin4] /(dialect) to muster strength; to exert oneself; to strive/
+攤事兒 摊事儿 [tan1 shi4 r5] /(coll.) to get into trouble/
+攤檔 摊档 [tan1 dang4] /(dialect) vendor's stall/
+攤黃菜 摊黄菜 [tan1 huang2 cai4] /(dialect) scrambled eggs/
+收山 收山 [shou1 shan1] /(slang) (from Cantonese) to bow out after a long career/to pack it in/(of a gangster, prostitute etc) to get out of the game/(of a business) to cease to operate/
+收拾 收拾 [shou1 shi5] /to put in order/to tidy up/to pack/to repair/(coll.) to sort sb out/to fix sb/
+收藏 收藏 [shou1 cang2] /to collect (works of art, dolls, antiques etc); to put away for safekeeping; (Internet) to bookmark/a collection/
+改刀 改刀 [gai3 dao1] /to cut food into a specific size or shape (strips, slices or cubes etc)/(dialect) screwdriver/
+放水屁 放水屁 [fang4 shui3 pi4] /(coll.) to shart/
+放空擋 放空挡 [fang4 kong1 dang3] /to coast along in neutral gear (in a car)/(coll.) to go commando/
+放血 放血 [fang4 xie3] /(TCM) to practice bloodletting/(medicine) to perform phlebotomy/(coll.) to make sb bleed; to inflict grievous wounds/(fig.) to cough up a large amount of money/(fig.) to reduce prices drastically/
+放衛星 放卫星 [fang4 wei4 xing1] /to launch a satellite/(fig.) (neologism during the Great Leap Forward, c. 1958) to achieve prominent success/(later used sarcastically) to make exaggerated claims/to talk big/
+放閃 放闪 [fang4 shan3] /(coll.) (of a couple) to display affection in public or by posting photos on social media/
+放電 放电 [fang4 dian4] /electrical discharge/(coll.) to lure/to entice/
+放飛機 放飞机 [fang4 fei1 ji1] /(coll.) to stand sb up/to fail to honor an agreement/
+教科書式 教科书式 [jiao4 ke1 shu1 shi4] /(neologism c. 2018) worthy of being used as a textbook example/exemplary/classic/quintessential/
+敲碗 敲碗 [qiao1 wan3] /(neologism) (slang) to impatiently await/
+整人 整人 [zheng3 ren2] /(coll.) (malicious) to make things difficult for sb; (mischievous) to play a prank on sb/
+整治 整治 [zheng3 zhi4] /to bring under control/to regulate/to restore to good condition/(coll.) to fix (a person)/to prepare (a meal etc)/
+整活 整活 [zheng3 huo2] /(Internet slang) to stage humorous antics or creative stunts (esp. for online audiences)/
+整蠱 整蛊 [zheng3 gu3] /(slang) to play a prank on (sb)/
+敷湯藥 敷汤药 [fu1 tang1 yao4] /(coll.) to pay compensation for medical expenses/
+斂巴 敛巴 [lian3 ba5] /(dialect) to gather up; to throw together/
+文愛 文爱 [wen2 ai4] /(slang) to engage in mutual sexual arousal through written messages (e.g. text, chat); text-based cybersex/
+文讀 文读 [wen2 du2] /literary (rather than colloquial) pronunciation of a Chinese character/
+斗內 斗内 [dou3 nei4] /(Tw) (neologism) (Internet slang) to send money to a live streamer (to get a specific response or just to sponsor) (loanword from "donate")/
+斜槓 斜杠 [xie2 gang4] /slash; forward slash (punctuation mark)/(neologism, attested by 2016) (coll.) (attributive) pursuing multiple career paths concurrently; having a portfolio career; (of a career, identity etc) multi-path; multi-hyphenate; slashie/
+斬殺線 斩杀线 [zhan3 sha1 xian4] /(gaming) kill threshold; the critical health point cutoff at which an enemy can be finished off immediately/(fig.) (slang) a critical survival threshold; a point beyond which a person or household lacks sufficient buffer such that a single shock leads to rapid collapse/
+新兵蛋子 新兵蛋子 [xin1 bing1 dan4 zi5] /(coll.) (military) raw recruit; rookie/
+新婦 新妇 [xin1 fu4] /bride/(dialect) daughter-in-law/
+新幣 新币 [xin1 bi4] /(coll.) Singapore dollar/
+新錢 新钱 [xin1 qian2] /newly minted coin; freshly printed banknote/fresh capital; new investment funds/(coll.) new money; recently acquired wealth; (by metonymy) the nouveau riche/
+斷捨離 断舍离 [duan4 she3 li2] /(neologism, attested by 2012) decluttering; minimalism (orthographic borrowing from Japanese 断捨離 "danshari", lit. "forgoing, discarding and letting go")/
+斷片兒 断片儿 [duan4 pian4 r5] /(coll.) to suffer an alcohol-induced blackout/to be unable to recall what one did while drunk/
+斷線 断线 [duan4 xian4] /(of a guitar, kite etc) to have a string break/(of a tradition etc) to be discontinued/(telephone or Internet connection) disconnected/cut off/
+日怪 日怪 [ri4 guai4] /(dialect) strange/
+日頭 日头 [ri4 tou2] /sun (dialect)/daytime/date/
+早已 早已 [zao3 yi3] /for a long time; long since/(dialect) in the past/
+早早兒 早早儿 [zao3 zao3 r5] /(coll.) as soon as possible; as early as one can/
+早晚 早晚 [zao3 wan3] /morning and evening/(in reference to sth that is bound to happen) sooner or later; one of these days/(coll.) (this, or that) point of time/(dialect) at some time in the future/
+早老性痴呆 早老性痴呆 [zao3 lao3 xing4 chi1 dai1] /(coll.) Alzheimer's disease/
+旱傘 旱伞 [han4 san3] /(dialect) parasol/
+旺子 旺子 [wang4 zi5] /(dialect) blood tofu (coagulated animal blood)/
+明兒 明儿 [ming2 r5] /(coll.) tomorrow/one of these days/some day/
+明兒個 明儿个 [ming2 r5 ge5] /(coll.) tomorrow/
+明天見 明天见 [ming2 tian1 jian4] /see you tomorrow/(coll., jocular) food that passes through the digestive system more or less intact (esp. enoki mushrooms)/
+明戀 明恋 [ming2 lian4] /(slang) to openly express or pursue romantic interest in sb (as opposed to 暗戀|暗恋[an4 lian4])/
+星星 星星 [xing1 xing5] /(coll.) a star; the stars in the sky/
+星相十足 星相十足 [xing1 xiang1 shi2 zu2] /(coll.) to look every bit the big star/
+昨兒 昨儿 [zuo2 r5] /(coll.) yesterday/
+昨兒個 昨儿个 [zuo2 r5 ge5] /(coll.) yesterday/
+普信 普信 [pu3 xin4] /(Internet slang) overly confident despite being average/
+普信男 普信男 [pu3 xin4 nan2] /(neologism, attested by 2020) an ordinary guy who imagines he is God's gift to womankind/
+智熄 智熄 [zhi4 xi1] /(slang) extremely foolish; beyond stupid (pun on 窒息[zhi4 xi1])/
+暈菜 晕菜 [yun1 cai4] /(dialect) to get confused; to be dumbfounded; to get dizzy/
+暖心 暖心 [nuan3 xin1] /(coll.) heartwarming; touching; comforting and emotionally uplifting/
+暗戳戳 暗戳戳 [an4 chuo1 chuo1] /(coll.) low-key; subtle; unobtrusive/
+曬娃 晒娃 [shai4 wa2] /(coll.) to indiscriminately share news, images etc of one's child on social media; sharenting/
+曬娃族 晒娃族 [shai4 wa2 zu2] /(coll.) sharent/
+曬照 晒照 [shai4 zhao4] /(Internet slang) to post a photo of oneself online/
+曱甴 曱甴 [yue1 zha2] /(dialect) cockroach/also pr. [yue1you2]/
+更博 更博 [geng1 bo2] /(Internet slang) to update one's blog/
+最好是 最好是 [zui4 hao3 shi4] /(as a complete expression, or followed by 啦[la5]) (coll.) Yeah, right! As if!/
+會兒 会儿 [hui4 r5] /(coll.) a short while; a moment/
+會子 会子 [hui4 zi5] /(coll.) a moment/a while/
+月中 月中 [yue4 zhong1] /the middle of the month/(Tw) (coll.) postpartum care center (abbr. for 月子中心[yue4 zi5 zhong1 xin1])/
+月婆子 月婆子 [yue4 po2 zi5] /(coll.) lying-in woman/
+月頭兒 月头儿 [yue4 tou2 r5] /start of the month (colloquial)/
+有一腿 有一腿 [you3 yi1 tui3] /(coll.) to have an affair/
+有戲 有戏 [you3 xi4] /(coll.) promising/likely to turn out well/
+有排面 有排面 [you3 pai2 mian4] /(neologism) (coll.) ostentatious; showy; impressive/
+有搞頭 有搞头 [you3 gao3 tou5] /(coll.) worthwhile/likely to be fruitful/
+有木有 有木有 [you3 mu4 you3] /(slang) come on, you can't deny it!/don't you think so?!/(melodramatic form of 有沒有|有没有[you3 mei2 you3])/
+有本事 有本事 [you3 ben3 shi5] /to have what it takes/(coll.) (often followed by 就[jiu4]) (used to challenge sb) if you're so clever, ..., if she's so tough, ... etc/Example: 有本事就打我[you3 ben3 shi5 jiu4 da3 wo3] Hit me if you dare!/
+有病 有病 [you3 bing4] /to be ill/(coll.) to be not right in the head/
+有眼力見兒 有眼力见儿 [you3 yan3 li4 jian4 r5] /(dialect) alert/attentive/observant/
+有邊兒 有边儿 [you3 bian1 r5] /(Beijing dialect) to show promise; to look hopeful; to have good prospects/
+服務提供商 服务提供商 [fu2 wu4 ti2 gong1 shang1] /(Internet) service provider/
+末了 末了 [mo4 liao3] /(coll.) final part; last bit/(coll.) in the end; finally/
+杠精 杠精 [gang4 jing1] /(slang) (neologism c. 2018) argumentative person/
+杯具 杯具 [bei1 ju4] /cup/(slang) (pun on 悲劇|悲剧[bei1 ju4], tragedy) so bad/terrible/bummer/fiasco/debacle/
+杯葛 杯葛 [bei1 ge2] /(dialect) (loanword) to boycott/
+東大 东大 [Dong1 da4] /(slang) China/
+東東 东东 [dong1 dong1] /(coll.) thing/item/stuff/
+板兒爺 板儿爷 [ban3 r5 ye2] /(coll.) pedicab driver/
+板扎 板扎 [ban3 zha1] /(dialect) awesome/excellent/
+板磚 板砖 [ban3 zhuan1] /(dialect) wall brick/
+板鴨 板鸭 [Ban3 ya1] /(slang) Spain/
+果粉 果粉 [guo3 fen3] /(slang) fan of Apple products/
+架不住 架不住 [jia4 bu5 zhu4] /(coll.) unable to withstand/cannot bear/can't stand it/no match for/
+查崗 查岗 [cha2 gang3] /to check the guard posts/(coll.) to check up on sb (spouse, employee etc)/
+查水表 查水表 [cha2 shui3 biao3] /(Internet slang) (of the police) to ask to be let in on the pretext of checking the water meter/to barge into people's home on false pretences/
+柰子 柰子 [nai4 zi5] /Chinese pearleaf crabapple (Malus asiatica)/(Internet slang) tits (pun on 奶子[nai3 zi5])/
+柴禾妞 柴禾妞 [chai2 he2 niu1] /(dialect) country girl; unsophisticated girl/
+柿子 柿子 [shi4 zi5] /persimmon/(Northeastern dialect) tomato/
+校鬧 校闹 [xiao4 nao4] /disruptive activities targeted at a school by an aggrieved party (neologism formed by analogy with 醫鬧|医闹[yi1 nao4])/
+核平 核平 [he2 ping2] /(slang) to nuke (a city, country etc)/
+核酸 核酸 [he2 suan1] /nucleic acid/(coll.) nucleic acid test (abbr. for 核酸檢測|核酸检测[he2 suan1 jian3 ce4])/
+格機 格机 [ge2 ji1] /(coll.) to factory-reset a phone (or other device)/
+案子 案子 [an4 zi5] /long table; counter/(coll.) case (criminal, medical etc); matter; project; job/
+梅花 梅花 [mei2 hua1] /plum blossom/clubs ♣ (a suit in card games)/(dialect) wintersweet/
+梗王 梗王 [geng3 wang2] /(coll.) person who makes people laugh; funny guy/
+條子 条子 [tiao2 zi5] /short note/slip of paper/stripe/(slang) cop/(old) prostitute/
+梯子 梯子 [ti1 zi5] /ladder; stepladder/(Internet slang) VPN or other tool used to circumvent internet censorship/
+棒棒噠 棒棒哒 [bang4 bang4 da1] /(Internet slang) awesome/amazing/
+棒讀 棒读 [bang4 du2] /(slang) to read or speak in a flat, emotionless manner (orthographic borrowing from Japanese 棒読み "bōyomi")/
+椒子 椒子 [jiao1 zi5] /(dialect) Sichuan peppercorn/(dialect) chili pepper/
+楓葉國 枫叶国 [Feng1 ye4 guo2] /(slang) Canada/
+楓葉鼠 枫叶鼠 [feng1 ye4 shu3] /(coll.) winter white dwarf hamster (Phodopus sungorus)/
+楞子眼 楞子眼 [leng4 zi5 yan3] /(dialect) vacant look of a drunk or imbecile/
+極品 极品 [ji2 pin3] /best quality/item of the highest quality/(slang) outrageous/annoying in the extreme/gross/person with these qualities/
+極客 极客 [ji2 ke4] /(loanword) (coll.) geek/
+榆木腦殼 榆木脑壳 [yu2 mu4 nao3 ke2] /(coll.) a blockhead; a thickhead/
+榆木腦袋 榆木脑袋 [yu2 mu4 nao3 dai5] /(coll.) thickhead/(coll.) thick skull (i.e. the brain of a thickhead)/
+槍崩 枪崩 [qiang1 beng1] /(coll.) to shoot dead/
+槓槓的 杠杠的 [gang2 gang2 de5] /(slang) (originally northeast dialect) excellent; great/
+槽牙 槽牙 [cao2 ya2] /(coll.) molar; back tooth/
+槽點 槽点 [cao2 dian3] /(slang) an aspect that invites ridicule (e.g. a film's plot inconsistencies or unrealistic character behavior)/
+樂滋滋 乐滋滋 [le4 zi1 zi1] /(coll.) contented/happy/
+樂色 乐色 [le4 se4] /(slang) trash; garbage (pun on the Taiwan pr. of 垃圾[la1 ji1])/
+樓上 楼上 [lou2 shang4] /upstairs/(Internet slang) previous poster in a forum thread/
+樓臺 楼台 [lou2 tai2] /(dialect) balcony/terrace/(literary) high building/tower/(old) stage for theatrical performance/
+樓鳳 楼凤 [lou2 feng4] /(slang) prostitute who provides services in a private apartment/
+樹洞 树洞 [shu4 dong4] /tree hollow/(slang) anonymous platform for sharing secrets/(slang) confidant/
+機器腳踏車 机器脚踏车 [ji1 qi4 jiao3 ta4 che1] /(dialect) motorcycle/abbr. to 機車|机车[ji1 che1]/
+機場 机场 [ji1 chang3] /airport; airfield/(slang) service provider for Shadowsocks or similar software for circumventing Internet censorship/CL:家[jia1],處|处[chu4]/
+機車 机车 [ji1 che1] /locomotive; train engine car/(coll.) motorcycle/(Tw) scooter; motorcycle/(Tw) (slang) hard to get along with; annoying/(Tw) damn!; crap!/
+橫直 横直 [heng2 zhi2] /(colloquial) whatever/come what may/
+檯秤 台秤 [tai2 cheng4] /platform scale/(dialect) counter scale; bench scale/
+櫻花國 樱花国 [Ying1 hua1 guo2] /(slang) Japan/
+櫻花妹 樱花妹 [ying1 hua1 mei4] /(coll.) Japanese girl/
+欠抽 欠抽 [qian4 chou1] /(coll.) to deserve a slap in the face/
+歇了吧 歇了吧 [xie1 le5 ba5] /(dialect) give me a break!/forget about it!/
+歇菜 歇菜 [xie1 cai4] /(dialect) to stop functioning/
+歐了 欧了 [ou1 le5] /(coll.) okay (loanword from "over")/
+歐氣 欧气 [ou1 qi4] /(Internet slang) very good luck (esp. in games)/
+正主 正主 [zheng4 zhu3] /central figure/rightful owner/(slang) idol of a fan/
+正港 正港 [zheng4 gang3] /(Tw) (slang) authentic; genuine (from Taiwanese, Tai-lo pr. [tsiànn-káng])/
+正點 正点 [zheng4 dian3] /(of a train etc) on time; punctual/(slang) awesome/(Tw) on the hour/
+歪果仁 歪果仁 [wai1 guo3 ren2] /(slang) foreigner (pun on 外國人|外国人[wai4 guo2 ren2])/
+歲靜 岁静 [sui4 jing4] /(neologism) (slang) person who willfully ignores societal problems while maintaining a facade of blissful normalcy (derived from 歲月靜好|岁月静好[sui4 yue4 jing4 hao3], "it is a time of peace and harmony")/
+歸置 归置 [gui1 zhi5] /(coll.) to put (things) back; to tidy up; to put in order/
+死人 死人 [si3 ren2] /dead person/(coll.) to die; (of a death) to happen/
+死人不管 死人不管 [si3 ren2 bu4 guan3] /(coll.) to wash one's hands of a matter/
+死磕 死磕 [si3 ke1] /(coll.) to fight to the death/
+死纏爛打 死缠烂打 [si3 chan2 lan4 da3] /(coll.) to pester/to harass/
+殘念 残念 [can2 nian4] /(coll.) to regret/what a pity! (loanword from Japanese "zannen")/
+殺熟 杀熟 [sha1 shu2] /(coll.) (business) to exploit the trust of acquaintances or loyal customers for profit/
+殼郎豬 壳郎猪 [ke2 lang5 zhu1] /(coll.) feeder pig/
+毀三觀 毁三观 [hui3 san1 guan1] /(Internet slang) (of a situation, video clip etc) to make one think "wtf!"/
+母上 母上 [mu3 shang4] /(slang) mother; mom (from Japanese 母上 "haha-ue")/
+母湯 母汤 [mu3 tang1] /(Tw) (slang) don't; must not; won't do (from Taiwanese 毋通, Tai-lo pr. [m̄-thang], similar to Mandarin 不要[bu4 yao4] or 不行[bu4 xing2])/
+母雞 母鸡 [mu3 ji1] /hen/don't know (humorous slang mimicking Cantonese 唔知, Jyutping: m4 zi1)/
+毒奶 毒奶 [du2 nai3] /contaminated milk (esp. milk products adulterated with melamine in a 2008 scandal in China)/(slang) a jinx effect from praising or supporting sb too much/
+毒蟲 毒虫 [du2 chong2] /poisonous insect (or spider etc); venomous snake/(slang) junkie/
+毒雞湯 毒鸡汤 [du2 ji1 tang1] /(coll.) profit-motivated article cynically disguised as feel-good content 雞湯|鸡汤[ji1 tang1] and designed to go viral/
+比心 比心 [bi3 xin1] /(Internet slang) to form a hand heart using one's thumb and forefinger (or by using both hands)/
+毛妹 毛妹 [mao2 mei4] /(slang) young Russian woman/
+毛孩子 毛孩子 [mao2 hai2 zi5] /child; kid/(slang) furry pet (such as a dog or cat)/
+毛票 毛票 [mao2 piao4] /(coll.) Renminbi banknote with a denomination of one, two or five jiao 角[jiao3]/
+毛腰 毛腰 [mao2 yao1] /(dialect) to bend over/
+氣瘋 气疯 [qi4 feng1] /(coll.) to be driven crazy with anger/
+氧化鈣 氧化钙 [yang3 hua4 gai4] /calcium oxide, CaO/(slang) (used as a substitute for 肏[cao4], since CaO resembles cào)/
+氪肝 氪肝 [ke4 gan1] /(slang) to put in long hours, typically late into the night, playing a video game (rather than pay for power-ups)/
+水牛兒 水牛儿 [shui3 niu2 r5] /(dialect) snail/
+水花 水花 [shui3 hua1] /spray of water; splash/(dialect) chickenpox/
+水草 水草 [shui3 cao3] /aquatic plants/water and grass (i.e. favorable foraging land for livestock or wild animals)/(Malaysia) (coll.) drinking straw/
+水逆 水逆 [shui3 ni4] /(astrology) Mercury retrograde (abbr. for 水星逆行[shui3 xing1 ni4 xing2]); (coll.) to have a period of bad luck/(TCM) water retention in the abdomen causing the vomiting of liquids as soon as one drinks/
+汁水 汁水 [zhi1 shui3] /(dialect) juice/
+求錘得錘 求锤得锤 [qiu2 chui2 de2 chui2] /(neologism c. 2017) (slang) to demand proof of what one believes to be an unfounded accusation only to have irrefutable evidence duly supplied/
+汗褟兒 汗褟儿 [han4 ta1 r5] /undershirt (dialect)/
+汪星人 汪星人 [wang1 xing1 ren2] /dog (Internet slang)/
+沒戲 没戏 [mei2 xi4] /(coll.) not a chance/no way/hopeless/
+沒搞頭 没搞头 [mei2 gao3 tou5] /(coll.) not worth bothering with/pointless/
+沒法兒 没法儿 [mei2 fa3 r5] /(coll.) can't do anything about it/(coll.) there's no way that ...; it's simply not credible that .../(coll.) couldn't be (better) (i.e. simply wonderful)/
+沒準頭 没准头 [mei2 zhun3 tou5] /(coll.) unreliable/
+沒溜兒 没溜儿 [mei2 liu4 r5] /(dialect) silly/
+沒眼看 没眼看 [mei2 yan3 kan4] /(coll.) can't bear to look at it/hideous/appalling/
+沒苦硬吃 没苦硬吃 [mei2 ku3 ying4 chi1] /(neologism, attested by 2024) to stubbornly endure hardships that need not be endured; to go out of one's way to make things difficult for oneself/
+沒說的 没说的 [mei2 shuo1 de5] /(coll.) nothing to pick on; really good/(coll.) nothing to discuss; settled matter; no problem/
+沒誰了 没谁了 [mei2 sei2 le5] /(coll.) nobody can beat that; extraordinary; remarkable/
+沒起子 没起子 [mei2 qi3 zi5] /(dialect) (of a person) useless/pathetic/spineless/
+沒跑 没跑 [mei2 pao3] /(coll.) without doubt; for sure/
+沒長眼睛 没长眼睛 [mei2 zhang3 yan3 jing5] /(coll.) are you blind or something?/look where you're going/
+沖涼 冲凉 [chong1 liang2] /(dialect) to take a shower/
+沙發 沙发 [sha1 fa1] /(loanword) sofa (CL:條|条[tiao2],張|张[zhang1])/(Internet slang) first reply to a forum post/
+沙雕 沙雕 [sha1 diao1] /sand sculpture/(Internet slang) silly; ridiculous; hilariously stupid (pun on 傻屌[sha3 diao3])/
+油子 油子 [you2 zi5] /dense and sticky substance/(dialect) wily old fox/
+油汗 油汗 [you2 han4] /oily sweat/(dialect) aphid/
+油炸鬼 油炸鬼 [you2 zha2 gui3] /(coll.) youtiao (deep-fried breadstick)/
+油管 油管 [You2 guan3] /(coll.) YouTube/
+油膩 油腻 [you2 ni4] /greasy food; oily food/(of food) greasy; oily; fatty/(neologism, attested by 2017) (of a middle-aged man) obnoxious; pretentious; vulgar/
+油菜 油菜 [you2 cai4] /oilseed rape (Brassica napus)/rape greens; leafy greens of certain Brassica species/(dialect) bok choy/
+油車 油车 [you2 che1] /(coll.) gasoline vehicle/
+法克魷 法克鱿 [fa3 ke4 you2] /(Internet slang) (loanword) fuck you/
+泡吧 泡吧 [pao4 ba1] /to spend time in a bar (alcohol, Internet etc)/to go clubbing/
+泡湯 泡汤 [pao4 tang1] /(coll.) to fizzle out; to come to nothing/to dawdle; to stall/(Tw) to have a soak in a hot spring bath/
+泡芙人 泡芙人 [pao4 fu2 ren2] /(coll.) skinny fat person (person who is MONW: metabolically obese normal weight)/
+泡菜國 泡菜国 [Pao4 cai4 guo2] /(slang) South Korea/
+波霸 波霸 [bo1 ba4] /(slang) (loanword) big boobs/big-breasted/(coll.) tapioca balls, in 波霸奶茶[bo1 ba4 nai3 cha2]/
+波鞋 波鞋 [bo1 xie2] /(dialect) sports shoes; sneakers (originally Cantonese: 波 is borrowed from English "ball", Jyutping [bo1])/
+泥巴 泥巴 [ni2 ba5] /(coll.) mud/
+泰日天 泰日天 [tai4 ri4 tian1] /(slang) toy poodle with a teddy-bear cut (humorous nickname based on a stereotype of excessive mounting behavior)/
+洋柿子 洋柿子 [yang2 shi4 zi5] /(dialect) tomato/
+洋火 洋火 [yang2 huo3] /(coll.) matches (old)/
+洋罪 洋罪 [yang2 zui4] /terrible pain; torture; (coll.) pain suffered at the hands of foreigners/
+洋芋 洋芋 [yang2 yu4] /(dialect) potato/
+洗地 洗地 [xi3 di4] /to clean the floor/(Internet slang) (lit.) to wash (the blood) off the floor/(fig.) to cover up evidence of sb's wrongdoing/to defend (a wrongdoer)/(coll.) to carpet-bomb/
+洗洗睡 洗洗睡 [xi3 xi3 shui4] /to have a shower and go to bed/(fig.) (slang) (neologism) (often sarcastic) to give up on sth unrealistic; to stop kidding oneself; (used dismissively, typically as 洗洗睡吧[xi3 xi3 shui4 ba5]) keep dreaming/
+洗稿 洗稿 [xi3 gao3] /to modify a text so it can be plagiarized without detection (neologism c. 2014, formed by analogy with 洗錢|洗钱[xi3 qian2], to launder money)/
+洞子 洞子 [dong4 zi5] /cave/pit/(coll.) greenhouse/
+活久見 活久见 [huo2 jiu3 jian4] /(neologism c. 2006) if you live long enough, you'll see everything/Just incredible!/
+活受罪 活受罪 [huo2 shou4 zui4] /(coll.) to go through sheer hell/
+活好 活好 [huo2 hao3] /to live (one's life) well/(slang) to be good in bed/
+活得不耐煩 活得不耐烦 [huo2 de5 bu4 nai4 fan2] /to be tired of living/(coll.) to be asking for trouble/
+活該 活该 [huo2 gai1] /(coll.) serve sb right/deservedly/ought/should/
+流量明星 流量明星 [liu2 liang4 ming2 xing1] /(neologism c. 2014) celebrity with a huge, devoted fan base/celebrity with a huge following on social media/
+海子 海子 [hai3 zi5] /(dialect) wetlands/lake/
+海扁 海扁 [hai3 bian3] /(slang) to beat sb up/
+海椒 海椒 [hai3 jiao1] /(dialect) hot pepper/
+海王 海王 [Hai3 wang2] /Poseidon, Greek god of the sea/Neptune, Roman god of the sea/Aquaman, DC comic book superhero/(slang) womanizer/player/
+海腸子 海肠子 [hai3 chang2 zi5] /(coll.) marine worm resembling intestines such as the spoon worm (echiuroid) or the peanut worm (Sipunculus nudus)/
+海豚音 海豚音 [hai3 tun2 yin1] /(singing) (coll.) whistle note/
+涼快 凉快 [liang2 kuai5] /pleasantly cool (weather etc)/to cool oneself; to cool off/(Tw) (slang) (of clothing) scanty; revealing/(coll.) to stay out of it; to butt out/
+涼拌 凉拌 [liang2 ban4] /to dress cold food with sauce/(slang) there's not much you can do about it (wordplay using 拌[ban4] instead of its homophone 辦|办[ban4])/
+涼涼 凉凉 [liang2 liang2] /slightly cold/cool/(neologism) (slang) to be done for/about to be obliterated/(of a place or a person) desolate/
+淚失禁 泪失禁 [lei4 shi1 jin4] /(slang) to cry uncontrollably when emotionally overwhelmed/
+淚奔 泪奔 [lei4 ben1] /(slang) to get emotional/
+淚點 泪点 [lei4 dian3] /(anatomy) lacrimal punctum/(literary) tears/(neologism c. 2015) the point at which one is moved to tears/
+淚點低 泪点低 [lei4 dian3 di1] /(neologism) easily moved to tears/
+淨高 净高 [jing4 gao1] /(architecture) clear height; vertical clearance (from the floor to the lowest hanging object, such as a beam, pipe or ceiling)/(coll.) a person's height measured without shoes; actual height/
+淫趴 淫趴 [yin2 pa1] /(slang) sex party/
+深櫃 深柜 [shen1 gui4] /(slang) (of an LGBT person etc) closeted/person who keeps their sexual orientation, gender identity or political opinions etc private/
+添亂 添乱 [tian1 luan4] /(coll.) to cause trouble for sb/to inconvenience/
+添堵 添堵 [tian1 du3] /to make people feel even more stressed or annoyed (coll.)/to make traffic congestion even worse/
+渣男 渣男 [zha1 nan2] /(coll.) jerk; scumbag (esp. in romantic relationships)/
+游泳圈 游泳圈 [you2 yong3 quan1] /swim ring/swim tube/(fig.) (coll.) spare tire (roll of fat around the waist)/
+準頭 准头 [zhun3 tou5] /(coll.) accuracy/
+溜冰 溜冰 [liu1 bing1] /ice skating/(slang) to do meth/
+溜號 溜号 [liu1 hao4] /(coll.) to slink off/
+溝子 沟子 [gou1 zi5] /(coll.) butt crack/
+滂臭 滂臭 [pang1 chou4] /(dialect) stinky; smelly/
+滋芽 滋芽 [zi1 ya2] /(dialect) to sprout/to germinate/
+滑跪 滑跪 [hua2 gui4] /(of a soccer player) to knee slide after scoring a goal/(slang) to drop to one's knees in contrition or surrender (usu. figurative)/
+滴管 滴管 [di1 guan3] /intravenous drip tube/dropper; eyedropper/(coll.) pipette/(coll.) burette/drip-irrigation pipe (abbr. for 滴灌管[di1 guan4 guan3])/
+滾床單 滚床单 [gun3 chuang2 dan1] /(coll.) to have sex/
+滾犢子 滚犊子 [gun3 du2 zi5] /(dialect) Beat it!/Scram!/Fuck off!/
+滾粗 滚粗 [gun3 cu1] /(Internet slang) get out!; get lost! (playful contraction of 滾出去|滚出去[gun3 chu1 qu4])/
+滾蛋 滚蛋 [gun3 dan4] /(slang) get out of here!; beat it!/
+漏電 漏电 [lou4 dian4] /to leak electricity/(fig.) (coll.) to unintentionally arouse romantic interest (by being solicitous etc)/cf. 放電|放电[fang4 dian4]/
+漢子 汉子 [han4 zi5] /man/fellow/(dialect) husband/
+潤學 润学 [run4 xue2] /(neologism) (slang) study of how to flee from adverse conditions in China by emigrating/
+潲水 潲水 [shao4 shui3] /(dialect) slop; swill/
+濛鬆雨 蒙松雨 [meng2 song1 yu3] /(dialect) drizzle; light rain/
+火星子 火星子 [huo3 xing1 zi5] /(coll.) spark; ember/
+火油 火油 [huo3 you2] /(dialect) kerosene/
+火炎焱燚 火炎焱燚 [huo3 yan2 yan4 yi4] /hot (i.e. popular) (emphatic form of 火[huo3]) (neologism c. 2016)/
+火色 火色 [huo3 se4] /(dialect) intensity of the fire (in cooking, kiln firing etc)/
+灶具 灶具 [zao4 ju4] /stove/cooker/(dialect) cooking utensils/
+灶屋 灶屋 [zao4 wu1] /(dialect) kitchen/
+灶房 灶房 [zao4 fang2] /(dialect) kitchen/
+灶間 灶间 [zao4 jian1] /(dialect) kitchen/
+炒股 炒股 [chao3 gu3] /(coll.) to speculate in stocks/
+炒飯 炒饭 [chao3 fan4] /fried rice/(Tw) (slang) to have sex/
+炒魷魚 炒鱿鱼 [chao3 you2 yu2] /(coll.) to fire sb/to sack sb/
+炫酷 炫酷 [xuan4 ku4] /(slang) cool/awesome/
+炮兒局 炮儿局 [pao4 r5 ju2] /police station (Beijing slang)/
+炸藥獎 炸药奖 [Zha4 yao4 jiang3] /(slang) Nobel Prize/
+炸街 炸街 [zha4 jie1] /(slang) (of a car driver) to engage in noisy, disruptive showboating/
+炸裂 炸裂 [zha4 lie4] /to burst; to explode; to rupture/(neologism) (slang) amazing; epic; phenomenal/
+為愛鼓掌 为爱鼓掌 [wei4 ai4 gu3 zhang3] /(neologism) (slang) to have sex/
+為毛 为毛 [wei4 mao2] /(Internet slang) why?/
+無語 无语 [wu2 yu3] /to remain silent/to have nothing to say/(coll.) speechless/dumbfounded/
+然並卵 然并卵 [ran2 bing4 luan3] /(Internet slang) ultimately useless/
+然鵝 然鹅 [ran2 e2] /(Internet slang for 然而[ran2 er2]) however/
+照騙 照骗 [zhao4 pian4] /(Internet slang) deceptive photo (pun on 照片[zhao4 pian4]) (esp. one misleadingly presenting sth in a favorable light)/
+熊孩子 熊孩子 [xiong2 hai2 zi5] /(dialect) little devil; brat/
+熊親戚 熊亲戚 [xiong2 qin1 qi5] /(coll.) busybody relative/
+熊貓血 熊猫血 [xiong2 mao1 xue4] /(coll.) Rh-negative blood type/
+熟齡 熟龄 [shu2 ling2] /(neologism) middle age; mature age; prime years/
+熬頭兒 熬头儿 [ao2 tou5 r5] /(coll.) the reward of one's efforts/the light at the end of the tunnel/
+熱帖 热帖 [re4 tie3] /hot thread (in an Internet forum)/
+熱度 热度 [re4 du4] /level of heat/(fig.) zeal/fervor/(coll.) a temperature (i.e. abnormally high body heat)/
+熱搜 热搜 [re4 sou1] /(Internet) popular search query/
+熱騰騰 热腾腾 [re4 teng2 teng2] /steaming hot/(fig.) bustling/hectic/(fig.) excited/stirred up/(fig.) created only a short time before/freshly minted/hot off the press/(coll.) also pr. [re4 teng1 teng1]/
+燈泡 灯泡 [deng1 pao4] /light bulb/see also 電燈泡|电灯泡[dian4 deng1 pao4]/third-wheel or unwanted third party spoiling a couple's date (slang)/CL:個|个[ge4]/
+燒腦 烧脑 [shao1 nao3] /(neologism, attested by 2016) (coll.) (of a situation, problem or piece of content) intensely demanding on the brain; brain-bending/
+燕梳 燕梳 [yan4 shu1] /(dialect) insurance (loanword)/
+營生 营生 [ying2 sheng5] /(coll.) job/work/
+營銷號 营销号 [ying2 xiao1 hao4] /(Internet slang) clickbait account; content farm account/
+爆乳 爆乳 [bao4 ru3] /large breasts (slang)/
+爆仗 爆仗 [bao4 zhang5] /(coll.) firecracker/
+爆照 爆照 [bao4 zhao4] /(Internet slang) to post a photo of oneself online/
+爆菊花 爆菊花 [bao4 ju2 hua1] /(slang) to stick sth up the anus/to have anal intercourse/
+爆金幣 爆金币 [bao4 jin1 bi4] /(gaming) (of a monster etc) to drop gold coins when defeated/(fig.) (slang) to give or spend money/
+爆雷 爆雷 [bao4 lei2] /(of a P2P lending platform) to collapse/(Tw) (slang) to reveal plot details/spoiler/
+爆頭 爆头 [bao4 tou2] /(neologism) (slang) (often used in video gaming) to shoot sb in the head/headshot/
+爛人 烂人 [lan4 ren2] /(coll.) scumbag; lowlife; asshole/
+爛大街 烂大街 [lan4 da4 jie1] /(coll.) (of a fashion item, song etc) to be everywhere now; to be nothing special anymore; to have lost its novelty/
+爛崽 烂崽 [lan4 zai3] /(dialect) hooligan; low-life/
+爛橘子 烂橘子 [Lan4 ju2 zi5] /(slang) EA's Origin platform/
+爪機 爪机 [zhua3 ji1] /(Internet slang) mobile phone/
+爬蟲 爬虫 [pa2 chong2] /reptile/(Internet) web crawler/
+父上 父上 [fu4 shang4] /(slang) father; dad (playful honorific, orthographic borrowing from Japanese "chichi-ue")/
+爸爸 爸爸 [ba4 ba5] /(coll.) father; dad/CL:位[wei4]/
+爹娘 爹娘 [die1 niang2] /(dialect) parents/
+爺倆 爷俩 [ye2 lia3] /(coll.) father and his child/
+爺爺 爷爷 [ye2 ye5] /(coll.) paternal grandfather; grandpa/
+爽歪了 爽歪了 [shuang3 wai1 le5] /(slang) awesome; amazing; too cool!; sick/
+牙巴 牙巴 [ya2 ba5] /(dialect) tooth/
+牛人 牛人 [niu2 ren2] /(coll.) leading light/true expert/badass/
+牛子 牛子 [niu2 zi3] /(dialect) penis/
+牛屄 牛屄 [niu2 bi1] /(slang) (vulgar) awesome; badass/(slang) (vulgar) cocky; arrogant/
+牛扒 牛扒 [niu2 pa2] /(dialect) beef steak/
+牛氣 牛气 [niu2 qi5] /(coll.) haughty/overbearing/(economics) bullish/
+牛脖子 牛脖子 [niu2 bo2 zi5] /(coll.) bullheaded/obstinate/
+牛郎 牛郎 [niu2 lang2] /cowherd boy/(slang) male prostitute/
+物事 物事 [wu4 shi4] /(literary) affair; matter; business/(dialect) item; thing; stuff/
+犁頭 犁头 [li2 tou2] /plowshare/colter/(dialect) plow/
+犯睏 犯困 [fan4 kun4] /(coll.) to get sleepy/
+犯貧 犯贫 [fan4 pin2] /(dialect) to talk nonsense/garrulous/
+狂頂 狂顶 [kuang2 ding3] /(slang) to strongly support/to strongly approve of/
+狂魔 狂魔 [kuang2 mo2] /(slang) (used after a noun to mean "obsessive devotee of") maniac; fiend/
+狗子 狗子 [gou3 zi5] /(coll.) dog/
+狗屎運 狗屎运 [gou3 shi3 yun4] /(coll.) (other people's) dumb luck/
+狗崽子 狗崽子 [gou3 zai3 zi5] /(coll.) puppy/(derog.) son of a bitch/
+狗帶 狗带 [gou3 dai4] /(Internet slang) to go away/to slink off/(transliteration of "go die", possibly from 去死[qu4 si3])/
+狗狗 狗狗 [gou3 gou1] /(coll.) dog; doggie/
+狗糧 狗粮 [gou3 liang2] /dog food/(Internet slang) public display of affection (term used by singles 單身狗|单身狗[dan1 shen1 gou3] forced to "eat" it)/
+猩化 猩化 [xing1 hua4] /(slang) (of a dialect) to be corrupted by Standard Mandarin/
+猩猩 猩猩 [xing1 xing5] /orangutan/(slang) dialect speaker whose speech is corrupted by Standard Mandarin/
+猴兒精 猴儿精 [hou2 r5 jing1] /(dialect) shrewd/clever/
+猴子偷桃 猴子偷桃 [hou2 zi5 tou1 tao2] /"monkey steals the peach" (martial arts), distracting an opponent with one hand and seizing his testicles with the other/(coll.) grabbing sb by the balls/
+猴皮筋 猴皮筋 [hou2 pi2 jin1] /(coll.) rubber band/
+猴米 猴米 [hou2 mi3] /(slang) (loanword) homie/
+猴精 猴精 [hou2 jing1] /(coll.) clever; shrewd/
+猴車 猴车 [hou2 che1] /(coll.) overhead ropeway with suspended seats, used to transport workers in a mine/
+獻身 献身 [xian4 shen1] /to commit one's energy to/to devote oneself to/to sacrifice one's life for/(coll.) (of a woman) to give one's virginity to/
+玉玉症 玉玉症 [yu4 yu4 zheng4] /(slang) clinical depression/
+玩咖 玩咖 [wan2 ka1] /(slang) player; playboy; party guy/
+玩完 玩完 [wan2 wan2] /(coll.) to end in failure; to come to grief; to bite the dust/
+玩陰的 玩阴的 [wan2 yin1 de5] /(coll.) to play dirty; to use underhanded tactics/(coll.) sneaky; underhanded/
+玻璃 玻璃 [bo1 li5] /glass/CL:張|张[zhang1],塊|块[kuai4]/(slang) male homosexual/
+玻璃心 玻璃心 [bo1 li5 xin1] /(slang) overly sensitive/butthurt/
+現任 现任 [xian4 ren4] /to occupy a post currently/current (president etc); incumbent/(coll.) current boyfriend (girlfriend, spouse)/
+現充 现充 [xian4 chong1] /(slang) someone successful or fulfilled in real life (as opposed to online) (loanword from Japanese リア充 "riajuu")/
+瑪麗蘇 玛丽苏 [Ma3 li4 Su1] /(slang) Mary Sue (character type in fiction)/
+瓜娃子 瓜娃子 [gua1 wa2 zi5] /(dialect) fool/a silly/
+瓢羹 瓢羹 [piao2 geng1] /(dialect) spoon/
+瓷實 瓷实 [ci2 shi5] /(dialect) firm/robust/
+甜妹 甜妹 [tian2 mei4] /(coll.) girl with a sweet, cute demeanor/
+生命帶 生命带 [sheng1 ming4 dai4] /(neologism) (used in road safety campaigns) "life-saving belt", i.e. seat belt/(astrobiology) circumstellar habitable zone/
+生無可戀 生无可恋 [sheng1 wu2 ke3 lian4] /(Internet slang) nothing left to live for/
+生疼 生疼 [sheng1 teng2] /(coll.) very painful/
+甩鍋 甩锅 [shuai3 guo1] /(neologism, attested by 2017) to shift the blame; to pass the buck/
+甭管 甭管 [beng2 guan3] /(coll.) regardless of; no matter (where, who etc)/
+男友力 男友力 [nan2 you3 li4] /(coll.) attractiveness (as a potential boyfriend)/degree to which one is "boyfriend material"/
+男同 男同 [nan2 tong2] /gay guy (coll.)/
+男大 男大 [nan2 da4] /(slang) male university student; male college student/
+男娃 男娃 [nan2 wa2] /(dialect) boy/guy/
+男娘 男娘 [nan2 niang2] /(slang) femboy/
+男子漢大丈夫 男子汉大丈夫 [nan2 zi3 han4 da4 zhang4 fu5] /(coll.) he-man/
+男票 男票 [nan2 piao4] /boyfriend (Internet slang)/
+男高 男高 [nan2 gao1] /(slang) male high school student/
+留子 留子 [liu2 zi5] /(slang) international student; student studying abroad/
+畢典 毕典 [bi4 dian3] /graduation ceremony (abbr. for 畢業典禮|毕业典礼[bi4 ye4 dian3 li3])/(Tw) (coll.) to graduate/
+番客 番客 [fan1 ke4] /(old) foreigner; alien/(dialect) overseas Chinese/
+番瓜 番瓜 [fan1 gua1] /(dialect) pumpkin/
+番薯 番薯 [fan1 shu3] /(dialect) sweet potato/yam/
+當頭 当头 [dang4 tou5] /(coll.) pledge; surety/
+病秧子 病秧子 [bing4 yang1 zi5] /(dialect) sickly person/
+瘋猶精 疯犹精 [feng1 you2 jing1] /(slang) person who is blindly pro-Israel/
+瘧子 疟子 [yao4 zi5] /(coll.) malaria/
+瘸子 瘸子 [que2 zi5] /lame person (colloquial)/
+癀病 癀病 [huang2 bing4] /(dialect) anthrax in livestock/
+癟三 瘪三 [bie1 san1] /(Wu dialect) bum/wretched-looking tramp who lives by begging or stealing/
+發卡 发卡 [fa1 ka3] /to issue a card/(slang) to reject a guy or a girl/to chuck/
+發好人卡 发好人卡 [fa1 hao3 ren2 ka3] /(slang) to reject sb (by labeling them a "nice guy")/
+發文 发文 [fa1 wen2] /to issue a document/document issued by an authority/outgoing messages/(Internet) to post an article online/
+發毛 发毛 [fa1 mao2] /to rant and rave/to be scared, upset (Beijing dialect)/
+發神經 发神经 [fa1 shen2 jing1] /(coll.) to go crazy/to lose it/demented/unhinged/
+白兔 白兔 [bai2 tu4] /white rabbit/(fig.) (slang) breast/
+白奴 白奴 [bai2 nu2] /white slave/(neologism that peaked in the 2000s–2010s) white-collar slave (office worker who is overworked and exploited)/
+白嫖 白嫖 [bai2 piao2] /to visit a prostitute without paying/(slang) to consume a service without paying/
+白富美 白富美 [bai2 fu4 mei3] /"Ms Perfect" (i.e. fair-skinned, rich and beautiful) (Internet slang)/
+白左 白左 [bai2 zuo3] /(neologism, attested by 2010) naive, self-righteous Western liberals or progressives/
+白手套 白手套 [bai2 shou3 tao4] /white glove/(fig.) (slang) intermediary in negotiations; proxy who acts on behalf of an official in corrupt dealings (to keep the official's involvement secret)/
+白扯淡 白扯淡 [bai2 che3 dan4] /(coll.) to talk rubbish/
+白月光 白月光 [bai2 yue4 guang1] /(slang) the one that got away/
+白爛 白烂 [bai2 lan4] /(slang) stupid; ridiculous/
+白目 白目 [bai2 mu4] /(slang) stupid/moron/
+白相人 白相人 [bai2 xiang4 ren2] /(dialect) rogue/hoodlum/
+白瞎 白瞎 [bai2 xia1] /(dialect) to waste (effort, money etc)/
+白菜價 白菜价 [bai2 cai4 jia4] /(coll.) very low price; dirt cheap price/
+白虎 白虎 [Bai2 hu3] /White Tiger (the seven mansions of the west sky)/(slang) hairless female genitalia/
+白饒 白饶 [bai2 rao2] /to give sth extra free of charge/(coll.) in vain; to no avail/
+百合 百合 [bai3 he2] /(botany) lily/(ACG) (slang) yuri (genre depicting romantic or intimate relationships between women)/
+的哥 的哥 [di1 ge1] /male taxi driver/cabbie (slang)/
+皮牙子 皮牙子 [pi2 ya2 zi5] /(dialect) onion (loanword from Uyghur "piyaz")/
+皮癢 皮痒 [pi2 yang3] /(coll.) to need a spanking/
+盆友 盆友 [pen2 you3] /(Internet slang) friend (pun on 朋友[peng2 you3])/
+直播 直播 [zhi2 bo1] /(TV, radio) to broadcast live/live broadcast/(Internet) to livestream/(agriculture) direct seeding/
+直播帶貨 直播带货 [zhi2 bo1 dai4 huo4] /(neologism c. 2020) (of an Internet influencer etc) to showcase and promote products via live stream, providing links for viewers to make a purchase/
+直球 直球 [zhi2 qiu2] /(baseball) fastball/(fig.) (coll.) direct; frank; upfront; blunt/
+直男 直男 [zhi2 nan2] /(slang) heterosexual man/(slang) a "straight" man: direct and literal-minded, practical and unromantic, and often poor at reading emotions or hints/
+直男癌 直男癌 [zhi2 nan2 ai2] /(slang) extreme "straight-man" behavior marked by rigidity, emotional insensitivity, and dismissive or sexist attitudes/
+直給 直给 [zhi2 gei3] /(slang) direct (in the way sth is conveyed or presented)/
+直腸子 直肠子 [zhi2 chang2 zi5] /(coll.) forthright person/
+省省吧 省省吧 [sheng3 sheng5 ba5] /(coll.) Don't waste your breath./Save it!/
+看人下菜碟兒 看人下菜碟儿 [kan4 ren2 xia4 cai4 die2 r5] /(dialect) to treat sb according to their social status, relationship with them etc (idiom)/not to treat everyone equally favorably/
+看看 看看 [kan4 kan5] /to take a look at/to examine/to survey/(coll.) pretty soon/
+真個 真个 [zhen1 ge4] /(dialect) really; truly; indeed/
+真是 真是 [zhen1 shi5] /indeed; truly/(coll.) (used to express disapproval, annoyance etc)/
+真格的 真格的 [zhen1 ge2 de5] /(coll.) serious; real; true/
+真槍實彈 真枪实弹 [zhen1 qiang1 shi2 dan4] /(idiom) with real guns and live ammunition; (fig.) for real (involving genuine action rather than rehearsal, simulation or theory); (coll.) to have actual sex; to go all the way/
+真牛 真牛 [zhen1 niu2] /(slang) really cool, awesome/
+真空 真空 [zhen1 kong1] /(physics) vacuum/(fig.) vacuum/(slang) to not wear underwear/
+真香 真香 [zhen1 xiang1] /awesome (expression of approval used hypocritically after bitching about the exact same thing earlier) (neologism c. 2014)/
+眵目糊 眵目糊 [chi1 mu5 hu1] /(dialect) sleep (dried mucus in the corner of the eye)/
+眼力見 眼力见 [yan3 li4 jian4] /(dialect) ability to read situations and respond appropriately/
+眼時 眼时 [yan3 shi2] /(dialect) now; at present/
+眼氣 眼气 [yan3 qi4] /(dialect) to envy; to be jealous/
+眼眨毛 眼眨毛 [yan3 zha3 mao2] /(dialect) eyelashes/
+眼睛吃冰淇淋 眼睛吃冰淇淋 [yan3 jing5 chi1 bing1 qi2 lin2] /(slang) (Tw) to be checking out the hotties/
+眼神 眼神 [yan3 shen2] /expression or emotion showing in one's eyes/meaningful glance/wink/eyesight (dialect)/
+眼見得 眼见得 [yan3 jian4 de5] /(dialect) obviously/clearly/
+睏覺 困觉 [kun4 jiao4] /(dialect) to sleep/
+督進去 督进去 [du1 jin4 qu4] /(slang) (Tw) to stick "it" in/to thrust inside/
+瞌睡蟲 瞌睡虫 [ke1 shui4 chong2] /mythological insect that makes people doze off/(fig.) drowsiness/(coll.) person who loves sleeping/sleepaholic/
+瞎掰 瞎掰 [xia1 bai1] /(coll.) to talk nonsense/to fool around/
+知了猴 知了猴 [zhi1 liao3 hou2] /(coll.) newly-emerged cicada nymph/
+短劇 短剧 [duan3 ju4] /short play; sketch; skit/(neologism, attested by 2020) short-form video drama (esp. episodic videos made for mobile platforms, typically less than 5 minutes per episode)/
+矮冬瓜 矮冬瓜 [ai3 dong1 gua5] /(coll.) (derog.) short, fat person/
+矮油 矮油 [ai3 you2] /(slang) alternative for 哎呦[ai1 you1] "oh my!"/
+矮醜窮 矮丑穷 [ai3 chou3 qiong2] /(Internet slang) (of a man) unmarriageable (lit. short, ugly and poor)/opposite: 高富帥|高富帅[gao1 fu4 shuai4]/
+矯情 矫情 [jiao2 qing5] /(Beijing dialect) argumentative; unreasonable/
+石屎森林 石屎森林 [shi2 shi3 sen1 lin2] /(dialect) concrete jungle/
+砌長城 砌长城 [qi4 Chang2 cheng2] /(coll.) to play mahjong/
+破殼 破壳 [po4 ke2] /(of a bird, insect etc) to hatch/(slang) (fig.) to be born/to crack open (an egg, a nut etc)/
+破殼日 破壳日 [po4 ke2 ri4] /(slang) (fig.) birthday/
+破爛 破烂 [po4 lan4] /worn-out; dilapidated; tattered; ragged/(coll.) rubbish; junk/
+破防 破防 [po4 fang2] /(video games) to break through an opponent's defenses/(slang) to break through sb's emotional defenses; to get to sb emotionally/
+破題 破题 [po4 ti2] /(literary) to introduce the theme of a composition; to state the gist at the outset/(fig.) to begin tackling an issue; to find a way into a problem/(coll.) to experience sth for the first time (esp. sth unusual)/
+破題兒 破题儿 [po4 ti2 r5] /erhua form of 破題|破题[po4 ti2] (chiefly used in the colloquial "first-time-ever" sense)/
+破題兒第一遭 破题儿第一遭 [po4 ti2 r5 di4 yi1 zao1] /(coll.) one's first time ever experiencing sth (esp. sth notable or unusual)/
+硬剛 硬刚 [ying4 gang1] /(slang) to confront sb boldly and resolutely/
+硬拗 硬拗 [ying4 ao4] /(Tw) (coll.) to defend an untenable position with ridiculous arguments (from Taiwanese, Tai-lo pr. [ngē-áu])/Taiwan pr. [ying4ao1]/
+硬菜 硬菜 [ying4 cai4] /(dialect) meaty dish/
+碧池 碧池 [bi4 chi2] /bitch (loanword) (Internet slang)/clear water pond/
+碰瓷 碰瓷 [peng4 ci2] /(coll.) to scam sb by setting up an "accident" in which one appears to have sustained damage or injury caused by the scam victim, then demanding compensation (variations include putting "expensive" porcelain in a place where it is likely to be knocked over by passers-by, and stepping into the path of a slow-moving car)/
+碳水 碳水 [tan4 shui3] /(coll.) carbohydrate; carbs (abbr. for 碳水化合物[tan4 shui3 hua4 he2 wu4])/
+碼子 码子 [ma3 zi5] /(coll.) numeral/counter; chip; token/(old) ready money; cash/standard weight (used on a balance scale)/
+碼長城 码长城 [ma3 Chang2 cheng2] /(coll.) to play mahjong/
+碾場 碾场 [nian3 chang2] /to thresh or husk grain on a threshing ground (dialect)/
+磕磣 磕碜 [ke1 chen5] /(dialect) ugly; unsightly; shabby/(dialect) to humiliate; to ridicule/
+磕糖 磕糖 [ke1 tang2] /(slang) to revel in the sight of one's favorite couple being affectionate/to lap it up when one sees a couple whom one ships kissing or cuddling/
+磕膝蓋 磕膝盖 [ke1 xi1 gai4] /(dialect) knee/
+磨唧 磨唧 [mo4 ji5] /(dialect) to be very slow; to dawdle/
+磨嘰 磨叽 [mo4 ji5] /(dialect) to dawdle/to waste time/also written 墨跡|墨迹[mo4 ji5]/
+磨得開 磨得开 [mo4 de5 kai1] /to feel unembarrassed; to be at ease/(dialect) to be convinced; to come round/
+磨牙 磨牙 [mo2 ya2] /to grind one's teeth (during sleep)/pointless arguing/(coll.) molar/
+社交牛逼症 社交牛逼症 [she4 jiao1 niu2 bi1 zheng4] /(neologism, attested by 2021) (slang) extreme gregariousness; over-the-top confidence in social interactions/
+社死 社死 [she4 si3] /(neologism c. 2020) (slang) to die of embarrassment (figuratively)/
+社牛 社牛 [she4 niu2] /(slang) extreme extrovert; socially fearless person (abbr. for 社交牛逼症[she4 jiao1 niu2 bi1 zheng4])/
+社畜 社畜 [she4 chu4] /(coll.) corporate drone (orthographic borrowing from Japanese 社畜 "shachiku")/
+神作 神作 [shen2 zuo4] /(slang) masterpiece/
+神專 神专 [shen2 zhuan1] /(Internet slang) masterpiece music album; classic album (abbr. for 神級專輯|神级专辑[shen2 ji2 zhuan1 ji2])/
+神級 神级 [shen2 ji2] /(Internet slang) god-tier; legendary/
+神經 神经 [shen2 jing1] /nerve/mental state/(coll.) unhinged/nutjob/
+票子 票子 [piao4 zi5] /(coll.) cash; bill/
+禮拜 礼拜 [li3 bai4] /to attend a religious service/(coll.) week/(coll.) Sunday/
+禿瓢 秃瓢 [tu1 piao2] /bald head (colloquial)/
+禿瘡 秃疮 [tu1 chuang1] /(dialect) favus of the scalp (skin disease)/
+科普 科普 [ke1 pu3] /popularization of science (abbr. for 科學普及|科学普及[ke1 xue2 pu3 ji2])/(attributive) popular science/(coll.) to explain in layperson's terms/
+秒回 秒回 [miao3 hui2] /(neologism) (slang) to respond to a message within seconds/
+秒殺 秒杀 [miao3 sha1] /(Internet) flash sale/(sports or online gaming) rapid dispatch of an opponent/
+秒看 秒看 [miao3 kan4] /(coll.) to take in at a glance/
+秦椒 秦椒 [Qin2 jiao1] /(dialect) hot pepper (long and thin)/same as 花椒[hua1 jiao1]/
+秧子 秧子 [yang1 zi5] /sapling; seedling; sprout; (esp.) rice seedling/stem; stalk; vine/baby livestock; fry/(dialect) (derog.) suffix used to indicate a type of person/
+程子 程子 [cheng2 zi5] /(Beijing dialect) see 陣子|阵子[zhen4 zi5]/
+程序猿 程序猿 [cheng2 xu4 yuan2] /(Internet slang) code monkey/
+種花 种花 [zhong4 hua1] /to grow flowers/(dialect) to vaccinate/(dialect) to grow cotton/
+種草 种草 [zhong4 cao3] /(neologism) (slang) to spark interest in a product or idea (esp. on social media)/
+稱錢 称钱 [chen4 qian2] /(coll.) rich/well-heeled/
+空手套白狼 空手套白狼 [kong1 shou3 tao4 bai2 lang2] /(coll.) to make big gains without putting in effort or resources/
+空軍 空军 [kong1 jun1] /air force/(slang) to fail to catch anything (on a fishing trip); to get skunked/
+窟臀 窟臀 [ku1 tun2] /buttocks (dialect)/
+窩囊廢 窝囊废 [wo1 nang5 fei4] /(coll.) spineless coward/wimp/a good-for-nothing/
+窩囊費 窝囊费 [wo1 nang5 fei4] /(slang) hard-earned wages (pun on 窩囊廢|窝囊废[wo1 nang5 fei4])/
+窩裡橫 窝里横 [wo1 li5 heng4] /(coll.) meek and civil in public, but a tyrant at home/
+窯姐 窑姐 [yao2 jie3] /(dialect) prostitute/
+竄稀 窜稀 [cuan4 xi1] /(coll.) to have diarrhea/
+站點 站点 [zhan4 dian3] /a place set up to serve a specific function (train station, bus stop, toll plaza, bike rental station, meteorological station etc)/(Internet) site (website, FTP site etc)/
+笆籬子 笆篱子 [ba1 li2 zi5] /(dialect) prison/
+筅帚 筅帚 [xian3 zhou3] /(dialect) pot-scrubbing brush, made from bamboo strips/
+筒子 筒子 [tong3 zi5] /tube-shaped object/tube/bobbin/(Internet slang) homonym for 同志[tong2 zhi4]/
+筷子腿 筷子腿 [kuai4 zi5 tui3] /(coll.) skinny legs/
+箍子 箍子 [gu1 zi5] /finger ring (dialect)/
+箔籬 箔篱 [bo2 li2] /(dialect) partition or screen made of plaited bamboo (or rushes, grain stalks etc); a weir of similar construction used to trap fish/
+管夠 管够 [guan3 gou4] /(coll.) as much as one wants; in plentiful supply/
+箢箕 箢箕 [yuan1 ji1] /(dialect) scoop-shaped woven bamboo basket/
+箢篼 箢篼 [yuan1 dou1] /(dialect) scoop-shaped woven bamboo basket/
+節骨眼 节骨眼 [jie1 gu5 yan3] /(dialect) critical juncture/crucial moment/Taiwan pr. [jie2 gu5 yan3]/
+範兒 范儿 [fan4 r5] /(coll.) style; manner/
+米兔 米兔 [mi3 tu4] /(Internet slang) (loanword) #MeToo (movement against sexual harassment and assault)/
+米粉 米粉 [mi3 fen3] /rice flour/rice-flour noodles/(Internet slang) Xiaomi fan/
+粉轉黑 粉转黑 [fen3 zhuan3 hei1] /(Internet slang) to go from being an admirer to being a detractor/
+粟子 粟子 [su4 zi5] /(dialect) millet/
+粟米 粟米 [su4 mi3] /corn/maize (dialect)/
+精利主義 精利主义 [jing1 li4 zhu3 yi4] /egoism masked by a veneer of urbanity (neologism c. 2012) (abbr. for 精緻的利己主義|精致的利己主义[jing1 zhi4 de5 li4 ji3 zhu3 yi4])/
+精日 精日 [jing1 ri4] /(Internet slang) (often derog.) "spiritually Japanese"; having a strong ideological or cultural affinity with Japan (cf. 精神日本人[jing1 shen2 Ri4 ben3 ren2])/
+精瘦 精瘦 [jing1 shou4] /(coll.) lean (figure, meat etc)/slender/
+精神日本人 精神日本人 [jing1 shen2 Ri4 ben3 ren2] /(neologism) "spiritually Japanese person"; person who identifies strongly with Japan/
+精緻露營 精致露营 [jing1 zhi4 lu4 ying2] /glamping (neologism c. 2019)/
+精肉 精肉 [jing1 rou4] /(dialect) lean meat/
+精蘇 精苏 [jing1 su1] /(Internet slang) "spiritually Soviet"; having a strong ideological or cultural affinity with the Soviet Union/
+糖爹 糖爹 [tang2 die1] /(slang) sugar daddy/
+糨子 糨子 [jiang4 zi5] /(coll.) paste/
+約嗎 约吗 [yue1 ma5] /(neologism, attested by 2014) (slang) Are you interested? (originally an invitation for casual sex, later generalized as a playful or humorous invitation for any activity)/
+約炮 约炮 [yue1 pao4] /(slang) to hook up for sex; to arrange a casual sexual encounter (often with a new or non-committed partner)/
+紅海 红海 [hong2 hai3] /(neologism) highly competitive market (contrasted with 藍海|蓝海[lan2 hai3])/
+紅溫 红温 [hong2 wen1] /(slang) to lose one's cool; to get worked up (originally a gaming term)/
+紅箍兒 红箍儿 [hong2 gu1 r5] /(northern dialects) red armband/
+紅臂章 红臂章 [hong2 bi4 zhang1] /(southern dialects) red armband/
+紅苕 红苕 [hong2 shao2] /(dialect) sweet potato or yam/
+紅菜頭 红菜头 [hong2 cai4 tou2] /beet; beetroot/(dialect) carrot/
+納尼 纳尼 [na4 ni2] /(Internet slang) what? (loanword from Japanese 何 なに nani)/
+累成狗 累成狗 [lei4 cheng2 gou3] /(Internet slang) to be dog-tired/
+累覺不愛 累觉不爱 [lei4 jue2 bu4 ai4] /(lit.) so exhausted (by difficulties in a relationship) that one feels one could never fall in love again (Internet slang)/disenchanted with sth/
+細思極恐 细思极恐 [xi4 si1 ji2 kong3] /scary to think about (coll.) (coined c. 2013)/
+結梁子 结梁子 [jie2 liang2 zi5] /(slang) to start a feud/to have a beef/
+結棍 结棍 [jie2 gun4] /(Wu dialect) sturdy/robust/formidable/awesome/
+絕了 绝了 [jue2 le5] /(slang) awesome/dope/
+絕絕子 绝绝子 [jue2 jue2 zi3] /(slang) absolutely amazing/
+給臉 给脸 [gei3 lian3] /(coll.) to show respect; to give face (esp. in public to avoid embarrassment); (often sarcastic) to treat with basic courtesy (implying the recipient is undeserving)/
+給臉不要臉 给脸不要脸 [gei3 lian3 bu4 yao4 lian3] /(coll.) to respond with arrogance or disrespect when shown courtesy; to abuse sb's goodwill/
+經絡 经络 [jing1 luo4] /energy channels/meridian (TCM)/(dialect) trick/tactic/
+綠化 绿化 [lu:4 hua4] /to make green with plants/to reforest/(Internet slang) Islamization/
+綠教 绿教 [Lu:4 jiao4] /(derog.) (slang) Islam/
+綠泡泡 绿泡泡 [lu:4 pao4 pao5] /(Internet slang) WeChat; (metonym) WeChat account/
+綠綠 绿绿 [lu:4 lu:4] /(derog.) (slang) Muslim person/
+綠茶 绿茶 [lu:4 cha2] /green tea/(slang) (of a girl) seemingly innocent and charming but actually calculating and manipulative; a girl who has these qualities/
+綠茶婊 绿茶婊 [lu:4 cha2 biao3] /(slang) (derog.) a woman who appears innocent or gentle but is actually calculating and manipulative/
+維基 维基 [wei2 ji1] /wiki (Internet)/
+網下 网下 [wang3 xia4] /(of an activity) off-line (not done over the Internet)/
+練攤 练摊 [lian4 tan1] /(dialect) to run a street stall/
+縮卵 缩卵 [suo1 luan3] /(slang) to chicken out; to wimp out/
+繃不住 绷不住 [beng1 bu5 zhu4] /(Internet slang) can't contain oneself/unable to bear/can't help (doing sth)/
+置頂 置顶 [zhi4 ding3] /to sticky (an Internet forum thread etc)/
+羅宋 罗宋 [Luo2 song4] /(dialect) Russia/
+羅鍋 罗锅 [luo2 guo1] /to hunch one's back (coll.)/a hunchback/
+羊穿 羊穿 [yang2 chuan1] /(coll.) amniocentesis/
+羊肚手巾 羊肚手巾 [yang2 du4 shou3 jin1] /(dialect) towel (especially worn as a turban)/
+美人胚子 美人胚子 [mei3 ren2 pei1 zi5] /(coll.) girl who shows signs of becoming a beauty; budding beauty/
+美人腿 美人腿 [mei3 ren2 tui3] /(Tw) (coll.) edible stem of Manchurian wild rice 菰[gu1], aka water bamboo/
+美刀 美刀 [mei3 dao1] /(slang) US dollar/
+美眉 美眉 [mei3 mei2] /(coll.) pretty girl/
+群嘲 群嘲 [qun2 chao2] /(neologism, attested by 2011) to deride a group of people/(of a group of people) to deride (sb)/
+羨慕嫉妒恨 羡慕嫉妒恨 [xian4 mu4 ji2 du4 hen4] /to be green with envy (neologism c. 2009)/
+翹臀 翘臀 [qiao4 tun2] /(coll.) perky butt/
+翹辮子 翘辫子 [qiao4 bian4 zi5] /(coll.) to die/to kick the bucket/
+老丈人 老丈人 [lao3 zhang4 ren5] /(coll.) father-in-law (wife's father)/
+老丈母 老丈母 [lao3 zhang4 mu3] /(coll.) wife's mother; mother-in-law/
+老中 老中 [lao3 zhong1] /(slang) Chinese people; we Chinese (often self-referential, ironic); China; the Chinese side/
+老么 老幺 [lao3 yao1] /(coll.) youngest child/
+老公 老公 [lao3 gong1] /(coll.) husband/
+老公 老公 [lao3 gong5] /(coll.) eunuch/see also 老公[lao3 gong1]/
+老半天 老半天 [lao3 ban4 tian1] /(coll.) a long time/
+老司機 老司机 [lao3 si1 ji1] /(coll.) an old hand at sth/
+老墨 老墨 [Lao3 Mo4] /(coll.) a Mexican/
+老外 老外 [lao3 wai4] /(coll.) foreigner (esp. non Asian person)/layman/amateur/
+老太公 老太公 [lao3 tai4 gong1] /aged gentleman (dialect, respectful term)/
+老奶奶 老奶奶 [lao3 nai3 nai5] /(coll.) father's father's mother/paternal great-grandmother/respectful form of address for an old woman/
+老妹 老妹 [lao3 mei4] /(dialect) younger sister; familiar form of address for a younger woman/
+老娘 老娘 [lao3 niang2] /my old mother/I, this old woman/my old lady (colloquial)/maternal grandmother/midwife/
+老婆 老婆 [lao3 po2] /(coll.) wife/
+老嫂子 老嫂子 [lao3 sao3 zi5] /(slang) effeminate man/
+老家伙 老家伙 [lao3 jia1 huo5] /(coll.) old fellow/old codger/
+老家賊 老家贼 [lao3 jia1 zei2] /(dialect) sparrow/
+老實巴交 老实巴交 [lao3 shi5 ba1 jiao1] /(coll.) docile/well-behaved/biddable/
+老小老小 老小老小 [lao3 xiao3 lao3 xiao3] /(coll.) as one ages, one becomes more and more like a child/
+老己 老己 [lao3 ji3] /(neologism, attested by 2025) oneself, treated as an old friend/
+老帽兒 老帽儿 [lao3 mao4 r5] /(dialect) country bumpkin/a hick/
+老底 老底 [lao3 di3] /(coll.) one's past history (esp. embarrassing or private details)/
+老廣 老广 [lao3 guang3] /(coll.) person from Guangdong province (esp. Cantonese)/
+老戲骨 老戏骨 [lao3 xi4 gu3] /(dialect) veteran actor/old trouper/
+老朋友 老朋友 [lao3 peng2 you5] /old friend/(slang) period/menstruation/
+老母 老母 [lao3 mu3] /(coll.) mother; mom/(literary) elderly mother/
+老油子 老油子 [lao3 you2 zi5] /(coll.) wily old fox/crafty fellow/
+老爹 老爹 [lao3 die1] /(dialect) father/old man/sir/
+老爺 老爷 [lao3 ye5] /(respectful) lord/master/(coll.) maternal grandfather/
+老玉米 老玉米 [lao3 yu4 mi5] /(dialect) corn/
+老美 老美 [lao3 Mei3] /(coll.) an American; person from the United States/
+老臘肉 老腊肉 [lao3 la4 rou4] /(coll.) experienced and usually well-positioned middle-aged man/
+老表 老表 [lao3 biao3] /(coll.) male cousin through a female relative/(coll.) friendly form of address between men of similar age/(coll.) nickname for a person from Jiangxi/
+老賴 老赖 [lao3 lai4] /(coll.) debt dodger/
+老鐵 老铁 [lao3 tie3] /(slang) very close friend; bro/
+老頭子 老头子 [lao3 tou2 zi5] /(coll.) old man/(said of an aging husband) my old man/
+老骨頭 老骨头 [lao3 gu3 tou5] /weary old body (colloquial term, used jocularly or irreverently)/
+老鳥 老鸟 [lao3 niao3] /(coll.) old hand; veteran/
+老鴰 老鸹 [lao3 gua5] /(dialect) crow; raven/
+老鷹 老鹰 [lao3 ying1] /(coll.) eagle; hawk; any similar bird of prey/
+老黑 老黑 [lao3 hei1] /(coll.) black person/
+考編 考编 [kao3 bian1] /(coll.) to sit civil service or public institution recruitment exams (cf. 編制|编制[bian1 zhi4])/
+耍廢 耍废 [shua3 fei4] /(Tw) (slang) to pass time idly/to chill/to hang out/
+耍潑 耍泼 [shua3 po1] /(dialect) to make an unreasonable scene/
+耍貧嘴 耍贫嘴 [shua3 pin2 zui3] /(coll.) to wag one's tongue/to indulge in idle gossip and silly jokes/to chatter endlessly/to speak glibly/
+耍錢 耍钱 [shua3 qian2] /(coll.) to gamble/
+耐心煩 耐心烦 [nai4 xin1 fan2] /(coll.) patience/
+耗子 耗子 [hao4 zi5] /(dialect) mouse; rat/
+耙耳朵 耙耳朵 [pa1 er3 duo5] /(dialect) henpecked/to be under one's wife's thumb/
+耳刮子 耳刮子 [er3 gua1 zi5] /(coll.) a slap on the side of the head/
+耳挖勺 耳挖勺 [er3 wa1 shao2] /(dialect) earpick/curette/
+耽美 耽美 [dan1 mei3] /(slang) boys' love, aka BL (genre of homoerotic online literature)/
+聖母婊 圣母婊 [sheng4 mu3 biao3] /(Internet slang) sanctimonious bitch/
+肘子 肘子 [zhou3 zi5] /pork shoulder/(coll.) elbow/
+肩頭 肩头 [jian1 tou2] /on one's shoulders/(dialect) shoulder/
+胃袋 胃袋 [wei4 dai4] /(coll.) stomach; belly/
+背影殺手 背影杀手 [bei4 ying3 sha1 shou3] /(slang) (usu. of a woman) sb who looks stunning from behind/sb who has a great figure but not necessarily an attractive face/abbr. to 背殺|背杀[bei4 sha1]/
+背殺 背杀 [bei4 sha1] /(slang) (usu. of a woman) sb who looks stunning from behind/sb who has a great figure but not necessarily an attractive face/abbr. for 背影殺手|背影杀手[bei4 ying3 sha1 shou3]/
+背篼 背篼 [bei4 dou1] /(Sichuan dialect) basket carried on the back (usu. woven from bamboo)/
+背鍋 背锅 [bei1 guo1] /(slang) (neologism derived from 背黑鍋|背黑锅[bei1 hei1 guo1]) to carry the can; to be a scapegoat/
+胖墩兒 胖墩儿 [pang4 dun1 r5] /(coll.) short, fat person (esp. a kid)/a roly-poly/
+胖揍 胖揍 [pang4 zou4] /(coll.) to give sb a good beating/
+胖次 胖次 [pang4 ci4] /(Internet slang) panties (loanword)/
+胯下物 胯下物 [kua4 xia4 wu4] /(slang) male member/package/
+胰子 胰子 [yi2 zi5] /pancreas (of a domestic animal)/(dialect) soap/
+胳肢 胳肢 [ge2 zhi5] /(dialect) to tickle/
+脊梁 脊梁 [ji3 liang5] /(coll.) back (of a human or other vertebrate)/
+脫光 脱光 [tuo1 guang1] /to strip naked/to strip nude/(coll.) to find oneself a partner/
+脫單 脱单 [tuo1 dan1] /(neologism) to find oneself a partner/
+脫跨 脱跨 [tuo1 kua4] /(neologism) to detransition; to cease identifying as transgender/
+腐國 腐国 [Fu3 guo2] /UK (slang term reflecting a perception of UK as decadent for its attitudes toward homosexuality)/
+腦抽 脑抽 [nao3 chou1] /(slang) to have a brain fart; to act stupidly/
+腦殘粉 脑残粉 [nao3 can2 fen3] /(slang) fanboy/fangirl/
+腦殼 脑壳 [nao3 ke2] /(coll.) head; skull/(fig.) brains (mental capacity)/
+腦補 脑补 [nao3 bu3] /(Internet slang) to imagine/to visualize/
+腦門子 脑门子 [nao3 men2 zi5] /forehead (dialect)/
+腳丫 脚丫 [jiao3 ya1] /(coll.) foot/
+腳丫子 脚丫子 [jiao3 ya1 zi5] /(coll.) foot/
+腳底板 脚底板 [jiao3 di3 ban3] /(coll.) sole of the foot/
+腳桿 脚杆 [jiao3 gan3] /(dialect) leg/
+腳脖子 脚脖子 [jiao3 bo2 zi5] /(coll.) ankle/
+腹黑 腹黑 [fu4 hei1] /(slang) outwardly kind but inwardly evil/two-faced/
+腿了 腿了 [tui3 le5] /(Tw) (Internet slang) too late, someone posted that already (supposedly from "lag" misspelled as "leg")/
+腿玩年 腿玩年 [tui3 wan2 nian2] /(slang) stunning legs/sexy legs/
+膈應 膈应 [ge4 ying5] /(coll.) objectionable/to feel revolted/to gross (sb) out/
+膙子 膙子 [jiang3 zi5] /(dialect) callus/
+膝蓋 膝盖 [xi1 gai4] /knee/(Internet slang) to kneel down (in admiration)/
+膽肥 胆肥 [dan3 fei2] /(coll.) bold/brazen/to have a lot of nerve/
+臊子 臊子 [sao4 zi5] /(dialect) minced or diced meat (as part of a dish)/
+臊眉耷眼 臊眉耷眼 [sao4 mei2 da1 yan3] /(dialect) ashamed/
+臥槽 卧槽 [wo4 cao2] /(Internet slang) (substitute for 我肏[wo3 cao4]) fuck/WTF/
+自乾五 自干五 [zi4 gan1 wu3] /(neologism) person who posts online in support of the Chinese government, but unlike a wumao 五毛[wu3 mao2], is not paid for doing so (abbr. for 自帶乾糧的五毛|自带干粮的五毛[zi4 dai4 gan1 liang2 de5 wu3 mao2])/
+自來熟 自来熟 [zi4 lai2 shu2] /(coll.) naturally outgoing with strangers; quick to act like an old acquaintance; sb who has this trait/
+自個兒 自个儿 [zi4 ge3 r5] /(dialect) oneself; by oneself/
+自嗨 自嗨 [zi4 hai1] /(slang) to have fun by oneself/to amuse oneself/
+自打 自打 [zi4 da3] /(coll.) since/
+自摸 自摸 [zi4 mo1] /(mahjong) to self-draw the winning tile/(slang) to play with oneself; to masturbate/
+自黑 自黑 [zi4 hei1] /(slang) to self-deprecate; to make fun of oneself/
+臭屁 臭屁 [chou4 pi4] /(coll.) self-important/puffed up/
+致鬱 致郁 [zhi4 yu4] /(slang) depressing/
+舅哥 舅哥 [jiu4 ge1] /(coll.) wife's older brother/
+舅媽 舅妈 [jiu4 ma1] /(coll.) aunt/maternal uncle's wife/
+舅子 舅子 [jiu4 zi5] /(coll.) wife's brother/
+興許 兴许 [xing1 xu3] /(coll.) perhaps/
+舉架 举架 [ju3 jia4] /(dialect) height of a house/
+舉鐵 举铁 [ju3 tie3] /(coll.) to pump iron/
+舔狗 舔狗 [tian3 gou3] /(neologism, attested by 2018) (slang) simp; person who resorts to cringeworthy fawning behavior in pursuing sb who does not requite their affections/
+色胚 色胚 [se4 pei1] /(slang) pervert/lecher/
+艾瑞巴蒂 艾瑞巴蒂 [ai4 rui4 ba1 di4] /(Internet slang) (loanword) everybody/
+花心大蘿蔔 花心大萝卜 [hua1 xin1 da4 luo2 bo5] /(coll.) womanizer/skirt-chaser/
+花花腸子 花花肠子 [hua1 hua1 chang2 zi5] /(slang) a cunning plot/
+花蚊子 花蚊子 [hua1 wen2 zi5] /(coll.) Asian tiger mosquito (Aedes albopictus)/
+花骨朵 花骨朵 [hua1 gu1 duo5] /(coll.) flower bud/
+苞米 苞米 [bao1 mi3] /(dialect) corn; maize/
+苦主 苦主 [ku3 zhu3] /(old) the family of the victim in a murder case/(Tw, HK) victim (of a crime, misfortune etc)/(Tw) (coll.) person who bears the burden while others benefit/
+苦窯 苦窑 [ku3 yao2] /(slang) prison/
+苦逼 苦逼 [ku3 bi1] /(coll.) miserable; wretched/
+茅坑裡點燈 茅坑里点灯 [mao2 keng1 li3 dian3 deng1] /(slang) (fig.) to court death (derived from 找死[zhao3 si3] via its near homophone 照屎[zhao4 shi3])/
+茅廁 茅厕 [mao2 si5] /(dialect) latrine/
+茶包 茶包 [cha2 bao1] /tea bag/(slang) trouble (loanword)/
+草果 草果 [cao3 guo3] /black cardamom/(dialect) strawberry/
+草泥馬 草泥马 [cao3 ni2 ma3] /see 肏你媽|肏你妈[cao4 ni3 ma1] (near homophone of 肏你媽|肏你妈[cao4 ni3 ma1] used to avoid Internet censorship)/
+草雞 草鸡 [cao3 ji1] /free-range chicken/(dialect) hen/cowardly/
+莊子 庄子 [zhuang1 zi5] /(coll.) village; hamlet/CL:座[zuo4]/
+莊稼人 庄稼人 [zhuang1 jia5 ren2] /(coll.) farmer/
+菊花 菊花 [ju2 hua1] /chrysanthemum/(TCM) chrysanthemum flower/(slang) anus/
+菌子 菌子 [jun4 zi5] /(dialect) mushroom/
+菜雞 菜鸡 [cai4 ji1] /(slang) total noob/
+菜館 菜馆 [cai4 guan3] /(dialect) restaurant/
+菜鳥 菜鸟 [cai4 niao3] /(coll.) sb new to a particular subject/rookie/beginner/newbie/
+菠菜 菠菜 [bo1 cai4] /spinach (CL:棵[ke1])/(slang) gambling; gambler (alternative term for 博彩[bo2 cai3])/
+菲林 菲林 [fei1 lin2] /(dialect) film (loanword)/roll of film/
+萊豬 莱猪 [lai2 zhu1] /(Tw) (neologism) pork containing ractopamine 萊克多巴胺|莱克多巴胺[lai2 ke4 duo1 ba1 an4]/
+萌新 萌新 [meng2 xin1] /(neologism) (slang) newbie/
+萌萌噠 萌萌哒 [meng2 meng2 da1] /(Internet slang) adorable/cute/
+萬金油 万金油 [wan4 jin1 you2] /Tiger Balm, an ointment applied topically to treat all manner of aches and pains/(fig.) (coll.) jack of all trades/
+落價 落价 [lao4 jia4] /(coll.) to fall or drop in price/to go down in price/
+落忍 落忍 [lao4 ren3] /(coll.) (usu. in the negative) to be able to bear (doing sth); to feel it is acceptable/(Tw) to feel one cannot bear it; to feel bad about (doing sth)/
+落草 落草 [luo4 cao3] /to take to the woods to become an outlaw/(dialect) to be born (Etymology: in former times, a bed of straw or grass was used as padding during childbirth)/
+落雨 落雨 [luo4 yu3] /(dialect) to rain/
+落雪 落雪 [luo4 xue3] /(literary or dialectal) to snow/(literary) fallen snow; settled snow/
+葉子 叶子 [ye4 zi5] /leaf (CL:片[pian4])/(slang) marijuana/
+蒙古大夫 蒙古大夫 [Meng3 gu3 dai4 fu5] /(coll.) quack (doctor)/charlatan/
+蒙圈 蒙圈 [meng1 quan1] /(Internet slang) dazed/confused/
+蒜糜 蒜糜 [suan4 mi2] /(dialect) garlic paste/
+蒼蠅老虎 苍蝇老虎 [cang1 ying5 lao3 hu3] /(coll.) jumping spider (which pounces on houseflies, hence the Chinese name)/
+蓋帽兒 盖帽儿 [gai4 mao4 r5] /to block a shot (basketball)/(dialect) excellent/fantastic/
+蓋樓 盖楼 [gai4 lou2] /to construct a building/(Internet slang) to reply to a thread/
+蓮花白 莲花白 [lian2 hua1 bai2] /(dialect) cabbage/
+蔫頭耷腦 蔫头耷脑 [nian1 tou2 da1 nao3] /(idiom) (coll.) (of a flower etc) droopy; withered; (of a person) listless; dispirited/
+蕾絲邊 蕾丝边 [lei3 si1 bian1] /(slang) (loanword) lesbian/
+藍海 蓝海 [lan2 hai3] /(neologism) an unexplored, as yet uncontested market (contrasted with 紅海|红海[hong2 hai3])/
+藍金黃 蓝金黄 [lan2 jin1 huang2] /blue, gold and yellow (BGY), the three methods of manipulation: information control (via media and the Internet), money (bribery etc) and sexual temptation (honey trap etc)/
+藤菜 藤菜 [teng2 cai4] /(dialect) see 空心菜[kong1 xin1 cai4]/
+藤藤菜 藤藤菜 [teng2 teng5 cai4] /(dialect) see 空心菜[kong1 xin1 cai4]/
+藿麻 藿麻 [huo4 ma2] /(Sichuan dialect) nettle/
+虎不拉 虎不拉 [hu4 bu5 la3] /(dialect) shrike/Taiwan pr. [hu3 bu5 la1]/
+虎牙 虎牙 [hu3 ya2] /(coll.) eye tooth (maxillary canine tooth)/
+虛頭巴腦 虚头巴脑 [xu1 tou2 ba1 nao3] /(coll.) all show and no substance/
+虼蚤 虼蚤 [ge4 zao5] /(coll.) flea/
+蛇精病 蛇精病 [she2 jing1 bing4] /(slang) (pun on 神經病|神经病[shen2 jing1 bing4]) crazy person/nutjob/
+蛋撻 蛋挞 [dan4 ta4] /egg tart (colloquial pr. [dan4ta3])/
+蛋清 蛋清 [dan4 qing1] /(coll.) egg white/
+蛋疼 蛋疼 [dan4 teng2] /(slang) ball-breaking/pain in the ass/
+蛋蛋 蛋蛋 [dan4 dan4] /(coll.) balls (testicles)/
+蛋逼 蛋逼 [dan4 bi1] /(dialect) to talk nonsense/to chat idly/
+蛐蛐 蛐蛐 [qu1 qu5] /(dialect) cricket (insect)/(slang) to whisper gossip behind sb's back/
+蛐蟮 蛐蟮 [qu1 shan5] /(coll.) earthworm/
+蛛蛛 蛛蛛 [zhu1 zhu5] /(coll.) spider/
+蜂子 蜂子 [feng1 zi5] /(coll.) bee; wasp/
+蜒蚰 蜒蚰 [yan2 you2] /(dialect) a slug/
+蜘蛛人 蜘蛛人 [zhi1 zhu1 ren2] /(coll.) rope access technician; industrial climber; (esp.) high-rise window washer/
+蜜大腿 蜜大腿 [mi4 da4 tui3] /(coll.) curvaceous thighs (loanword from Korean)/
+蜜桃臀 蜜桃臀 [mi4 tao2 tun2] /(coll.) peach butt; round, firm buttocks/
+蜜穴 蜜穴 [mi4 xue2] /(coll.) vagina/pussy/
+蝦男 虾男 [xia1 nan2] /(slang) a guy who is like a prawn: yummy body, but not so appealing above the neck/
+蝦米 虾米 [xia1 mi3] /small shrimp; dried, shelled shrimps/(Tw) (coll.) what (from Taiwanese 啥物, Tai-lo pr. [siánn-mih], equivalent to Mandarin 什麼|什么[shen2 me5])/
+融梗 融梗 [rong2 geng3] /(neologism, attested by 2018) to incorporate ideas or material from sb else's creative work in one's own work/
+螞蚱 蚂蚱 [ma4 zha5] /(dialect) locust/grasshopper/
+螞蟻腰 蚂蚁腰 [ma3 yi3 yao1] /(coll.) tiny waist/
+蟬猴 蝉猴 [chan2 hou2] /(coll.) newly-emerged cicada nymph/
+血旺 血旺 [xue4 wang4] /(dialect) blood tofu (coagulated animal blood)/
+血皮菜 血皮菜 [xue4 pi2 cai4] /(Sichuan dialect) Okinawan spinach (Gynura bicolor)/
+行人道 行人道 [xing2 ren2 dao4] /(dialect) sidewalk/
+衛生衣 卫生衣 [wei4 sheng1 yi1] /(dialect) thermal undershirt; long underwear top/
+衝塔 冲塔 [chong1 ta3] /(gaming, esp. MOBA) to recklessly enter the attack range of an enemy tower – a stationary defense structure that automatically fires on intruders – typically resulting in death/(neologism) (slang) to provoke the authorities (e.g. online) at great personal risk/
+衣裳 衣裳 [yi1 shang5] /(coll.) clothes/
+表叔 表叔 [biao3 shu1] /son of grandfather's sister/son of grandmother's brother or sister/father's younger male cousin/(Hong Kong slang) mainlander/
+袋鼠國 袋鼠国 [Dai4 shu3 guo2] /(slang) Australia/
+被旅遊 被旅游 [bei4 lu:3 you2] /(coll.) (of a dissident) to be taken on a tour, ostensibly a vacation, but actually a trip organized by the authorities where one's every move is watched/
+被牆 被墙 [bei4 qiang2] /(slang) (of a website) to get blocked/
+裝萌 装萌 [zhuang1 meng2] /(slang) to act cute/
+裸分 裸分 [luo3 fen1] /(coll.) raw score (before adjustments such as bonus points for ethnic minority status etc, esp. in college entrance exams)/
+裸退 裸退 [luo3 tui4] /(neologism c. 2007) (of an official) to retire completely from all leadership positions/
+褪套兒 褪套儿 [tun4 tao4 r5] /(coll.) to break loose/to shake off responsibility/
+褯子 褯子 [jie4 zi5] /(dialect) diaper/
+褲頭 裤头 [ku4 tou2] /(dialect) underpants/(swimming) trunks/
+西大 西大 [Xi1 da4] /(Internet slang) the United States (contrasted with China 東大|东大[Dong1 da4])/(informal) abbreviation for certain university names, esp. 西南大學|西南大学[Xi1 nan2 Da4 xue2] and 西北大學|西北大学[Xi1 bei3 Da4 xue2]/
+要是 要是 [yao4 shi5] /(coll.) if/
+要樣兒 要样儿 [yao4 yang4 r5] /(dialect) to care about appearances; to put on a good front/
+要臉 要脸 [yao4 lian3] /(coll.) to have a sense of shame/
+要西了 要西了 [yao4 xi1 le5] /(coll.) unbearable (Shanghainese)/
+見天 见天 [jian4 tian1] /(coll.) every day/
+見紅 见红 [jian4 hong2] /(coll.) to bleed (esp. vaginal bleeding)/to suffer a financial loss/
+見閻王 见阎王 [jian4 Yan2 wang2] /(coll.) to meet one's maker; to kick the bucket; to die/
+視姦 视奸 [shi4 jian1] /(neologism) to obsessively monitor sb's social media posts (orthographic borrowing from Japanese 視姦 "shikan", ogling; leering)/
+親熱 亲热 [qin1 re4] /affectionate; intimate; warmhearted/to show affection for/(coll.) to get intimate with sb/
+解大手 解大手 [jie3 da4 shou3] /(coll.) to defecate/
+解小手 解小手 [jie3 xiao3 shou3] /(coll.) to urinate/
+討小 讨小 [tao3 xiao3] /(coll.) to take a concubine/
+討拍 讨拍 [tao3 pai1] /(Tw) (coll.) to seek sympathy/
+訓讀 训读 [xun4 du2] /a reading of a written Chinese word derived from a synonym (typically, a vernacular synonym) (e.g. in Mandarin, 投子[tou2 zi5] may be pronounced as its synonym 色子[shai3 zi5], and in Wu dialects, 二 is pronounced as its synonym 兩|两 "liahn")/to pronounce a word using such a reading/(Japanese linguistics) kun-reading, a pronunciation of a kanji derived from a native Japanese word that matches its meaning rather than from the pronunciation of the character in a Sinitic language at the time it was imported from China (Note: A kun-reading of a character is distinguished from its on-reading(s) 音讀|音读[yin1 du2]. For example, 山 has a kun-reading "yama" and an on-reading "san".)/
+記掛 记挂 [ji4 gua4] /(dialect) to keep thinking about (sth); to have (sth) on one's mind/
+試著 试着 [shi4 zhe5] /(coll.) to try to/
+話事人 话事人 [hua4 shi4 ren2] /(coll.) (from Cantonese) the boss; the big cheese; the top dog/
+誇張 夸张 [kua1 zhang1] /to exaggerate/overstated; exaggerated/hyperbole/(coll.) excessive; ridiculous; outrageous/
+認慫 认怂 [ren4 song2] /(coll.) to back down; to concede defeat; to lose one's nerve/
+語音 语音 [yu3 yin1] /speech sounds/pronunciation/colloquial (rather than literary) pronunciation of a Chinese character/phonetic/audio/voice/(Internet) to voice chat/voice message/
+調理 调理 [tiao2 li3] /to nurse one's health/to recuperate/to take care of/to look after/to discipline/to educate/to train/to prepare food/(dialect) to make fun of/(medicine) to opsonize/
+謎之 谜之 [mi2 zhi1] /(neologism) (slang) (attributive) mysterious; enigmatic (calque from Japanese 謎の "nazo no")/
+讀音 读音 [du2 yin1] /pronunciation/literary (rather than colloquial) pronunciation of a Chinese character/
+變態 变态 [bian4 tai4] /to metamorphose (biology)/abnormal/perverted/hentai/(slang) pervert/
+變態辣 变态辣 [bian4 tai4 la4] /(coll.) insanely spicy (the highest level of spiciness on a menu)/
+變蛋 变蛋 [bian4 dan4] /(dialect) preserved egg; century egg/
+豁楞 豁楞 [huo1 leng5] /(dialect) (variant of 劐弄[huo1 leng5]) to mix/to stir/to make trouble/
+豆乳 豆乳 [dou4 ru3] /soymilk/(dialect) fermented bean curd/
+豆橛子 豆橛子 [dou4 jue2 zi5] /(Shandong dialect) cowpea (Vigna unguiculata)/
+豆油 豆油 [dou4 you2] /soy bean oil/(dialect) soy sauce/
+豆皀 豆皀 [dou4 bi1] /pea or bean (dialect)/
+豬玀 猪猡 [zhu1 luo2] /(dialect) pig; swine/
+豬癮 猪瘾 [zhu1 yin3] /(slang) craving to eat; urge to pig out/
+豬精 猪精 [zhu1 jing1] /pork bouillon powder/(neologism) (slang) a person who, like a pig, is fat and ugly and given to histrionics/
+豬隊友 猪队友 [zhu1 dui4 you3] /(slang) incompetent teammate, coworker etc/
+豬頭 猪头 [zhu1 tou2] /pig head/(coll.) fool/jerk/
+貓奴 猫奴 [mao1 nu2] /cat owner (neologism c. 2013, jocular)/
+貓本 猫本 [Mao1 ben3] /Melbourne (slang alternative for 墨爾本|墨尔本[Mo4 er3 ben3])/
+貓膩 猫腻 [mao1 ni4] /(coll.) something fishy; shenanigans/
+貓舌頭 猫舌头 [mao1 she2 tou2] /(fig.) (coll.) sensitivity to hot food or drink; person who has such a sensitivity/
+貓飯 猫饭 [mao1 fan4] /(coll.) homemade cat food/rice with bonito flakes (simple meal for human consumption) (calque of Japanese "neko manma")/
+貝寶 贝宝 [Bei4 bao3] /PayPal (Internet payment and money transfer company)/
+貧限想 贫限想 [pin2 xian4 xiang3] /(Internet slang) (wryly jocular) poverty limits my power of imagination/(fig.) flabbergasted by the antics of the wealthy/the rich live in another world/(abbr. for 貧窮限制了我的想象力|贫穷限制了我的想象力[pin2 qiong2 xian4 zhi4 le5 wo3 de5 xiang3 xiang4 li4])/
+貴圈真亂 贵圈真乱 [gui4 quan1 zhen1 luan4] /(slang, jocular, neologism c. 2006, used esp. in relation to public figures) the things you and your friends get up to (misbehavior, scandals etc) leave me shaking my head/
+買了佛冷 买了佛冷 [mai3 le5 fo2 leng3] /(Internet slang) eggcorn for the song lyrics "I love Poland" that became a catchphrase in 2018/
+資料 资料 [zi1 liao4] /material/resources/data/information/profile (Internet)/CL:份[fen4],個|个[ge4]/
+賊死 贼死 [zei2 si3] /completely/utterly (dialect)/
+賢者時間 贤者时间 [xian2 zhe3 shi2 jian1] /(slang) post-nut clarity moment/
+賢者模式 贤者模式 [xian2 zhe3 mo2 shi4] /(slang) state of post-nut clarity; post-orgasmic state of calm detachment/
+賣慘 卖惨 [mai4 can3] /(coll.) to play up one's misfortune to gain sympathy; to fish for pity/
+賣肉 卖肉 [mai4 rou4] /to sell meat/(slang) to sell sex/
+賣萌 卖萌 [mai4 meng2] /(slang) to act cute/
+賦能 赋能 [fu4 neng2] /(neologism c. 2019) to empower/to enable/to energize/
+賭爛 赌烂 [du3 lan4] /(Tw) (slang) to be ticked off by (sb or sth); to be pissed at (sb or sth); to be in a foul mood; down in the dumps (from Taiwanese 揬𡳞, Tai-lo pr. [tu̍h-lān])/
+賭狗 赌狗 [du3 gou3] /(slang) degenerate gambler; compulsive gambler/
+賴校族 赖校族 [lai4 xiao4 zu2] /campus dwellers (slang)/graduates who cannot break away from campus life/
+賴皮 赖皮 [lai4 pi2] /shameless/(slang) rascal/
+賺頭 赚头 [zhuan4 tou5] /profit (colloquial)/
+赤佬 赤佬 [chi4 lao3] /(dialect) scoundrel/rascal/
+走人 走人 [zou3 ren2] /(coll.) to leave; to beat it/
+走你 走你 [zou3 ni3] /(neologism c. 2012) (interjection of encouragement) Let’s do this!/Come on, you can do this!/
+走動 走动 [zou3 dong4] /to walk around; to move about/to visit one another; to socialize/(dialect) to go to the toilet/
+走後門 走后门 [zou3 hou4 men2] /(lit.) to enter through the back door/(fig.) to pull strings; to use connections/(fig.) (slang) to have anal sex/
+走心 走心 [zou3 xin1] /to take care/to be mindful/(Internet slang) to be moved by sth/poignant/to have deep feelings for sb/to lose one's heart to sb/
+走線 走线 [zou3 xian4] /(neologism, attested by 2021) (slang) to illegally migrate (esp. from China to the U.S. via Latin America through high-risk routes)/a route of such illegal migration/
+走腎 走肾 [zou3 shen4] /(med) retractile testicle/infatuation inducing/pee inducing (of alcohol)/(neologism) to be sexually attracted/to have the hots for sb/
+起號 起号 [qi3 hao4] /(slang) to build up a social media account (from scratch)/
+起開 起开 [qi3 kai5] /(dialect) to step aside; Get out of the way!/
+超雄 超雄 [chao1 xiong2] /(slang) explosively aggressive; violently volatile (esp. of a male)/
+趕明兒 赶明儿 [gan3 ming2 r5] /(coll.) some day/one of these days/
+趕海 赶海 [gan3 hai3] /(dialect) to gather seafood at the beach while the tide is out; to comb the beach for shellfish, crabs or other marine life/
+趙家人 赵家人 [Zhao4 jia1 ren2] /(neologism 2015) the Zhao family (derogatory term for those who hold power in the PRC)/
+足控 足控 [zu2 kong4] /(slang) foot fetishist/
+趴窩 趴窝 [pa1 wo1] /(coll.) (of a hen) to sit in the nest to lay or hatch eggs/(fig.) (of a person) to be laid up from illness or exhaustion/(fig.) (of a machine, vehicle etc) to break down; to be out of commission/
+跌份 跌份 [die1 fen4] /(coll.) to lose face/
+跑咖 跑咖 [pao3 ka1] /(Tw) (neologism) to go to a coffee shop/
+跑肚 跑肚 [pao3 du4] /(coll.) to have diarrhea/
+跑腿子 跑腿子 [pao3 tui3 zi5] /(dialect) to live as a bachelor/bachelor/
+跑調 跑调 [pao3 diao4] /to be off-key or out of tune (while singing) (colloquial)/
+跑路 跑路 [pao3 lu4] /to run; to go somewhere on foot; (coll.) to abscond; to run off (esp. to evade debts or legal trouble)/
+跑馬 跑马 [pao3 ma3] /horse race/to ride a horse at a fast pace/(dialect) wet dream/
+跟手 跟手 [gen1 shou3] /(coll.) while doing it; on the way through/(coll.) immediately; at once/(of a touch screen) responsive to the user's finger movements/
+路轉粉 路转粉 [lu4 zhuan3 fen3] /(Internet slang) to go from being indifferent to being a big fan/
+踹共 踹共 [chuai4 gong4] /(Tw) (neologism, attested by 2010) to speak one's mind directly (face to face with the person with whom one has an issue) (from Taiwanese 出來講, Tai-lo pr. [tshut-lâi kóng], with "tshut-lâi" pronounced in contracted form as "tshòai")/
+蹦躂 蹦跶 [beng4 da5] /(coll.) to jump about; to be active; to be lively/(coll.) (fig.) to struggle (before succumbing); to be alive and kicking (esp. toward the end of one's life)/
+蹬腿 蹬腿 [deng1 tui3] /to kick one's legs/leg press (exercise)/(coll.) to kick the bucket/
+蹭熱度 蹭热度 [ceng4 re4 du4] /(coll.) (often derog.) to piggyback on (sb's) popularity/to exploit (sb's) popularity to attract attention to oneself/
+蹭網 蹭网 [ceng4 wang3] /(coll.) to use sb else's Internet connection (with or without permission)/
+蹭課 蹭课 [ceng4 ke4] /(coll.) to sit in on a class/
+蹭車 蹭车 [ceng4 che1] /(coll.) to ride in sb else's car to save money/to ride on a train or bus without buying a ticket (fare-dodging)/
+蹭飯 蹭饭 [ceng4 fan4] /(coll.) to mooch a meal/
+蹲苦窯 蹲苦窑 [dun1 ku3 yao2] /(slang) to be behind bars/
+蹲點 蹲点 [dun1 dian3] /(of a cadre etc) to work for a period of time with a grassroots unit to gain firsthand experience/(dialect) taking a crap/
+躥稀 蹿稀 [cuan1 xi1] /(coll.) to have diarrhea/
+躥騰 蹿腾 [cuan1 teng2] /to jump about wildly (coll.)/
+身子骨 身子骨 [shen1 zi5 gu3] /(coll.) physique; physical constitution; health/
+躺平 躺平 [tang3 ping2] /to lie stretched out/(neologism, attested by 2021) to opt out of the rat race/
+躺槍 躺枪 [tang3 qiang1] /(neologism, attested by 2014) (coll.) to be criticized, blamed or implicated in sth despite having done nothing to deserve it; to be unfairly targeted; to catch a stray (abbr. for 躺著也中槍|躺着也中枪[tang3 zhe5 ye3 zhong4 qiang1])/
+躺著也中槍 躺着也中枪 [tang3 zhe5 ye3 zhong4 qiang1] /(Internet slang) (lit.) to get shot even though lying down; (fig.) to be unfairly targeted/
+軃神 軃神 [duo3 shen2] /frivolous youth (dialect)/
+軍師 军师 [jun1 shi1] /(old) military counselor/(coll.) trusted adviser/
+軟和 软和 [ruan3 huo5] /(coll.) pleasantly soft/comfy/(of words) gentle/soothing/
+軟妹幣 软妹币 [ruan3 mei4 bi4] /(Internet slang) Renminbi (pun on 人民幣|人民币[ren2 min2 bi4])/
+軟柿子 软柿子 [ruan3 shi4 zi5] /(coll.) pushover/soft touch/
+軟足類 软足类 [ruan3 zu2 lei4] /(coll.) inkfish; octopus, squid and cuttlefish/
+軲轆 轱辘 [gu1 lu5] /(coll.) wheel/to turn; to roll/
+較比 较比 [jiao4 bi3] /comparatively (colloquial)/fairly/quite/rather/relatively/
+輪回 轮回 [lun2 hui2] /variant of 輪迴|轮回[lun2 hui2]/(neologism) (slang) to respond to a message after a very long delay (pun on 輪迴|轮回[lun2 hui2], the cycle of rebirth) (opposite of 秒回[miao3 hui2])/
+轉口 转口 [zhuan3 kou3] /entrepot/transit (of goods)/(coll.) to deny/to go back on one's word/
+轉圈 转圈 [zhuan4 quan1] /to rotate/to twirl/to run around/to encircle/rotation/(coll.) to speak indirectly/to beat about the bush/
+轉文 转文 [zhuan3 wen2] /(Internet) to repost (Tw)/
+轉腰子 转腰子 [zhuan4 yao1 zi5] /(coll.) to pace around nervously/to speak indirectly/to beat about the bush/
+辣媽 辣妈 [la4 ma1] /(coll.) hot mom/
+辣條 辣条 [la4 tiao2] /latiao, spicy gluten strip (Chinese snack)/(slang) snake/
+辣眼睛 辣眼睛 [la4 yan3 jing5] /(neologism c. 2016) (slang) unpleasant to look at/hard on the eyes/
+辣雞 辣鸡 [la4 ji1] /spicy chicken/(Internet slang) garbage (pun on 垃圾[la1 ji1])/
+辰光 辰光 [chen2 guang1] /sunlight/(Wu dialect) time of the day/moment/
+農友 农友 [nong2 you3] /our peasant friends (political term used in the early years of the Old Democratic Revolution, 1840-1919)/(Tw) (coll.) farmer/
+返工 返工 [fan3 gong1] /to do poorly done work over again/(Guangdong dialect) to go to work/
+返現 返现 [fan3 xian4] /(neologism c. 2009) to give a cashback reward to a consumer/
+迪吧 迪吧 [di2 ba1] /disco (coll.)/diva (loanword)/
+迫真 迫真 [po4 zhen1] /(literary) lifelike; realistic; vivid/(Internet slang) used parenthetically to mark the preceding statement as ironic, exaggerated or unserious/
+迷妹 迷妹 [mi2 mei4] /(slang) fangirl/
+迷弟 迷弟 [mi2 di4] /(slang) fanboy/
+追龍 追龙 [zhui1 long2] /(slang) to inhale the vapor from heroin heated on a piece of aluminum foil; to chase the dragon/
+逆天 逆天 [ni4 tian1] /(literary) to be in defiance of the natural order/(coll.) extraordinary; incredible/
+逆襲 逆袭 [ni4 xi2] /to counterattack; to strike back/(neologism, attested by 2008) (of an underdog) to go on the offensive; to make an improbable comeback/
+逗悶子 逗闷子 [dou4 men4 zi5] /(dialect) to joke/
+逗比 逗比 [dou4 bi1] /(slang) silly but amusing person/
+逗逼 逗逼 [dou4 bi1] /(slang) silly but amusing person/
+這不 这不 [zhe4 bu5] /(coll.) As a matter of fact, ... (used to introduce evidence for what one has just asserted)/
+這嘎達 这嘎达 [zhei4 ga1 da5] /(northeast dialect) here; this place/
+這年頭 这年头 [zhe4 nian2 tou5] /(coll.) nowadays/
+這會兒 这会儿 [zhe4 hui4 r5] /(coll.) now/this moment/also pr. [zhe4 hui3 r5]/
+通泰 通泰 [tong1 tai4] /(dialect) clear (i.e. thoroughly understood)/(literary) comfortable; at ease; unburdened/
+通證 通证 [tong1 zheng4] /digital token (loanword from "token") (neologism c. 2017)/
+速賜康 速赐康 [su4 ci4 kang1] /(Tw) (coll.) pentazocine (a synthetic opioid analgesic)/
+速配 速配 [su4 pei4] /fast matchmaking/speed dating/(coll.) (Tw) (of a couple) to be a good match/
+造人 造人 [zao4 ren2] /(of a creator deity) to create mankind/to conceive a baby; (slang) to make love/
+連軸轉 连轴转 [lian2 zhou2 zhuan4] /(coll.) to work non-stop; to work around the clock/
+週日 周日 [zhou1 ri4] /(dialect) weekday/
+進宮 进宫 [jin4 gong1] /to enter the emperor's palace/(slang) to go to jail/
+逼兜 逼兜 [bi1 dou5] /(slang) a slap on the face/
+逼格 逼格 [bi1 ge2] /(slang) pretentious style/
+過早 过早 [guo4 zao3] /premature; untimely/(dialect) to have breakfast; breakfast/
+過節兒 过节儿 [guo4 jie2 r5] /(coll.) grudge; strife/(coll.) good manners/
+道系 道系 [dao4 xi4] /(neologism, attested by 2017) Dao-type, a type of person who has traits associated with a Daoist approach to life, such as being active, optimistic, earthy and forthright (cf. 佛系[fo2 xi4])/
+達人 达人 [da2 ren2] /(coll.) expert; connoisseur; guru; enthusiast; geek (influenced by Japanese 達人 "tatsujin" c. 2000)/(literary) sensible person; person who understands life/(literary) optimist/
+遛娃 遛娃 [liu4 wa2] /(coll.) to take one's child out for a walk/
+遛彎 遛弯 [liu4 wan1] /(dialect) to take a walk/to go for a stroll/
+遭重 遭重 [zao1 zhong4] /(slang) to suffer serious consequences or harm/
+避雷 避雷 [bi4 lei2] /(bound form) to avoid being struck by lightning/(slang) to steer clear of sth bad (e.g. shoddy goods, a scam, or a bad experience)/
+那是 那是 [na4 shi5] /(coll.) of course/naturally/indeed/
+那話兒 那话儿 [na4 hua4 r5] /(coll.) that thing; that matter; you-know-what/(euphemism) sexual organ/
+邪修 邪修 [xie2 xiu1] /(slang) to achieve a goal using an unconventional but highly effective method/
+邷麼兒 邷么儿 [wa3 mo2 r5] /to play knucklebones (dialect)/
+郎貓 郎猫 [lang2 mao1] /(coll.) tomcat/
+郵花 邮花 [you2 hua1] /(dialect) (postage) stamp/
+鄉民 乡民 [xiang1 min2] /villager/(Tw) (Internet slang) person who likes to follow online discussions and add their opinions/
+鄉黨 乡党 [xiang1 dang3] /(Shaanxi dialect) person from one's hometown or home region/
+鄙視鏈 鄙视链 [bi3 shi4 lian4] /a ranking of items in a particular category, with the most highly regarded on top (neologism c. 2012, coined by analogy with 食物鏈|食物链[shi2 wu4 lian4], food chain)/
+酒精 酒精 [jiu3 jing1] /(coll.) ethanol; ethyl alcohol/
+酒缸 酒缸 [jiu3 gang1] /wine jar/(dialect) drinking house/
+酒蒙子 酒蒙子 [jiu3 meng1 zi5] /(dialect) drunkard; alcoholic/
+酷斃 酷毙 [ku4 bi4] /(slang) awesome/cool/righteous/
+酷炫 酷炫 [ku4 xuan4] /(slang) cool; awesome/
+酸民 酸民 [suan1 min2] /(Tw) (Internet) troll/
+醜國 丑国 [Chou3 guo2] /(slang) United States; USA; US/
+醫鬧 医闹 [yi1 nao4] /(neologism, attested by 2013) organized disruption of healthcare facilities or verbal and physical abuse of medical staff by an aggrieved patient or proxies such as family members or hired thugs, typically aimed at obtaining compensation/
+重口味 重口味 [zhong4 kou3 wei4] /strong flavor (spicy, salty etc)/(of food) strongly flavored/(of a person) having a preference for strong flavors/(slang) intense/hardcore/
+野路子 野路子 [ye3 lu4 zi5] /(coll.) unorthodox (method etc)/
+野雞 野鸡 [ye3 ji1] /pheasant/unregistered and operating illegally (business)/(slang) prostitute/
+金毛 金毛 [jin1 mao2] /blond fur; golden hair/(coll.) golden retriever/
+金貴 金贵 [jin1 gui4] /(coll.) precious; extremely valuable/
+金魚佬 金鱼佬 [jin1 yu2 lao3] /pedophile (slang, referring to the case of a Hong Kong child abductor who lured girls with the prospect of seeing "goldfish" in his apartment)/
+針線箔籬 针线箔篱 [zhen1 xian4 bo2 li2] /(dialect) wicker sewing basket/
+釣凱子 钓凯子 [diao4 kai3 zi5] /(slang) (of women) to hunt for rich, attractive guys/
+鈔能力 钞能力 [chao1 neng2 li4] /(coll.) wealth; financial clout (pun on 超能力[chao1 neng2 li4])/
+鉗子 钳子 [qian2 zi5] /pliers/pincers/tongs/forceps/vise/clamp/claw (of a crab etc)/CL:把[ba3]/(dialect) earring/
+銳評 锐评 [rui4 ping2] /(neologism) incisive commentary (abbr. for 銳利評論|锐利评论[rui4 li4 ping2 lun4])/
+鋼鐵直男 钢铁直男 [gang1 tie3 zhi2 nan2] /(slang) an extremely "straight" man: direct, literal-minded, practical and unromantic, and emotionally obtuse/
+錢袋子 钱袋子 [qian2 dai4 zi5] /(coll.) purse; money bag/(fig.) one's money; one's savings/
+鍵政 键政 [jian4 zheng4] /(slang) to discuss politics online/
+鎖匙 锁匙 [suo3 chi2] /(dialect) key/Taiwan pr. [suo3 shi5]/
+鎦子 镏子 [liu4 zi5] /(dialect) finger ring/
+鏟屎官 铲屎官 [chan3 shi3 guan1] /(neologism) (coll.) pet owner (lit. "official in charge of cleaning up poop")/
+鏹水 镪水 [qiang1 shui3] /(coll.) strong acid/
+鐘頭 钟头 [zhong1 tou2] /(coll.) hour/
+鐝頭 镢头 [jue2 tou2] /(dialect) mattock; hoe/
+鐵哥們 铁哥们 [tie3 ge1 men5] /(coll.) very close male friends/
+鐵子 铁子 [tie3 zi5] /(slang) very close friend/bro/
+鐵粉 铁粉 [tie3 fen3] /(slang) hardcore fan (abbr. for 鐵桿粉絲|铁杆粉丝[tie3 gan3 fen3 si1])/
+鐺鐺車 铛铛车 [dang1 dang1 che1] /(coll.) tram, especially Beijing trams during period of operation 1924-1956/also written 噹噹車|当当车[dang1 dang1 che1]/
+鑿死鉚子 凿死铆子 [zao2 si3 mao3 zi5] /(dialect) stubborn; obstinate; inflexible/
+長殘 长残 [zhang3 can2] /(slang) to grow up unattractive; to lose one's looks as one grows older/
+長生果 长生果 [chang2 sheng1 guo3] /(dialect) peanut/
+長臉 长脸 [zhang3 lian3] /(coll.) to bring credit to (sb); to do (sb) proud/
+長蟲 长虫 [chang2 chong5] /(coll.) snake/
+長記性 长记性 [zhang3 ji4 xing5] /(coll.) to learn one's lesson; to have enough sense to learn from one's mistakes/
+長輩圖 长辈图 [zhang3 bei4 tu2] /(Internet slang) boomer meme (Tw)/
+門兒清 门儿清 [men2 r5 qing1] /(coll.) to know something inside out/
+閃人 闪人 [shan3 ren2] /(coll.) to beat it/to take French leave/
+閃婚 闪婚 [shan3 hun1] /to get married soon after meeting (abbr. for 閃電結婚|闪电结婚[shan3 dian4 jie2 hun1]) (neologism c. 2005)/
+開口成髒 开口成脏 [kai1 kou3 cheng2 zang1] /(Internet slang) to use foul language (pun on 出口成章[chu1 kou3 cheng2 zhang1])/
+開掛 开挂 [kai1 gua4] /to cheat in an online game (abbr. for 開外掛|开外挂[kai1 wai4 gua4])/(coll.) unbelievably good/
+開支 开支 [kai1 zhi1] /expenditures; expenses (CL:筆|笔[bi3],項|项[xiang4])/to spend money/(coll.) to pay wages/
+開涮 开涮 [kai1 shuan4] /(coll.) to make fun of; to tease; to rib/
+開瓢 开瓢 [kai1 piao2] /(coll.) to crack sb's head open (often humorous)/
+開盒 开盒 [kai1 he2] /(slang) to dox/
+開車 开车 [kai1 che1] /to drive a car (or train etc)/(slang) to post sexual content online; to make a sexual joke/
+開黑 开黑 [kai1 hei1] /(slang) (online gaming) to team up with friends in a coordinated private group (黑[hei1] indicates private, team-only chat)/
+閌閬 闶阆 [kang1 lang2] /(dialect) open space within a structure/
+閨女 闺女 [gui1 nu:5] /maiden; unmarried woman/(coll.) daughter/
+閨蜜 闺蜜 [gui1 mi4] /(coll.) (a woman's) close female friend; bestie/(originally written 閨密|闺密[gui1 mi4], an abbr. for 閨中密友|闺中密友[gui1 zhong1 mi4 you3])/
+闖紅燈 闯红灯 [chuang3 hong2 deng1] /to run a red light/failing to stop at a red traffic light/(slang) to have sex with a girl while she is menstruating/
+關你屁事 关你屁事 [guan1 ni3 pi4 shi4] /(coll.) None of your goddamn business!/Mind your own business!/
+關門兔 关门兔 [guan1 men2 tu4] /(sports) (coll.) sweeper (in a running event)/
+阿兵哥 阿兵哥 [a1 bing1 ge1] /(coll.) soldier boy/
+阿堵 阿堵 [e1 du3] /(literary) (colloquial term of the Six Dynasties period 六朝[Liu4 Chao2]) this/(abbr. for 阿堵物[e1 du3 wu4]) money/
+阿媽 阿妈 [a1 ma1] /grandma (paternal) (Tw)/(dialect) mother/nurse/amah/(Manchu) father/
+阿拉 阿拉 [a1 la1] /(Wu dialect) I; me; my; we; us; our/
+阿混 阿混 [a1 hun4] /(dialect) idler/loafer/
+阿爸 阿爸 [a1 ba4] /(dialect) father/
+阿莎力 阿莎力 [a1 sha1 li4] /(coll.) straightforward/unreserved/openhearted (Tw) (loanword from Japanese "assari")/
+阿貓阿狗 阿猫阿狗 [a1 mao1 a1 gou3] /(idiom) (coll.) any Tom, Dick or Harry; just about anyone (used dismissively)/
+阿貝貝 阿贝贝 [a1 bei4 bei4] /(neologism) transitional object; comfort object/
+阿鄉 阿乡 [a1 xiang1] /(coll.) country folk/rustic/see also 鄉下人|乡下人[xiang1 xia4 ren2]/
+阿飄 阿飘 [a1 piao1] /(coll.) ghost (Tw)/
+阿魯巴 阿鲁巴 [a1 lu3 ba1] /(Tw) (slang) a prank, prevalent in Chinese schools and known as "happy corner" in Hong Kong, in which several people carry a victim with his legs spread open, bringing his groin up against a pole or tree trunk/
+院壩 院坝 [yuan4 ba4] /(dialect) courtyard/
+除過 除过 [chu2 guo4] /(dialect) except/besides/
+陰穴 阴穴 [yin1 xue2] /cave/(coll.) vagina/
+陰間 阴间 [yin1 jian1] /the nether world/Hades/(neologism) (slang) disturbing/unsettling/awful/detestable/
+陸客 陆客 [lu4 ke4] /(Tw) (neologism c. 2008) mainland Chinese tourist/
+雀盲眼 雀盲眼 [qiao3 mang5 yan3] /night blindness (dialect)/
+集美 集美 [ji2 mei3] /(slang) close female friend; sis (near homophone of 姐妹[jie3 mei4])/
+雌競 雌竞 [ci2 jing4] /(slang) negative, toxic competition between women (esp. in seeking the favor and approval of men)/
+雖遲但到 虽迟但到 [sui1 chi2 dan4 dao4] /(slang) slow to arrive but eventually shows up/
+雙飛 双飞 [shuang1 fei1] /flying in pairs/close union as husband and wife/round-trip flight/(slang) threesome/
+雞公 鸡公 [ji1 gong1] /(dialect) rooster; cock/
+雞凍 鸡冻 [ji1 dong4] /chicken jelly/(Internet slang) exciting (pun on 激動|激动[ji1 dong4])/
+雞娃 鸡娃 [ji1 wa2] /(neologism, c. 2020) to arrange an intensive schedule of activities for one's child to maximize achievement/a child subjected to such a regimen/(dialect) chick/
+雞婆 鸡婆 [ji1 po2] /(dialect) hen; prostitute/(Tw) (adjective) interfering; nosy; (noun) busybody (from Taiwanese 家婆, Tai-lo pr. [ke-pô])/
+雞子兒 鸡子儿 [ji1 zi3 r5] /(coll.) hen's egg/
+雞掰 鸡掰 [ji1 bai1] /(Tw) (vulgar) cunt (from Taiwanese 膣屄, Tai-lo pr. [tsi-bai])/(slang) to fuck around with; (used as an intensifier) fucking; fucked up/
+雞架 鸡架 [ji1 jia4] /(dialect) chicken carcass used for cooking/
+雞母 鸡母 [ji1 mu3] /(dialect) hen/
+雞窩 鸡窝 [ji1 wo1] /chicken coop/(slang) brothel/
+雞賊 鸡贼 [ji1 zei2] /(dialect) stingy/miserly/crafty/cunning/
+難伺候 难伺候 [nan2 ci4 hou5] /(coll.) hard to please; high-maintenance/
+雨女無瓜 雨女无瓜 [yu3 nu:3 wu2 gua1] /(neologism) (slang) it's none of your business (imitation of an accented pronunciation of 與你無關|与你无关[yu3 ni3 wu2 guan1])/
+雪糕筒 雪糕筒 [xue3 gao1 tong3] /(Cantonese-influenced Mandarin) (coll.) traffic cone/
+雲彩 云彩 [yun2 cai5] /(coll.) cloud/CL:朵[duo3]/
+零吃 零吃 [ling2 chi1] /(coll.) snack food/
+零號 零号 [ling2 hao4] /(slang) bottom (in a homosexual relationship)/
+雷人 雷人 [lei2 ren2] /(Internet slang) shocking/appalling/terrifying/terrific/
+雷劇 雷剧 [lei2 ju4] /(slang) poorly made TV drama (featuring absurd plots, terrible acting etc); a cringeworthy show (often so bad it's entertaining)/
+雷子 雷子 [lei2 zi5] /(slang) cop/
+電子榨菜 电子榨菜 [dian4 zi3 zha4 cai4] /(slang) entertaining content such as Internet videos and TV shows that people watch while eating/
+電子狗 电子狗 [dian4 zi3 gou3] /radar detector (slang)/
+電愛 电爱 [dian4 ai4] /(slang) to engage in mutual sexual arousal through conversation over the phone; voice-based cybersex/
+電棒 电棒 [dian4 bang4] /(coll.) flashlight/(Tw) stun baton/(Tw) hair iron; hair tongs/
+電燈泡 电灯泡 [dian4 deng1 pao4] /light bulb/(slang) unwanted third guest/
+電雞 电鸡 [dian4 ji1] /(slang) (pejorative) e-bike (from Cantonese)/
+電馬兒 电马儿 [dian4 ma3 r5] /(dialect) electric bicycle/
+電驢 电驴 [dian4 lu:2] /(slang) electric bicycle or scooter (moped-style)/
+電驢子 电驴子 [dian4 lu:2 zi5] /(dialect) motorcycle/
+霍霍 霍霍 [huo4 huo4] /(literary) (onom.) sound of sharpening a knife/(coll.) to mess with; to cause harm to (sb or sth)/
+霓虹國 霓虹国 [Ni2 hong2 guo2] /(slang) Japan (loanword from the Japanese word for Japan, 日本 "Nihon")/
+露點 露点 [lou4 dian3] /(coll.) to accidentally or intentionally expose intimate body parts (e.g. nipples or genitals)/
+霹靂 霹雳 [pi1 li4] /thunderclap/(slang) awesome; shocking; terrifying/
+靈光 灵光 [ling2 guang1] /divine light (around the Buddha)/a halo/a miraculous column of light/(slang) jolly good!/
+青瓜 青瓜 [qing1 gua1] /(dialect) cucumber/
+青石 青石 [qing1 shi2] /bluestone/limestone (colloquial)/
+青蛙 青蛙 [qing1 wa1] /frog (CL:隻|只[zhi1])/(old) (slang) ugly guy/
+青龍 青龙 [qing1 long2] /(slang) man lacking pubic hair/(mahjong) full straight (123, 456, 789 in one suit)/
+靜默 静默 [jing4 mo4] /silent; still; quiet/to mourn in silence; to observe silence/(neologism, attested by 2022) to stay at home during a pandemic/
+非死不可 非死不可 [Fei1 si3 bu4 ke3] /Facebook (Internet slang, pun reading "you must die")/
+靠北 靠北 [kao4 bei3] /(Tw) (slang) to rattle on; to carp; stop whining!; shut the hell up!; fuck!; damn! (from Taiwanese 哭爸, Tai-lo pr. [khàu-pē], "to cry over one's dad's death")/
+靠腰 靠腰 [kao4 yao1] /(lit.) to cry from hunger (from Taiwanese 哭枵, Tai-lo pr. [khàu-iau])/(Tw) (slang) to whine; shut the hell up!; fuck!; damn!/
+面基 面基 [mian4 ji1] /(slang) (of online friends) to meet up in person/
+面瓜 面瓜 [mian4 gua1] /(dialect) pumpkin/(fig.) oaf/
+韭菜 韭菜 [jiu3 cai4] /garlic chives (Allium tuberosum), aka Chinese chives/(coll.) naive or easily exploited people (esp. small investors or consumers), likened to chives that can be repeatedly harvested for profit/
+頂流 顶流 [ding3 liu2] /(slang) top-tier celebrity or influencer (abbr. for 頂級流量|顶级流量[ding3 ji2 liu2 liang4])/
+領盒飯 领盒饭 [ling3 he2 fan4] /(coll.) (of an actor with a bit part) to receive a boxed meal when one's job is done (phrase used e.g. by movie viewers when a character dies)/
+頭午 头午 [tou2 wu3] /(dialect) morning/
+頭家 头家 [tou2 jia1] /organizer of a gambling party who takes a cut of the winnings/banker (gambling)/preceding player (in a game)/(dialect) boss/proprietor/
+頭鐵 头铁 [tou2 tie3] /(slang) stubborn; headstrong/
+頭頭 头头 [tou2 tou5] /(coll.) leader; person in charge/
+頭頸 头颈 [tou2 jing3] /(dialect) neck/
+頭香 头香 [tou2 xiang1] /the first stick of incense placed in the censer (believed to bring good luck esp. during festivities)/(slang) (Tw) the first reply to a blog post etc/
+顛兒 颠儿 [dian1 r5] /(Beijing dialect) to skedaddle; to make oneself scarce/
+顯擺 显摆 [xian3 bai5] /(coll.) to show off/
+風光 风光 [feng1 guang1] /scene/view/sight/landscape/to be well-regarded/to be well-off/grand (dialect)/impressive (dialect)/
+飄飄 飘飘 [piao1 piao1] /to float about/to flutter (in the breeze)/(dialect) gay guy/(Tw) ghost/
+飛刀 飞刀 [fei1 dao1] /a throwing knife/fly cutter (machine tool)/(coll.) surgeons operating at other hospitals during off-hours/
+飛快 飞快 [fei1 kuai4] /very fast/at lightning speed/(coll.) razor-sharp/
+飛機場 飞机场 [fei1 ji1 chang3] /airport/(slang) flat chest/CL:處|处[chu4]/
+飛葉子 飞叶子 [fei1 ye4 zi5] /(slang) to smoke pot/
+飛鼠 飞鼠 [fei1 shu3] /flying squirrel/(dialect) bat/
+飯撒 饭撒 [fan4 sa1] /(coll.) gesture by an idol aimed at delighting fans (e.g. winking or throwing signed items); to interact with fans in such a manner (loanword from Japanese "fansābisu" – literally, "fan service")/
+餓扁 饿扁 [e4 bian3] /(coll.) to be famished; ravenously hungry/
+餜子 馃子 [guo3 zi5] /(dialect) pastry/(dialect) youtiao; deep-fried cruller/
+香肉 香肉 [xiang1 rou4] /(dialect) dog meat/
+馬占 马占 [ma3 zhan4] /(dialect) merchant (loanword)/
+馬子 马子 [ma3 zi5] /bandit; brigand/gambling chip/chamber pot/(slang) girl; chick; babe/
+馬潤 马润 [ma3 run4] /(slang) (loanword) the US Marines; a Marine/
+馬甲 马甲 [ma3 jia3] /corset/sockpuppet (Internet slang)/vest (dialect)/
+馬甲線 马甲线 [ma3 jia3 xian4] /(neologism, attested by 2013) (coll.) vertical groove visible on either side of the belly in a person with well-toned abs/
+馬葫蘆 马葫芦 [ma3 hu2 lu5] /(dialect) (loanword) manhole/
+馬騮 马骝 [ma3 liu2] /monkey (dialect)/little monkey (affectionate term for children, subordinates)/
+馬麻 马麻 [ma3 ma2] /(slang) mama; mom (pun on 媽媽|妈妈[ma1 ma5])/
+駁嘴 驳嘴 [bo2 zui3] /(dialect) to argue/to quarrel/
+駱駝 骆驼 [luo4 tuo5] /camel (CL:峰[feng1],匹[pi3],頭|头[tou2])/(coll.) blockhead; ninny/
+騎馬找馬 骑马找马 [qi2 ma3 zhao3 ma3] /(idiom) (coll.) to continue in an unsatisfactory job (or romantic relationship etc) while actively looking for a better one/
+騎驢找馬 骑驴找马 [qi2 lu:2 zhao3 ma3] /(idiom) (coll.) to continue in an unsatisfactory job (or romantic relationship etc) while actively looking for a better one/
+騷包 骚包 [sao1 bao1] /(slang) alluring/showy/flashy and enticing person/painted Jezebel/
+驚槑 惊槑 [jing1 dai1] /(Internet slang) stupefied/stunned/
+骨朵 骨朵 [gu1 duo5] /(coll.) flower bud/
+髒亂差 脏乱差 [zang1 luan4 cha4] /(coll.) squalid/squalor/
+髒病 脏病 [zang1 bing4] /(coll.) venereal disease/
+高大上 高大上 [gao1 da4 shang4] /(slang) high-end, elegant, and classy/abbr. for 高端大氣上檔次|高端大气上档次/
+高富帥 高富帅 [gao1 fu4 shuai4] /"Mr Perfect" (i.e. tall, rich and handsome) (Internet slang)/
+高筍 高笋 [gao1 sun3] /(dialect) see 茭白[jiao1 bai2]/
+高貴雞 高贵鸡 [gao1 gui4 ji1] /(Tw) (slang) snobbish, pretentious gay person/
+高逼格 高逼格 [gao1 bi1 ge2] /(slang) high-end/classy/
+髮小 发小 [fa4 xiao3] /(dialect) close childhood friend whom one grew up with/a couple who grew up as childhood friends/
+鬍子 胡子 [hu2 zi5] /beard/mustache or whiskers/facial hair/CL:撮[zuo3],根[gen1]/(coll.) bandit/
+鬧太套 闹太套 [nao4 tai4 tao4] /(Internet slang) transcription of "not at all" – English words in a song promoting the 2008 Beijing Olympics sung by Huang Xiaoming 黃曉明|黄晓明[Huang2 Xiao3 ming2], who became a laughing stock in China because his pronunciation was perceived as embarrassingly bad/to be a laughing stock/to make a fool of oneself (i.e. equivalent to 鬧笑話|闹笑话[nao4 xiao4 hua5])/
+鬧忙 闹忙 [nao4 mang2] /(dialect) bustling/lively/
+鬧掰 闹掰 [nao4 bai1] /(dialect) to have a falling-out (with sb)/
+鬧熱 闹热 [nao4 re4] /(dialect) bustling; lively/
+鬧猛 闹猛 [nao4 meng3] /(dialect) bustling/lively/
+鬧肚子 闹肚子 [nao4 du4 zi5] /(coll.) to have diarrhea/
+鬧賊 闹贼 [nao4 zei2] /(coll.) to be burglarized/
+鬼叫 鬼叫 [gui3 jiao4] /(coll.) to holler; to squawk/
+鬼壓床 鬼压床 [gui3 ya1 chuang2] /(coll.) sleep paralysis/
+鬼探頭 鬼探头 [gui3 tan4 tou2] /(coll.) sudden emergence of a person or vehicle from a blind spot (esp. into oncoming traffic)/
+鬼火綠 鬼火绿 [gui3 huo3 lu:4] /(dialect) flaming mad/furious/
+鬼秤 鬼秤 [gui3 cheng4] /(coll.) rigged scale (used to deceive customers by displaying incorrect weight)/
+魔性 魔性 [mo2 xing4] /(neologism c. 2014) irresistibly quirky; compelling in its wackiness/
+魔改 魔改 [mo2 gai3] /(slang) to modify in a fantastical way; to modify heavily/
+魔鬼魚 魔鬼鱼 [mo2 gui3 yu2] /(coll.) ray (esp. manta ray or stingray)/
+魚鰍 鱼鳅 [yu2 qiu5] /(dialect) see 泥鰍|泥鳅[ni2 qiu5]/
+魯蛇 鲁蛇 [lu3 she2] /(Tw) (slang) (loanword) loser/
+鮪魚肚 鲔鱼肚 [wei3 yu2 du4] /(cuisine) tuna belly/(Tw) (fig.) (coll.) potbelly/paunch/
+鰩魚 鳐鱼 [yao2 yu2] /skate (cartilaginous fish of the family Rajidae)/(coll.) ray (fish)/
+鱉邊 鳖边 [bie1 bian1] /(dialect) the edible gelatinous fringe of a softshell turtle's carapace/
+鱸鰻 鲈鳗 [lu2 man2] /(Tw) giant mottled eel (Anguilla marmorata), aka swamp eel or marbled eel/(coll.) (alternative for the nearly homonymous 流氓[liu2 mang2]) gangster/
+鳳凰男 凤凰男 [feng4 huang2 nan2] /(Internet slang) guy who grew up in the countryside and gained a foothold in the city through hard work/
+鴨子 鸭子 [ya1 zi5] /duck (CL:隻|只[zhi1])/(slang) male prostitute/
+鴨子兒 鸭子儿 [ya1 zi3 r5] /(coll.) duck's egg/
+鸚哥 鹦哥 [ying1 ge1] /(coll.) parrot/
+鹹水妹 咸水妹 [xian2 shui3 mei4] /(dialect) prostitute from Guangdong (esp. one in Shanghai before the Revolution) (loanword from "handsome maid")/
+鹹濕 咸湿 [xian2 shi1] /(Tw) (coll.) obscene/pornographic/
+鹹鹽 咸盐 [xian2 yan2] /salt (colloquial)/table salt/
+鹽蛇 盐蛇 [yan2 she2] /(dialect) gecko/
+麻利 麻利 [ma2 li5] /swift/agile/efficient/quick-witted (colloquial)/
+麻吉 麻吉 [ma2 ji2] /(slang) (Tw) close friend/best pal/to get along well/to be tight/congenial/
+麻溜 麻溜 [ma2 liu5] /(dialect) quickly; briskly; without delay (northern colloquialism, often used in commands)/
+麻雀 麻雀 [ma2 que4] /sparrow/(dialect) mahjong/
+麻麻亮 麻麻亮 [ma1 ma5 liang4] /(dialect) to begin to dawn/to be just getting light/
+麼麼 么么 [me5 me5] /kissing sound (slang onom.)/
+黃牛 黄牛 [huang2 niu2] /ox; cattle/scalper of tickets etc/(dialect) to fail to show up/(dialect) to break a promise/
+黏涎 黏涎 [nian2 xian5] /saliva; slobber/(coll.) long-winded; meandering/
+黏米 黏米 [nian2 mi3] /glutinous rice; sticky rice/(dialect) broomcorn millet/
+黑化 黑化 [hei1 hua4] /to blacken/(slang) to undergo a transformation to a malevolent personality (often, precipitated by intense psychological stress)/
+黑子 黑子 [hei1 zi5] /(slang) hater; detractor/
+黑屁 黑屁 [hei1 pi4] /(slang) bullshit/
+黑暴 黑暴 [hei1 bao4] /(neologism 2019) rioting by black-clothed protesters in Hong Kong/
+黑特 黑特 [hei1 te4] /(Internet slang) (loanword) hate/
+黑科技 黑科技 [hei1 ke1 ji4] /(slang) futuristic technology; cutting-edge technology/
+黑粉 黑粉 [hei1 fen3] /(slang) anti-fan/
+點兒背 点儿背 [dian3 r5 bei4] /(dialect) to be out of luck/
+點子扎手 点子扎手 [dian3 zi5 zha1 shou3] /(coll.) one's adversary is very tough/
+點子背 点子背 [dian3 zi5 bei4] /(coll.) to have a stroke of bad luck/
+點擊率 点击率 [dian3 ji1 lu:4] /click-through rate (CTR) (Internet)/
+點津 点津 [dian3 jin1] /to solve a problem/to answer a question/(Internet) Q&A forum/advice column/
+點背 点背 [dian3 bei4] /(dialect) to be out of luck/
+鼻頭 鼻头 [bi2 tou2] /tip of the nose/(dialect) nose/
+齁甜 齁甜 [hou1 tian2] /(dialect) (of food) excessively sweet; cloying/(dialect) (of words, affection etc) sickenly sweet; overly sentimental/
+齁鹹 齁咸 [hou1 xian2] /(dialect) (of food) excessively salty/
+齊打夯兒地 齐打夯儿地 [qi2 da3 hang1 r5 de5] /in unison and with one voice (dialect)/
+齊活 齐活 [qi2 huo2] /(Beijing dialect) done; finished; complete/
+龍妹 龙妹 [long2 mei4] /ugly girl (slang) (Tw)/
+龍陽 龙阳 [Long2 yang2] /place in Shanghai/(coll.) male homosexual/
+龜兒子 龟儿子 [gui1 er2 zi5] /(coll.) bastard/son of a bitch/
+龜孫子 龟孙子 [gui1 sun1 zi5] /(coll.) son of a bitch/bastard/
+龜毛 龟毛 [gui1 mao2] /(Tw) (coll.) indecisive; fussy; nitpicking (from Taiwanese, Tai-lo pr. [ku-moo])/
+龜男 龟男 [gui1 nan2] /(slang) man who grovels to a woman; man who accepts a subordinate or exploitative role in hopes of her approval/

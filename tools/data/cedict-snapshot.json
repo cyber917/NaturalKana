@@ -1,0 +1,10 @@
+{
+  "source": "CC-CEDICT",
+  "url": "https://www.mdbg.net/chinese/export/cedict/cedict_1_0_ts_utf-8_mdbg.txt.gz",
+  "date": "2026-10-09T09:12:50Z",
+  "sha256": "dd2307775fd21f5d350e6cb0e6a946bfe2eaedd79bb9ce524a67e7fccddf6a8f",
+  "license": "CC BY-SA 4.0",
+  "licenseURL": "https://creativecommons.org/licenses/by-sa/4.0/",
+  "attribution": "MDBG and CC-CEDICT contributors; CEDICT Copyright 1997, 1998 Paul Andrew Denisowski",
+  "subsetSHA256": "55da2998271738aa0c6949fd63a415d9d53775f4200be55124950353f3667e48"
+}

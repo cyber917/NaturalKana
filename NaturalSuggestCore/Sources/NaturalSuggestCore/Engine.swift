@@ -85,7 +85,7 @@ public struct LRUCache<Key: Hashable, Value> {
         if current == snapshot, currentSettings == fingerprint,
            status == .requesting || (!explicit && status != .idle) { return }
         cancel(); current = snapshot; currentSettings = fingerprint; language = settings.language
-        guard settings.enabled, settings.consent else { publish([], .disabled); return }
+        guard settings.enabled, settings.consent, settings.suggestionsEnabled(for: settings.language) else { publish([], .disabled); return }
         guard !snapshot.secure, !settings.blockedApps.contains(snapshot.appID) else { publish([], .filtered(.protectedField)); return }
         guard !snapshot.text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else { publish([], .filtered(.empty)); return }
         guard !snapshot.composingLatin else { publish([], .filtered(.composing)); return }

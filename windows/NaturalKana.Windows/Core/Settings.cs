@@ -94,6 +94,8 @@ public sealed class AppSettings
     public SuggestionLanguage Language { get; set; } = SuggestionLanguage.Japanese;
     /// Detect each draft's language; Language stays the primary choice for ambiguous drafts.
     public bool AutoLanguage { get; set; }
+    public List<SuggestionLanguage> DisabledSuggestionLanguages { get; set; } = [];
+    public bool SuggestionsEnabled(SuggestionLanguage language) => !DisabledSuggestionLanguages.Contains(language);
     public InterfaceLanguage Interface { get; set; } = InterfaceLanguage.System;
     public ProviderKind Provider { get; set; } = ProviderKind.Qwen;
     public Dictionary<ProviderKind, ProviderConfig> ProviderConfigs { get; set; } = new();

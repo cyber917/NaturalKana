@@ -70,6 +70,12 @@ public partial class SettingsWindow : Window
         Fill(PauseBox, pauses.Select(ms => (ms, UIText.T("%@ 秒", $"{ms / 1000.0:0.#}"))), Pick(PauseBox, pauses.Contains(settings.AutoPauseMilliseconds) ? settings.AutoPauseMilliseconds : 800));
         Fill(ResponseBox, [(JsonResponseMode.Automatic, UIText.T("自动")), (JsonResponseMode.Schema, "JSON Schema"), (JsonResponseMode.Object, "JSON Object"), (JsonResponseMode.Prompt, UIText.T("仅提示词"))], Pick(ResponseBox, JsonResponseMode.Automatic));
         Fill(TokenBox, [(TokenParameter.Automatic, UIText.T("自动")), (TokenParameter.MaxTokens, "max_tokens"), (TokenParameter.MaxCompletionTokens, "max_completion_tokens")], Pick(TokenBox, TokenParameter.Automatic));
+        var disabled = SuggestionLanguages.Children.Count == 0 ? settings.DisabledSuggestionLanguages
+            : SuggestionLanguages.Children.OfType<CheckBox>().Where(c => c.IsChecked != true).Select(c => (SuggestionLanguage)c.Tag).ToList();
+        SuggestionLanguages.Children.Clear();
+        foreach (var language in Languages.All)
+            SuggestionLanguages.Children.Add(new CheckBox { Content = Languages.Title(language), Tag = language,
+                IsChecked = !disabled.Contains(language), Margin = new Thickness(0, 4, 0, 4) });
         filling = false;
     }
 
@@ -228,6 +234,8 @@ public partial class SettingsWindow : Window
 
         settings.Provider = current;
         settings.ProviderConfigs = edits.ToDictionary(p => p.Key, p => p.Value.Clone());
+        settings.DisabledSuggestionLanguages = SuggestionLanguages.Children.OfType<CheckBox>()
+            .Where(c => c.IsChecked != true).Select(c => (SuggestionLanguage)c.Tag).ToList();
         settings.AutoLanguage = Get<SuggestionLanguage?>(LanguageBox) is null;
         settings.Language = Get<SuggestionLanguage?>(LanguageBox) ?? Get<SuggestionLanguage>(PrimaryBox);
         settings.Interface = Get<InterfaceLanguage>(InterfaceBox);

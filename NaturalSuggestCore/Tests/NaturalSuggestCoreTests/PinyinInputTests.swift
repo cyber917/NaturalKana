@@ -18,6 +18,36 @@ struct PinyinInputTests {
         #expect(lexicon.candidates(for: "liao").contains { $0.text == "了" })
     }
 
+    @Test func bundledChatPhrasesAreVisibleWithoutPickingSingleCharacters() {
+        for (input, text) in [
+            ("shisha", "是啥"), ("gansha", "干啥"), ("weisha", "为啥"),
+            ("zahuishi", "咋回事"), ("shayisi", "啥意思"),
+            ("zhendejiade", "真的假的"),
+            ("xiaosiwole", "笑死我了"), ("bengbuzhule", "绷不住了"),
+            ("wozhenfule", "我真服了"), ("haojiahuo", "好家伙"),
+            ("baozimen", "宝子们"), ("sheidonga", "谁懂啊"),
+            ("juejuezi", "绝绝子"),
+            ("pofang", "破防"), ("bailan", "摆烂")
+        ] {
+            #expect(Self.bundled.candidates(for: input).prefix(2).contains(PinyinCandidate(text: text, consumed: input.count)), "\(input) → \(text)")
+        }
+        #expect(Self.bundled.candidates(for: "shisha").first?.text == "是啥")
+        #expect(Self.bundled.candidates(for: "nidemingzishisha").first?.text == "你的名字是啥")
+    }
+
+    @Test func chatPhrasesSupportInitialsTyposAndMemory() {
+        #expect(Self.bundled.candidates(for: "zdjd").prefix(5).contains { $0.text == "真的假的" })
+        #expect(Self.bundled.candidates(for: "shis").prefix(5).contains { $0.text == "是啥" })
+        #expect(Self.bundled.candidates(for: "shishaa").prefix(5).contains { $0.text == "是啥" })
+        #expect(Self.bundled.candidates(for: "shs", uses: { $0 == "是啥" ? 20 : 0 }).first?.text == "是啥")
+    }
+
+    @Test func supplementalRanksDoNotDuplicateWordsOrOverrideUserLearning() {
+        let lexicon = PinyinLexicon(lines: ["试杀\tshi sha", "是啥\tshi sha\t1500", "是啥\tshi sha\t100"])
+        #expect(lexicon.candidates(for: "shisha").filter { $0.text == "是啥" }.count == 1)
+        #expect(lexicon.candidates(for: "shisha", uses: { $0 == "是啥" ? 10 : 0 }).first?.text == "是啥")
+    }
+
     @Test func sentencesSplitIntoWords() {
         let lexicon = Self.bundled
         #expect(lexicon.candidates(for: "woxiangquxuexiao").first == PinyinCandidate(text: "我想去学校", consumed: 16))
@@ -60,7 +90,7 @@ struct PinyinInputTests {
             #expect(lexicon.candidates(for: input).contains(PinyinCandidate(text: "有点问题", consumed: input.count)))
         }
         #expect(lexicon.candidates(for: "youdianwt").first?.text == "有点问题")
-        #expect(lexicon.candidates(for: "nh").contains { $0.text == "你好" })
+        #expect(lexicon.candidates(for: "nh").first?.text == "你好")
         #expect(lexicon.candidates(for: "zhg").contains { $0.text == "中国" })
     }
 

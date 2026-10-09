@@ -248,6 +248,11 @@ public partial class App : Application
     /// `effective` carries the draft's language; the daily budget is always counted on the saved settings.
     async Task<ValidationReport?> RequestAsync(string draft, AppSettings effective, CancellationToken cancel, SuggestionWindow card)
     {
+        if (!effective.SuggestionsEnabled(effective.Language))
+        {
+            card.ShowMessage(UIText.T("此语言的联网建议已关闭"));
+            return null;
+        }
         var config = settings.Config(settings.Provider);
         var key = string.Join("\u0001", draft, effective.Language, settings.Provider, config.BaseUrl, config.Model,
             settings.RegisterPreference, settings.SlangLevel, effective.ActiveDialect, settings.SuggestionLimit);

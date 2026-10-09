@@ -120,6 +120,15 @@ public struct SuggestionSettings: Codable, Hashable, Sendable {
     public var language: SuggestionLanguage = .japanese
     /// Detect each draft's language; `language` stays the primary choice for ambiguous drafts.
     public var autoLanguage = false
+    /// Disabled languages never send drafts; offline keyboard candidates are independent.
+    public var disabledSuggestionLanguages: [String] = []
+    public func suggestionsEnabled(for language: SuggestionLanguage) -> Bool {
+        !disabledSuggestionLanguages.contains(language.rawValue)
+    }
+    public mutating func setSuggestions(_ enabled: Bool, for language: SuggestionLanguage) {
+        disabledSuggestionLanguages.removeAll { $0 == language.rawValue }
+        if !enabled { disabledSuggestionLanguages.append(language.rawValue) }
+    }
     public var interfaceLanguage: InterfaceLanguage = .system
     public var extraKeyboardLayouts: [String] = []
     public var keyboardWordLearning: Bool = true
@@ -214,7 +223,7 @@ public struct SuggestionSettings: Codable, Hashable, Sendable {
         return SHA256.hash(data: (try? encoder.encode(self)) ?? Data()).map { String(format: "%02x", $0) }.joined()
     }
     private enum LegacyCodingKeys: String, CodingKey { case koreanKeyboard }
-    private enum CodingKeys: String, CodingKey { case enabled, consent, language, autoLanguage, interfaceLanguage, extraKeyboardLayouts, keyboardSwitchOrder, keyboardWordLearning, pinKeyboardTabBar, provider, openAI, qwen, additionalProviders, highlightChanges, qualityPartner, registerPreference, slangLevel, dialect, debounceMilliseconds, minimumLength, maximumSuggestions, qualityMode, dailyCap, blockedApps, acceptKeys }
+    private enum CodingKeys: String, CodingKey { case enabled, consent, language, autoLanguage, disabledSuggestionLanguages, interfaceLanguage, extraKeyboardLayouts, keyboardSwitchOrder, keyboardWordLearning, pinKeyboardTabBar, provider, openAI, qwen, additionalProviders, highlightChanges, qualityPartner, registerPreference, slangLevel, dialect, debounceMilliseconds, minimumLength, maximumSuggestions, qualityMode, dailyCap, blockedApps, acceptKeys }
     public init(from decoder: Decoder) throws {
         let values = try decoder.container(keyedBy: CodingKeys.self)
         enabled = try values.decodeIfPresent(Bool.self, forKey: .enabled) ?? false
@@ -223,6 +232,7 @@ public struct SuggestionSettings: Codable, Hashable, Sendable {
         language = (try? values.decodeIfPresent(SuggestionLanguage.self, forKey: .language)) ?? .japanese
         autoLanguage = try values.decodeIfPresent(Bool.self, forKey: .autoLanguage) ?? false
         interfaceLanguage = (try? values.decodeIfPresent(InterfaceLanguage.self, forKey: .interfaceLanguage)) ?? .system
+        disabledSuggestionLanguages = try values.decodeIfPresent([String].self, forKey: .disabledSuggestionLanguages) ?? []
         let legacy = try decoder.container(keyedBy: LegacyCodingKeys.self)
         keyboardWordLearning = try values.decodeIfPresent(Bool.self, forKey: .keyboardWordLearning) ?? true
         pinKeyboardTabBar = try values.decodeIfPresent(Bool.self, forKey: .pinKeyboardTabBar) ?? false

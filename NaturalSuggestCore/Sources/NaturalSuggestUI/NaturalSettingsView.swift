@@ -120,6 +120,18 @@ public struct NaturalSettingsView: View {
                     DisclosureGroup(model.settings.comparisonProvider.title) { providerFields(model.settings.comparisonProvider) }
                 }
             }
+            Section {
+                ForEach(SuggestionLanguage.available, id: \.self) { language in
+                    Toggle(language.title, isOn: Binding(
+                        get: { model.settings.suggestionsEnabled(for: language) },
+                        set: { model.settings.setSuggestions($0, for: language) }
+                    ))
+                }
+            } header: {
+                Text(UIText.t("按语言开启联网建议"))
+            } footer: {
+                Text(UIText.t("关闭的语言不会发送句子，也不消耗额度；离线候选和词语记忆照常使用。iPhone 跟随当前键盘语言。"))
+            }
             Section(UIText.t("表达")) {
                 Picker(UIText.t("建议语言"), selection: Binding(get: { model.settings.autoLanguage ? "auto" : model.settings.language.rawValue }, set: { value in
                     model.settings.autoLanguage = value == "auto"
@@ -128,6 +140,7 @@ public struct NaturalSettingsView: View {
                     Text(UIText.t("自动")).tag("auto")
                     ForEach(SuggestionLanguage.available, id: \.self) { language in Text(language.title).tag(language.rawValue) }
                 }
+                .id(model.settings.interfaceLanguage)
                 if model.settings.autoLanguage {
                     Picker(UIText.t("主要语言"), selection: $model.settings.language) {
                         ForEach(SuggestionLanguage.available, id: \.self) { language in Text(language.title).tag(language) }

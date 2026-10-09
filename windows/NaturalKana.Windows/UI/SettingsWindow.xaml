@@ -105,6 +105,9 @@
                         <TextBlock Text="建议语言" Style="{StaticResource Label}"/>
                         <ComboBox x:Name="LanguageBox" SelectionChanged="OnLanguageChanged"/>
                     </DockPanel>
+                    <Expander Header="按语言开启联网建议" Margin="16,8">
+                        <StackPanel x:Name="SuggestionLanguages"/>
+                    </Expander>
                     <StackPanel x:Name="PrimaryRow" Visibility="Collapsed">
                         <Border Style="{StaticResource Divider}"/>
                         <DockPanel Style="{StaticResource Row}">
