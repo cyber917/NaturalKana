@@ -150,7 +150,7 @@ public struct NaturalSettingsView: View {
                     ))
                 }
                 Toggle(UIText.t("记住键盘常用词"), isOn: $model.settings.keyboardWordLearning)
-                Text(UIText.t("法语、俄语、韩语可离线补全词语；记忆只保存在本机，关闭后只使用内置词库。")).font(.caption).foregroundStyle(.secondary)
+                Text(UIText.t("法语、俄语、韩语可离线补全词语，中文可离线把拼音转成汉字；记忆只保存在本机，关闭后只使用内置词库。")).font(.caption).foregroundStyle(.secondary)
                 Button(UIText.t("清空键盘词语记忆")) { model.clearKeyboardWordMemory(); clearedWordMemory = true }
                 if clearedWordMemory { Text(UIText.t("键盘词语记忆已清空")).font(.caption).foregroundStyle(.secondary) }
                 NavigationLink(UIText.t("快捷切换语言")) {
@@ -159,6 +159,9 @@ public struct NaturalSettingsView: View {
                 Text(UIText.t("点语言键按自选顺序切换；长按打开列表，再点选任一已开启的语言。选两种就来回切，选五种就五种循环。")).font(.caption).foregroundStyle(.secondary)
                 if !model.settings.enabledKeyboardLayouts.isEmpty {
                     Text(UIText.t("法语用 QWERTY，长按字母后右滑选重音字母或大写；俄语用 ЙЦУКЕН，长按 е 选 ё、ь 选 ъ，各字母长按可选大写。")).font(.caption).foregroundStyle(.secondary)
+                }
+                if model.settings.enabledKeyboardLayouts.contains(.chinese) {
+                    Text(UIText.t("中文用全拼：打拼音后在键盘上方选字词，空格选第一个，回车保留字母；ü 用 v 打。")).font(.caption).foregroundStyle(.secondary)
                 }
                 if model.settings.enabledKeyboardLayouts.contains(.korean) {
                     Text(UIText.t("韩语长按 ㅂㅈㄷㄱㅅ 后右滑输入 ㅃㅉㄸㄲㅆ，长按 ㅐㅔ 后右滑输入 ㅒㅖ。")).font(.caption).foregroundStyle(.secondary)

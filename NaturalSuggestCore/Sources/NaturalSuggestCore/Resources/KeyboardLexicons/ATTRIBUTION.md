@@ -14,6 +14,15 @@ source frequency order. No runtime dependency on wordfreq is needed.
 Regenerate with tools/export_keyboard_lexicons.py and wordfreq==3.1.1.
 Frequency data is not a normative dictionary; native-speaker review is welcome.
 
+zh-pinyin.txt is the Chinese pinyin dictionary. Its words and their order come from
+the same wordfreq 3.1.1 data (CC BY-SA 4.0); the pinyin readings were generated with
+pypinyin 0.55.0 by mozillazg (MIT, see pypinyin-LICENSE.txt), whose phrase and
+character readings come from the MIT-licensed phrase-pinyin-data and pinyin-data.
+Modifications: keep the first 80,000 words written only in Han characters, add about
+60 everyday chat words, write each reading as toneless syllables with ü as v, add the
+other readings of single characters at the end, and read 嗯 as en. The derived list is
+distributed under CC BY-SA 4.0. Regenerate with tools/export_pinyin_lexicon.py.
+
 Upstream licensing, attribution and source citations follow.
 
 ## License

@@ -1,7 +1,7 @@
 import Foundation
 
 public enum CompletionLanguage: String, Codable, CaseIterable, Sendable {
-    case french = "fr", russian = "ru", korean = "ko"
+    case french = "fr", russian = "ru", korean = "ko", chinese = "zh"
 }
 
 public enum CompletionWords {
@@ -28,6 +28,7 @@ public enum CompletionWords {
             case .french: (0x41...0x5A).contains(scalar.value) || (0x61...0x7A).contains(scalar.value) || (0xC0...0x24F).contains(scalar.value) || [0x27, 0x2019, 0x2D].contains(scalar.value)
             case .russian: (0x400...0x4FF).contains(scalar.value) || scalar == "-"
             case .korean: (0xAC00...0xD7A3).contains(scalar.value)
+            case .chinese: (0x4E00...0x9FFF).contains(scalar.value)
             }
         }
     }
@@ -164,6 +165,11 @@ public struct WordCompletionMemory: Codable, Sendable {
             }
         }
         if entries.count > Self.maximumEntries { entries.remove(at: entries.indices.min(by: { entries[$0].recent < entries[$1].recent })!) }
+    }
+
+    /// How often `word` was chosen; Chinese candidates use it to rank words the user picks.
+    public func uses(of word: String, language: CompletionLanguage) -> Int {
+        entries.first { $0.language == language && $0.word == word }?.uses ?? 0
     }
 
     public func suggestions(prefix: String, after previous: String?, language: CompletionLanguage, limit: Int = 8) -> [String] {

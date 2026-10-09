@@ -2,19 +2,20 @@ import Foundation
 
 /// Optional iPhone keyboard layouts.
 public enum ExtraKeyboardLayout: String, CaseIterable, Sendable {
-    case korean, french, russian
+    case korean, french, russian, chinese
 
     public var title: String {
         switch self {
         case .korean: UIText.t("韩语")
         case .french: UIText.t("法语")
         case .russian: UIText.t("俄语")
+        case .chinese: UIText.t("中文")
         }
     }
 }
 
 public enum KeyboardSwitchLanguage: String, CaseIterable, Sendable {
-    case japanese, english, korean, french, russian
+    case japanese, english, korean, french, russian, chinese
 
     public var title: String {
         switch self {
@@ -23,6 +24,7 @@ public enum KeyboardSwitchLanguage: String, CaseIterable, Sendable {
         case .korean: UIText.t("韩语")
         case .french: UIText.t("法语")
         case .russian: UIText.t("俄语")
+        case .chinese: UIText.t("中文")
         }
     }
 }

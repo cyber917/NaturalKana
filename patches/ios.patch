@@ -187,10 +187,10 @@ index 5ccfa08..5f7e9be 100644
      private static var appVersionString: String? {
          Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String
 diff --git a/AzooKeyCore/Sources/CustardKit/CustardActions.swift b/AzooKeyCore/Sources/CustardKit/CustardActions.swift
-index f8d7ff1..3d9073c 100644
+index f8d7ff1..05e3df4 100644
 --- a/AzooKeyCore/Sources/CustardKit/CustardActions.swift
 +++ b/AzooKeyCore/Sources/CustardKit/CustardActions.swift
-@@ -36,6 +36,11 @@ public enum TabData: Hashable, Sendable {
+@@ -36,6 +36,12 @@ public enum TabData: Hashable, Sendable {
          /// qwerty symbols input tab
          case qwerty_symbols
  
@@ -198,6 +198,7 @@ index f8d7ff1..3d9073c 100644
 +        case qwerty_korean
 +        case qwerty_french
 +        case qwerty_russian
++        case qwerty_chinese
 +
          /// the last tab
          case last_tab
@@ -229,10 +230,10 @@ index 5c970b9..eab426a 100644
          case .fire:
              Text("δ")
 diff --git a/AzooKeyCore/Sources/KeyboardViews/Custard/QwertyCustards.swift b/AzooKeyCore/Sources/KeyboardViews/Custard/QwertyCustards.swift
-index 5478d73..e9ed17c 100644
+index 5478d73..d0a0e0c 100644
 --- a/AzooKeyCore/Sources/KeyboardViews/Custard/QwertyCustards.swift
 +++ b/AzooKeyCore/Sources/KeyboardViews/Custard/QwertyCustards.swift
-@@ -3,12 +3,17 @@ import CustardKit
+@@ -3,12 +3,18 @@ import CustardKit
  public extension Custard {
      static let qwertyJapanese = DefaultQwertyCustards.japanese
      static let qwertyEnglish = DefaultQwertyCustards.english(
@@ -248,10 +249,11 @@ index 5478d73..e9ed17c 100644
 +    static let koreanIdentifier = "korean_qwerty"
 +    static let qwertyFrench = DefaultQwertyCustards.french
 +    static let qwertyRussian = DefaultQwertyCustards.russian
++    static let qwertyChinese = DefaultQwertyCustards.chinese
  
      static func qwertyEnglish(useShiftKey: Bool) -> Custard {
          DefaultQwertyCustards.english(
-@@ -73,42 +78,92 @@ private enum DefaultQwertyCustards {
+@@ -73,42 +79,108 @@ private enum DefaultQwertyCustards {
      }
  
      static func english(shiftKeyPlacement: ShiftKeyPlacement) -> Custard {
@@ -344,6 +346,22 @@ index 5478d73..e9ed17c 100644
 +        directLetters(identifier: "russian_qwerty", displayName: "Русский",
 +                      rows: ["йцукенгшщзх", "фывапролджэ", "ячсмитьбю"],
 +                      variants: ["е": "ё", "ь": "ъ"])
++    }
++
++    /// NaturalKana: full pinyin. Keys type lowercase letters; the keyboard converts them into Chinese.
++    static var chinese: Custard {
++        var keys: [CustardKeyPositionSpecifier: CustardInterfaceKey] = [:]
++        for (row, letters) in ["qwertyuiop", "asdfghjkl", "zxcvbnm"].enumerated() {
++            let offset = row == 2 ? 1.5 : 0.0
++            for (index, letter) in letters.enumerated() {
++                keys[position(offset + Double(index), row)] = inputKey(String(letter))
++            }
++        }
++        keys[position(9, 1)] = inputKey("，", variations: ["，", "。", "？", "！", "、", "：", "；", "……", "～"])
++        keys[position(0, 2, width: 1.4)] = .system(.qwertyLanguageSwitch)
++        keys[position(8.6, 2, width: 1.4)] = deleteKey
++        addBottomRow(to: &keys, leadingKey: tabKey(label: .systemImage("textformat.123"), destination: .qwerty_numbers))
++        return custard(identifier: "chinese_qwerty", displayName: "中文", language: .none, inputStyle: .direct, keys: keys)
 +    }
 +
 +    /// Base letter first: long-press then slide right for variants and capitals.
@@ -454,14 +472,14 @@ index 6af6ab4..aa101a9 100644
  }
 diff --git a/AzooKeyCore/Sources/KeyboardViews/ExtraKeyboardLayout.swift b/AzooKeyCore/Sources/KeyboardViews/ExtraKeyboardLayout.swift
 new file mode 100644
-index 0000000..75d6136
+index 0000000..04edf32
 --- /dev/null
 +++ b/AzooKeyCore/Sources/KeyboardViews/ExtraKeyboardLayout.swift
-@@ -0,0 +1,58 @@
+@@ -0,0 +1,63 @@
 +import CustardKit
 +
 +public enum ExtraKeyboardLayout: String, CaseIterable, Sendable {
-+    case korean, french, russian
++    case korean, french, russian, chinese
 +
 +    public var identifier: String { rawValue + "_qwerty" }
 +    public var symbol: String {
@@ -469,6 +487,7 @@ index 0000000..75d6136
 +        case .korean: "한"
 +        case .french: "FR"
 +        case .russian: "РУ"
++        case .chinese: "中"
 +        }
 +    }
 +    public var tab: TabData.SystemTab {
@@ -476,12 +495,13 @@ index 0000000..75d6136
 +        case .korean: .qwerty_korean
 +        case .french: .qwerty_french
 +        case .russian: .qwerty_russian
++        case .chinese: .qwerty_chinese
 +        }
 +    }
 +}
 +
 +public enum KeyboardSwitchLanguage: String, CaseIterable, Sendable {
-+    case japanese, english, korean, french, russian
++    case japanese, english, korean, french, russian, chinese
 +
 +    public var symbol: String {
 +        switch self {
@@ -490,6 +510,7 @@ index 0000000..75d6136
 +        case .korean: "한"
 +        case .french: "FR"
 +        case .russian: "РУ"
++        case .chinese: "中"
 +        }
 +    }
 +    public var title: String {
@@ -499,6 +520,7 @@ index 0000000..75d6136
 +        case .korean: "한국어"
 +        case .french: "Français"
 +        case .russian: "Русский"
++        case .chinese: "中文"
 +        }
 +    }
 +    public var tab: TabData.SystemTab {
@@ -508,6 +530,7 @@ index 0000000..75d6136
 +        case .korean: .qwerty_korean
 +        case .french: .qwerty_french
 +        case .russian: .qwerty_russian
++        case .chinese: .qwerty_chinese
 +        }
 +    }
 +    public static func next(after current: Self?, order: [Self]) -> Self {
@@ -568,7 +591,7 @@ index b464ddb..7b10092 100644
      /// - スクリーンそのもののサイズ。キーボードビューの幅は片手モードなどによって変更が生じうるため、`screenWidth`は限定的な場面でのみ使うことが望まし。
      private(set) public var screenWidth: CGFloat = 0
 diff --git a/AzooKeyCore/Sources/KeyboardViews/TabManager.swift b/AzooKeyCore/Sources/KeyboardViews/TabManager.swift
-index 5e244a2..346cb98 100644
+index 5e244a2..ad3fc56 100644
 --- a/AzooKeyCore/Sources/KeyboardViews/TabManager.swift
 +++ b/AzooKeyCore/Sources/KeyboardViews/TabManager.swift
 @@ -8,6 +8,7 @@
@@ -579,7 +602,7 @@ index 5e244a2..346cb98 100644
  import enum KanaKanjiConverterModule.InputStyle
  import enum KanaKanjiConverterModule.KeyboardLanguage
  import SwiftUI
-@@ -31,6 +32,12 @@ extension TabData {
+@@ -31,6 +32,14 @@ extension TabData {
                  return .existential(.qwerty_numbers)
              case .qwerty_symbols:
                  return .existential(.qwerty_symbols)
@@ -589,10 +612,12 @@ index 5e244a2..346cb98 100644
 +                return .existential(.custard(.qwertyFrench))
 +            case .qwerty_russian:
 +                return .existential(.custard(.qwertyRussian))
++            case .qwerty_chinese:
++                return .existential(.custard(.qwertyChinese))
              case .user_japanese:
                  return .user_dependent(.japanese)
              case .user_english:
-@@ -71,6 +78,18 @@ public struct TabManager {
+@@ -71,6 +80,18 @@ public struct TabManager {
      /// 一時的に表示を切り替えるタブ。lastTabに反映されない。
      private var temporalTab: ManagerTab?
      private var lastTab: ManagerTab?
@@ -611,7 +636,7 @@ index 5e244a2..346cb98 100644
  
      public enum ManagerTab {
          case existential(KeyboardTab.ExistentialTab)
-@@ -212,6 +231,10 @@ public struct TabManager {
+@@ -212,6 +233,10 @@ public struct TabManager {
      }
  
      @MainActor mutating func moveTab(to destination: KeyboardTab, variableStates: VariableStates) {
@@ -1723,10 +1748,10 @@ index f659d9d..fce84cb 100644
      var body: some View {
 diff --git a/AzooKeyCore/Tests/KeyboardViewsTests/ExtraKeyboardLayoutTests.swift b/AzooKeyCore/Tests/KeyboardViewsTests/ExtraKeyboardLayoutTests.swift
 new file mode 100644
-index 0000000..26c9f97
+index 0000000..3e43188
 --- /dev/null
 +++ b/AzooKeyCore/Tests/KeyboardViewsTests/ExtraKeyboardLayoutTests.swift
-@@ -0,0 +1,84 @@
+@@ -0,0 +1,101 @@
 +import CustardKit
 +@testable import KeyboardViews
 +import XCTest
@@ -1773,6 +1798,23 @@ index 0000000..26c9f97
 +        XCTAssertEqual(custard.interface.keys[language], .system(.qwertyLanguageSwitch))
 +        let withoutShift = Custard.qwertyEnglish(useShiftKey: false)
 +        XCTAssertEqual(withoutShift.interface.keys[shift], .system(.upperLower))
++    }
++
++    func testChineseLayoutTypesLowercasePinyin() {
++        let custard = Custard.qwertyChinese
++        XCTAssertEqual(custard.identifier, ExtraKeyboardLayout.chinese.identifier)
++        XCTAssertEqual(custard.language, .none)
++        XCTAssertEqual(custard.input_style, .direct)
++        var inputs: Set<String> = []
++        for key in custard.interface.keys.values {
++            guard case let .custom(key) = key else { continue }
++            for action in key.press_actions + key.variations.flatMap({ $0.key.press_actions }) {
++                if case let .input(value) = action { inputs.insert(value) }
++            }
++        }
++        for letter in "abcdefghijklmnopqrstuvwxyz" { XCTAssertTrue(inputs.contains(String(letter)), "Missing \(letter)") }
++        XCTAssertFalse(inputs.contains("A"))
++        XCTAssertTrue(inputs.isSuperset(of: ["，", "。", "？", "！"]))
 +    }
 +
 +    func testLayoutsContainEveryLetterAndVariant() {
@@ -1825,7 +1867,7 @@ index 0a478af..7f39290 100644
      private static let zenzXsmallWeightURL = Bundle.main.bundleURL.appendingPathComponent("zenz-v3.2-xsmall-gguf/ggml-model-Q5_K_M.gguf", isDirectory: false)
  
 diff --git a/Keyboard/Display/KeyboardActionManager.swift b/Keyboard/Display/KeyboardActionManager.swift
-index 5f55651..f271abd 100644
+index 5f55651..faee0e8 100644
 --- a/Keyboard/Display/KeyboardActionManager.swift
 +++ b/Keyboard/Display/KeyboardActionManager.swift
 @@ -11,7 +11,9 @@ import Foundation
@@ -1838,12 +1880,17 @@ index 5f55651..f271abd 100644
  import SwiftUtils
  
  /// キーボードへのアクション部門の動作を担う。
-@@ -25,11 +27,170 @@ final class KeyboardActionManager: UserActionManager, @unchecked Sendable {
+@@ -25,11 +27,227 @@ final class KeyboardActionManager: UserActionManager, @unchecked Sendable {
      private var tasks: [(type: LongpressActionType, task: Task<Void, any Error>)] = []
      private var tempTextData: (left: String, center: String, right: String)?
      private var pendingReportDismissTask: Task<Void, Never>?
 +    /// NaturalKana: the Hangul syllable being typed on the Korean layout.
 +    private var hangul = HangulComposer()
++    /// NaturalKana: pinyin typed on the Chinese layout and not yet converted; it is the text just before the cursor.
++    private var pinyin = ""
++    private var pinyinLexicon: PinyinLexicon?
++    private var loadingPinyinLexicon = false
++    @MainActor var isComposingPinyin: Bool { !pinyin.isEmpty }
 +
 +    private var wordLexicons: [CompletionLanguage: WordCompletionLexicon] = [:]
 +    private var loadingWordLexicons: Set<CompletionLanguage> = []
@@ -1944,6 +1991,10 @@ index 5f55651..f271abd 100644
 +    }
 +
 +    @MainActor func refreshWordCompletions(_ states: VariableStates) {
++        if states.tabManager.existentialTab().extraKeyboardLayout == .chinese {
++            refreshPinyinCandidates(states)
++            return
++        }
 +        guard let language = completionLanguage(states) else {
 +            if showingWordCompletions { states.resultModel.setPredictionResults([]); showingWordCompletions = false }
 +            return
@@ -1998,6 +2049,54 @@ index 5f55651..f271abd 100644
 +        states.setEnterKeyState(inputManager.getEnterKeyState())
 +        refreshWordCompletions(states)
 +    }
++
++    @MainActor private func refreshPinyinCandidates(_ states: VariableStates) {
++        if pinyinLexicon == nil, !loadingPinyinLexicon {
++            loadingPinyinLexicon = true
++            Task { @MainActor [weak self, weak states] in
++                let lexicon = await Task.detached(priority: .userInitiated) { PinyinLexicon.bundled() }.value
++                guard let self else { return }
++                self.pinyinLexicon = lexicon
++                self.loadingPinyinLexicon = false
++                if let states { self.refreshWordCompletions(states) }
++            }
++        }
++        let field = delegate?.textDocumentProxy.documentIdentifier
++        let items = field.map { field in pinyinCandidates().map { PinyinCandidateItem(candidate: $0, typed: pinyin, field: field) } } ?? []
++        states.resultModel.setResults([])
++        states.resultModel.setPredictionResults(items)
++        showingWordCompletions = true
++    }
++
++    @MainActor private func pinyinCandidates() -> [PinyinCandidate] {
++        guard let pinyinLexicon, !pinyin.isEmpty else { return [] }
++        let uses = wordLearning ? Dictionary(wordMemory.entries.filter { $0.language == .chinese }.map { ($0.word, $0.uses) }, uniquingKeysWith: max) : [:]
++        return pinyinLexicon.candidates(for: pinyin, uses: { uses[$0] ?? 0 })
++    }
++
++    /// Replaces the typed letters with the candidate; letters it does not cover stay, to be converted next.
++    @MainActor private func commitPinyin(_ candidate: PinyinCandidate) {
++        let rest = String(pinyin.dropFirst(candidate.consumed))
++        inputManager.deleteBackward(convertTargetCount: pinyin.count, requireSetResult: false)
++        inputManager.input(text: candidate.text + rest, requireSetResult: false, simpleInsert: true, inputStyle: .direct)
++        pinyin = rest
++        if wordLearning, wordFieldAllowed {
++            wordMemory.record(candidate.text, after: nil, language: .chinese)
++            wordMemoryDirty = true
++            saveWordMemory()
++        }
++    }
++
++    @MainActor private func acceptPinyin(_ item: PinyinCandidateItem, states: VariableStates) {
++        guard item.typed == pinyin, delegate?.textDocumentProxy.documentIdentifier == item.field,
++              inputManager.getSurroundingText().leftText.hasSuffix(pinyin) else { refreshWordCompletions(states); return }
++        commitPinyin(item.candidate)
++        let (left, center, right) = inputManager.getSurroundingText()
++        states.setSurroundingText(leftSide: left, center: center, rightSide: right)
++        states.textChangedCount = inputManager.getTextChangedCount()
++        states.setEnterKeyState(inputManager.getEnterKeyState())
++        refreshWordCompletions(states)
++    }
  
      // キーボードを閉じる際に呼び出す
      // inputManagerはキーボードを閉じる際にある種の操作を行う
@@ -2009,7 +2108,7 @@ index 5f55651..f271abd 100644
          for (_, task) in self.tasks {
              task.cancel()
          }
-@@ -51,6 +212,7 @@ final class KeyboardActionManager: UserActionManager, @unchecked Sendable {
+@@ -51,6 +269,7 @@ final class KeyboardActionManager: UserActionManager, @unchecked Sendable {
              if let variableStates {
                  update(&variableStates.resultModel)
                  self?.refreshUpsideComponent(for: variableStates)
@@ -2017,7 +2116,7 @@ index 5f55651..f271abd 100644
              }
          }
      }
-@@ -68,6 +230,12 @@ final class KeyboardActionManager: UserActionManager, @unchecked Sendable {
+@@ -68,6 +287,16 @@ final class KeyboardActionManager: UserActionManager, @unchecked Sendable {
      ///   - candidate: 確定された候補。
      ///   - variableStates: 状態。
      override func notifyComplete(_ candidate: any ResultViewItemData, variableStates: VariableStates) {
@@ -2027,10 +2126,14 @@ index 5f55651..f271abd 100644
 +            acceptWordCompletion(candidate, states: variableStates)
 +            return
 +        }
++        if let item = candidate as? PinyinCandidateItem {
++            acceptPinyin(item, states: variableStates)
++            return
++        }
          if let candidate = candidate as? Candidate {
              self.inputManager.complete(candidate: candidate)
              self.registerActions(candidate.actions.map(\.action), variableStates: variableStates)
-@@ -107,7 +275,13 @@ final class KeyboardActionManager: UserActionManager, @unchecked Sendable {
+@@ -107,7 +336,19 @@ final class KeyboardActionManager: UserActionManager, @unchecked Sendable {
      }
  
      override func notifyForgetCandidate(_ candidate: any ResultViewItemData, variableStates: VariableStates) {
@@ -2041,19 +2144,25 @@ index 5f55651..f271abd 100644
 +            saveWordMemory()
 +            refreshWordCompletions(variableStates)
 +            variableStates.temporalMessage = .doneForgetCandidate
++        } else if let item = candidate as? PinyinCandidateItem {
++            wordMemory.forget(item.candidate.text, language: .chinese)
++            wordMemoryDirty = true
++            saveWordMemory()
++            refreshWordCompletions(variableStates)
++            variableStates.temporalMessage = .doneForgetCandidate
 +        } else if let candidate = candidate as? Candidate {
              self.inputManager.forgetMemory(candidate)
              variableStates.temporalMessage = .doneForgetCandidate
          }
-@@ -118,6 +292,7 @@ final class KeyboardActionManager: UserActionManager, @unchecked Sendable {
+@@ -118,6 +359,7 @@ final class KeyboardActionManager: UserActionManager, @unchecked Sendable {
      }
  
      @MainActor override func prepareReportSuggestion(candidate: any ResultViewItemData, index: Int, variableStates: VariableStates) {
-+        if candidate is WordCompletionCandidate { return }
++        if candidate is WordCompletionCandidate || candidate is PinyinCandidateItem { return }
          handlePrepareReportSuggestion(candidate: candidate, index: index, variableStates: variableStates)
      }
  
-@@ -143,12 +318,58 @@ final class KeyboardActionManager: UserActionManager, @unchecked Sendable {
+@@ -143,12 +385,98 @@ final class KeyboardActionManager: UserActionManager, @unchecked Sendable {
          self.dismissReportInterfacesIfNeeded(variableStates: variableStates)
      }
  
@@ -2084,6 +2193,42 @@ index 5f55651..f271abd 100644
 +        return true
 +    }
 +
++    /// Types and converts pinyin on the Chinese layout; false when the action is handled as usual.
++    @MainActor private func handlePinyin(_ action: ActionType, variableStates: VariableStates) -> Bool {
++        // Only letters typed just now are converted: a moved cursor or a change by the app keeps them as text.
++        if !pinyin.isEmpty, !inputManager.getSurroundingText().leftText.hasSuffix(pinyin) { pinyin = "" }
++        switch action {
++        case let .input(text, _) where text.count == 1 && PinyinLexicon.isLetter(text.first!):
++            textEditingActionDidBegin(variableStates: variableStates)
++            pinyin += text
++            inputManager.input(text: text, requireSetResult: false, simpleInsert: true, inputStyle: .direct)
++            return true
++        case .delete(1) where !pinyin.isEmpty:
++            textEditingActionDidBegin(variableStates: variableStates)
++            pinyin.removeLast()
++            inputManager.deleteBackward(convertTargetCount: 1, requireSetResult: false)
++            return true
++        case .input(" ", _) where !pinyin.isEmpty:
++            // Space picks the first candidate; without one it types a space after the letters.
++            guard let first = pinyinCandidates().first else { pinyin = ""; return false }
++            textEditingActionDidBegin(variableStates: variableStates)
++            commitPinyin(first)
++            return true
++        case .enter where !pinyin.isEmpty:
++            // Return keeps the letters as typed.
++            pinyin = ""
++            return true
++        case .input where !pinyin.isEmpty:
++            // Punctuation after pinyin converts all of it first, as space would.
++            if let first = pinyinCandidates().first, first.consumed == pinyin.count { commitPinyin(first) }
++            pinyin = ""
++            return false
++        default:
++            pinyin = ""
++            return false
++        }
++    }
++
      @MainActor private func shiftStateOff(variableStates: VariableStates) {
          variableStates.boolStates[VariableStates.BoolStates.isShiftedKey] = false
      }
@@ -2105,6 +2250,10 @@ index 5f55651..f271abd 100644
 +        if variableStates.tabManager.existentialTab().extraKeyboardLayout == .korean, self.handleHangul(action, variableStates: variableStates) {
 +            return
 +        }
++        // NaturalKana: on the Chinese layout, letters collect as pinyin and candidates replace them.
++        if variableStates.tabManager.existentialTab().extraKeyboardLayout == .chinese, self.handlePinyin(action, variableStates: variableStates) {
++            return
++        }
 +        switch action {
 +        case .input, .delete: break
 +        default: self.hangul.reset()
@@ -2112,10 +2261,21 @@ index 5f55651..f271abd 100644
          var undoAction: ActionType?
          switch action {
          case let .input(text, simpleInsert):
-@@ -784,3 +1005,17 @@ final class KeyboardActionManager: UserActionManager, @unchecked Sendable {
+@@ -784,3 +1112,28 @@ final class KeyboardActionManager: UserActionManager, @unchecked Sendable {
          // TODO: Provide up-to-date implementation
      }
  }
++
++private struct PinyinCandidateItem: ResultViewItemData {
++    let candidate: PinyinCandidate
++    let typed: String
++    let field: UUID
++    var label: ResultViewItemLabelStyle { .text(candidate.text) }
++    var inputable: Bool { true }
++    #if DEBUG
++    func getDebugInformation() -> String { "Pinyin conversion" }
++    #endif
++}
 +
 +private struct WordCompletionCandidate: ResultViewItemData {
 +    let word: String
@@ -2131,7 +2291,7 @@ index 5f55651..f271abd 100644
 +    #endif
 +}
 diff --git a/Keyboard/Display/KeyboardViewController.swift b/Keyboard/Display/KeyboardViewController.swift
-index e6038af..cf8caf7 100644
+index e6038af..008bc2a 100644
 --- a/Keyboard/Display/KeyboardViewController.swift
 +++ b/Keyboard/Display/KeyboardViewController.swift
 @@ -14,6 +14,8 @@ import KeyboardViews
@@ -2360,7 +2520,7 @@ index e6038af..cf8caf7 100644
 +        let base = manager.displayedTextManager.documentContextBeforeInput(ignoreComposition: true) ?? ""
 +        let best = manager.displayedTextManager.displayedLiveConversionText ?? composing
 +        let text = DraftSnapshot.currentLine(before: base + best, after: proxy.documentContextAfterInput ?? "")
-+        let latin = Self.variableStates.keyboardLanguage == .ja_JP && JapaneseDraftProfile.hasPendingRomaji(composing)
++        let latin = (Self.variableStates.keyboardLanguage == .ja_JP && JapaneseDraftProfile.hasPendingRomaji(composing)) || Self.action.isComposingPinyin
 +        return DraftSnapshot(text: text, fieldID: proxy.documentIdentifier.uuidString + naturalGeneration, composingLatin: latin)
 +    }
 +
@@ -2665,7 +2825,7 @@ index 1b84bb3..edd7a19 100644
 +    }
  }
 diff --git a/MainApp/Features/Customization/Custard/Editing/CodableActionEditingService.swift b/MainApp/Features/Customization/Custard/Editing/CodableActionEditingService.swift
-index 4194897..7dc4910 100644
+index 4194897..bd5497d 100644
 --- a/MainApp/Features/Customization/Custard/Editing/CodableActionEditingService.swift
 +++ b/MainApp/Features/Customization/Custard/Editing/CodableActionEditingService.swift
 @@ -1,6 +1,7 @@
@@ -2676,7 +2836,7 @@ index 4194897..7dc4910 100644
  import SwiftUI
  
  enum CodableActionEditingService {
-@@ -143,6 +144,12 @@ extension TabData {
+@@ -143,6 +144,14 @@ extension TabData {
                  return "数字(ローマ字入力)"
              case .qwerty_symbols:
                  return "記号(ローマ字入力)"
@@ -2686,6 +2846,8 @@ index 4194897..7dc4910 100644
 +                return LocalizedStringKey(UIText.t("法语（QWERTY）"))
 +            case .qwerty_russian:
 +                return LocalizedStringKey(UIText.t("俄语（ЙЦУКЕН）"))
++            case .qwerty_chinese:
++                return LocalizedStringKey(UIText.t("中文（全拼）"))
              case .last_tab:
                  return "最後に表示していたタブ"
              case .clipboard_history_tab:
