@@ -26452,7 +26452,7 @@ index d910e06..a1113f9 100644
 +}
 \ No newline at end of file
 diff --git a/azooKey.xcodeproj/project.pbxproj b/azooKey.xcodeproj/project.pbxproj
-index 5d265e1..8e5fae4 100644
+index 5d265e1..c30f26d 100644
 --- a/azooKey.xcodeproj/project.pbxproj
 +++ b/azooKey.xcodeproj/project.pbxproj
 @@ -7,7 +7,6 @@
@@ -26549,7 +26549,7 @@ index 5d265e1..8e5fae4 100644
  				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
  				COPY_PHASE_STRIP = NO;
 -				CURRENT_PROJECT_VERSION = 1;
-+				CURRENT_PROJECT_VERSION = 20;
++				CURRENT_PROJECT_VERSION = 21;
  				DEBUG_INFORMATION_FORMAT = dwarf;
 -				DEVELOPMENT_TEAM = 9S3UXHYP65;
 +				DEVELOPMENT_TEAM = "";
@@ -26561,7 +26561,7 @@ index 5d265e1..8e5fae4 100644
  				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
  				COPY_PHASE_STRIP = NO;
 -				CURRENT_PROJECT_VERSION = 1;
-+				CURRENT_PROJECT_VERSION = 20;
++				CURRENT_PROJECT_VERSION = 21;
  				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 -				DEVELOPMENT_TEAM = 9S3UXHYP65;
 +				DEVELOPMENT_TEAM = "";

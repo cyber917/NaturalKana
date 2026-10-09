@@ -9,7 +9,7 @@
 | 平台 | 提供什么 | 安装方式 |
 | --- | --- | --- |
 | **iPhone** | 多语言键盘，iOS 17.6+ | [下载 IPA](https://github.com/cyber917/NaturalKana/releases/latest)，用 SideStore／AltStore 安装 → [教程](docs/INSTALLATION.md#iphone不需要-mac) |
-| **Windows** | 建议小助手，Windows 10/11 64 位 | [下载 exe](https://github.com/cyber917/NaturalKana/releases/tag/windows-v0.1.3)，配合现有输入法使用 → [教程](docs/WINDOWS.md) |
+| **Windows** | 建议小助手，Windows 10/11 64 位 | [下载 exe](https://github.com/cyber917/NaturalKana/releases/tag/windows-v0.1.4)，配合现有输入法使用 → [教程](docs/WINDOWS.md) |
 | **Mac** | 输入法与菜单栏小助手，Apple 芯片、macOS 13+ | [下载源码安装器](https://github.com/cyber917/NaturalKana/releases/latest)，需要完整 Xcode 和自己的开发签名配置 → [教程](docs/MAC_INSTALL.md) |
 
 Mac 提供的是源码编译安装器，不是 DMG。iPhone 免费账户安装后需定期续签，详见[签名与续期](docs/INSTALLATION.md#签名与续期)。
