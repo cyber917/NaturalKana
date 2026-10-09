@@ -27,10 +27,18 @@ index 2b9fc9b..8cf6a81 100644
                  "KeyboardThemes",
                  "KeyboardViews",
 diff --git a/AzooKeyCore/Sources/AzooKeyUtils/AzooKeyKeyboardViewExtension.swift b/AzooKeyCore/Sources/AzooKeyUtils/AzooKeyKeyboardViewExtension.swift
-index 3935bf8..fd5c6b9 100644
+index 3935bf8..1f0fc63 100644
 --- a/AzooKeyCore/Sources/AzooKeyUtils/AzooKeyKeyboardViewExtension.swift
 +++ b/AzooKeyCore/Sources/AzooKeyUtils/AzooKeyKeyboardViewExtension.swift
-@@ -79,7 +79,7 @@ public enum AzooKeyKeyboardViewExtension: ApplicationSpecificKeyboardViewExtensi
+@@ -8,6 +8,7 @@
+ 
+ import Foundation
+ import KeyboardViews
++import NaturalSuggestCore
+ 
+ public enum AzooKeyKeyboardViewExtension: ApplicationSpecificKeyboardViewExtension {
+     public typealias ThemeExtension = AzooKeySpecificTheme
+@@ -79,7 +80,7 @@ public enum AzooKeyKeyboardViewExtension: ApplicationSpecificKeyboardViewExtensi
      }
  
      public static var displayTabBarButton: Bool {
@@ -39,7 +47,7 @@ index 3935bf8..fd5c6b9 100644
      }
  
      public static var hideResetButtonInOneHandedMode: Bool {
-@@ -136,7 +136,7 @@ public struct ClipboardHistoryManagerConfig: ClipboardHistoryManagerConfiguratio
+@@ -136,7 +137,7 @@ public struct ClipboardHistoryManagerConfig: ClipboardHistoryManagerConfiguratio
      }
  
      public var saveDirectory: URL? {
@@ -48,6 +56,28 @@ index 3935bf8..fd5c6b9 100644
      }
  
      public var maxCount: Int {
+@@ -147,6 +148,21 @@ public struct ClipboardHistoryManagerConfig: ClipboardHistoryManagerConfiguratio
+ public struct TabManagerConfig: TabManagerConfiguration {
+     public init() {}
+ 
++    @MainActor public var rememberedKeyboardLanguage: String? {
++        get {
++            let defaults = SharedStore.userDefaults
++            let settings = defaults.data(forKey: "nk.settings")
++                .flatMap { try? JSONDecoder().decode(SuggestionSettings.self, from: $0) } ?? SuggestionSettings()
++            return KeyboardLanguageMemory.load(from: defaults, settings: settings).rawValue
++        }
++        nonmutating set {
++            if let newValue, let language = NaturalSuggestCore.KeyboardSwitchLanguage(rawValue: newValue) {
++                KeyboardLanguageMemory.save(language, to: SharedStore.userDefaults)
++            }
++        }
++    }
++
++
+     public var japaneseLayout: KeyboardViews.LanguageLayout {
+         AzooKeySettingProvider.japaneseKeyboardLayout
+     }
 diff --git a/AzooKeyCore/Sources/AzooKeyUtils/AzooKeyMessage.swift b/AzooKeyCore/Sources/AzooKeyUtils/AzooKeyMessage.swift
 index dec22c6..ff2c7c2 100644
 --- a/AzooKeyCore/Sources/AzooKeyUtils/AzooKeyMessage.swift
@@ -162,6 +192,19 @@ index 2cd085c..89ca7c9 100644
      public static let key: String = "keyboard_type_en"
  }
  
+diff --git a/AzooKeyCore/Sources/AzooKeyUtils/KeyboardSetting/MarkedTextSetting.swift b/AzooKeyCore/Sources/AzooKeyUtils/KeyboardSetting/MarkedTextSetting.swift
+index 44a8334..c4f8a0c 100644
+--- a/AzooKeyCore/Sources/AzooKeyUtils/KeyboardSetting/MarkedTextSetting.swift
++++ b/AzooKeyCore/Sources/AzooKeyUtils/KeyboardSetting/MarkedTextSetting.swift
+@@ -30,7 +30,7 @@ public struct MarkedTextSettingKey: KeyboardSettingKey {
+ 
+     public static let title: LocalizedStringKey = "入力中のテキストを保護 (試験版)"
+     public static let explanation: LocalizedStringKey = "入力中のテキストを保護し、Webアプリなどでの入力において挙動を安定させます。\n試験的機能のため、仕様の変更、不具合などが発生する可能性があります。"
+-    public static let defaultValue: Value = .disabled
++    public static let defaultValue: Value = .enabled
+     public static let key: String = "marked_text_setting_beta"
+ }
+ 
 diff --git a/AzooKeyCore/Sources/AzooKeyUtils/SharedStore.swift b/AzooKeyCore/Sources/AzooKeyUtils/SharedStore.swift
 index 5ccfa08..5f7e9be 100644
 --- a/AzooKeyCore/Sources/AzooKeyUtils/SharedStore.swift
@@ -203,6 +246,76 @@ index f8d7ff1..05e3df4 100644
          /// the last tab
          case last_tab
  
+diff --git a/AzooKeyCore/Sources/KeyboardExtensionUtils/DisplayedTextManager.swift b/AzooKeyCore/Sources/KeyboardExtensionUtils/DisplayedTextManager.swift
+index 55443a4..9fbba5e 100644
+--- a/AzooKeyCore/Sources/KeyboardExtensionUtils/DisplayedTextManager.swift
++++ b/AzooKeyCore/Sources/KeyboardExtensionUtils/DisplayedTextManager.swift
+@@ -148,10 +148,12 @@ final public class DisplayedTextManager {
+         let cursorPosition = self.displayedLiveConversionText.map(NSString.init(string:))?.length ?? NSString(string: String(self.composingText.convertTarget.prefix(self.composingText.convertTargetCursorPosition))).length
+         let before = self.observedTextState()
+         self.proxy?.setMarkedText(text, selectedRange: NSRange(location: cursorPosition, length: 0))
+-        let after = before.map {
++        let predictedAfter = before.map {
+             self.observedStateByApplyingMarkedText(text, selectedRange: NSRange(location: cursorPosition, length: 0), to: $0)
+         }
+-        self.expectedEditTracker.record(before: before, after: after)
++        // Hosts may expose the marked text in their context, omit it, or update it later.
++        // Even an unchanged context can be a callback from our own marked-text edit.
++        self.expectedEditTracker.record(before: before, after: self.observedTextState(), alternativeAfter: predictedAfter, includingUnchanged: true)
+     }
+ 
+     @MainActor
+diff --git a/AzooKeyCore/Sources/KeyboardExtensionUtils/ExpectedEditTracker.swift b/AzooKeyCore/Sources/KeyboardExtensionUtils/ExpectedEditTracker.swift
+index ece4a00..e52cc38 100644
+--- a/AzooKeyCore/Sources/KeyboardExtensionUtils/ExpectedEditTracker.swift
++++ b/AzooKeyCore/Sources/KeyboardExtensionUtils/ExpectedEditTracker.swift
+@@ -20,7 +20,7 @@ public struct ExpectedEditTracker: Sendable {
+ 
+     private struct ExpectedEdit: Equatable, Sendable {
+         var before: ObservedTextState
+-        var after: ObservedTextState
++        var after: [ObservedTextState]
+     }
+ 
+     private let maxStoredEdits: Int
+@@ -30,11 +30,13 @@ public struct ExpectedEditTracker: Sendable {
+         self.maxStoredEdits = maxStoredEdits
+     }
+ 
+-    public mutating func record(before: ObservedTextState?, after: ObservedTextState?) {
+-        guard let before, let after, before != after else {
+-            return
+-        }
+-        self.expectedEdits.append(.init(before: before, after: after))
++    public mutating func record(before: ObservedTextState?, after: ObservedTextState?, alternativeAfter: ObservedTextState? = nil, includingUnchanged: Bool = false) {
++        guard let before, let after else { return }
++        var outcomes = [after]
++        if let alternativeAfter, alternativeAfter != after { outcomes.append(alternativeAfter) }
++        if !includingUnchanged { outcomes.removeAll { $0 == before } }
++        guard !outcomes.isEmpty else { return }
++        self.expectedEdits.append(.init(before: before, after: outcomes))
+         if self.expectedEdits.count > self.maxStoredEdits {
+             self.expectedEdits.removeFirst(self.expectedEdits.count - self.maxStoredEdits)
+         }
+@@ -44,15 +46,15 @@ public struct ExpectedEditTracker: Sendable {
+         for startIndex in self.expectedEdits.indices where self.expectedEdits[startIndex].before == before {
+             var endIndex = startIndex
+             var currentAfter = self.expectedEdits[endIndex].after
+-            if currentAfter == after {
++            if currentAfter.contains(after) {
+                 self.expectedEdits.removeFirst(endIndex + 1)
+                 return .matched(hasMoreEdits: self.expectedEdits.first?.before == after)
+             }
+ 
+-            while endIndex + 1 < self.expectedEdits.endIndex, currentAfter == self.expectedEdits[endIndex + 1].before {
++            while endIndex + 1 < self.expectedEdits.endIndex, currentAfter.contains(self.expectedEdits[endIndex + 1].before) {
+                 endIndex += 1
+                 currentAfter = self.expectedEdits[endIndex].after
+-                if currentAfter == after {
++                if currentAfter.contains(after) {
+                     self.expectedEdits.removeFirst(endIndex + 1)
+                     return .matched(hasMoreEdits: self.expectedEdits.first?.before == after)
+                 }
 diff --git a/AzooKeyCore/Sources/KeyboardThemes/ThemeData.swift b/AzooKeyCore/Sources/KeyboardThemes/ThemeData.swift
 index 699173c..15f21de 100644
 --- a/AzooKeyCore/Sources/KeyboardThemes/ThemeData.swift
@@ -622,7 +735,7 @@ index b464ddb..fa2ea41 100644
      /// - スクリーンそのもののサイズ。キーボードビューの幅は片手モードなどによって変更が生じうるため、`screenWidth`は限定的な場面でのみ使うことが望まし。
      private(set) public var screenWidth: CGFloat = 0
 diff --git a/AzooKeyCore/Sources/KeyboardViews/TabManager.swift b/AzooKeyCore/Sources/KeyboardViews/TabManager.swift
-index 5e244a2..621273e 100644
+index 5e244a2..0bca412 100644
 --- a/AzooKeyCore/Sources/KeyboardViews/TabManager.swift
 +++ b/AzooKeyCore/Sources/KeyboardViews/TabManager.swift
 @@ -8,6 +8,7 @@
@@ -667,7 +780,18 @@ index 5e244a2..621273e 100644
  
      public enum ManagerTab {
          case existential(KeyboardTab.ExistentialTab)
-@@ -212,6 +233,15 @@ public struct TabManager {
+@@ -150,6 +171,10 @@ public struct TabManager {
+     }
+ 
+     @MainActor mutating func initialize(variableStates: VariableStates) {
++        if let raw = config.rememberedKeyboardLanguage, let language = KeyboardSwitchLanguage(rawValue: raw) {
++            self.moveTab(to: TabData.system(language.tab).tab(config: config), variableStates: variableStates)
++            return
++        }
+         switch lastTab {
+         case .none:
+             self.moveTab(to: .user_dependent(.japanese), variableStates: variableStates)
+@@ -212,6 +237,15 @@ public struct TabManager {
      }
  
      @MainActor mutating func moveTab(to destination: KeyboardTab, variableStates: VariableStates) {
@@ -683,6 +807,29 @@ index 5e244a2..621273e 100644
          switch destination {
          case let .existential(tab):
              self.updateVariableStates(variableStates, inputStyle: tab.inputStyle, language: tab.language)
+@@ -245,11 +279,22 @@ public struct TabManager {
+             self.lastTab = nil
+         }
+         self.temporalTab = nil
++        if let language = existentialTab().switchLanguage {
++            config.rememberedKeyboardLanguage = language.rawValue
++        }
+     }
+ }
+ 
+ public protocol TabManagerConfiguration {
++    @MainActor var rememberedKeyboardLanguage: String? { get set }
+     @MainActor var japaneseLayout: LanguageLayout { get }
+     @MainActor var englishLayout: LanguageLayout { get }
+     var custardManager: any CustardManagerProtocol { get }
+ }
++
++public extension TabManagerConfiguration {
++    @MainActor var rememberedKeyboardLanguage: String? {
++        get { nil }
++        set { }
++    }
++}
 diff --git a/AzooKeyCore/Sources/KeyboardViews/VariableStates.swift b/AzooKeyCore/Sources/KeyboardViews/VariableStates.swift
 index b3f27f8..0d4f6f4 100644
 --- a/AzooKeyCore/Sources/KeyboardViews/VariableStates.swift
@@ -1969,6 +2116,126 @@ index f659d9d..fce84cb 100644
      }
  
      var body: some View {
+diff --git a/AzooKeyCore/Tests/KeyboardExtensionUtilsTests/DisplayedTextManagerTests.swift b/AzooKeyCore/Tests/KeyboardExtensionUtilsTests/DisplayedTextManagerTests.swift
+index 8fd943d..20b24a8 100644
+--- a/AzooKeyCore/Tests/KeyboardExtensionUtilsTests/DisplayedTextManagerTests.swift
++++ b/AzooKeyCore/Tests/KeyboardExtensionUtilsTests/DisplayedTextManagerTests.swift
+@@ -7,6 +7,57 @@ final class DisplayedTextManagerTests: XCTestCase {
+         .init(left: left, center: center, right: right)
+     }
+ 
++    @MainActor
++    func testEachPinyinLetterConsumesHostCallbackWithoutEndingComposition() {
++        for excludesMarkedText in [false, true] {
++            let manager = DisplayedTextManager(isLiveConversionEnabled: false, isMarkedTextEnabled: true)
++            let proxy = MockTextDocumentProxy()
++            proxy.excludesMarkedTextFromContext = excludesMarkedText
++            proxy.insertText("🙂")
++            manager.setTextDocumentProxy(.mainProxy(proxy))
++            var composing = ComposingText()
++            for letter in "nihao" {
++                let before = makeObservedState(proxy.documentContextBeforeInput ?? "")
++                composing.insertAtCursorPosition(String(letter), inputStyle: .direct)
++                manager.updateComposingText(composingText: composing, newLiveConversionText: nil)
++                let after = makeObservedState(proxy.documentContextBeforeInput ?? "")
++                XCTAssertEqual(manager.consumeExpectedEdit(before: before, after: after), .matched(hasMoreEdits: false))
++            }
++            XCTAssertEqual(String(utf16CodeUnits: proxy.utf16String, count: proxy.utf16String.count), "🙂nihao")
++            manager.updateComposingText(completedPrefix: "你好", composingText: ComposingText(), newLiveConversionText: nil)
++            manager.stopComposition()
++            XCTAssertEqual(proxy.documentContextBeforeInput, "🙂你好")
++            XCTAssertNil(proxy.utf16MarkedRange)
++        }
++    }
++
++    @MainActor
++    func testPinyinPartialConversionAndDeletionPreserveSurroundingText() {
++        for marked in [false, true] {
++            let manager = DisplayedTextManager(isLiveConversionEnabled: false, isMarkedTextEnabled: marked)
++            let proxy = MockTextDocumentProxy()
++            proxy.insertText("🙂")
++            manager.setTextDocumentProxy(.mainProxy(proxy))
++            func composition(_ text: String) -> ComposingText {
++                var result = ComposingText()
++                result.insertAtCursorPosition(text, inputStyle: .direct)
++                return result
++            }
++            manager.updateComposingText(composingText: composition("nihao"), newLiveConversionText: nil)
++            manager.updateComposingText(composingText: composition("nihaoma"), newLiveConversionText: nil)
++            XCTAssertEqual(proxy.documentContextBeforeInput, "🙂nihaoma")
++            manager.updateComposingText(completedPrefix: "你好", composingText: composition("ma"), newLiveConversionText: nil)
++            XCTAssertEqual(proxy.documentContextBeforeInput, "🙂你好ma")
++            if marked { XCTAssertEqual(proxy.utf16MarkedRange, NSRange(location: 4, length: 2)) }
++            manager.updateComposingText(composingText: composition("m"), newLiveConversionText: nil)
++            XCTAssertEqual(proxy.documentContextBeforeInput, "🙂你好m")
++            manager.updateComposingText(composingText: composition(""), newLiveConversionText: nil)
++            manager.stopComposition()
++            XCTAssertEqual(proxy.documentContextBeforeInput, "🙂你好")
++            XCTAssertNil(proxy.utf16MarkedRange)
++        }
++    }
++
+     @MainActor
+     func testOperation() throws {
+         let manager = DisplayedTextManager(isLiveConversionEnabled: false, isMarkedTextEnabled: false)
+diff --git a/AzooKeyCore/Tests/KeyboardExtensionUtilsTests/ExpectedEditTrackerTests.swift b/AzooKeyCore/Tests/KeyboardExtensionUtilsTests/ExpectedEditTrackerTests.swift
+index 5427f8a..81d2b41 100644
+--- a/AzooKeyCore/Tests/KeyboardExtensionUtilsTests/ExpectedEditTrackerTests.swift
++++ b/AzooKeyCore/Tests/KeyboardExtensionUtilsTests/ExpectedEditTrackerTests.swift
+@@ -2,6 +2,29 @@
+ import XCTest
+ 
+ final class ExpectedEditTrackerTests: XCTestCase {
++    func testMarkedTextOutcomesAreConsumedAsOneEdit() {
++        let before = ObservedTextState(left: "", center: "", right: "")
++        let marked = ObservedTextState(left: "n", center: "", right: "")
++        for after in [before, marked] {
++            var tracker = ExpectedEditTracker()
++            tracker.record(before: before, after: before, alternativeAfter: marked, includingUnchanged: true)
++            XCTAssertEqual(tracker.consume(before: before, after: after), .matched(hasMoreEdits: false))
++            XCTAssertEqual(tracker.consume(before: before, after: marked), .noMatch)
++            XCTAssertEqual(tracker.consume(before: before, after: before), .noMatch)
++        }
++    }
++
++    func testDelayedMarkedCallbackCanChainWithFollowingEdit() {
++        var tracker = ExpectedEditTracker()
++        let before = ObservedTextState(left: "", center: "", right: "")
++        let marked = ObservedTextState(left: "n", center: "", right: "")
++        let after = ObservedTextState(left: "ni", center: "", right: "")
++        tracker.record(before: before, after: before, alternativeAfter: marked, includingUnchanged: true)
++        tracker.record(before: marked, after: after)
++        XCTAssertEqual(tracker.consume(before: before, after: after), .matched(hasMoreEdits: false))
++        XCTAssertEqual(tracker.consume(before: before, after: before), .noMatch)
++    }
++
+     func testConsumeSingleEdit() {
+         var tracker = ExpectedEditTracker()
+         let before = ObservedTextState(left: "a", center: "", right: "")
+diff --git a/AzooKeyCore/Tests/KeyboardExtensionUtilsTests/MockTextDocumentProxy.swift b/AzooKeyCore/Tests/KeyboardExtensionUtilsTests/MockTextDocumentProxy.swift
+index 5bff6f2..6f162b0 100644
+--- a/AzooKeyCore/Tests/KeyboardExtensionUtilsTests/MockTextDocumentProxy.swift
++++ b/AzooKeyCore/Tests/KeyboardExtensionUtilsTests/MockTextDocumentProxy.swift
+@@ -1,13 +1,17 @@
+ import UIKit
+ 
+ final class MockTextDocumentProxy: NSObject, UITextDocumentProxy {
++    var excludesMarkedTextFromContext = false
++
+     var documentContextBeforeInput: String? {
+-        let prefix = utf16String.prefix(utf16CursorRange.startPosition)
++        let position = excludesMarkedTextFromContext ? utf16MarkedRange?.location ?? utf16CursorRange.startPosition : utf16CursorRange.startPosition
++        let prefix = utf16String.prefix(position)
+         return String(utf16CodeUnits: Array(prefix), count: prefix.count)
+     }
+ 
+     var documentContextAfterInput: String? {
+-        let suffix = utf16String.dropFirst(utf16CursorRange.startPosition + utf16CursorRange.length)
++        let position = excludesMarkedTextFromContext ? utf16MarkedRange.map { $0.location + $0.length } ?? (utf16CursorRange.startPosition + utf16CursorRange.length) : utf16CursorRange.startPosition + utf16CursorRange.length
++        let suffix = utf16String.dropFirst(position)
+         return String(utf16CodeUnits: Array(suffix), count: suffix.count)
+     }
+ 
 diff --git a/AzooKeyCore/Tests/KeyboardViewsTests/ExtraKeyboardLayoutTests.swift b/AzooKeyCore/Tests/KeyboardViewsTests/ExtraKeyboardLayoutTests.swift
 new file mode 100644
 index 0000000..12e0e99
@@ -2083,7 +2350,7 @@ index 0000000..12e0e99
 +    }
 +}
 diff --git a/Keyboard/Display/InputManager.swift b/Keyboard/Display/InputManager.swift
-index 0a478af..7f39290 100644
+index 0a478af..de1bd7a 100644
 --- a/Keyboard/Display/InputManager.swift
 +++ b/Keyboard/Display/InputManager.swift
 @@ -101,7 +101,7 @@ final class InputManager {
@@ -2095,8 +2362,31 @@ index 0a478af..7f39290 100644
      private static let zenzSmallWeightURL = Bundle.main.bundleURL.appendingPathComponent("zenz-v3.2-small-gguf/ggml-model-Q5_K_M.gguf", isDirectory: false)
      private static let zenzXsmallWeightURL = Bundle.main.bundleURL.appendingPathComponent("zenz-v3.2-xsmall-gguf/ggml-model-Q5_K_M.gguf", isDirectory: false)
  
+@@ -520,6 +520,22 @@ final class InputManager {
+         }
+     }
+ 
++    /// Uses the same marked-text lifecycle as Japanese conversion without running the Japanese converter.
++    @MainActor func updatePinyinComposition(_ text: String, completedPrefix: String? = nil) {
++        if self.isSelected { self.deleteSelection() }
++        self.liveConversionManager.stopComposition()
++        self.kanaKanjiConverter.stopComposition()
++        var composing = ComposingText()
++        composing.insertAtCursorPosition(text, inputStyle: .direct)
++        self.composingText = composing
++        if let completedPrefix {
++            self.displayedTextManager.updateComposingText(completedPrefix: completedPrefix, composingText: composing, newLiveConversionText: nil)
++        } else {
++            self.displayedTextManager.updateComposingText(composingText: composing, newLiveConversionText: nil)
++        }
++        if composing.isEmpty { self.stopComposition() }
++    }
++
+     private func shouldDirectInsert(text: String, simpleInsert: Bool) -> Bool {
+         simpleInsert
+             || text == "\n"
 diff --git a/Keyboard/Display/KeyboardActionManager.swift b/Keyboard/Display/KeyboardActionManager.swift
-index 5f55651..066a0cc 100644
+index 5f55651..b38de76 100644
 --- a/Keyboard/Display/KeyboardActionManager.swift
 +++ b/Keyboard/Display/KeyboardActionManager.swift
 @@ -11,7 +11,9 @@ import Foundation
@@ -2109,13 +2399,13 @@ index 5f55651..066a0cc 100644
  import SwiftUtils
  
  /// キーボードへのアクション部門の動作を担う。
-@@ -25,11 +27,227 @@ final class KeyboardActionManager: UserActionManager, @unchecked Sendable {
+@@ -25,11 +27,234 @@ final class KeyboardActionManager: UserActionManager, @unchecked Sendable {
      private var tasks: [(type: LongpressActionType, task: Task<Void, any Error>)] = []
      private var tempTextData: (left: String, center: String, right: String)?
      private var pendingReportDismissTask: Task<Void, Never>?
 +    /// NaturalKana: the Hangul syllable being typed on the Korean layout.
 +    private var hangul = HangulComposer()
-+    /// NaturalKana: pinyin typed on the Chinese layout and not yet converted; it is the text just before the cursor.
++    /// NaturalKana: pinyin typed on the Chinese layout and not yet converted.
 +    private var pinyin = ""
 +    private var pinyinLexicon: PinyinLexicon?
 +    private var loadingPinyinLexicon = false
@@ -2279,7 +2569,13 @@ index 5f55651..066a0cc 100644
 +        refreshWordCompletions(states)
 +    }
 +
++    @MainActor private var hasCurrentPinyinComposition: Bool {
++        !pinyin.isEmpty && inputManager.composingText.convertTarget == pinyin
++            && inputManager.composingText.convertTargetCursorPosition == pinyin.count
++    }
++
 +    @MainActor private func refreshPinyinCandidates(_ states: VariableStates) {
++        if !hasCurrentPinyinComposition { pinyin = "" }
 +        if pinyinLexicon == nil, !loadingPinyinLexicon {
 +            loadingPinyinLexicon = true
 +            Task { @MainActor [weak self, weak states] in
@@ -2306,8 +2602,7 @@ index 5f55651..066a0cc 100644
 +    /// Replaces the typed letters with the candidate; letters it does not cover stay, to be converted next.
 +    @MainActor private func commitPinyin(_ candidate: PinyinCandidate) {
 +        let rest = String(pinyin.dropFirst(candidate.consumed))
-+        inputManager.deleteBackward(convertTargetCount: pinyin.count, requireSetResult: false)
-+        inputManager.input(text: candidate.text + rest, requireSetResult: false, simpleInsert: true, inputStyle: .direct)
++        inputManager.updatePinyinComposition(rest, completedPrefix: candidate.text)
 +        pinyin = rest
 +        if wordLearning, wordFieldAllowed {
 +            wordMemory.record(candidate.text, after: nil, language: .chinese)
@@ -2318,7 +2613,7 @@ index 5f55651..066a0cc 100644
 +
 +    @MainActor private func acceptPinyin(_ item: PinyinCandidateItem, states: VariableStates) {
 +        guard item.typed == pinyin, delegate?.textDocumentProxy.documentIdentifier == item.field,
-+              inputManager.getSurroundingText().leftText.hasSuffix(pinyin) else { refreshWordCompletions(states); return }
++              hasCurrentPinyinComposition else { refreshWordCompletions(states); return }
 +        commitPinyin(item.candidate)
 +        let (left, center, right) = inputManager.getSurroundingText()
 +        states.setSurroundingText(leftSide: left, center: center, rightSide: right)
@@ -2333,11 +2628,13 @@ index 5f55651..066a0cc 100644
 +        wordSaveTask?.cancel()
 +        persistWordMemory()
          self.inputManager.closeKeyboard()
++        pinyin = ""
++        hangul.reset()
 +        typedWordContext = nil
          for (_, task) in self.tasks {
              task.cancel()
          }
-@@ -51,6 +269,7 @@ final class KeyboardActionManager: UserActionManager, @unchecked Sendable {
+@@ -51,6 +276,7 @@ final class KeyboardActionManager: UserActionManager, @unchecked Sendable {
              if let variableStates {
                  update(&variableStates.resultModel)
                  self?.refreshUpsideComponent(for: variableStates)
@@ -2345,7 +2642,7 @@ index 5f55651..066a0cc 100644
              }
          }
      }
-@@ -68,6 +287,16 @@ final class KeyboardActionManager: UserActionManager, @unchecked Sendable {
+@@ -68,6 +294,16 @@ final class KeyboardActionManager: UserActionManager, @unchecked Sendable {
      ///   - candidate: 確定された候補。
      ///   - variableStates: 状態。
      override func notifyComplete(_ candidate: any ResultViewItemData, variableStates: VariableStates) {
@@ -2362,7 +2659,7 @@ index 5f55651..066a0cc 100644
          if let candidate = candidate as? Candidate {
              self.inputManager.complete(candidate: candidate)
              self.registerActions(candidate.actions.map(\.action), variableStates: variableStates)
-@@ -107,7 +336,19 @@ final class KeyboardActionManager: UserActionManager, @unchecked Sendable {
+@@ -107,7 +343,19 @@ final class KeyboardActionManager: UserActionManager, @unchecked Sendable {
      }
  
      override func notifyForgetCandidate(_ candidate: any ResultViewItemData, variableStates: VariableStates) {
@@ -2383,7 +2680,7 @@ index 5f55651..066a0cc 100644
              self.inputManager.forgetMemory(candidate)
              variableStates.temporalMessage = .doneForgetCandidate
          }
-@@ -118,6 +359,7 @@ final class KeyboardActionManager: UserActionManager, @unchecked Sendable {
+@@ -118,6 +366,7 @@ final class KeyboardActionManager: UserActionManager, @unchecked Sendable {
      }
  
      @MainActor override func prepareReportSuggestion(candidate: any ResultViewItemData, index: Int, variableStates: VariableStates) {
@@ -2391,7 +2688,7 @@ index 5f55651..066a0cc 100644
          handlePrepareReportSuggestion(candidate: candidate, index: index, variableStates: variableStates)
      }
  
-@@ -143,12 +385,103 @@ final class KeyboardActionManager: UserActionManager, @unchecked Sendable {
+@@ -143,12 +392,104 @@ final class KeyboardActionManager: UserActionManager, @unchecked Sendable {
          self.dismissReportInterfacesIfNeeded(variableStates: variableStates)
      }
  
@@ -2424,40 +2721,41 @@ index 5f55651..066a0cc 100644
 +
 +    /// Types and converts pinyin on the Chinese layout; false when the action is handled as usual.
 +    @MainActor private func handlePinyin(_ action: ActionType, variableStates: VariableStates) -> Bool {
-+        // Only letters typed just now are converted: a moved cursor or a change by the app keeps them as text.
-+        if !pinyin.isEmpty, !inputManager.getSurroundingText().leftText.hasSuffix(pinyin) { pinyin = "" }
++        if !hasCurrentPinyinComposition { pinyin = "" }
 +        switch action {
 +        case let .input(text, _) where text.count == 1 && PinyinLexicon.isLetter(text.first!):
 +            textEditingActionDidBegin(variableStates: variableStates)
++            // An empty composition must not send unmarkText before the first letter.
++            if pinyin.isEmpty && !inputManager.composingText.isEmpty { inputManager.stopComposition() }
 +            pinyin += text
-+            inputManager.input(text: text, requireSetResult: false, simpleInsert: true, inputStyle: .direct)
++            inputManager.updatePinyinComposition(pinyin)
 +            return true
 +        case .delete(1) where !pinyin.isEmpty:
 +            textEditingActionDidBegin(variableStates: variableStates)
 +            pinyin.removeLast()
-+            inputManager.deleteBackward(convertTargetCount: 1, requireSetResult: false)
++            inputManager.updatePinyinComposition(pinyin)
 +            return true
 +        case .input(" ", _) where !pinyin.isEmpty:
-+            // Space picks the first candidate; without one it types a space after the letters.
-+            guard let first = pinyinCandidates().first else { pinyin = ""; return false }
++            guard let first = pinyinCandidates().first else {
++                inputManager.stopComposition()
++                pinyin = ""
++                return false
++            }
 +            textEditingActionDidBegin(variableStates: variableStates)
 +            commitPinyin(first)
 +            return true
 +        case .enter where !pinyin.isEmpty:
-+            // Return keeps the letters as typed.
++            // Return keeps the letters as typed and removes the composition mark.
++            inputManager.stopComposition()
 +            pinyin = ""
 +            return true
-+        case .input where !pinyin.isEmpty:
-+            // Punctuation after pinyin converts all of it first, as space would.
++        case .input where !pinyin.isEmpty, .moveTab where !pinyin.isEmpty:
 +            if let first = pinyinCandidates().first, first.consumed == pinyin.count { commitPinyin(first) }
-+            pinyin = ""
-+            return false
-+        case .moveTab where !pinyin.isEmpty:
-+            // Leaving the letters, e.g. for the number page: convert all of them first.
-+            if let first = pinyinCandidates().first, first.consumed == pinyin.count { commitPinyin(first) }
++            inputManager.stopComposition()
 +            pinyin = ""
 +            return false
 +        default:
++            if !pinyin.isEmpty { inputManager.stopComposition() }
 +            pinyin = ""
 +            return false
 +        }
@@ -2495,7 +2793,7 @@ index 5f55651..066a0cc 100644
          var undoAction: ActionType?
          switch action {
          case let .input(text, simpleInsert):
-@@ -784,3 +1117,28 @@ final class KeyboardActionManager: UserActionManager, @unchecked Sendable {
+@@ -784,3 +1125,28 @@ final class KeyboardActionManager: UserActionManager, @unchecked Sendable {
          // TODO: Provide up-to-date implementation
      }
  }
@@ -2525,7 +2823,7 @@ index 5f55651..066a0cc 100644
 +    #endif
 +}
 diff --git a/Keyboard/Display/KeyboardViewController.swift b/Keyboard/Display/KeyboardViewController.swift
-index e6038af..2b11712 100644
+index e6038af..44a287f 100644
 --- a/Keyboard/Display/KeyboardViewController.swift
 +++ b/Keyboard/Display/KeyboardViewController.swift
 @@ -14,6 +14,8 @@ import KeyboardViews
@@ -2619,7 +2917,7 @@ index e6038af..2b11712 100644
          KeyboardViewController.variableStates
              .$interfaceSize
              .combineLatest(
-@@ -258,6 +309,15 @@ final class KeyboardViewController: UIInputViewController {
+@@ -258,6 +309,16 @@ final class KeyboardViewController: UIInputViewController {
  
      override func viewWillAppear(_ animated: Bool) {
          super.viewWillAppear(animated)
@@ -2632,10 +2930,11 @@ index e6038af..2b11712 100644
 +            order: Self.naturalModel.settings.keyboardSwitchLanguages.map(\.rawValue)
 +        )
 +        SemiStaticStates.shared.setPinKeyboardTabBar(Self.naturalModel.settings.pinKeyboardTabBar)
++        Self.variableStates.initialize()
          // サイズに関する情報はこのタイミングで設定する
          if #available(iOS 26, *) {
              let size = self.currentKeyboardViewSize()
-@@ -276,6 +336,7 @@ final class KeyboardViewController: UIInputViewController {
+@@ -276,6 +337,7 @@ final class KeyboardViewController: UIInputViewController {
  
      override func viewDidAppear(_ animated: Bool) {
          super.viewDidAppear(animated)
@@ -2643,7 +2942,7 @@ index e6038af..2b11712 100644
          self.updateStates()
  
          // Floating Keyboardなどの一部の処理に限り、このタイミングにならないとウィンドウ幅が不明なケースが存在する
-@@ -306,6 +367,7 @@ final class KeyboardViewController: UIInputViewController {
+@@ -306,6 +368,7 @@ final class KeyboardViewController: UIInputViewController {
  
      override func viewDidLayoutSubviews() {
          super.viewDidLayoutSubviews()
@@ -2651,7 +2950,7 @@ index e6038af..2b11712 100644
          // iOS 26以上で、レイアウト確定後に向き・サイズを反映
          if #available(iOS 26, *) {
              let size = self.currentKeyboardViewSize()
-@@ -322,6 +384,7 @@ final class KeyboardViewController: UIInputViewController {
+@@ -322,6 +385,7 @@ final class KeyboardViewController: UIInputViewController {
          // キーボードタイプはviewDidAppearのタイミングで取得できる
          KeyboardViewController.variableStates.setKeyboardType(self.textDocumentProxy.keyboardType)
          KeyboardViewController.variableStates.setTextContentType(self.textDocumentProxy.textContentType)
@@ -2659,7 +2958,7 @@ index e6038af..2b11712 100644
  
          // クリップボード履歴を更新する
          KeyboardViewController.variableStates.clipboardHistoryManager.reload()
-@@ -412,15 +475,20 @@ final class KeyboardViewController: UIInputViewController {
+@@ -412,15 +476,20 @@ final class KeyboardViewController: UIInputViewController {
      }
  
      override func viewWillDisappear(_ animated: Bool) {
@@ -2680,7 +2979,7 @@ index e6038af..2b11712 100644
          if #available(iOS 26, *) {
              // 幅は即時反映しておき、向きは完了時のWindowSceneから決定する
              coordinator.animate(alongsideTransition: nil) { [weak self] _ in
-@@ -480,7 +548,7 @@ final class KeyboardViewController: UIInputViewController {
+@@ -480,7 +549,7 @@ final class KeyboardViewController: UIInputViewController {
  
      private func setKeyboardHeight(to height: CGFloat) {
          self.keyboardHeightConstraint?.isActive = true
@@ -2689,7 +2988,7 @@ index e6038af..2b11712 100644
          if self.view.window != nil {
              UIView.performWithoutAnimation {
                  self.view.layoutIfNeeded()
-@@ -492,20 +560,12 @@ final class KeyboardViewController: UIInputViewController {
+@@ -492,20 +561,12 @@ final class KeyboardViewController: UIInputViewController {
          }
      }
  
@@ -2713,7 +3012,7 @@ index e6038af..2b11712 100644
  
          let left = self.textDocumentProxy.documentContextBeforeInput ?? ""
          let center = self.textDocumentProxy.selectedText ?? ""
-@@ -518,6 +578,7 @@ final class KeyboardViewController: UIInputViewController {
+@@ -518,6 +579,7 @@ final class KeyboardViewController: UIInputViewController {
      /// 引数の`textInput`は常に`nil`
      override func textDidChange(_ textInput: (any UITextInput)?) {
          super.textDidChange(textInput)
@@ -2721,7 +3020,7 @@ index e6038af..2b11712 100644
  
          let left = self.textDocumentProxy.documentContextBeforeInput ?? ""
          let center = self.textDocumentProxy.selectedText ?? ""
-@@ -530,6 +591,8 @@ final class KeyboardViewController: UIInputViewController {
+@@ -530,6 +592,8 @@ final class KeyboardViewController: UIInputViewController {
          KeyboardViewController.variableStates.clipboardHistoryManager.checkUpdate()
          KeyboardViewController.variableStates.setUIReturnKeyType(type: self.textDocumentProxy.returnKeyType ?? .default)
          KeyboardViewController.variableStates.setTextContentType(self.textDocumentProxy.textContentType)
@@ -2730,7 +3029,7 @@ index e6038af..2b11712 100644
      }
  
      /// Reference: https://stackoverflow.com/questions/79077018/unable-to-open-main-app-from-action-extension-in-ios-18-previously-working-met
-@@ -558,4 +621,70 @@ final class KeyboardViewController: UIInputViewController {
+@@ -558,4 +622,70 @@ final class KeyboardViewController: UIInputViewController {
          }
          self.openURL(url)
      }
