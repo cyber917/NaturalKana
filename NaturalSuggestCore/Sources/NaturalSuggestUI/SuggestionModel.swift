@@ -6,7 +6,10 @@ import NaturalSuggestCore
     @Published public var settings: SuggestionSettings {
         didSet {
             UIText.language = settings.interfaceLanguage
-            if settings.interfaceLanguage != oldValue.interfaceLanguage { storeInterfaceLanguage() }
+            if settings.interfaceLanguage != oldValue.interfaceLanguage || settings.extraKeyboardLayouts != oldValue.extraKeyboardLayouts
+                || settings.keyboardSwitchOrder != oldValue.keyboardSwitchOrder || settings.keyboardWordLearning != oldValue.keyboardWordLearning {
+                storeImmediateSettings()
+            }
         }
     }
     /// Language of the shown suggestions: the detected one when auto language is on.
@@ -118,11 +121,14 @@ import NaturalSuggestCore
             return true
         } catch { settingsMessage = Self.sharingError(error); return false }
     }
-    /// Only the interface language is written; other unsaved edits still wait for “保存设置”.
-    private func storeInterfaceLanguage() {
+    /// Interface language and keyboard choices take effect at once; other unsaved edits still wait for “保存设置”.
+    private func storeImmediateSettings() {
         guard let defaults else { return }
         var stored = defaults.data(forKey: "nk.settings").flatMap { try? JSONDecoder().decode(SuggestionSettings.self, from: $0) } ?? SuggestionSettings()
         stored.interfaceLanguage = settings.interfaceLanguage
+        stored.extraKeyboardLayouts = settings.extraKeyboardLayouts
+        stored.keyboardSwitchOrder = settings.keyboardSwitchOrder
+        stored.keyboardWordLearning = settings.keyboardWordLearning
         if let data = try? JSONEncoder().encode(stored) { defaults.set(data, forKey: "nk.settings") }
     }
     public func testSuggestion() {

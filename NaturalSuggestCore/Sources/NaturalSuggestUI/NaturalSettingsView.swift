@@ -89,7 +89,7 @@ public struct NaturalSettingsView: View {
                 }
                 Button(UIText.t("使用全部已开启语言")) { model.settings.keyboardSwitchOrder = nil }
             } footer: {
-                Text(UIText.t("至少保留一种。未加入快捷切换的语言仍可通过长按选择。返回上一页后点保存设置。"))
+                Text(UIText.t("至少保留一种。未加入快捷切换的语言仍可通过长按选择。改动立即生效。"))
             }
         }.navigationTitle(UIText.t("快捷切换语言"))
     }

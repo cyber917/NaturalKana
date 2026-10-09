@@ -1366,9 +1366,9 @@
   "en": "Custom",
   "ja": "カスタム"
  },
- "至少保留一种。未加入快捷切换的语言仍可通过长按选择。返回上一页后点保存设置。": {
-  "en": "Keep at least one language. Other enabled languages remain available by holding the language key. Go back and tap Save settings.",
-  "ja": "少なくとも1言語を残してください。選んでいない言語も長押しで選べます。前の画面に戻り、設定を保存してください。"
+ "至少保留一种。未加入快捷切换的语言仍可通过长按选择。改动立即生效。": {
+  "en": "Keep at least one language. Other enabled languages remain available by holding the language key. Changes take effect at once.",
+  "ja": "少なくとも1言語を残してください。選んでいない言語も長押しで選べます。変更はすぐに反映されます。"
  },
  "英语": {
   "en": "English",
