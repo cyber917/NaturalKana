@@ -71,3 +71,37 @@ public class CommonShortcutTests
     [InlineData("Ctrl+Alt+J"), InlineData("Ctrl+Shift+Space"), InlineData("Alt+Shift+J")]
     public void DedicatedShortcutsAreAllowed(string text) => Assert.Null(HotkeyHost.CommonShortcutName(text));
 }
+
+public class SelectAllShortcutTests
+{
+    [Fact]
+    public void LegacySettingsKeepExistingShortcutAndAddSelectAllDefault()
+    {
+        var settings = System.Text.Json.JsonSerializer.Deserialize<AppSettings>("""{"Hotkey":"Ctrl+Shift+J"}""")!;
+        Assert.Equal("Ctrl+Shift+J", settings.Hotkey);
+        Assert.Equal("Ctrl+Alt+K", settings.SelectAllHotkey);
+        settings.SelectAllHotkey = "Ctrl+Shift+K";
+        var restored = System.Text.Json.JsonSerializer.Deserialize<AppSettings>(System.Text.Json.JsonSerializer.Serialize(settings))!;
+        Assert.Equal("Ctrl+Shift+K", restored.SelectAllHotkey);
+        Assert.Equal(settings.Hotkey, restored.Hotkey);
+    }
+
+    [Fact]
+    public void ComparisonsUseKeyCodesNotModifierOrder()
+    {
+        Assert.True(HotkeyHost.SameCombination("Ctrl+Alt+K", "alt+ctrl+k"));
+        Assert.False(HotkeyHost.SameCombination("Ctrl+Alt+J", "Ctrl+Alt+K"));
+        Assert.False(HotkeyHost.SameCombination("invalid", "invalid"));
+        Assert.False(HotkeyHost.IsUserShortcut("Escape"));
+        Assert.False(HotkeyHost.IsUserShortcut("Ctrl+None"));
+        Assert.NotNull(HotkeyHost.CommonShortcutName("Shift+Ctrl+Z"));
+    }
+
+    [Fact]
+    public void NewDefaultDoesNotStealExistingShortcut()
+    {
+        Assert.Equal(("Ctrl+Alt+K", "Ctrl+Alt+Shift+K"), HotkeyHost.SavedShortcuts("Ctrl+Alt+K", HotkeyPreset.SelectAll));
+        Assert.Equal((HotkeyPreset.Default, HotkeyPreset.SelectAll), HotkeyHost.SavedShortcuts("Ctrl+Z", "Escape"));
+        Assert.Equal(("Ctrl+Shift+J", "Ctrl+Shift+K"), HotkeyHost.SavedShortcuts("Ctrl+Shift+J", "Ctrl+Shift+K"));
+    }
+}
