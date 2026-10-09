@@ -1,0 +1,2484 @@
+# CC-CEDICT (MDBG and contributors), CC BY-SA 4.0; see ATTRIBUTION.md.
+# Snapshot 2026-10-09T09:12:50Z; extracted colloquial, slang, Internet, neologism and dialect labels.
+# Includes separately maintained NaturalKana chat phrases, also CC BY-SA 4.0.
+# word<TAB>toneless pinyin<TAB>ranking prior (not measured frequency).
+是啥	shi sha	1500
+啥意思	sha yi si	1500
+啥情况	sha qing kuang	1500
+啥时候	sha shi hou	1500
+说啥	shuo sha	1500
+说啥呢	shuo sha ne	1500
+干啥	gan sha	1500
+干啥呢	gan sha ne	1500
+在干啥	zai gan sha	1500
+这是啥	zhe shi sha	1500
+那是啥	na shi sha	1500
+有啥	you sha	1500
+没啥	mei sha	1500
+没啥事	mei sha shi	1500
+有啥事	you sha shi	1500
+为啥	wei sha	1500
+为啥啊	wei sha a	1500
+不为啥	bu wei sha	1500
+咋了	za le	1500
+咋啦	za la	1500
+咋办	za ban	1500
+咋回事	za hui shi	1500
+咋样	za yang	1500
+咋说	za shuo	1500
+咋说呢	za shuo ne	1500
+咋整	za zheng	1500
+咋可能	za ke neng	1500
+整啥	zheng sha	1500
+弄啥	nong sha	1500
+怎么说呢	zen me shuo ne	1500
+怎么回事	zen me hui shi	1500
+怎么可能	zen me ke neng	1500
+什么情况	shen me qing kuang	1500
+什么意思	shen me yi si	1500
+什么鬼	shen me gui	1500
+啥玩意	sha wan yi	1500
+什么玩意	shen me wan yi	1500
+好家伙	hao jia huo	1500
+真的假的	zhen de jia de	1500
+真的假的啊	zhen de jia de a	1500
+真的假的呀	zhen de jia de ya	1500
+真的吗	zhen de ma	1500
+不会吧	bu hui ba	1500
+不是吧	bu shi ba	1500
+不是哥们	bu shi ge men	1500
+不是姐妹	bu shi jie mei	1500
+搞笑呢	gao xiao ne	1500
+开玩笑呢	kai wan xiao ne	1500
+逗我呢	dou wo ne	1500
+你认真的	ni ren zhen de	1500
+认真的吗	ren zhen de ma	1500
+认真的啊	ren zhen de a	1500
+笑死	xiao si	1500
+笑死了	xiao si le	1500
+笑死我了	xiao si wo le	1500
+笑不活了	xiao bu huo le	1500
+绷不住	beng bu zhu	1500
+绷不住了	beng bu zhu le	1500
+蚌埠住了	beng bu zhu le	1500
+无语了	wu yu le	1500
+无语住了	wu yu zhu le	1500
+我服了	wo fu le	1500
+服了你了	fu le ni le	1500
+我真服了	wo zhen fu le	1500
+我真的服了	wo zhen de fu le	1500
+也是醉了	ye shi zui le	1500
+真的会谢	zhen de hui xie	1500
+我会谢	wo hui xie	1500
+栓扣	shuan kou	1500
+好离谱	hao li pu	1500
+太离谱了	tai li pu le	1500
+离了大谱	li le da pu	1500
+有点离谱	you dian li pu	1500
+绝绝子	jue jue zi	1500
+绝了	jue le	1500
+太绝了	tai jue le	1500
+破防	po fang	1500
+破防了	po fang le	1500
+直接破防	zhi jie po fang	1500
+防不胜防	fang bu sheng fang	1500
+下头	xia tou	1500
+太下头了	tai xia tou le	1500
+上头了	shang tou le	1500
+好上头	hao shang tou	1500
+拿捏	na nie	1500
+拿捏了	na nie le	1500
+拿捏住了	na nie zhu le	1500
+有被笑到	you bei xiao dao	1500
+有被气到	you bei qi dao	1500
+狠狠心动	hen hen xin dong	1500
+狠狠拿捏	hen hen na nie	1500
+狠狠羡慕	hen hen xian mu	1500
+好好笑	hao hao xiao	1500
+好想笑	hao xiang xiao	1500
+笑不出来	xiao bu chu lai	1500
+笑发财了	xiao fa cai le	1500
+太好笑了	tai hao xiao le	1500
+给我整笑了	gei wo zheng xiao le	1500
+给我整不会了	gei wo zheng bu hui le	1500
+我哭死	wo ku si	1500
+我酸了	wo suan le	1500
+羡慕了	xian mu le	1500
+羡慕死了	xian mu si le	1500
+狠狠共情	hen hen gong qing	1500
+懂了	dong le	1500
+懂你	dong ni	1500
+懂的都懂	dong de dou dong	1500
+我懂你	wo dong ni	1500
+我懂了	wo dong le	1500
+不懂就问	bu dong jiu wen	1500
+谁懂啊	shei dong a	1500
+谁懂我啊	shei dong wo a	1500
+家人们谁懂啊	jia ren men shei dong a	1500
+家人们	jia ren men	1500
+兄弟们	xiong di men	1500
+姐妹们	jie mei men	1500
+老铁们	lao tie men	1500
+宝子们	bao zi men	1500
+宝宝们	bao bao men	1500
+咱就是说	zan jiu shi shuo	1500
+咱们就是说	zan men jiu shi shuo	1500
+就是说啊	jiu shi shuo a	1500
+就是说呢	jiu shi shuo ne	1500
+是这样的	shi zhe yang de	1500
+是这么回事	shi zhe me hui shi	1500
+就是这个意思	jiu shi zhe ge yi si	1500
+我说呢	wo shuo ne	1500
+我就说嘛	wo jiu shuo ma	1500
+我寻思	wo xun si	1500
+寻思啥呢	xun si sha ne	1500
+好像是	hao xiang shi	1500
+还真是	hai zhen shi	1500
+确实是	que shi shi	1500
+确实有点	que shi you dian	1500
+有点东西	you dian dong xi	1500
+有一说一	you yi shuo yi	1500
+说实话	shuo shi hua	1500
+实话实说	shi hua shi shuo	1500
+别说还真是	bie shuo hai zhen shi	1500
+不至于吧	bu zhi yu ba	1500
+差不多得了	cha bu duo de le	1500
+倒也不必	dao ye bu bi	1500
+大可不必	da ke bu bi	1500
+真没必要	zhen mei bi yao	1500
+没必要吧	mei bi yao ba	1500
+算了吧	suan le ba	1500
+算了算了	suan le suan le	1500
+算我求你	suan wo qiu ni	1500
+算你狠	suan ni hen	1500
+算你厉害	suan ni li hai	1500
+真的假的嘛	zhen de jia de ma	1500
+我裂开了	wo lie kai le	1500
+人麻了	ren ma le	1500
+麻了	ma le	1500
+心累	xin lei	1500
+心累了	xin lei le	1500
+好累啊	hao lei a	1500
+累死了	lei si le	1500
+累死我了	lei si wo le	1500
+困死了	kun si le	1500
+饿死了	e si le	1500
+烦死了	fan si le	1500
+烦死我了	fan si wo le	1500
+气死我了	qi si wo le	1500
+气笑了	qi xiao le	1500
+急死我了	ji si wo le	1500
+好无聊	hao wu liao	1500
+无聊死了	wu liao si le	1500
+睡不着	shui bu zhao	1500
+起不来	qi bu lai	1500
+不想起床	bu xiang qi chuang	1500
+不想上班	bu xiang shang ban	1500
+不想动	bu xiang dong	1500
+先这样吧	xian zhe yang ba	1500
+等会儿	deng hui er	1500
+等会再说	deng hui zai shuo	1500
+待会再说	dai hui zai shuo	1500
+一会再说	yi hui zai shuo	1500
+回头再说	hui tou zai shuo	1500
+回头聊	hui tou liao	1500
+有空再聊	you kong zai liao	1500
+晚点聊	wan dian liao	1500
+晚点说	wan dian shuo	1500
+先不说了	xian bu shuo le	1500
+先这样	xian zhe yang	1500
+先撤了	xian che le	1500
+我先溜了	wo xian liu le	1500
+我先下了	wo xian xia le	1500
+我先去忙	wo xian qu mang	1500
+我先睡了	wo xian shui le	1500
+早点睡	zao dian shui	1500
+早点休息	zao dian xiu xi	1500
+早点回来	zao dian hui lai	1500
+到家了	dao jia le	1500
+到家了吗	dao jia le ma	1500
+到了吗	dao le ma	1500
+到了没	dao le mei	1500
+吃了没	chi le mei	1500
+吃啥	chi sha	1500
+吃啥呢	chi sha ne	1500
+吃点啥	chi dian sha	1500
+想吃啥	xiang chi sha	1500
+去哪儿	qu na er	1500
+去哪玩	qu na wan	1500
+去哪啊	qu na a	1500
+走不走	zou bu zou	1500
+来不来	lai bu lai	1500
+去不去	qu bu qu	1500
+行不行	xing bu xing	1500
+能不能	neng bu neng	1500
+要不要	yao bu yao	1500
+好不好嘛	hao bu hao ma	1500
+好说好说	hao shuo hao shuo	1500
+好滴	hao di	1500
+好嘞	hao lei	1500
+好哒	hao da	1500
+好耶	hao ye	1500
+好滴好滴	hao di hao di	1500
+行啊	xing a	1500
+行呗	xing bei	1500
+行吧	xing ba	1500
+行的	xing de	1500
+行了行了	xing le xing le	1500
+行行行	xing xing xing	1500
+可以的	ke yi de	1500
+可以啊	ke yi a	1500
+可以可以	ke yi ke yi	1500
+不太行	bu tai xing	1500
+还行吧	hai xing ba	1500
+也行	ye xing	1500
+都行	dou xing	1500
+随便你	sui bian ni	1500
+随你吧	sui ni ba	1500
+没毛病	mei mao bing	1500
+没事儿	mei shi er	1500
+没事没事	mei shi mei shi	1500
+问题不大	wen ti bu da	1500
+有点问题	you dian wen ti	1500
+不太对劲	bu tai dui jin	1500
+怪怪的	guai guai de	1500
+有点怪	you dian guai	1500
+整挺好	zheng ting hao	1500
+整不会了	zheng bu hui le	1500
+懒得理你	lan de li ni	1500
+懒得说	lan de shuo	1500
+懒得动	lan de dong	1500
+别急	bie ji	1500
+别急嘛	bie ji ma	1500
+别闹	bie nao	1500
+别搞	bie gao	1500
+别搞我	bie gao wo	1500
+别装了	bie zhuang le	1500
+别太离谱	bie tai li pu	1500
+别来沾边	bie lai zhan bian	1500
+别太荒谬	bie tai huang miu	1500
+你礼貌吗	ni li mao ma	1500
+你没事吧	ni mei shi ba	1500
+你说呢	ni shuo ne	1500
+你猜	ni cai	1500
+你猜怎么着	ni cai zen me zhao	1500
+就这啊	jiu zhe a	1500
+就这吧	jiu zhe ba	1500
+就离谱	jiu li pu	1500
+就无语	jiu wu yu	1500
+就挺好	jiu ting hao	1500
+这也行	zhe ye xing	1500
+还能这样	hai neng zhe yang	1500
+还得是你	hai dei shi ni	1500
+还得是你啊	hai dei shi ni a	1500
+还得是我	hai dei shi wo	1500
+不愧是你	bu kui shi ni	1500
+不愧是我	bu kui shi wo	1500
+你是懂的	ni shi dong de	1500
+你是懂我的	ni shi dong wo de	1500
+我真绷不住了	wo zhen beng bu zhu le	1500
+真有你的	zhen you ni de	1500
+真有意思	zhen you yi si	1500
+有内味了	you nei wei le	1500
+那咋办	na za ban	1500
+那可不	na ke bu	1500
+那不然呢	na bu ran ne	1500
+那倒也是	na dao ye shi	1500
+那必须的	na bi xu de	1500
+那当然了	na dang ran le	1500
+那没事了	na mei shi le	1500
+那你呢	na ni ne	1500
+然后呢	ran hou ne	1500
+然后咋了	ran hou za le	1500
+所以呢	suo yi ne	1500
+图啥呢	tu sha ne	1500
+图个啥	tu ge sha	1500
+有啥用	you sha yong	1500
+没啥用	mei sha yong	1500
+不知道啊	bu zhi dao a	1500
+我哪知道	wo na zhi dao	1500
+我也不知道	wo ye bu zhi dao	1500
+不知道咋说	bu zhi dao za shuo	1500
+谁知道呢	shei zhi dao ne	1500
+估计是	gu ji shi	1500
+应该是	ying gai shi	1500
+应该可以	ying gai ke yi	1500
+应该没事	ying gai mei shi	1500
+我寻思着	wo xun si zhe	1500
+好像不行	hao xiang bu xing	1500
+好像可以	hao xiang ke yi	1500
+挺好的	ting hao de	1500
+挺好吃	ting hao chi	1500
+挺好看的	ting hao kan de	1500
+太好看了	tai hao kan le	1500
+好可爱	hao ke ai	1500
+可爱死了	ke ai si le	1500
+萌死了	meng si le	1500
+萌死我了	meng si wo le	1500
+太香了	tai xiang le	1500
+真香	zhen xiang	1500
+爱了爱了	ai le ai le	1500
+狠狠爱了	hen hen ai le	1500
+太喜欢了	tai xi huan le	1500
+狠狠爱住	hen hen ai zhu	1500
+种草了	zhong cao le	1500
+被种草了	bei zhong cao le	1500
+想买	xiang mai	1500
+买买买	mai mai mai	1500
+冲鸭	chong ya	1500
+冲冲冲	chong chong chong	1500
+安排上	an pai shang	1500
+安排上了	an pai shang le	1500
+安排一下	an pai yi xia	1500
+稳了	wen le	1500
+稳稳的	wen wen de	1500
+稳住	wen zhu	1500
+稳住别慌	wen zhu bie huang	1500
+稳如老狗	wen ru lao gou	1500
+芜湖	wu hu	1500
+起飞	qi fei	1500
+起飞了	qi fei le	1500
+赢麻了	ying ma le	1500
+赚麻了	zhuan ma le	1500
+亏麻了	kui ma le	1500
+救命啊	jiu ming a	1500
+救命	jiu ming	1500
+救大命	jiu da ming	1500
+救救我	jiu jiu wo	1500
+救救孩子	jiu jiu hai zi	1500
+求求了	qiu qiu le	1500
+求放过	qiu fang guo	1500
+求你了	qiu ni le	1500
+谢谢啦	xie xie la	1500
+谢谢宝	xie xie bao	1500
+谢谢老板	xie xie lao ban	1500
+辛苦啦	xin ku la	1500
+辛苦你了	xin ku ni le	1500
+打扰了	da rao le	1500
+打扰一下	da rao yi xia	1500
+麻烦你了	ma fan ni le	1500
+麻烦了	ma fan le	1500
+不好意思啊	bu hao yi si a	1500
+抱歉抱歉	bao qian bao qian	1500
+没关系啦	mei guan xi la	1500
+不客气啦	bu ke qi la	1500
+没事的	mei shi de	1500
+慢慢来	man man lai	1500
+不着急	bu zhao ji	1500
+别着急	bie zhao ji	1500
+摸鱼中	mo yu zhong	1500
+摸会鱼	mo hui yu	1500
+打工人	da gong ren	1500
+打工魂	da gong hun	1500
+搬砖中	ban zhuan zhong	1500
+下班啦	xia ban la	1500
+下班了	xia ban le	1500
+上班了	shang ban le	1500
+躺平了	tang ping le	1500
+摆烂了	bai lan le	1500
+开摆	kai bai	1500
+开摆了	kai bai le	1500
+不卷了	bu juan le	1500
+卷不动	juan bu dong	1500
+卷不动了	juan bu dong le	1500
+累觉不爱	lei jue bu ai	1500
+社死了	she si le	1500
+当场社死	dang chang she si	1500
+尴尬死了	gan ga si le	1500
+尬住了	ga zhu le	1500
+好尴尬	hao gan ga	1500
+尴尬住了	gan ga zhu le	1500
+破大防	po da fang	1500
+大怨种	da yuan zhong	1500
+冤种	yuan zhong	1500
+纯纯大怨种	chun chun da yuan zhong	1500
+人间清醒	ren jian qing xing	1500
+情绪价值	qing xu jia zhi	1500
+电子榨菜	dian zi zha cai	1500
+沉浸式	chen jin shi	1500
+氛围感	fen wei gan	1500
+松弛感	song chi gan	1500
+边界感	bian jie gan	1500
+仪式感	yi shi gan	1500
+安全感	an quan gan	1500
+幸福感	xing fu gan	1500
+成就感	cheng jiu gan	1500
+存在感	cun zai gan	1500
+反差感	fan cha gan	1500
+拉满了	la man le	1500
+主打一个	zhu da yi ge	1500
+主打陪伴	zhu da pei ban	1500
+我直接	wo zhi jie	1500
+我真的	wo zhen de	1500
+真的绝了	zhen de jue le	1500
+太顶了	tai ding le	1500
+好顶	hao ding	1500
+泰裤辣	tai ku la	1500
+尊嘟假嘟	zun du jia du	1500
+尊嘟	zun du	1500
+假嘟	jia du	1500
+显眼包	xian yan bao	1500
+包的	bao de	1500
+包好用的	bao hao yong de	1500
+包可以的	bao ke yi de	1500
+这不得	zhe bu dei	1500
+好嘛	hao ma	1500
+好嘛好嘛	hao ma hao ma	1500
+我嘞个豆	wo lei ge dou	1500
+抽象	chou xiang	1500
+太抽象了	tai chou xiang le	1500
+红温了	hong wen le	1500
+温度上来了	wen du shang lai le	1500
+闹麻了	nao ma le	1500
+似了	si le	1500
+已老实	yi lao shi	1500
+老实了	lao shi le	1500
+水灵灵	shui ling ling	1500
+就这么水灵灵地	jiu zhe me shui ling ling de	1500
+这下好了	zhe xia hao le	1500
+这下尴尬了	zhe xia gan ga le	1500
+那咋了	na za le	1500
+那咋啦	na za la	1500
+好消息	hao xiao xi	1500
+坏消息	huai xiao xi	1500
+咱也不知道	zan ye bu zhi dao	1500
+咱也不敢问	zan ye bu gan wen	1500
+别问	bie wen	1500
+问就是	wen jiu shi	1500
+一丢丢	yi diu diu	5000
+一个头两个大	yi ge tou liang ge da	5000
+一号	yi hao	5000
+一哥	yi ge	5000
+一块	yi kuai	5000
+一大通	yi da tong	5000
+一姐	yi jie	5000
+一抓一大把	yi zhua yi da ba	5000
+一毛一样	yi mao yi yang	5000
+一水儿	yi shui r	5000
+一等一	yi deng yi	5000
+丁丁	ding ding	5000
+万金油	wan jin you	5000
+三七仔	san qi zi	5000
+三人行	san ren xing	5000
+三八大盖	san ba da gai	5000
+三字经	san zi jing	5000
+三炮	san pao	5000
+三点全露	san dian quan lou	5000
+三观	san guan	5000
+三蹦子	san beng zi	5000
+上一号	shang yi hao	5000
+上分	shang fen	5000
+上大号	shang da hao	5000
+上床	shang chuang	5000
+上热搜	shang re sou	5000
+上环	shang huan	5000
+下乳	xia ru	5000
+下人	xia ren	5000
+下毛毛雨	xia mao mao yu	5000
+不会	bu hui	5000
+不作死就不会死	bu zuo si jiu bu hui si	5000
+不儿	bu r	5000
+不儿道	bu r dao	5000
+不分	bu fen	5000
+不咋地	bu za de	5000
+不咋的	bu za de	5000
+不喜勿喷	bu xi wu pen	5000
+不拉几	bu la ji	5000
+不明觉厉	bu ming jue li	5000
+不济	bu ji	5000
+不行了	bu xing le	5000
+不赖	bu lai	5000
+不香吗	bu xiang ma	5000
+丐版	gai ban	5000
+丑国	chou guo	5000
+世界波	shi jie bo	5000
+东东	dong dong	5000
+东大	dong da	5000
+丢份子	diu fen zi	5000
+两情两愿	liang qing liang yuan	5000
+个头	ge tou	5000
+个把	ge ba	5000
+个顶个	ge ding ge	5000
+丫头片子	ya tou pian zi	5000
+丫挺	ya ting	5000
+中二病	zhong er bing	5000
+中央空调	zhong yang kong tiao	5000
+中毒者	zhong du zhe	5000
+串串	chuan chuan	5000
+串串狗	chuan chuan gou	5000
+串串猫	chuan chuan mao	5000
+为毛	wei mao	5000
+为爱鼓掌	wei ai gu zhang	5000
+主播	zhu bo	5000
+主理人	zhu li ren	5000
+举架	ju jia	5000
+举铁	ju tie	5000
+乃们	nai men	5000
+么么	me me	5000
+乐滋滋	le zi zi	5000
+乐色	le se	5000
+乖顺	guai shun	5000
+乙女	yi nv	5000
+也有今天	ye you jin tian	5000
+乡党	xiang dang	5000
+乡民	xiang min	5000
+买了佛冷	mai le fo leng	5000
+乱咕攘	luan gu rang	5000
+乳滑	ru hua	5000
+了去了	le qu le	5000
+事业线	shi ye xian	5000
+事儿	shi r	5000
+事儿妈	shi r ma	5000
+二哈	er ha	5000
+二婚	er hun	5000
+二屄	er bi	5000
+二愣子	er leng zi	5000
+二毛子	er mao zi	5000
+二货	er huo	5000
+二进宫	er jin gong	5000
+云彩	yun cai	5000
+五五开	wu wu kai	5000
+五打一	wu da yi	5000
+五毛党	wu mao dang	5000
+交朋友	jiao peng you	5000
+亲热	qin re	5000
+人品	ren pin	5000
+人矿	ren kuang	5000
+人肉搜索引擎	ren rou sou suo yin qing	5000
+人艰不拆	ren jian bu chai	5000
+什么事	shen me shi	5000
+今儿	jin r	5000
+今儿个	jin r ge	5000
+今时今日	jin shi jin ri	5000
+今朝	jin zhao	5000
+从先	cong xian	5000
+仔细	zi xi	5000
+仙女棒	xian nv bang	5000
+代志	dai zhi	5000
+会儿	hui r	5000
+会子	hui zi	5000
+伢子	ya zi	5000
+伢崽	ya zai	5000
+伤不起	shang bu qi	5000
+伯妈	bo ma	5000
+伯爷	bo ye	5000
+伯都	bo dou	5000
+估计	gu ji	5000
+住海边	zhu hai bian	5000
+佛媛	fo yuan	5000
+佛系	fo xi	5000
+作妖	zuo yao	5000
+你个头	ni ge tou	5000
+使唤	shi huan	5000
+侵删	qin shan	5000
+便所	bian suo	5000
+促狭	cu xia	5000
+俗辣	su la	5000
+信息茧房	xin xi jian fang	5000
+修理	xiu li	5000
+修罗场	xiu luo chang	5000
+俺们	an men	5000
+倍儿	bei r	5000
+倍儿棒	bei r bang	5000
+倒爷	dao ye	5000
+倒逼	dao bi	5000
+倒霉蛋	dao mei dan	5000
+倭瓜	wo gua	5000
+值当	zhi dang	5000
+偏生	pian sheng	5000
+做鸡	zuo ji	5000
+做鸭	zuo ya	5000
+偷吃	tou chi	5000
+偷油婆	tou you po	5000
+催更	cui geng	5000
+傲娇	ao jiao	5000
+傻爆眼	sha bao yan	5000
+傻白甜	sha bai tian	5000
+傻眼	sha yan	5000
+傻缺	sha que	5000
+僵尸车	jiang shi che	5000
+儿马	er ma	5000
+充电头	chong dian tou	5000
+先不先	xian bu xian	5000
+先生	xian sheng	5000
+光棍	guang gun	5000
+光腚肿菊	guang ding zhong ju	5000
+兜底	dou di	5000
+全乎	quan hu	5000
+全须全尾儿	quan xu quan yi r	5000
+八加一	ba jia yi	5000
+八家将	ba jia jiang	5000
+八带蛸	ba dai shao	5000
+八点档	ba dian dang	5000
+八竿子打不着	ba gan zi da bu zhao	5000
+公主病	gong zhu bing	5000
+公婆	gong po	5000
+关你屁事	guan ni pi shi	5000
+关门兔	guan men tu	5000
+兴许	xing xu	5000
+内内	nei nei	5000
+内卷	nei juan	5000
+内容管理系统	nei rong guan li xi tong	5000
+军师	jun shi	5000
+农友	nong you	5000
+冰坨子	bing tuo zi	5000
+冲凉	chong liang	5000
+冲塔	chong ta	5000
+冷战	leng zhan	5000
+净高	jing gao	5000
+准头	zhun tou	5000
+凉凉	liang liang	5000
+凉快	liang kuai	5000
+凉拌	liang ban	5000
+几号	ji hao	5000
+几多	ji duo	5000
+几进宫	ji jin gong	5000
+凡尔赛	fan er sai	5000
+凡尔赛文学	fan er sai wen xue	5000
+凤凰男	feng huang nan	5000
+凯子	kai zi	5000
+凸槌	tu chui	5000
+凹造型	ao zao xing	5000
+出摊儿	chu tan r	5000
+出海	chu hai	5000
+出片	chu pian	5000
+出粮	chu liang	5000
+出糗	chu qiu	5000
+出饭	chu fan	5000
+凿死铆子	zao si mao zi	5000
+刀螂	dao lang	5000
+分手炮	fen shou pao	5000
+分锅	fen guo	5000
+别苗头	bie miao tou	5000
+刷屏	shua ping	5000
+前司	qian si	5000
+前摆	qian bai	5000
+前方高能	qian fang gao neng	5000
+前晌	qian shang	5000
+剥皮	bao pi	5000
+剧荒	ju huang	5000
+剧集	ju ji	5000
+剩女	sheng nv	5000
+剩男	sheng nan	5000
+副乳	fu ru	5000
+割肉	ge rou	5000
+割韭菜	ge jiu cai	5000
+劐弄	huo leng	5000
+加菲猫	jia fei mao	5000
+加麻大	jia ma da	5000
+动态更新	dong tai geng xin	5000
+动手脚	dong shou jiao	5000
+励志哥	li zhi ge	5000
+劲爆	jing bao	5000
+劳什子	lao shi zi	5000
+勾八	gou ba	5000
+包包	bao bao	5000
+包夜	bao ye	5000
+包粟	bao su	5000
+包谷	bao gu	5000
+北车	bei che	5000
+医闹	yi nao	5000
+十一路	shi yi lu	5000
+十动然拒	shi dong ran ju	5000
+十大神兽	shi da shen shou	5000
+千儿八百	qian r ba bai	5000
+半拉	ban la	5000
+半桶水	ban tong shui	5000
+单身汪	dan shen wang	5000
+单身狗	dan shen gou	5000
+单车	dan che	5000
+卖惨	mai can	5000
+卖肉	mai rou	5000
+卖萌	mai meng	5000
+南波万	nan bo wan	5000
+卧槽	wo cao	5000
+卫生衣	wei sheng yi	5000
+卯起来	mao qi lai	5000
+卵蛋	luan dan	5000
+厂子	chang zi	5000
+厂家	chang jia	5000
+厂狗	chang gou	5000
+原谅色	yuan liang se	5000
+厨司	chu si	5000
+又双叒叕	you shuang ruo zhuo	5000
+友商	you shang	5000
+友尽	you jin	5000
+双飞	shuang fei	5000
+反倒	fan dao	5000
+反文旁	fan wen pang	5000
+反映论	fan ying lun	5000
+反贼	fan zei	5000
+发卡	fa ka	5000
+发好人卡	fa hao ren ka	5000
+发小	fa xiao	5000
+发文	fa wen	5000
+发毛	fa mao	5000
+发神经	fa shen jing	5000
+叔娘	shu niang	5000
+取灯儿	qu deng r	5000
+变态	bian tai	5000
+变态辣	bian tai la	5000
+变蛋	bian dan	5000
+口嗨	kou hai	5000
+口条	kou tiao	5000
+口爆	kou bao	5000
+口皮	kou pi	5000
+只当	zhi dang	5000
+叫板	jiao ban	5000
+叫驴	jiao lv	5000
+叫鸡	jiao ji	5000
+叮叮猫	ding ding mao	5000
+可不是	ke bu shi	5000
+可怜见	ke lian jian	5000
+可蠢	ke chun	5000
+台秤	tai cheng	5000
+叶子	ye zi	5000
+叽叽歪歪	ji ji wai wai	5000
+吃喝拉撒	chi he la sa	5000
+吃喝拉撒睡	chi he la sa shui	5000
+吃土	chi tu	5000
+吃席	chi xi	5000
+吃干饭	chi gan fan	5000
+吃灰	chi hui	5000
+吃烟	chi yan	5000
+吃牢饭	chi lao fan	5000
+吃瓜	chi gua	5000
+吃瓜群众	chi gua qun zhong	5000
+吃瓦片	chi wa pian	5000
+吃瘪	chi bie	5000
+吃的	chi de	5000
+吃藕	chi ou	5000
+合扇	he shan	5000
+合着	he zhe	5000
+吊打	diao da	5000
+吊死鬼	diao si gui	5000
+吊水	diao shui	5000
+吊盐水	diao yan shui	5000
+吊胃口	diao wei kou	5000
+吊膀子	diao bang zi	5000
+吊车尾	diao che wei	5000
+同一挂	tong yi gua	5000
+同妻	tong qi	5000
+同志	tong zhi	5000
+同担	tong dan	5000
+后妈	hou ma	5000
+后娘	hou niang	5000
+后庭	hou ting	5000
+后爸	hou ba	5000
+后续	hou xu	5000
+后钩	hou gou	5000
+吐便当	tu bian dang	5000
+吐槽	tu cao	5000
+吐血	tu xie	5000
+向着	xiang zhe	5000
+吗喽	ma lou	5000
+吸猫	xi mao	5000
+吹台	chui tai	5000
+吹喇叭	chui la ba	5000
+吹水	chui shui	5000
+吹牛	chui niu	5000
+吹箫	chui xiao	5000
+告儿	gao r	5000
+告送	gao song	5000
+呛咕	qiang gu	5000
+周日	zhou ri	5000
+味道	wei dao	5000
+呼哱哱	hu bo bo	5000
+命根	ming gen	5000
+咂摸	za mo	5000
+咔嚓	ka cha	5000
+咖位	ka wei	5000
+咖逼	ka bi	5000
+咧咧	lie lie	5000
+咪咪	mi mi	5000
+咬耳朵	yao er duo	5000
+咯咯哒	ge ge da	5000
+咱们	zan men	5000
+咳呛	ke qiang	5000
+咸水妹	xian shui mei	5000
+咸湿	xian shi	5000
+咸盐	xian yan	5000
+哇塞	wa sai	5000
+哈喇子	ha la zi	5000
+哈基米	ha ji mi	5000
+哈拉子	ha la zi	5000
+哈棒	ha bang	5000
+哈迷	ha mi	5000
+哑子	ya zi	5000
+哗儿哗儿	hua r hua r	5000
+哥们	ge men	5000
+哥俩	ge lia	5000
+哦豁	o huo	5000
+哪儿的话	na r de hua	5000
+哪门子	na men zi	5000
+唉姐	ai jie	5000
+唠嗑	lao ke	5000
+唬烂	hu lan	5000
+唯二	wei er	5000
+啃老	ken lao	5000
+啃老族	ken lao zu	5000
+啥子	sha zi	5000
+啪啪啪	pa pa pa	5000
+啷当	lang dang	5000
+喇赛	la sai	5000
+喜大普奔	xi da pu ben	5000
+喜当爹	xi dang die	5000
+喜提	xi ti	5000
+喝凉水都塞牙	he liang shui dou sai ya	5000
+喝挂	he gua	5000
+喝断片	he duan pian	5000
+喝茫	he mang	5000
+喵星人	miao xing ren	5000
+喷子	pen zi	5000
+喷饭	pen fan	5000
+嗉子	su zi	5000
+嗔着	chen zhe	5000
+嗝屁	ge pi	5000
+嗨皮	hai pi	5000
+嗨药	hai yao	5000
+嘉豪	jia hao	5000
+嘎了	ga le	5000
+嘎嘎	ga ga	5000
+嘘嘘	xu xu	5000
+嘚啵	de bo	5000
+嘟嘴	du zui	5000
+嘴乖	zui guai	5000
+嘴损	zui sun	5000
+嘴替	zui ti	5000
+嘴欠	zui qian	5000
+嘴炮	zui pao	5000
+嘴瓢	zui piao	5000
+嘴秋	zui qiu	5000
+嘿咻	hei xiu	5000
+回家吃自己	hui jia chi zi ji	5000
+回帖	hui tie	5000
+回怼	hui dui	5000
+困觉	kun jiao	5000
+国家汉办	guo jia han ban	5000
+国服	guo fu	5000
+图样图森破	tu yang tu sen po	5000
+圈粉	quan fen	5000
+圈钱	quan qian	5000
+土共	tu gong	5000
+土坷垃	tu ke la	5000
+土得掉渣	tu de diao zha	5000
+土澳	tu ao	5000
+土狗	tu gou	5000
+土豪	tu hao	5000
+土鳖	tu bie	5000
+圣母婊	sheng mu biao	5000
+在线	zai xian	5000
+地中海	di zhong hai	5000
+地牛翻身	di niu fan shen	5000
+地狱	di yu	5000
+地狱笑话	di yu xiao hua	5000
+地脚	di jiao	5000
+场子	chang zi	5000
+坎坎	kan kan	5000
+坑人	keng ren	5000
+坡县	po xian	5000
+坡国	po guo	5000
+坦克	tan ke	5000
+坨儿	tuo r	5000
+坷垃	ke la	5000
+垃圾	la ji	5000
+型男	xing nan	5000
+垫补	dian bu	5000
+垭口	ya kou	5000
+埋汰	mai tai	5000
+城巴佬	cheng ba lao	5000
+基佬	ji lao	5000
+基友	ji you	5000
+基情	ji qing	5000
+基操	ji cao	5000
+基民	ji min	5000
+堪达罕	kan da han	5000
+堵床上	du chuang shang	5000
+塌房	ta fang	5000
+塑料姐妹花	su liao jie mei hua	5000
+塑料普通话	su liao pu tong hua	5000
+壁咚	bi dong	5000
+士多	shi duo	5000
+士巴拿	shi ba na	5000
+壳郎猪	ke lang zhu	5000
+备胎	bei tai	5000
+外公	wai gong	5000
+外婆	wai po	5000
+外孙子	wai sun zi	5000
+外爷	wai ye	5000
+多了去了	duo le qu le	5000
+多动症	duo dong zheng	5000
+多咱	duo zan	5000
+夜饭	ye fan	5000
+够朋友	gou peng you	5000
+大不列蹀	da bu lie die	5000
+大个儿	da ge r	5000
+大伯子	da bai zi	5000
+大厂	da chang	5000
+大号	da hao	5000
+大咖	da ka	5000
+大大	da da	5000
+大姨妈	da yi ma	5000
+大娘	da niang	5000
+大家伙儿	da jia huo r	5000
+大小声	da xiao sheng	5000
+大尾巴狼	da yi ba lang	5000
+大巴	da ba	5000
+大拿	da na	5000
+大洋	da yang	5000
+大爷	da ye	5000
+大牛	da niu	5000
+大白	da bai	5000
+大神	da shen	5000
+大秘	da mi	5000
+大笨象	da ben xiang	5000
+大腕	da wan	5000
+大舅哥	da jiu ge	5000
+大舅子	da jiu zi	5000
+大舌头	da she tou	5000
+大虾	da xia	5000
+大长腿	da chang tui	5000
+大雷	da lei	5000
+天花	tian hua	5000
+天花板	tian hua ban	5000
+天道	tian dao	5000
+天龙人	tian long ren	5000
+天龙国	tian long guo	5000
+太爷爷	tai ye ye	5000
+太长不看	tai chang bu kan	5000
+夯汉	hang han	5000
+头午	tou wu	5000
+头头	tou tou	5000
+头家	tou jia	5000
+头铁	tou tie	5000
+头颈	tou jing	5000
+头香	tou xiang	5000
+夸张	kua zhang	5000
+夹娃娃	jia wa wa	5000
+夹子音	jia zi yin	5000
+奇差	qi cha	5000
+奇葩	qi pa	5000
+奔现	ben xian	5000
+套儿	tao r	5000
+套套	tao tao	5000
+套子	tao zi	5000
+套磁	tao ci	5000
+奥利给	ao li gei	5000
+奥客	ao ke	5000
+女同	nv tong	5000
+女大	nv da	5000
+女娃	nv wa	5000
+女票	nv piao	5000
+女高	nv gao	5000
+奶奶	nai nai	5000
+奶娘	nai niang	5000
+奶子	nai zi	5000
+奶帅	nai shuai	5000
+奶拽	nai zhuai	5000
+奶油	nai you	5000
+好不好	hao bu hao	5000
+好久	hao jiu	5000
+好坏	hao huai	5000
+好朋友	hao peng you	5000
+好气	hao qi	5000
+好活当赏	hao huo dang shang	5000
+好生	hao sheng	5000
+如意套	ru yi tao	5000
+妥妥的	tuo tuo de	5000
+妮子	ni zi	5000
+妹子	mei zi	5000
+妹纸	mei zhi	5000
+姆妈	m ma	5000
+姐们	jie men	5000
+姐俩	jie lia	5000
+姐夫	jie fu	5000
+姑奶奶	gu nai nai	5000
+姑妈	gu ma	5000
+姑姥姥	gu lao lao	5000
+姑子	gu zi	5000
+姥姥	lao lao	5000
+姥娘	lao niang	5000
+姥爷	lao ye	5000
+姨奶奶	yi nai nai	5000
+姨妈	yi ma	5000
+姨妈巾	yi ma jin	5000
+姨母笑	yi mu xiao	5000
+姬佬	ji lao	5000
+威客	wei ke	5000
+娃儿	wa er	5000
+娘俩	niang lia	5000
+娘儿们	niang r men	5000
+娘妈	niang ma	5000
+娘子	niang zi	5000
+娘希匹	niang xi pi	5000
+娘炮	niang pao	5000
+娭姐	ai jie	5000
+婆姨	po yi	5000
+婆娘	po niang	5000
+婚驴	hun lv	5000
+婶子	shen zi	5000
+媚男	mei nan	5000
+媳妇	xi fu	5000
+嫂子	sao zi	5000
+嫚子	man zi	5000
+嬎蛋	fan dan	5000
+嬷嬷	mo mo	5000
+子儿	zi r	5000
+孔方兄	kong fang xiong	5000
+孔雀女	kong que nv	5000
+孕宝宝	yun bao bao	5000
+字典	zi dian	5000
+季经	ji jing	5000
+学渣	xue zha	5000
+学霸	xue ba	5000
+孱头	can tou	5000
+安全措施	an quan cuo shi	5000
+安安	an an	5000
+安老院	an lao yuan	5000
+完爆	wan bao	5000
+完犊子	wan du zi	5000
+完蛋	wan dan	5000
+官宣	guan xuan	5000
+定规	ding gui	5000
+宝子	bao zi	5000
+实名制	shi ming zhi	5000
+实打实	shi da shi	5000
+实锤	shi chui	5000
+客家语	ke jia yu	5000
+宰了	zai le	5000
+家伙	jia huo	5000
+家去	jia qu	5000
+家娘	jia niang	5000
+家婆	jia po	5000
+家雀儿	jia qiao r	5000
+寒腿	han tui	5000
+对不对	dui bu dui	5000
+对付	dui fu	5000
+导员	dao yuan	5000
+封禁	feng jin	5000
+小三	xiao san	5000
+小两口	xiao liang kou	5000
+小仙女	xiao xian nv	5000
+小伙子	xiao huo zi	5000
+小儿	xiao r	5000
+小儿科	xiao er ke	5000
+小发财	xiao fa cai	5000
+小叔子	xiao shu zi	5000
+小受	xiao shou	5000
+小号	xiao hao	5000
+小哥	xiao ge	5000
+小哥哥	xiao ge ge	5000
+小奶狗	xiao nai gou	5000
+小妈	xiao ma	5000
+小妹妹	xiao mei mei	5000
+小姐	xiao jie	5000
+小姐姐	xiao jie jie	5000
+小姑子	xiao gu zi	5000
+小姨子	xiao yi zi	5000
+小婊砸	xiao biao za	5000
+小子	xiao zi	5000
+小孩哥	xiao hai ge	5000
+小孩姐	xiao hai jie	5000
+小年夜	xiao nian ye	5000
+小年轻	xiao nian qing	5000
+小开	xiao kai	5000
+小弟弟	xiao di di	5000
+小强	xiao qiang	5000
+小改改	xiao gai gai	5000
+小攻	xiao gong	5000
+小日子	xiao ri zi	5000
+小样	xiao yang	5000
+小毛头	xiao mao tou	5000
+小牛	xiao niu	5000
+小电影	xiao dian ying	5000
+小电驴	xiao dian lv	5000
+小登	xiao deng	5000
+小白	xiao bai	5000
+小白兔	xiao bai tu	5000
+小的	xiao de	5000
+小瞧	xiao qiao	5000
+小老婆	xiao lao po	5000
+小胖爪	xiao pang zhua	5000
+小舅子	xiao jiu zi	5000
+小花	xiao hua	5000
+小萝卜头	xiao luo bo tou	5000
+小辈子	xiao bei zi	5000
+小钢炮	xiao gang pao	5000
+小雨伞	xiao yu san	5000
+小鲜肉	xiao xian rou	5000
+小黄	xiao huang	5000
+少块肉	shao kuai rou	5000
+少来	shao lai	5000
+少根筋	shao gen jin	5000
+尬电	ga dian	5000
+尬笑	ga xiao	5000
+尬聊	ga liao	5000
+尬舞	ga wu	5000
+就晚了	jiu wan le	5000
+就算	jiu suan	5000
+尺寸	chi cun	5000
+尻门子	kao men zi	5000
+尼特族	ni te zu	5000
+尼玛	ni ma	5000
+尿不湿	niao bu shi	5000
+尿泡	sui pao	5000
+尿遁	niao dun	5000
+屁墩儿	pi dun r	5000
+屁民	pi min	5000
+屁精	pi jing	5000
+屁股蹲儿	pi gu dun r	5000
+屁颠屁颠	pi dian pi dian	5000
+屌丝	diao si	5000
+屌爆	diao bao	5000
+山包	shan bao	5000
+山沟沟	shan gou gou	5000
+山炮	shan pao	5000
+山药	shan yao	5000
+山药蛋	shan yao dan	5000
+山鸡	shan ji	5000
+岁静	sui jing	5000
+崩老头	beng lao tou	5000
+崭劲	zhan jin	5000
+工具人	gong ju ren	5000
+巨婴	ju ying	5000
+巨魔	ju mo	5000
+巨龙	ju long	5000
+差生文具多	cha sheng wen ju duo	5000
+巴不得	ba bu de	5000
+巴心巴肝	ba xin ba gan	5000
+巴蛸	ba shao	5000
+巴适	ba shi	5000
+巴铁	ba tie	5000
+带大	dai da	5000
+带子	dai zi	5000
+带感	dai gan	5000
+带歪	dai wai	5000
+带种	dai zhong	5000
+带货	dai huo	5000
+带赛	dai sai	5000
+帮子	bang zi	5000
+帽子叔叔	mao zi shu shu	5000
+干仗	gan zhang	5000
+干架	gan jia	5000
+干话	gan hua	5000
+干货	gan huo	5000
+干面	gan mian	5000
+干饭	gan fan	5000
+平头哥	ping tou ge	5000
+平替	ping ti	5000
+年上	nian shang	5000
+年下	nian xia	5000
+年根	nian gen	5000
+幺儿	yao er	5000
+幺女	yao nv	5000
+广子	guang zi	5000
+庄子	zhuang zi	5000
+庄稼人	zhuang jia ren	5000
+床友	chuang you	5000
+底裤	di ku	5000
+店家	dian jia	5000
+废柴	fei chai	5000
+废物点心	fei wu dian xin	5000
+座儿	zuo r	5000
+开口成脏	kai kou cheng zang	5000
+开挂	kai gua	5000
+开支	kai zhi	5000
+开涮	kai shuan	5000
+开瓢	kai piao	5000
+开盒	kai he	5000
+开车	kai che	5000
+开黑	kai hei	5000
+弄堂	long tang	5000
+弄走	nong zou	5000
+引战	yin zhan	5000
+引线	yin xian	5000
+张三	zhang san	5000
+弱爆	ruo bao	5000
+归置	gui zhi	5000
+当头	dang tou	5000
+当当车	dang dang che	5000
+彩虹屁	cai hong pi	5000
+彪子	biao zi	5000
+往死里	wang si li	5000
+待见	dai jian	5000
+得可以	de ke yi	5000
+得瑟	de se	5000
+微劈恩	wei pi en	5000
+德性	de xing	5000
+心动女	xin dong nv	5000
+心塞	xin sai	5000
+心慌	xin huang	5000
+心说	xin shuo	5000
+忙乎	mang hu	5000
+念想	nian xiang	5000
+念想儿	nian xiang r	5000
+怒怼	nu dui	5000
+思密达	si mi da	5000
+急婚族	ji hun zu	5000
+性福	xing fu	5000
+性转	xing zhuan	5000
+怪叔叔	guai shu shu	5000
+怪咖	guai ka	5000
+恋爱脑	lian ai nao	5000
+恐艾	kong ai	5000
+恐龙	kong long	5000
+恐龙妹	kong long mei	5000
+恨天高	hen tian gao	5000
+悄悄咪咪	qiao qiao mi mi	5000
+悖晦	bei hui	5000
+悲催	bei cui	5000
+情儿	qing r	5000
+惊槑	jing dai	5000
+想头	xiang tou	5000
+惹毛	re mao	5000
+感冒	gan mao	5000
+愣说	leng shuo	5000
+愤青	fen qing	5000
+慕洋犬	mu yang quan	5000
+憨子	han zi	5000
+懂哥	dong ge	5000
+懂眼	dong yan	5000
+懒人包	lan ren bao	5000
+懒癌	lan ai	5000
+懒虫	lan chong	5000
+懵逼	meng bi	5000
+戆头戆脑	gang tou gang nao	5000
+戆督	gang du	5000
+戏精	xi jing	5000
+成天	cheng tian	5000
+我也是醉了	wo ye shi zui le	5000
+我勒个去	wo le ge qu	5000
+我去	wo qu	5000
+我曹	wo cao	5000
+戴高帽子	dai gao mao zi	5000
+扁食	bian shi	5000
+手欠	shou qian	5000
+手残	shou can	5000
+手筋	shou jin	5000
+手脖子	shou bo zi	5000
+手贱	shou jian	5000
+手颈	shou jing	5000
+扎款	zha kuan	5000
+扑街	pu jie	5000
+扒拉	ba la	5000
+扒拉	pa la	5000
+打兑	da dui	5000
+打哪儿指哪儿	da na r zhi na r	5000
+打啵	da bo	5000
+打小	da xiao	5000
+打小报告	da xiao bao gao	5000
+打屁	da pi	5000
+打摆子	da bai zi	5000
+打棚	da peng	5000
+打水漂	da shui piao	5000
+打游击	da you ji	5000
+打炮	da pao	5000
+打的	da di	5000
+打脸	da lian	5000
+打野炮	da ye pao	5000
+打镲	da cha	5000
+打闷雷	da men lei	5000
+打飞机	da fei ji	5000
+打馕	da nang	5000
+打鸡血	da ji xue	5000
+托儿	tuo r	5000
+托尼老师	tuo ni lao shi	5000
+扣屎盔子	kou shi kui zi	5000
+扣扣	kou kou	5000
+扦脚	qian jiao	5000
+执拾	zhi shi	5000
+扩列	kuo lie	5000
+扯犊子	che du zi	5000
+扯谈	che tan	5000
+扳不倒儿	ban bu dao r	5000
+扶弟魔	fu di mo	5000
+找抽	zhao chou	5000
+找赎	zhao shu	5000
+找钱	zhao qian	5000
+抄手	chao shou	5000
+抄靶子	chao ba zi	5000
+把心放在肚子里	ba xin fang zai du zi li	5000
+把拔	ba ba	5000
+把细	ba xi	5000
+抓狂	zhua kuang	5000
+抓马	zhua ma	5000
+抠搜	kou sou	5000
+抠脚	kou jiao	5000
+抠门	kou men	5000
+抱大腿	bao da tui	5000
+抱窝	bao wo	5000
+抽冷子	chou leng zi	5000
+抽水	chou shui	5000
+拆家	chai jia	5000
+拉仇恨	la chou hen	5000
+拉倒	la dao	5000
+拉后钩儿	la hou gou r	5000
+拉呱	la gua	5000
+拉大条	la da tiao	5000
+拉扯大	la che da	5000
+拉拉	la la	5000
+拉活	la huo	5000
+拉稀	la xi	5000
+拉肚子	la du zi	5000
+拉胯	la kua	5000
+拉话	la hua	5000
+拍婆子	pai po zi	5000
+拍拖	pai tuo	5000
+拍演	pai yan	5000
+拍砖	pai zhuan	5000
+拎包	lin bao	5000
+拎包党	lin bao dang	5000
+拔凉拔凉	ba liang ba liang	5000
+拔尖	ba jian	5000
+拗断	ao duan	5000
+拜拜	bai bai	5000
+拜金女	bai jin nv	5000
+拦精灵	lan jing ling	5000
+拧巴	ning ba	5000
+拨接	bo jie	5000
+拱火	gong huo	5000
+拼爹	pin die	5000
+拽姐	zhuai jie	5000
+拿一血	na yi xue	5000
+挖坑	wa keng	5000
+挖坟	wa fen	5000
+挡琅	dang lang	5000
+挡郎	dang lang	5000
+挡锒	dang lang	5000
+挤对	ji dui	5000
+挤落	ji luo	5000
+挨呲	ai ci	5000
+挪窝儿	nuo wo r	5000
+挺尸	ting shi	5000
+挽尊	wan zun	5000
+捞什子	lao shi zi	5000
+捞女	lao nv	5000
+捞油水	lao you shui	5000
+捡尸	jian shi	5000
+捡漏	jian lou	5000
+捧臭脚	peng chou jiao	5000
+捯饬	dao chi	5000
+掉线	diao xian	5000
+掉马甲	diao ma jia	5000
+排档	pai dang	5000
+排雷	pai lei	5000
+排面	pai mian	5000
+排骨	pai gu	5000
+探花	tan hua	5000
+接头	jie tou	5000
+接盘	jie pan	5000
+接茬	jie cha	5000
+推搪	tui tang	5000
+掰弯	bai wan	5000
+掰扯	bai che	5000
+掰直	bai zhi	5000
+提溜	di liu	5000
+插喉	cha hou	5000
+揦子	la zi	5000
+援交妹	yuan jiao mei	5000
+揾钱	wen qian	5000
+搂钱	lou qian	5000
+搓板	cuo ban	5000
+搞不好	gao bu hao	5000
+搞基	gao ji	5000
+搞头	gao tou	5000
+搞毛	gao mao	5000
+搬运	ban yun	5000
+搭子	da zi	5000
+摆烂	bai lan	5000
+摆龙门阵	bai long men zhen	5000
+摊事儿	tan shi r	5000
+摊档	tan dang	5000
+摊黄菜	tan huang cai	5000
+摩挲	ma sa	5000
+撂挑子	liao tiao zi	5000
+撇大条	pie da tiao	5000
+撇条	pie tiao	5000
+撑死	cheng si	5000
+撒丫子	sa ya zi	5000
+撒呓挣	sa yi zheng	5000
+撒村	sa cun	5000
+撒狗粮	sa gou liang	5000
+撕逼	si bi	5000
+撞脸	zhuang lian	5000
+撞鬼	zhuang gui	5000
+撩妹	liao mei	5000
+撸串	lu chuan	5000
+撸猫	lu mao	5000
+撸管	lu guan	5000
+撸铁	lu tie	5000
+擦屁股	ca pi gu	5000
+擦边	ca bian	5000
+擦黑儿	ca hei r	5000
+攀高枝	pan gao zhi	5000
+攒劲	zan jin	5000
+收山	shou shan	5000
+收拾	shou shi	5000
+收藏	shou cang	5000
+改刀	gai dao	5000
+放卫星	fang wei xing	5000
+放水屁	fang shui pi	5000
+放电	fang dian	5000
+放空挡	fang kong dang	5000
+放血	fang xie	5000
+放闪	fang shan	5000
+放飞机	fang fei ji	5000
+教科书式	jiao ke shu shi	5000
+敛巴	lian ba	5000
+敲碗	qiao wan	5000
+整人	zheng ren	5000
+整治	zheng zhi	5000
+整活	zheng huo	5000
+整蛊	zheng gu	5000
+敷汤药	fu tang yao	5000
+文爱	wen ai	5000
+文读	wen du	5000
+斗内	dou nei	5000
+斜杠	xie gang	5000
+斩杀线	zhan sha xian	5000
+断片儿	duan pian r	5000
+断线	duan xian	5000
+断舍离	duan she li	5000
+新兵蛋子	xin bing dan zi	5000
+新妇	xin fu	5000
+新币	xin bi	5000
+新钱	xin qian	5000
+无语	wu yu	5000
+日头	ri tou	5000
+日怪	ri guai	5000
+早已	zao yi	5000
+早早儿	zao zao r	5000
+早晚	zao wan	5000
+早老性痴呆	zao lao xing chi dai	5000
+旱伞	han san	5000
+旺子	wang zi	5000
+明儿	ming r	5000
+明儿个	ming r ge	5000
+明天见	ming tian jian	5000
+明恋	ming lian	5000
+星星	xing xing	5000
+星相十足	xing xiang shi zu	5000
+昨儿	zuo r	5000
+昨儿个	zuo r ge	5000
+显摆	xian bai	5000
+晒娃	shai wa	5000
+晒娃族	shai wa zu	5000
+晒照	shai zhao	5000
+晕菜	yun cai	5000
+普信	pu xin	5000
+普信男	pu xin nan	5000
+智熄	zhi xi	5000
+暖心	nuan xin	5000
+暗戳戳	an chuo chuo	5000
+曱甴	yue zha	5000
+更博	geng bo	5000
+最好是	zui hao shi	5000
+月中	yue zhong	5000
+月头儿	yue tou r	5000
+月婆子	yue po zi	5000
+有一腿	you yi tui	5000
+有戏	you xi	5000
+有排面	you pai mian	5000
+有搞头	you gao tou	5000
+有木有	you mu you	5000
+有本事	you ben shi	5000
+有病	you bing	5000
+有眼力见儿	you yan li jian r	5000
+有边儿	you bian r	5000
+服务提供商	fu wu ti gong shang	5000
+末了	mo liao	5000
+机器脚踏车	ji qi jiao ta che	5000
+机场	ji chang	5000
+机车	ji che	5000
+杀熟	sha shu	5000
+杠杠的	gang gang de	5000
+杠精	gang jing	5000
+条子	tiao zi	5000
+来事	lai shi	5000
+来劲	lai jin	5000
+来钱	lai qian	5000
+杯具	bei ju	5000
+杯葛	bei ge	5000
+板儿爷	ban r ye	5000
+板扎	ban zha	5000
+板砖	ban zhuan	5000
+板鸭	ban ya	5000
+极品	ji pin	5000
+极客	ji ke	5000
+果粉	guo fen	5000
+枪崩	qiang beng	5000
+枫叶国	feng ye guo	5000
+枫叶鼠	feng ye shu	5000
+架不住	jia bu zhu	5000
+查岗	cha gang	5000
+查水表	cha shui biao	5000
+柰子	nai zi	5000
+柴禾妞	chai he niu	5000
+柿子	shi zi	5000
+树洞	shu dong	5000
+校闹	xiao nao	5000
+核平	he ping	5000
+核酸	he suan	5000
+格机	ge ji	5000
+案子	an zi	5000
+梅花	mei hua	5000
+梗王	geng wang	5000
+梯子	ti zi	5000
+棒棒哒	bang bang da	5000
+棒读	bang du	5000
+椒子	jiao zi	5000
+楞子眼	leng zi yan	5000
+楼上	lou shang	5000
+楼凤	lou feng	5000
+楼台	lou tai	5000
+榆木脑壳	yu mu nao ke	5000
+榆木脑袋	yu mu nao dai	5000
+槽点	cao dian	5000
+槽牙	cao ya	5000
+横直	heng zhi	5000
+樱花国	ying hua guo	5000
+樱花妹	ying hua mei	5000
+欠抽	qian chou	5000
+欧了	ou le	5000
+欧气	ou qi	5000
+歇了吧	xie le ba	5000
+歇菜	xie cai	5000
+正主	zheng zhu	5000
+正港	zheng gang	5000
+正点	zheng dian	5000
+歪果仁	wai guo ren	5000
+死人	si ren	5000
+死人不管	si ren bu guan	5000
+死磕	si ke	5000
+死缠烂打	si chan lan da	5000
+残念	can nian	5000
+毁三观	hui san guan	5000
+母上	mu shang	5000
+母汤	mu tang	5000
+母鸡	mu ji	5000
+毒奶	du nai	5000
+毒虫	du chong	5000
+毒鸡汤	du ji tang	5000
+比心	bi xin	5000
+毕典	bi dian	5000
+毛妹	mao mei	5000
+毛孩子	mao hai zi	5000
+毛票	mao piao	5000
+毛腰	mao yao	5000
+气疯	qi feng	5000
+氧化钙	yang hua gai	5000
+氪肝	ke gan	5000
+水牛儿	shui niu r	5000
+水花	shui hua	5000
+水草	shui cao	5000
+水逆	shui ni	5000
+汁水	zhi shui	5000
+求锤得锤	qiu chui de chui	5000
+汉子	han zi	5000
+汗褟儿	han ta r	5000
+汪星人	wang xing ren	5000
+沙发	sha fa	5000
+沙雕	sha diao	5000
+沟子	gou zi	5000
+没准头	mei zhun tou	5000
+没戏	mei xi	5000
+没搞头	mei gao tou	5000
+没法儿	mei fa r	5000
+没溜儿	mei liu r	5000
+没眼看	mei yan kan	5000
+没苦硬吃	mei ku ying chi	5000
+没说的	mei shuo de	5000
+没谁了	mei sei le	5000
+没起子	mei qi zi	5000
+没跑	mei pao	5000
+没长眼睛	mei zhang yan jing	5000
+油子	you zi	5000
+油汗	you han	5000
+油炸鬼	you zha gui	5000
+油管	you guan	5000
+油腻	you ni	5000
+油菜	you cai	5000
+油车	you che	5000
+法克鱿	fa ke you	5000
+泡吧	pao ba	5000
+泡汤	pao tang	5000
+泡芙人	pao fu ren	5000
+泡菜国	pao cai guo	5000
+波霸	bo ba	5000
+波鞋	bo xie	5000
+泥巴	ni ba	5000
+泪失禁	lei shi jin	5000
+泪奔	lei ben	5000
+泪点	lei dian	5000
+泪点低	lei dian di	5000
+泰日天	tai ri tian	5000
+洋柿子	yang shi zi	5000
+洋火	yang huo	5000
+洋罪	yang zui	5000
+洋芋	yang yu	5000
+洗地	xi di	5000
+洗洗睡	xi xi shui	5000
+洗稿	xi gao	5000
+洞子	dong zi	5000
+活久见	huo jiu jian	5000
+活受罪	huo shou zui	5000
+活好	huo hao	5000
+活得不耐烦	huo de bu nai fan	5000
+活该	huo gai	5000
+流量明星	liu liang ming xing	5000
+海子	hai zi	5000
+海扁	hai bian	5000
+海椒	hai jiao	5000
+海王	hai wang	5000
+海肠子	hai chang zi	5000
+海豚音	hai tun yin	5000
+润学	run xue	5000
+淫趴	yin pa	5000
+深柜	shen gui	5000
+添乱	tian luan	5000
+添堵	tian du	5000
+渣男	zha nan	5000
+游泳圈	you yong quan	5000
+溜冰	liu bing	5000
+溜号	liu hao	5000
+滂臭	pang chou	5000
+滋芽	zi ya	5000
+滑跪	hua gui	5000
+滚床单	gun chuang dan	5000
+滚犊子	gun du zi	5000
+滚粗	gun cu	5000
+滚蛋	gun dan	5000
+滴管	di guan	5000
+漏电	lou dian	5000
+潲水	shao shui	5000
+火星子	huo xing zi	5000
+火油	huo you	5000
+火炎焱燚	huo yan yan yi	5000
+火色	huo se	5000
+灯泡	deng pao	5000
+灵光	ling guang	5000
+灶具	zao ju	5000
+灶屋	zao wu	5000
+灶房	zao fang	5000
+灶间	zao jian	5000
+炒股	chao gu	5000
+炒饭	chao fan	5000
+炒鱿鱼	chao you yu	5000
+炫酷	xuan ku	5000
+炮儿局	pao r ju	5000
+炸药奖	zha yao jiang	5000
+炸街	zha jie	5000
+炸裂	zha lie	5000
+点儿背	dian r bei	5000
+点击率	dian ji lv	5000
+点子扎手	dian zi zha shou	5000
+点子背	dian zi bei	5000
+点津	dian jin	5000
+点背	dian bei	5000
+烂人	lan ren	5000
+烂大街	lan da jie	5000
+烂崽	lan zai	5000
+烂橘子	lan ju zi	5000
+烧脑	shao nao	5000
+热帖	re tie	5000
+热度	re du	5000
+热搜	re sou	5000
+热腾腾	re teng teng	5000
+然并卵	ran bing luan	5000
+然鹅	ran e	5000
+照骗	zhao pian	5000
+熊亲戚	xiong qin qi	5000
+熊孩子	xiong hai zi	5000
+熊猫血	xiong mao xue	5000
+熟龄	shu ling	5000
+熬头儿	ao tou r	5000
+燕梳	yan shu	5000
+爆乳	bao ru	5000
+爆仗	bao zhang	5000
+爆头	bao tou	5000
+爆照	bao zhao	5000
+爆菊花	bao ju hua	5000
+爆金币	bao jin bi	5000
+爆雷	bao lei	5000
+爪机	zhua ji	5000
+爬虫	pa chong	5000
+爱爱	ai ai	5000
+爱现	ai xian	5000
+爱疯	ai feng	5000
+爱谁谁	ai shei shei	5000
+爱豆	ai dou	5000
+父上	fu shang	5000
+爷俩	ye lia	5000
+爷爷	ye ye	5000
+爸爸	ba ba	5000
+爹娘	die niang	5000
+爽歪了	shuang wai le	5000
+牙巴	ya ba	5000
+牛人	niu ren	5000
+牛子	niu zi	5000
+牛屄	niu bi	5000
+牛扒	niu pa	5000
+牛气	niu qi	5000
+牛脖子	niu bo zi	5000
+牛郎	niu lang	5000
+物事	wu shi	5000
+犁头	li tou	5000
+犯困	fan kun	5000
+犯贫	fan pin	5000
+狂顶	kuang ding	5000
+狂魔	kuang mo	5000
+狗子	gou zi	5000
+狗屎运	gou shi yun	5000
+狗崽子	gou zai zi	5000
+狗带	gou dai	5000
+狗狗	gou gou	5000
+狗粮	gou liang	5000
+猩化	xing hua	5000
+猩猩	xing xing	5000
+猪头	zhu tou	5000
+猪猡	zhu luo	5000
+猪瘾	zhu yin	5000
+猪精	zhu jing	5000
+猪队友	zhu dui you	5000
+猫奴	mao nu	5000
+猫本	mao ben	5000
+猫腻	mao ni	5000
+猫舌头	mao she tou	5000
+猫饭	mao fan	5000
+献身	xian shen	5000
+猴儿精	hou r jing	5000
+猴子偷桃	hou zi tou tao	5000
+猴皮筋	hou pi jin	5000
+猴米	hou mi	5000
+猴精	hou jing	5000
+猴车	hou che	5000
+玉玉症	yu yu zheng	5000
+玛丽苏	ma li su	5000
+玩咖	wan ka	5000
+玩完	wan wan	5000
+玩阴的	wan yin de	5000
+现任	xian ren	5000
+现充	xian chong	5000
+玻璃	bo li	5000
+玻璃心	bo li xin	5000
+瓜娃子	gua wa zi	5000
+瓢羹	piao geng	5000
+瓷实	ci shi	5000
+甜妹	tian mei	5000
+生命带	sheng ming dai	5000
+生无可恋	sheng wu ke lian	5000
+生疼	sheng teng	5000
+甩锅	shuai guo	5000
+甭管	beng guan	5000
+电子狗	dian zi gou	5000
+电棒	dian bang	5000
+电灯泡	dian deng pao	5000
+电爱	dian ai	5000
+电马儿	dian ma r	5000
+电驴	dian lv	5000
+电驴子	dian lv zi	5000
+电鸡	dian ji	5000
+男友力	nan you li	5000
+男同	nan tong	5000
+男大	nan da	5000
+男娃	nan wa	5000
+男娘	nan niang	5000
+男子汉大丈夫	nan zi han da zhang fu	5000
+男票	nan piao	5000
+男高	nan gao	5000
+留子	liu zi	5000
+番客	fan ke	5000
+番瓜	fan gua	5000
+番薯	fan shu	5000
+疟子	yao zi	5000
+疯犹精	feng you jing	5000
+病秧子	bing yang zi	5000
+瘪三	bie san	5000
+瘸子	que zi	5000
+癀病	huang bing	5000
+白兔	bai tu	5000
+白奴	bai nu	5000
+白嫖	bai piao	5000
+白富美	bai fu mei	5000
+白左	bai zuo	5000
+白手套	bai shou tao	5000
+白扯淡	bai che dan	5000
+白月光	bai yue guang	5000
+白烂	bai lan	5000
+白目	bai mu	5000
+白相人	bai xiang ren	5000
+白瞎	bai xia	5000
+白菜价	bai cai jia	5000
+白虎	bai hu	5000
+白饶	bai rao	5000
+百合	bai he	5000
+的哥	di ge	5000
+皮牙子	pi ya zi	5000
+皮痒	pi yang	5000
+盆友	pen you	5000
+盐蛇	yan she	5000
+盖帽儿	gai mao r	5000
+盖楼	gai lou	5000
+直播	zhi bo	5000
+直播带货	zhi bo dai huo	5000
+直球	zhi qiu	5000
+直男	zhi nan	5000
+直男癌	zhi nan ai	5000
+直给	zhi gei	5000
+直肠子	zhi chang zi	5000
+省省吧	sheng sheng ba	5000
+看人下菜碟儿	kan ren xia cai die r	5000
+看看	kan kan	5000
+真个	zhen ge	5000
+真是	zhen shi	5000
+真枪实弹	zhen qiang shi dan	5000
+真格的	zhen ge de	5000
+真牛	zhen niu	5000
+真空	zhen kong	5000
+眵目糊	chi mu hu	5000
+眼力见	yan li jian	5000
+眼时	yan shi	5000
+眼气	yan qi	5000
+眼眨毛	yan zha mao	5000
+眼睛吃冰淇淋	yan jing chi bing qi lin	5000
+眼神	yan shen	5000
+眼见得	yan jian de	5000
+督进去	du jin qu	5000
+瞌睡虫	ke shui chong	5000
+瞎掰	xia bai	5000
+知了猴	zhi liao hou	5000
+矫情	jiao qing	5000
+短剧	duan ju	5000
+矮丑穷	ai chou qiong	5000
+矮冬瓜	ai dong gua	5000
+矮油	ai you	5000
+石屎森林	shi shi sen lin	5000
+码子	ma zi	5000
+码长城	ma chang cheng	5000
+砌长城	qi chang cheng	5000
+破壳	po ke	5000
+破壳日	po ke ri	5000
+破烂	po lan	5000
+破题	po ti	5000
+破题儿	po ti r	5000
+破题儿第一遭	po ti r di yi zao	5000
+硬刚	ying gang	5000
+硬拗	ying ao	5000
+硬菜	ying cai	5000
+碧池	bi chi	5000
+碰瓷	peng ci	5000
+碳水	tan shui	5000
+碾场	nian chang	5000
+磕碜	ke chen	5000
+磕糖	ke tang	5000
+磕膝盖	ke xi gai	5000
+磨叽	mo ji	5000
+磨唧	mo ji	5000
+磨得开	mo de kai	5000
+磨牙	mo ya	5000
+礼拜	li bai	5000
+社交牛逼症	she jiao niu bi zheng	5000
+社死	she si	5000
+社牛	she niu	5000
+社畜	she chu	5000
+神专	shen zhuan	5000
+神作	shen zuo	5000
+神级	shen ji	5000
+神经	shen jing	5000
+票子	piao zi	5000
+秃瓢	tu piao	5000
+秃疮	tu chuang	5000
+种花	zhong hua	5000
+种草	zhong cao	5000
+科普	ke pu	5000
+秒回	miao hui	5000
+秒杀	miao sha	5000
+秒看	miao kan	5000
+秦椒	qin jiao	5000
+秧子	yang zi	5000
+称钱	chen qian	5000
+程子	cheng zi	5000
+程序猿	cheng xu yuan	5000
+空军	kong jun	5000
+空手套白狼	kong shou tao bai lang	5000
+窑姐	yao jie	5000
+窜稀	cuan xi	5000
+窝囊废	wo nang fei	5000
+窝囊费	wo nang fei	5000
+窝里横	wo li heng	5000
+窟臀	ku tun	5000
+站点	zhan dian	5000
+笆篱子	ba li zi	5000
+筅帚	xian zhou	5000
+筒子	tong zi	5000
+筷子腿	kuai zi tui	5000
+箍子	gu zi	5000
+箔篱	bo li	5000
+管够	guan gou	5000
+箢箕	yuan ji	5000
+箢篼	yuan dou	5000
+米兔	mi tu	5000
+米粉	mi fen	5000
+粉转黑	fen zhuan hei	5000
+粟子	su zi	5000
+粟米	su mi	5000
+精利主义	jing li zhu yi	5000
+精日	jing ri	5000
+精瘦	jing shou	5000
+精神日本人	jing shen ri ben ren	5000
+精肉	jing rou	5000
+精致露营	jing zhi lu ying	5000
+精苏	jing su	5000
+糖爹	tang die	5000
+糨子	jiang zi	5000
+累成狗	lei cheng gou	5000
+红海	hong hai	5000
+红温	hong wen	5000
+红箍儿	hong gu r	5000
+红臂章	hong bi zhang	5000
+红苕	hong shao	5000
+红菜头	hong cai tou	5000
+约吗	yue ma	5000
+约炮	yue pao	5000
+纳尼	na ni	5000
+练摊	lian tan	5000
+细思极恐	xi si ji kong	5000
+经络	jing luo	5000
+结梁子	jie liang zi	5000
+结棍	jie gun	5000
+给脸	gei lian	5000
+给脸不要脸	gei lian bu yao lian	5000
+维基	wei ji	5000
+绿化	lv hua	5000
+绿教	lv jiao	5000
+绿泡泡	lv pao pao	5000
+绿绿	lv lv	5000
+绿茶	lv cha	5000
+绿茶婊	lv cha biao	5000
+缩卵	suo luan	5000
+网下	wang xia	5000
+罗宋	luo song	5000
+罗锅	luo guo	5000
+置顶	zhi ding	5000
+羊穿	yang chuan	5000
+羊肚手巾	yang du shou jin	5000
+美人胚子	mei ren pei zi	5000
+美人腿	mei ren tui	5000
+美刀	mei dao	5000
+美眉	mei mei	5000
+羡慕嫉妒恨	xian mu ji du hen	5000
+群嘲	qun chao	5000
+翘臀	qiao tun	5000
+翘辫子	qiao bian zi	5000
+老丈人	lao zhang ren	5000
+老丈母	lao zhang mu	5000
+老中	lao zhong	5000
+老公	lao gong	5000
+老半天	lao ban tian	5000
+老司机	lao si ji	5000
+老墨	lao mo	5000
+老外	lao wai	5000
+老太公	lao tai gong	5000
+老头子	lao tou zi	5000
+老奶奶	lao nai nai	5000
+老妹	lao mei	5000
+老娘	lao niang	5000
+老婆	lao po	5000
+老嫂子	lao sao zi	5000
+老实巴交	lao shi ba jiao	5000
+老家伙	lao jia huo	5000
+老家贼	lao jia zei	5000
+老小老小	lao xiao lao xiao	5000
+老己	lao ji	5000
+老帽儿	lao mao r	5000
+老幺	lao yao	5000
+老广	lao guang	5000
+老底	lao di	5000
+老戏骨	lao xi gu	5000
+老朋友	lao peng you	5000
+老母	lao mu	5000
+老油子	lao you zi	5000
+老爷	lao ye	5000
+老爹	lao die	5000
+老玉米	lao yu mi	5000
+老美	lao mei	5000
+老腊肉	lao la rou	5000
+老表	lao biao	5000
+老赖	lao lai	5000
+老铁	lao tie	5000
+老骨头	lao gu tou	5000
+老鸟	lao niao	5000
+老鸹	lao gua	5000
+老鹰	lao ying	5000
+老黑	lao hei	5000
+考编	kao bian	5000
+耍废	shua fei	5000
+耍泼	shua po	5000
+耍贫嘴	shua pin zui	5000
+耍钱	shua qian	5000
+耐心烦	nai xin fan	5000
+耗子	hao zi	5000
+耙耳朵	pa er duo	5000
+耳刮子	er gua zi	5000
+耳挖勺	er wa shao	5000
+耽美	dan mei	5000
+肘子	zhou zi	5000
+肩头	jian tou	5000
+胃袋	wei dai	5000
+胆肥	dan fei	5000
+背影杀手	bei ying sha shou	5000
+背杀	bei sha	5000
+背篼	bei dou	5000
+背锅	bei guo	5000
+胖墩儿	pang dun r	5000
+胖揍	pang zou	5000
+胖次	pang ci	5000
+胡子	hu zi	5000
+胯下物	kua xia wu	5000
+胰子	yi zi	5000
+胳肢	ge zhi	5000
+脊梁	ji liang	5000
+脏乱差	zang luan cha	5000
+脏病	zang bing	5000
+脑壳	nao ke	5000
+脑抽	nao chou	5000
+脑残粉	nao can fen	5000
+脑补	nao bu	5000
+脑门子	nao men zi	5000
+脚丫	jiao ya	5000
+脚丫子	jiao ya zi	5000
+脚底板	jiao di ban	5000
+脚杆	jiao gan	5000
+脚脖子	jiao bo zi	5000
+脱光	tuo guang	5000
+脱单	tuo dan	5000
+脱跨	tuo kua	5000
+腐国	fu guo	5000
+腹黑	fu hei	5000
+腿了	tui le	5000
+腿玩年	tui wan nian	5000
+膈应	ge ying	5000
+膙子	jiang zi	5000
+膝盖	xi gai	5000
+臊子	sao zi	5000
+臊眉耷眼	sao mei da yan	5000
+自个儿	zi ge r	5000
+自嗨	zi hai	5000
+自干五	zi gan wu	5000
+自打	zi da	5000
+自摸	zi mo	5000
+自来熟	zi lai shu	5000
+自黑	zi hei	5000
+臭屁	chou pi	5000
+致郁	zhi yu	5000
+舅哥	jiu ge	5000
+舅妈	jiu ma	5000
+舅子	jiu zi	5000
+舔狗	tian gou	5000
+色胚	se pei	5000
+艾瑞巴蒂	ai rui ba di	5000
+节骨眼	jie gu yan	5000
+花心大萝卜	hua xin da luo bo	5000
+花花肠子	hua hua chang zi	5000
+花蚊子	hua wen zi	5000
+花骨朵	hua gu duo	5000
+苍蝇老虎	cang ying lao hu	5000
+苞米	bao mi	5000
+苦主	ku zhu	5000
+苦窑	ku yao	5000
+苦逼	ku bi	5000
+范儿	fan r	5000
+茅厕	mao si	5000
+茅坑里点灯	mao keng li dian deng	5000
+茶包	cha bao	5000
+草果	cao guo	5000
+草泥马	cao ni ma	5000
+草鸡	cao ji	5000
+莱猪	lai zhu	5000
+莲花白	lian hua bai	5000
+菊花	ju hua	5000
+菌子	jun zi	5000
+菜馆	cai guan	5000
+菜鸟	cai niao	5000
+菜鸡	cai ji	5000
+菠菜	bo cai	5000
+菲林	fei lin	5000
+萌新	meng xin	5000
+萌萌哒	meng meng da	5000
+营生	ying sheng	5000
+营销号	ying xiao hao	5000
+落价	lao jia	5000
+落忍	lao ren	5000
+落草	luo cao	5000
+落雨	luo yu	5000
+落雪	luo xue	5000
+蒙古大夫	meng gu dai fu	5000
+蒙圈	meng quan	5000
+蒙松雨	meng song yu	5000
+蒜糜	suan mi	5000
+蓝海	lan hai	5000
+蓝金黄	lan jin huang	5000
+蔫头耷脑	nian tou da nao	5000
+蕾丝边	lei si bian	5000
+藤菜	teng cai	5000
+藤藤菜	teng teng cai	5000
+藿麻	huo ma	5000
+虎不拉	hu bu la	5000
+虎牙	hu ya	5000
+虚头巴脑	xu tou ba nao	5000
+虼蚤	ge zao	5000
+虽迟但到	sui chi dan dao	5000
+虾男	xia nan	5000
+虾米	xia mi	5000
+蚂蚁腰	ma yi yao	5000
+蚂蚱	ma zha	5000
+蛇精病	she jing bing	5000
+蛋挞	dan ta	5000
+蛋清	dan qing	5000
+蛋疼	dan teng	5000
+蛋蛋	dan dan	5000
+蛋逼	dan bi	5000
+蛐蛐	qu qu	5000
+蛐蟮	qu shan	5000
+蛛蛛	zhu zhu	5000
+蜂子	feng zi	5000
+蜒蚰	yan you	5000
+蜘蛛人	zhi zhu ren	5000
+蜜大腿	mi da tui	5000
+蜜桃臀	mi tao tun	5000
+蜜穴	mi xue	5000
+蝉猴	chan hou	5000
+融梗	rong geng	5000
+血旺	xue wang	5000
+血皮菜	xue pi cai	5000
+行人道	xing ren dao	5000
+衣裳	yi shang	5000
+表叔	biao shu	5000
+袋鼠国	dai shu guo	5000
+被墙	bei qiang	5000
+被旅游	bei lv you	5000
+装萌	zhuang meng	5000
+裤头	ku tou	5000
+裸分	luo fen	5000
+裸退	luo tui	5000
+褪套儿	tun tao r	5000
+褯子	jie zi	5000
+西大	xi da	5000
+要是	yao shi	5000
+要样儿	yao yang r	5000
+要脸	yao lian	5000
+要西了	yao xi le	5000
+见天	jian tian	5000
+见红	jian hong	5000
+见阎王	jian yan wang	5000
+视奸	shi jian	5000
+解大手	jie da shou	5000
+解小手	jie xiao shou	5000
+认怂	ren song	5000
+讨小	tao xiao	5000
+讨拍	tao pai	5000
+训读	xun du	5000
+记挂	ji gua	5000
+试着	shi zhe	5000
+话事人	hua shi ren	5000
+语音	yu yin	5000
+读音	du yin	5000
+调理	tiao li	5000
+谜之	mi zhi	5000
+豁楞	huo leng	5000
+豆乳	dou ru	5000
+豆橛子	dou jue zi	5000
+豆油	dou you	5000
+豆皀	dou bi	5000
+贝宝	bei bao	5000
+贤者时间	xian zhe shi jian	5000
+贤者模式	xian zhe mo shi	5000
+贫限想	pin xian xiang	5000
+贵圈真乱	gui quan zhen luan	5000
+贼死	zei si	5000
+资料	zi liao	5000
+赋能	fu neng	5000
+赌烂	du lan	5000
+赌狗	du gou	5000
+赖校族	lai xiao zu	5000
+赖皮	lai pi	5000
+赚头	zhuan tou	5000
+赤佬	chi lao	5000
+走人	zou ren	5000
+走你	zou ni	5000
+走动	zou dong	5000
+走后门	zou hou men	5000
+走心	zou xin	5000
+走线	zou xian	5000
+走肾	zou shen	5000
+赵家人	zhao jia ren	5000
+赶明儿	gan ming r	5000
+赶海	gan hai	5000
+起号	qi hao	5000
+起开	qi kai	5000
+超雄	chao xiong	5000
+足控	zu kong	5000
+趴窝	pa wo	5000
+跌份	die fen	5000
+跑咖	pao ka	5000
+跑肚	pao du	5000
+跑腿子	pao tui zi	5000
+跑调	pao diao	5000
+跑路	pao lu	5000
+跑马	pao ma	5000
+跟手	gen shou	5000
+路转粉	lu zhuan fen	5000
+踹共	chuai gong	5000
+蹦跶	beng da	5000
+蹬腿	deng tui	5000
+蹭热度	ceng re du	5000
+蹭网	ceng wang	5000
+蹭课	ceng ke	5000
+蹭车	ceng che	5000
+蹭饭	ceng fan	5000
+蹲点	dun dian	5000
+蹲苦窑	dun ku yao	5000
+蹿稀	cuan xi	5000
+蹿腾	cuan teng	5000
+身子骨	shen zi gu	5000
+躺平	tang ping	5000
+躺枪	tang qiang	5000
+躺着也中枪	tang zhe ye zhong qiang	5000
+軃神	duo shen	5000
+转口	zhuan kou	5000
+转圈	zhuan quan	5000
+转文	zhuan wen	5000
+转腰子	zhuan yao zi	5000
+轮回	lun hui	5000
+软和	ruan huo	5000
+软妹币	ruan mei bi	5000
+软柿子	ruan shi zi	5000
+软足类	ruan zu lei	5000
+轱辘	gu lu	5000
+较比	jiao bi	5000
+辣妈	la ma	5000
+辣条	la tiao	5000
+辣眼睛	la yan jing	5000
+辣鸡	la ji	5000
+辰光	chen guang	5000
+达人	da ren	5000
+过早	guo zao	5000
+过节儿	guo jie r	5000
+返工	fan gong	5000
+返现	fan xian	5000
+这不	zhe bu	5000
+这会儿	zhe hui r	5000
+这嘎达	zhei ga da	5000
+这年头	zhe nian tou	5000
+进宫	jin gong	5000
+连轴转	lian zhou zhuan	5000
+迪吧	di ba	5000
+迫真	po zhen	5000
+迷妹	mi mei	5000
+迷弟	mi di	5000
+追龙	zhui long	5000
+逆天	ni tian	5000
+逆袭	ni xi	5000
+逗比	dou bi	5000
+逗逼	dou bi	5000
+逗闷子	dou men zi	5000
+通泰	tong tai	5000
+通证	tong zheng	5000
+速赐康	su ci kang	5000
+速配	su pei	5000
+造人	zao ren	5000
+逼兜	bi dou	5000
+逼格	bi ge	5000
+道系	dao xi	5000
+遛娃	liu wa	5000
+遛弯	liu wan	5000
+遭重	zao zhong	5000
+避雷	bi lei	5000
+那是	na shi	5000
+那话儿	na hua r	5000
+邪修	xie xiu	5000
+邮花	you hua	5000
+邷么儿	wa mo r	5000
+郎猫	lang mao	5000
+鄙视链	bi shi lian	5000
+酒精	jiu jing	5000
+酒缸	jiu gang	5000
+酒蒙子	jiu meng zi	5000
+酷毙	ku bi	5000
+酷炫	ku xuan	5000
+酸民	suan min	5000
+重口味	zhong kou wei	5000
+野路子	ye lu zi	5000
+野鸡	ye ji	5000
+金毛	jin mao	5000
+金贵	jin gui	5000
+金鱼佬	jin yu lao	5000
+针线箔篱	zhen xian bo li	5000
+钓凯子	diao kai zi	5000
+钞能力	chao neng li	5000
+钟头	zhong tou	5000
+钢铁直男	gang tie zhi nan	5000
+钱袋子	qian dai zi	5000
+钳子	qian zi	5000
+铁哥们	tie ge men	5000
+铁子	tie zi	5000
+铁粉	tie fen	5000
+铛铛车	dang dang che	5000
+铲屎官	chan shi guan	5000
+锁匙	suo chi	5000
+锐评	rui ping	5000
+键政	jian zheng	5000
+镏子	liu zi	5000
+镢头	jue tou	5000
+镪水	qiang shui	5000
+长残	zhang can	5000
+长生果	chang sheng guo	5000
+长脸	zhang lian	5000
+长虫	chang chong	5000
+长记性	zhang ji xing	5000
+长辈图	zhang bei tu	5000
+门儿清	men r qing	5000
+闪人	shan ren	5000
+闪婚	shan hun	5000
+问候	wen hou	5000
+闯红灯	chuang hong deng	5000
+闶阆	kang lang	5000
+闷骚	men sao	5000
+闹太套	nao tai tao	5000
+闹忙	nao mang	5000
+闹掰	nao bai	5000
+闹热	nao re	5000
+闹猛	nao meng	5000
+闹肚子	nao du zi	5000
+闹贼	nao zei	5000
+闺女	gui nv	5000
+闺蜜	gui mi	5000
+阴穴	yin xue	5000
+阴间	yin jian	5000
+阿乡	a xiang	5000
+阿兵哥	a bing ge	5000
+阿堵	e du	5000
+阿妈	a ma	5000
+阿拉	a la	5000
+阿混	a hun	5000
+阿爸	a ba	5000
+阿猫阿狗	a mao a gou	5000
+阿莎力	a sha li	5000
+阿贝贝	a bei bei	5000
+阿飘	a piao	5000
+阿鲁巴	a lu ba	5000
+陆客	lu ke	5000
+院坝	yuan ba	5000
+除过	chu guo	5000
+难伺候	nan ci hou	5000
+雀盲眼	qiao mang yan	5000
+集美	ji mei	5000
+雌竞	ci jing	5000
+雨女无瓜	yu nv wu gua	5000
+雪糕筒	xue gao tong	5000
+零号	ling hao	5000
+零吃	ling chi	5000
+雷人	lei ren	5000
+雷剧	lei ju	5000
+雷子	lei zi	5000
+霍霍	huo huo	5000
+霓虹国	ni hong guo	5000
+露点	lou dian	5000
+霹雳	pi li	5000
+青瓜	qing gua	5000
+青石	qing shi	5000
+青蛙	qing wa	5000
+青龙	qing long	5000
+静默	jing mo	5000
+非死不可	fei si bu ke	5000
+靠北	kao bei	5000
+靠腰	kao yao	5000
+面基	mian ji	5000
+面瓜	mian gua	5000
+韭菜	jiu cai	5000
+顶流	ding liu	5000
+领盒饭	ling he fan	5000
+颠儿	dian r	5000
+风光	feng guang	5000
+飘飘	piao piao	5000
+飞刀	fei dao	5000
+飞叶子	fei ye zi	5000
+飞快	fei kuai	5000
+飞机场	fei ji chang	5000
+飞鼠	fei shu	5000
+饭撒	fan sa	5000
+饿扁	e bian	5000
+馃子	guo zi	5000
+香肉	xiang rou	5000
+马占	ma zhan	5000
+马子	ma zi	5000
+马润	ma run	5000
+马甲	ma jia	5000
+马甲线	ma jia xian	5000
+马葫芦	ma hu lu	5000
+马骝	ma liu	5000
+马麻	ma ma	5000
+驳嘴	bo zui	5000
+骆驼	luo tuo	5000
+骑马找马	qi ma zhao ma	5000
+骑驴找马	qi lv zhao ma	5000
+骚包	sao bao	5000
+骨朵	gu duo	5000
+高大上	gao da shang	5000
+高富帅	gao fu shuai	5000
+高笋	gao sun	5000
+高贵鸡	gao gui ji	5000
+高逼格	gao bi ge	5000
+鬼压床	gui ya chuang	5000
+鬼叫	gui jiao	5000
+鬼探头	gui tan tou	5000
+鬼火绿	gui huo lv	5000
+鬼秤	gui cheng	5000
+魔性	mo xing	5000
+魔改	mo gai	5000
+魔鬼鱼	mo gui yu	5000
+鱼鳅	yu qiu	5000
+鲁蛇	lu she	5000
+鲈鳗	lu man	5000
+鲔鱼肚	wei yu du	5000
+鳐鱼	yao yu	5000
+鳖边	bie bian	5000
+鸡公	ji gong	5000
+鸡冻	ji dong	5000
+鸡娃	ji wa	5000
+鸡婆	ji po	5000
+鸡子儿	ji zi r	5000
+鸡掰	ji bai	5000
+鸡架	ji jia	5000
+鸡母	ji mu	5000
+鸡窝	ji wo	5000
+鸡贼	ji zei	5000
+鸭子	ya zi	5000
+鸭子儿	ya zi r	5000
+鹦哥	ying ge	5000
+麻利	ma li	5000
+麻吉	ma ji	5000
+麻溜	ma liu	5000
+麻雀	ma que	5000
+麻麻亮	ma ma liang	5000
+黄牛	huang niu	5000
+黏涎	nian xian	5000
+黏米	nian mi	5000
+黑化	hei hua	5000
+黑子	hei zi	5000
+黑屁	hei pi	5000
+黑暴	hei bao	5000
+黑特	hei te	5000
+黑科技	hei ke ji	5000
+黑粉	hei fen	5000
+鼻头	bi tou	5000
+齁咸	hou xian	5000
+齁甜	hou tian	5000
+齐打夯儿地	qi da hang r de	5000
+齐活	qi huo	5000
+龙妹	long mei	5000
+龙阳	long yang	5000
+龟儿子	gui er zi	5000
+龟孙子	gui sun zi	5000
+龟毛	gui mao	5000
+龟男	gui nan	5000

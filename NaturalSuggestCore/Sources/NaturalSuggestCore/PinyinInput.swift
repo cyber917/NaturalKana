@@ -31,7 +31,7 @@ public struct PinyinLexicon: Sendable {
     private let syllables: [[UInt8]]
     private let nodes: [Node]
 
-    /// Each line is a word, a tab and its syllables separated by spaces, most frequent first.
+    /// Each line is a word and its syllables separated by a tab, most frequent first; an optional third column overrides rank.
     public init(lines: [Substring]) {
         var entries: [Entry] = []
         var exact: [String: [Int]] = [:]
@@ -40,9 +40,16 @@ public struct PinyinLexicon: Sendable {
         var nodes = [Node()]
         for line in lines where !line.hasPrefix("#") {
             let parts = line.split(separator: "\t")
-            guard parts.count == 2 else { continue }
+            guard parts.count == 2 || parts.count == 3 else { continue }
             let letters = parts[1].replacingOccurrences(of: " ", with: "")
             guard !letters.isEmpty, letters.allSatisfy(Self.isLetter) else { continue }
+            let word = String(parts[0])
+            let rank = parts.count == 3 ? max(0, Int(parts[2]) ?? entries.count) : entries.count
+            if let existing = exact[letters]?.first(where: { entries[$0].word == word }) {
+                let entry = entries[existing]
+                entries[existing] = Entry(word: entry.word, letters: entry.letters, rank: min(entry.rank, rank))
+                continue
+            }
             var node = 0
             for syllable in parts[1].split(separator: " ").map(String.init) {
                 let id: Int
@@ -62,7 +69,7 @@ public struct PinyinLexicon: Sendable {
             }
             nodes[node].entries.append(entries.count)
             exact[letters, default: []].append(entries.count)
-            entries.append(Entry(word: String(parts[0]), letters: letters, rank: entries.count))
+            entries.append(Entry(word: word, letters: letters, rank: rank))
         }
         self.entries = entries
         self.exact = exact
@@ -78,9 +85,12 @@ public struct PinyinLexicon: Sendable {
     }
 
     public static func bundled() -> Self {
-        let url = Bundle.module.url(forResource: "zh-pinyin", withExtension: "txt", subdirectory: "KeyboardLexicons")
-        let text = url.flatMap { try? String(contentsOf: $0, encoding: .utf8) } ?? ""
-        return Self(lines: text.split(separator: "\n"))
+        let lines = ["zh-pinyin", "zh-chat-pinyin"].flatMap { name -> [Substring] in
+            let url = Bundle.module.url(forResource: name, withExtension: "txt", subdirectory: "KeyboardLexicons")
+            let text = url.flatMap { try? String(contentsOf: $0, encoding: .utf8) } ?? ""
+            return text.split(separator: "\n")
+        }
+        return Self(lines: lines)
     }
 
     public static func isLetter(_ character: Character) -> Bool { ("a"..."z").contains(character) }

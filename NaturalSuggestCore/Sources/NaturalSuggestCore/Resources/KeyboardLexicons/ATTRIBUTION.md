@@ -23,6 +23,29 @@ Modifications: keep the first 80,000 words written only in Han characters, add a
 other readings of single characters at the end, and read 嗯 as en. The derived list is
 distributed under CC BY-SA 4.0. Regenerate with tools/export_pinyin_lexicon.py.
 
+zh-chat-pinyin.txt supplements the Chinese input dictionary with colloquial phrases.
+Source: CC-CEDICT, published by MDBG and maintained by its contributors:
+https://www.mdbg.net/chinese/dictionary?page=cedict
+https://cc-cedict.org/wiki/
+Original CEDICT: Copyright (C) 1997, 1998 Paul Andrew Denisowski.
+License: Creative Commons Attribution-ShareAlike 4.0 International:
+https://creativecommons.org/licenses/by-sa/4.0/
+
+Snapshot: 2026-10-09T09:12:50Z. Source URL and SHA-256 hashes are recorded in
+tools/data/cedict-snapshot.json. The reviewed source excerpt, including its original
+notices, is preserved in tools/data/cc-cedict-chat.txt. This is a selection and
+adaptation, not the complete dictionary, and is not endorsed by MDBG.
+Modifications: select colloquial, slang, Internet, neologism and dialect labels;
+keep 2–12 Han characters with one syllable per character; use simplified spelling,
+remove tone numbers and map ü to v. Omit definitions from the runtime word list.
+Add separately maintained conversational phrases from tools/data/pinyin-chat.tsv.
+Both the excerpt and the resulting supplement remain CC BY-SA 4.0; the original
+NaturalKana phrase additions are contributed under that same license.
+The third column gives a ranking prior, not a measured corpus frequency; existing
+more-frequent entries and personal learning can still rank ahead of it.
+Regenerate offline with `python3 tools/export_pinyin_chat.py`; no downloads, account,
+training or network requests occur on the user's device.
+
 Upstream licensing, attribution and source citations follow.
 
 ## License
