@@ -34,26 +34,40 @@ public struct IOSSuggestionPanel: View {
             }
             .font(.system(size: 13, weight: .medium)).buttonStyle(.plain)
             .padding(.horizontal, 14).frame(height: 34)
-            TabView(selection: $selection) {
-                ForEach(Array(suggestions.enumerated()), id: \.offset) { index, suggestion in
-                    ScrollView(.vertical) {
-                        Button { accept(index) } label: {
-                            HighlightedSuggestion.text(suggestion.text, original: original, enabled: highlightChanges).font(.system(size: 17))
-                                .multilineTextAlignment(.leading)
-                                .fixedSize(horizontal: false, vertical: true)
-                                .frame(maxWidth: .infinity, minHeight: 52, alignment: .topLeading)
-                                .padding(.horizontal, 14).padding(.vertical, 6)
-                                .contentShape(Rectangle())
-                        }.buttonStyle(.plain)
-                    }.tag(index)
+            ScrollView(.vertical) {
+                if suggestions.indices.contains(selection) {
+                    HighlightedSuggestion.text(suggestions[selection].text, original: original, enabled: highlightChanges).font(.system(size: 17))
+                        .multilineTextAlignment(.leading)
+                        .fixedSize(horizontal: false, vertical: true)
+                        .frame(maxWidth: .infinity, minHeight: 52, alignment: .topLeading)
+                        .padding(.horizontal, 14).padding(.vertical, 6)
+                        .contentShape(Rectangle())
+                        .accessibilityAddTraits(.isButton)
+                        .accessibilityAction { accept(selection) }
                 }
-            }.tabViewStyle(.page(indexDisplayMode: .never))
+            }
+            .modifier(SuggestionScrollEdges())
+            .id(selection)
+            .simultaneousGesture(DragGesture(minimumDistance: 30).onEnded { value in
+                guard abs(value.translation.width) > abs(value.translation.height) * 1.5 else { return }
+                selection = min(max(0, selection + (value.translation.width < 0 ? 1 : -1)), max(0, suggestions.count - 1))
+            }.exclusively(before: TapGesture().onEnded { accept(selection) }))
         }
         .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 16))
         .overlay { RoundedRectangle(cornerRadius: 16).stroke(.primary.opacity(0.06), lineWidth: 0.5) }
         .padding(.horizontal, 8).padding(.vertical, 6)
         .frame(height: Self.height)
         .onChange(of: suggestions) { _ in selection = 0 }
+    }
+}
+private struct SuggestionScrollEdges: ViewModifier {
+    @ViewBuilder func body(content: Content) -> some View {
+        if #available(iOS 26, *) {
+            // The compact card has its own header; the system edge blur obscures its first line.
+            content.scrollEdgeEffectHidden()
+        } else {
+            content
+        }
     }
 }
 #endif

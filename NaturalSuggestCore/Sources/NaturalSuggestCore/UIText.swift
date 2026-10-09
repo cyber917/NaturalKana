@@ -47,12 +47,15 @@ public enum UIText {
     }()
 
     public static func keyboard(_ chinese: String, language: KeyboardSwitchLanguage) -> String {
+        // The table is keyed by the Chinese wording.
+        guard language != .chinese else { return chinese }
         let code: String = switch language {
         case .japanese: "ja"
         case .english: "en"
         case .korean: "ko"
         case .french: "fr"
         case .russian: "ru"
+        case .chinese: "zh"
         }
         return table[chinese]?[code] ?? table[chinese]?["en"] ?? chinese
     }

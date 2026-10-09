@@ -4,6 +4,7 @@ import NaturalSuggestCore
 public struct NaturalSettingsView: View {
     @ObservedObject private var model: SuggestionModel
     @State private var hasLoadedSettings = false
+    @State private var clearedWordMemory = false
     @State private var providerKeys: [ProviderKind: String] = [:]
     public init(model: SuggestionModel) { self.model = model }
     private func save() -> Bool {
@@ -88,7 +89,7 @@ public struct NaturalSettingsView: View {
                 }
                 Button(UIText.t("使用全部已开启语言")) { model.settings.keyboardSwitchOrder = nil }
             } footer: {
-                Text(UIText.t("至少保留一种。未加入快捷切换的语言仍可通过长按选择。返回上一页后点保存设置。"))
+                Text(UIText.t("至少保留一种。未加入快捷切换的语言仍可通过长按选择。改动立即生效。"))
             }
         }.navigationTitle(UIText.t("快捷切换语言"))
     }
@@ -148,12 +149,21 @@ public struct NaturalSettingsView: View {
                         set: { model.settings.setKeyboardLayout(layout, enabled: $0) }
                     ))
                 }
+                Toggle(UIText.t("固定键盘顶部标签栏"), isOn: $model.settings.pinKeyboardTabBar)
+                Text(UIText.t("固定显示“扩展 → 编辑标签栏”里的全部项目。标签在左、候选在右，左右滑动可查看更多，键盘高度不变。")).font(.caption).foregroundStyle(.secondary)
+                Toggle(UIText.t("记住键盘常用词"), isOn: $model.settings.keyboardWordLearning)
+                Text(UIText.t("法语、俄语、韩语可离线补全词语，中文可离线把拼音转成汉字；记忆只保存在本机，关闭后只使用内置词库。")).font(.caption).foregroundStyle(.secondary)
+                Button(UIText.t("清空键盘词语记忆")) { model.clearKeyboardWordMemory(); clearedWordMemory = true }
+                if clearedWordMemory { Text(UIText.t("键盘词语记忆已清空")).font(.caption).foregroundStyle(.secondary) }
                 NavigationLink(UIText.t("快捷切换语言")) {
                     keyboardSwitchSettings
                 }
                 Text(UIText.t("点语言键按自选顺序切换；长按打开列表，再点选任一已开启的语言。选两种就来回切，选五种就五种循环。")).font(.caption).foregroundStyle(.secondary)
                 if !model.settings.enabledKeyboardLayouts.isEmpty {
                     Text(UIText.t("法语用 QWERTY，长按字母后右滑选重音字母或大写；俄语用 ЙЦУКЕН，长按 е 选 ё、ь 选 ъ，各字母长按可选大写。")).font(.caption).foregroundStyle(.secondary)
+                }
+                if model.settings.enabledKeyboardLayouts.contains(.chinese) {
+                    Text(UIText.t("中文用全拼：打拼音后在键盘上方选字词，空格选第一个，回车保留字母；ü 用 v 打。")).font(.caption).foregroundStyle(.secondary)
                 }
                 if model.settings.enabledKeyboardLayouts.contains(.korean) {
                     Text(UIText.t("韩语长按 ㅂㅈㄷㄱㅅ 后右滑输入 ㅃㅉㄸㄲㅆ，长按 ㅐㅔ 后右滑输入 ㅒㅖ。")).font(.caption).foregroundStyle(.secondary)

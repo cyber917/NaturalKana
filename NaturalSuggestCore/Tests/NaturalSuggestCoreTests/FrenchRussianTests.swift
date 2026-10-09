@@ -71,11 +71,11 @@ struct ExtraKeyboardLayoutTests {
         var settings = SuggestionSettings()
         for layout in ExtraKeyboardLayout.allCases.reversed() { settings.setKeyboardLayout(layout, enabled: true) }
         settings.setKeyboardLayout(.french, enabled: true)
-        #expect(settings.enabledKeyboardLayouts == [.korean, .french, .russian])
-        #expect(settings.extraKeyboardLayouts.count == 3 && settings.koreanKeyboard)
+        #expect(settings.enabledKeyboardLayouts == [.korean, .french, .russian, .chinese])
+        #expect(settings.extraKeyboardLayouts.count == 4 && settings.koreanKeyboard)
         settings.setKeyboardLayout(.korean, enabled: false)
         let decoded = try JSONDecoder().decode(SuggestionSettings.self, from: JSONEncoder().encode(settings))
-        #expect(decoded.enabledKeyboardLayouts == [.french, .russian])
+        #expect(decoded.enabledKeyboardLayouts == [.french, .russian, .chinese])
         #expect(!decoded.koreanKeyboard)
     }
 }
@@ -98,8 +98,8 @@ struct ExtraKeyboardLayoutTests {
         var settings = SuggestionSettings()
         for layout in ExtraKeyboardLayout.allCases { settings.setKeyboardLayout(layout, enabled: true) }
         settings.moveQuickSwitchLanguage(.russian, by: -1)
-        #expect(settings.keyboardSwitchLanguages == [.japanese, .english, .korean, .russian, .french])
-        for language in [KeyboardSwitchLanguage.japanese, .english, .french] { settings.setQuickSwitchLanguage(language, enabled: false) }
+        #expect(settings.keyboardSwitchLanguages == [.japanese, .english, .korean, .russian, .french, .chinese])
+        for language in [KeyboardSwitchLanguage.japanese, .english, .french, .chinese] { settings.setQuickSwitchLanguage(language, enabled: false) }
         #expect(settings.keyboardSwitchLanguages == [.korean, .russian])
         settings.setQuickSwitchLanguage(.korean, enabled: false)
         settings.setQuickSwitchLanguage(.russian, enabled: false)
@@ -121,5 +121,29 @@ struct ExtraKeyboardLayoutTests {
         #expect(settings.keyboardSwitchLanguages == [.japanese, .english])
         settings.keyboardSwitchOrder = []
         #expect(settings.keyboardSwitchLanguages == [.japanese, .english])
+    }
+}
+
+struct PinnedKeyboardTabBarTests {
+    @Test func oldToolChoicesDoNotDiscardSettingsOrEnableTheNewBar() throws {
+        for tools in ["[]", #"["emoji"]"#, #"["emoji","clipboard"]"#] {
+            let data = Data("{\"consent\":true,\"pinnedKeyboardTools\":\(tools),\"extraKeyboardLayouts\":[\"chinese\"]}".utf8)
+            let settings = try JSONDecoder().decode(SuggestionSettings.self, from: data)
+            #expect(settings.consent)
+            #expect(settings.enabledKeyboardLayouts == [.chinese])
+            #expect(!settings.pinKeyboardTabBar)
+        }
+    }
+
+    @Test func pinnedTabBarDefaultsOffAndRoundTrips() throws {
+        let decoder = JSONDecoder()
+        #expect(try !decoder.decode(SuggestionSettings.self, from: Data("{}".utf8)).pinKeyboardTabBar)
+        var settings = SuggestionSettings()
+        settings.pinKeyboardTabBar = true
+        let data = try JSONEncoder().encode(settings)
+        #expect(try decoder.decode(SuggestionSettings.self, from: data).pinKeyboardTabBar)
+        #expect(!String(decoding: data, as: UTF8.self).contains("pinnedKeyboardTools"))
+        let explicit = Data(#"{"pinKeyboardTabBar":false,"pinnedKeyboardTools":["emoji"]}"#.utf8)
+        #expect(try !decoder.decode(SuggestionSettings.self, from: explicit).pinKeyboardTabBar)
     }
 }
