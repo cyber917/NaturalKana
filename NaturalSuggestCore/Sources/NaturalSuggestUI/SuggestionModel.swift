@@ -6,9 +6,11 @@ import NaturalSuggestCore
     @Published public var settings: SuggestionSettings {
         didSet {
             UIText.language = settings.interfaceLanguage
+            if settings.disabledSuggestionLanguages != oldValue.disabledSuggestionLanguages { engine?.cancel(clearCache: true) }
             if settings.interfaceLanguage != oldValue.interfaceLanguage || settings.extraKeyboardLayouts != oldValue.extraKeyboardLayouts
                 || settings.keyboardSwitchOrder != oldValue.keyboardSwitchOrder || settings.keyboardWordLearning != oldValue.keyboardWordLearning
-                || settings.pinKeyboardTabBar != oldValue.pinKeyboardTabBar {
+                || settings.pinKeyboardTabBar != oldValue.pinKeyboardTabBar
+                || settings.disabledSuggestionLanguages != oldValue.disabledSuggestionLanguages {
                 storeImmediateSettings()
             }
         }
@@ -131,6 +133,7 @@ import NaturalSuggestCore
         stored.keyboardSwitchOrder = settings.keyboardSwitchOrder
         stored.keyboardWordLearning = settings.keyboardWordLearning
         stored.pinKeyboardTabBar = settings.pinKeyboardTabBar
+        stored.disabledSuggestionLanguages = settings.disabledSuggestionLanguages
         if let data = try? JSONEncoder().encode(stored) { defaults.set(data, forKey: "nk.settings") }
     }
     public func testSuggestion() {
@@ -148,7 +151,7 @@ import NaturalSuggestCore
         status = fullAccess ? .contextUnavailable : .requiresFullAccess
         onStatusChange?(status)
     }
-    public func update(_ snapshot: DraftSnapshot, explicit: Bool = false) {
+    public func update(_ snapshot: DraftSnapshot, explicit: Bool = false, keyboardLanguage: SuggestionLanguage? = nil) {
         reload()
         #if os(iOS)
         do { _ = try keychain }
@@ -163,7 +166,9 @@ import NaturalSuggestCore
         guard let engine else {
             status = .unavailable; onStatusChange?(.unavailable); return
         }
-        engine.update(snapshot, settings: settings, provider: provider, explicit: explicit)
+        var effective = settings
+        if let keyboardLanguage { effective.language = keyboardLanguage; effective.autoLanguage = false }
+        engine.update(snapshot, settings: effective, provider: provider, explicit: explicit)
     }
     public func accept(_ index: Int, snapshot: DraftSnapshot) -> String? {
         reload()

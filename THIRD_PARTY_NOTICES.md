@@ -22,15 +22,15 @@ The public source tree does not include fetched model weights or compiled applic
 - azooKey-ios: MIT; full text in licenses/azooKey-ios.txt.
 - azooKey-Desktop: MIT; full text in licenses/azooKey-Desktop.txt.
 - swift-tokenizers: inspected LICENSE; full notice in licenses/swift-tokenizers-LICENSE.txt.
-- swift-crypto: inspected LICENSE.txt; full notice in licenses/swift-crypto-LICENSE.txt.txt.
-- swift-crypto: inspected NOTICE.txt; full notice in licenses/swift-crypto-NOTICE.txt.txt.
-- swift-numerics: inspected LICENSE.txt; full notice in licenses/swift-numerics-LICENSE.txt.txt.
-- swift-algorithms: inspected LICENSE.txt; full notice in licenses/swift-algorithms-LICENSE.txt.txt.
+- swift-crypto: inspected LICENSE.txt; full notice in licenses/swift-crypto-LICENSE.txt.
+- swift-crypto: inspected NOTICE.txt; full notice in licenses/swift-crypto-NOTICE.txt.
+- swift-numerics: inspected LICENSE.txt; full notice in licenses/swift-numerics-LICENSE.txt.
+- swift-algorithms: inspected LICENSE.txt; full notice in licenses/swift-algorithms-LICENSE.txt.
 - SwiftyMarisa: inspected LICENSE.md; full notice in licenses/SwiftyMarisa-LICENSE.md.txt.
-- swift-asn1: inspected LICENSE.txt; full notice in licenses/swift-asn1-LICENSE.txt.txt.
-- swift-asn1: inspected NOTICE.txt; full notice in licenses/swift-asn1-NOTICE.txt.txt.
+- swift-asn1: inspected LICENSE.txt; full notice in licenses/swift-asn1-LICENSE.txt.
+- swift-asn1: inspected NOTICE.txt; full notice in licenses/swift-asn1-NOTICE.txt.
 - ZIPFoundation: inspected LICENSE; full notice in licenses/ZIPFoundation-LICENSE.txt.
-- swift-collections: inspected LICENSE.txt; full notice in licenses/swift-collections-LICENSE.txt.txt.
+- swift-collections: inspected LICENSE.txt; full notice in licenses/swift-collections-LICENSE.txt.
 - Jinja: inspected LICENSE; full notice in licenses/Jinja-LICENSE.txt.
 - AzooKeyKanaKanjiConverter: inspected LICENSE; full notice in licenses/AzooKeyKanaKanjiConverter-LICENSE.txt.
 

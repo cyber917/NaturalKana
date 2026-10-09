@@ -60,7 +60,7 @@ struct PinyinInputTests {
             #expect(lexicon.candidates(for: input).contains(PinyinCandidate(text: "有点问题", consumed: input.count)))
         }
         #expect(lexicon.candidates(for: "youdianwt").first?.text == "有点问题")
-        #expect(lexicon.candidates(for: "nh").contains { $0.text == "你好" })
+        #expect(lexicon.candidates(for: "nh").first?.text == "你好")
         #expect(lexicon.candidates(for: "zhg").contains { $0.text == "中国" })
     }
 

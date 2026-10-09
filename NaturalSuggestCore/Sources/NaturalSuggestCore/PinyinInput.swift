@@ -97,7 +97,14 @@ public struct PinyinLexicon: Sendable {
                 result.append(PinyinCandidate(text: entries[index].word, consumed: consumed))
             }
         }
-        func cost(_ index: Int) -> Double { Self.cost(rank: entries[index].rank, uses: uses(entries[index].word)) }
+        var costs: [Int: Double] = [:]
+        func cost(_ index: Int) -> Double {
+            if let cached = costs[index] { return cached }
+            let value = Self.cost(rank: entries[index].rank, uses: uses(entries[index].word))
+                - (Self.conversationWords.contains(entries[index].word) ? 2 : 0)
+            costs[index] = value
+            return value
+        }
         func ranked(_ indices: [Int]) -> [Int] { indices.map { ($0, cost($0)) }.sorted { $0.1 < $1.1 }.map(\.0) }
 
         let matches = matches(Array(input.utf8))
@@ -121,6 +128,9 @@ public struct PinyinLexicon: Sendable {
         }) { add(match.entry, consumed: match.end) }
         return result
     }
+
+    // Conversational phrases should not lose to names or written-language terms on short initials.
+    private static let conversationWords: Set<String> = ["你好", "谢谢", "再见", "对不起", "没关系", "不好意思", "没事", "可以", "好的", "知道", "什么", "怎么", "为什么", "晚安", "早上好"]
 
     private static let finalParticles: Set<String> = ["吗", "吧", "呢", "啊", "呀", "嘛", "啦", "哦", "哈"]
 

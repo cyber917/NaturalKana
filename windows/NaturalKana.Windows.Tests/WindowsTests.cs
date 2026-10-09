@@ -51,6 +51,19 @@ public class AutoModeTests
     }
 
     [Fact]
+    public void DisabledLanguagesSkipAutomaticSuggestionsAndPersist()
+    {
+        var settings = new AppSettings { AutoMode = true, Consent = true, AutoLanguage = true,
+            DisabledSuggestionLanguages = [SuggestionLanguage.Chinese] };
+        Assert.False(AutoWatcher.Eligible(Field("我今天有点问题"), settings));
+        Assert.True(AutoWatcher.Eligible(Field("今日は仕事があります"), settings));
+        var restored = System.Text.Json.JsonSerializer.Deserialize<AppSettings>(System.Text.Json.JsonSerializer.Serialize(settings))!;
+        Assert.False(restored.SuggestionsEnabled(SuggestionLanguage.Chinese));
+        Assert.True(restored.SuggestionsEnabled(SuggestionLanguage.Japanese));
+        Assert.True(new AppSettings().SuggestionsEnabled(SuggestionLanguage.Chinese));
+    }
+
+    [Fact]
     public void OldSettingsFilesStillLoad()
     {
         var json = """{ "Consent": true, "Provider": "QwenChina", "Hotkey": "Ctrl+Alt+J" }""";

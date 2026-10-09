@@ -16,6 +16,22 @@ struct WordCompletionTests {
         #expect(korean.suggestions(prefix: "안녕ㅎ").contains("안녕하세요"))
     }
 
+    @Test func correctionsAreOfflineAndPreserveExactPrefixes() {
+        let french = WordCompletionLexicon(words: ["bonjour", "bonsoir", "bon", "bonne"], language: .french)
+        for typed in ["bonjor", "bonjouur", "bonjuor", "bonjpur"] {
+            #expect(french.suggestions(prefix: typed).contains("bonjour"))
+        }
+        #expect(french.suggestions(prefix: "bon").first == "bonjour")
+        #expect(french.suggestions(prefix: "BONJUOR").contains("BONJOUR"))
+        #expect(french.suggestions(prefix: "bonjour").isEmpty)
+        #expect(french.suggestions(prefix: "bjnjpur").isEmpty)
+        let russian = WordCompletionLexicon(words: ["привет"], language: .russian)
+        #expect(russian.suggestions(prefix: "првиет") == ["привет"])
+        let korean = WordCompletionLexicon(words: ["안녕하세요"], language: .korean)
+        #expect(korean.suggestions(prefix: "안녕하세오") == ["안녕하세요"])
+        #expect(korean.suggestions(prefix: "안녕ㅎ") == ["안녕하세요"])
+    }
+
     @Test func hangulCompletionWorksDuringComposition() {
         let lexicon = WordCompletionLexicon(words: ["안녕하세요", "과일", "같이", "가나"], language: .korean)
         #expect(lexicon.suggestions(prefix: "ㅇ") == ["안녕하세요"])

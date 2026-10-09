@@ -66,15 +66,20 @@ public struct WordCompletionLexicon: Sendable {
     private struct Entry: Sendable { let word: String; let key: String }
     private let language: CompletionLanguage
     private let buckets: [Character: [Entry]]
+    private let lengths: [Int: [Entry]]
 
     public init(words: [String], language: CompletionLanguage) {
         self.language = language
         var buckets: [Character: [Entry]] = [:]
+        var lengths: [Int: [Entry]] = [:]
         for word in words where CompletionWords.valid(word, language: language) {
             let key = CompletionWords.key(word, language: language)
-            if let first = key.first { buckets[first, default: []].append(Entry(word: word, key: key)) }
+            let entry = Entry(word: word, key: key)
+            if let first = key.first { buckets[first, default: []].append(entry) }
+            lengths[key.count, default: []].append(entry)
         }
         self.buckets = buckets
+        self.lengths = lengths
     }
 
     public static func bundled(_ language: CompletionLanguage) -> Self {
@@ -86,8 +91,40 @@ public struct WordCompletionLexicon: Sendable {
     public func suggestions(prefix: String, limit: Int = 8) -> [String] {
         let key = CompletionWords.key(prefix, language: language)
         guard !key.isEmpty, let first = key.first, limit > 0 else { return [] }
-        return Array((buckets[first] ?? []).lazy.filter { $0.key.hasPrefix(key) && $0.word.lowercased() != prefix.lowercased() }.prefix(limit).map { CompletionWords.casing($0.word, matching: prefix) })
+        let entries = buckets[first] ?? []
+        let exact = Array(entries.lazy.filter { $0.key.hasPrefix(key) && $0.word.lowercased() != prefix.lowercased() }.prefix(limit))
+        // Do not "correct" an already valid word or a short, ambiguous fragment.
+        guard key.count >= 4, key.count <= 40, !entries.contains(where: { $0.key == key }) else {
+            return exact.map { CompletionWords.casing($0.word, matching: prefix) }
+        }
+        let typed = Array(key)
+        var corrections: [Entry] = []
+        for length in [typed.count, typed.count + 1, typed.count - 1] {
+            for entry in (lengths[length] ?? []).prefix(5_000)
+                where !entry.key.hasPrefix(key) && Self.oneEdit(typed, Array(entry.key)) {
+                corrections.append(entry)
+                if corrections.count == 3 { break }
+            }
+            if corrections.count == 3 { break }
+        }
+        return (Array(exact.prefix(3)) + corrections + Array(exact.dropFirst(3)))
+            .prefix(limit).map { CompletionWords.casing($0.word, matching: prefix) }
     }
+
+    private static func oneEdit(_ a: [Character], _ b: [Character]) -> Bool {
+        guard abs(a.count - b.count) <= 1 else { return false }
+        var i = 0
+        while i < min(a.count, b.count), a[i] == b[i] { i += 1 }
+        if i == min(a.count, b.count) { return a.count != b.count }
+        if a.count == b.count {
+            if a.dropFirst(i + 1).elementsEqual(b.dropFirst(i + 1)) { return true }
+            return i + 1 < a.count && a[i] == b[i + 1] && a[i + 1] == b[i]
+                && a.dropFirst(i + 2).elementsEqual(b.dropFirst(i + 2))
+        }
+        if a.count > b.count { return a.dropFirst(i + 1).elementsEqual(b.dropFirst(i)) }
+        return a.dropFirst(i).elementsEqual(b.dropFirst(i + 1))
+    }
+
 }
 
 public struct WordCompletionMemory: Codable, Sendable {

@@ -1738,5 +1738,24 @@
  "检查当前文字": {
   "en": "Check current text",
   "ja": "現在のテキストをチェック"
+ },
+ "按语言开启联网建议": {
+  "en": "Online suggestions by language",
+  "ja": "言語ごとのオンライン提案"
+ },
+ "关闭的语言不会发送句子，也不消耗额度；离线候选和词语记忆照常使用。iPhone 跟随当前键盘语言。": {
+  "en": "Disabled languages send no drafts and use no quota. Offline candidates and word memory still work. On iPhone, this follows the current keyboard language.",
+  "ja": "オフの言語は文章を送信せず、利用枠も消費しません。オフライン候補と学習はそのまま使えます。iPhone では現在のキーボード言語に従います。"
+ },
+ "此语言的联网建议已关闭": {
+  "en": "Online suggestions are off for this language",
+  "ja": "この言語のオンライン提案はオフです"
+ },
+ "点按粘贴可输入文字并加入历史记录": {
+  "en": "Tap Paste to insert text and add it to history",
+  "ja": "「ペースト」で入力し、履歴に追加します",
+  "fr": "Touchez Coller pour insérer le texte et l’ajouter à l’historique",
+  "ru": "Нажмите «Вставить», чтобы ввести текст и добавить его в историю",
+  "ko": "붙여넣기를 눌러 입력하고 기록에 추가하세요"
  }
 }

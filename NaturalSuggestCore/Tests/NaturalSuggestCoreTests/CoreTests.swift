@@ -133,6 +133,46 @@ struct ProviderTests {
             try await Task.sleep(for: .milliseconds(5))
         }
     }
+    @Test func languageSwitchesStopRequestsBeforeBudgetAndCancelPendingWork() async throws {
+        let suite = "NaturalKana.tests.languages." + UUID().uuidString
+        let defaults = try #require(UserDefaults(suiteName: suite))
+        defer { defaults.removePersistentDomain(forName: suite) }
+        let engine = SuggestionEngine(budget: DailyBudget(defaults: defaults), prompt: try PromptBuilder())
+        let provider = MockProvider()
+        var config = settings
+        config.autoLanguage = true
+        config.setSuggestions(false, for: .chinese)
+        engine.update(.init(text: "我今天有点问题", fieldID: "a"), settings: config, provider: provider, explicit: true)
+        #expect(engine.status == .disabled)
+        #expect(defaults.integer(forKey: "nk.budget.used") == 0)
+        #expect(await provider.count() == 0)
+        config.autoLanguage = false
+        config.debounceMilliseconds = 200
+        let draft = DraftSnapshot(text: "今何にしていますか", fieldID: "a")
+        engine.update(draft, settings: config, provider: provider)
+        #expect(engine.status == .waiting)
+        config.setSuggestions(false, for: .japanese)
+        engine.update(draft, settings: config, provider: provider, explicit: true)
+        try await Task.sleep(for: .milliseconds(250))
+        #expect(await provider.count() == 0)
+        #expect(defaults.integer(forKey: "nk.budget.used") == 0)
+        config.setSuggestions(true, for: .japanese)
+        engine.update(draft, settings: config, provider: provider, explicit: true)
+        try await waitUntil { await provider.count() == 1 }
+        #expect(defaults.integer(forKey: "nk.budget.used") == 1)
+    }
+
+    @Test func suggestionLanguageSwitchesMigrateAndRoundTrip() throws {
+        var config = try JSONDecoder().decode(SuggestionSettings.self, from: Data("{}".utf8))
+        #expect(SuggestionLanguage.available.allSatisfy { config.suggestionsEnabled(for: $0) })
+        config.setSuggestions(false, for: .chinese)
+        config.setSuggestions(false, for: .chinese)
+        #expect(config.disabledSuggestionLanguages == ["chinese"])
+        let restored = try JSONDecoder().decode(SuggestionSettings.self, from: JSONEncoder().encode(config))
+        #expect(!restored.suggestionsEnabled(for: .chinese))
+        #expect(restored.suggestionsEnabled(for: .japanese))
+    }
+
     @Test func testSecureAndBlockedAndNonJapaneseNeverNetwork() async throws {
         let engine = try engine(); let provider = MockProvider(); var config = settings; config.blockedApps = ["blocked"]
         for snapshot in [DraftSnapshot(text: "今何にしていますか", fieldID: "x", secure: true), .init(text: "今何にしていますか", fieldID: "x", appID: "blocked"), .init(text: "我今天很累", fieldID: "x")] {
