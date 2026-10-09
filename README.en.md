@@ -9,7 +9,7 @@ Write a sentence, get more natural alternatives, and choose one to replace your 
 | Platform | What you get | Installation |
 | --- | --- | --- |
 | **iPhone** | Multilingual keyboard, iOS 17.6+ | [Download the IPA](https://github.com/cyber917/NaturalKana/releases/latest), then re-sign with SideStore / AltStore → [Guide](docs/INSTALLATION.md#iphone不需要-mac) |
-| **Windows** | Suggestion helper, Windows 10/11 x64 | [Download the exe](https://github.com/cyber917/NaturalKana/releases/tag/windows-v0.1.3), use with your existing input method → [Guide](docs/WINDOWS.md) |
+| **Windows** | Suggestion helper, Windows 10/11 x64 | [Download the exe](https://github.com/cyber917/NaturalKana/releases/tag/windows-v0.1.4), use with your existing input method → [Guide](docs/WINDOWS.md) |
 | **Mac** | Input method and menu-bar helper, Apple silicon, macOS 13+ | [Download the source installer](https://github.com/cyber917/NaturalKana/releases/latest); full Xcode and your own development signing setup required → [Guide](docs/MAC_INSTALL.md) |
 
 The Mac installer builds from source; it is not a DMG. Free-account iPhone installations require regular renewal; see [signing and renewal](docs/INSTALLATION.md#签名与续期). Detailed guides are currently in Chinese.
