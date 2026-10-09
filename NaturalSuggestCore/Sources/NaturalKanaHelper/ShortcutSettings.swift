@@ -7,7 +7,7 @@ import NaturalSuggestCore
     private var window: NSWindow?
     func show(check: HelperShortcut, select: HelperShortcut, save: @escaping (HelperShortcut, HelperShortcut) -> String?) {
         if let window { window.makeKeyAndOrderFront(nil); NSApp.activate(ignoringOtherApps: true); return }
-        let window = NSWindow(contentRect: NSRect(x: 0, y: 0, width: 530, height: 260),
+        let window = NSWindow(contentRect: NSRect(x: 0, y: 0, width: 530, height: 330),
                               styleMask: [.titled, .closable], backing: .buffered, defer: false)
         window.title = UIText.t("快捷键")
         window.isReleasedWhenClosed = false

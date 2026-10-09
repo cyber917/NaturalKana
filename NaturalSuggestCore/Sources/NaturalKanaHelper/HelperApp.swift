@@ -49,6 +49,15 @@ import NaturalSuggestUI
             DispatchQueue.main.async { self?.panel.fit() }
         }
         if !AXIsProcessTrusted() { requestAccessibility() }
+        if !UserDefaults.standard.bool(forKey: "helper.shownShortcutSettings") {
+            openShortcutSettings()
+            UserDefaults.standard.set(true, forKey: "helper.shownShortcutSettings")
+        }
+    }
+
+    func applicationShouldHandleReopen(_ sender: NSApplication, hasVisibleWindows flag: Bool) -> Bool {
+        openShortcutSettings()
+        return true
     }
 
     // MARK: - Menu (rebuilt each time so it follows the interface language)
@@ -151,18 +160,22 @@ import NaturalSuggestUI
             panel.show(notice: UIText.t("请先在“系统设置 → 隐私与安全性 → 辅助功能”里允许 NaturalKana Helper，再按 %@。", shortcut), near: nil)
             return
         }
+        await Keystrokes.waitForModifiersReleased()
+        guard !Task.isCancelled else { return }
         let app = NSWorkspace.shared.frontmostApplication
-        let field = FocusedField.current()
+        var field = FocusedField.current()
         if field?.isSecure == true || IsSecureEventInputEnabled() {
             panel.show(notice: UIText.t("这是密码输入框，不会检查。"), near: nil); return
         }
         if selectAll {
             guard let app else { return }
-            if let field, let value = field.value, field.select(NSRange(location: 0, length: value.utf16.count)) {
+            if let field, let value = field.value, !value.isEmpty,
+               field.select(NSRange(location: 0, length: value.utf16.count)), field.selectedText == value {
                 // Accessibility can select exactly this input field.
             } else {
                 guard await Keystrokes.selectAll(in: app.processIdentifier) else { return }
             }
+            field = FocusedField.current()
         }
         guard !Task.isCancelled, NSWorkspace.shared.frontmostApplication?.processIdentifier == app?.processIdentifier else { return }
         let text: String, source: Source
@@ -189,7 +202,8 @@ import NaturalSuggestUI
         panel.show(model: model, original: text, near: anchor, accept: { [weak self] index in
                        self?.runOperation { [weak self] in await self?.accept(index) }
                    },
-                   dismiss: { [weak self] in self?.dismiss() })
+                   dismiss: { [weak self] in self?.dismiss() },
+                   dismissOnOutsideClick: { [weak self] in self?.dismiss(restoreFocus: false) })
         model.update(snapshot, explicit: true)
     }
 
@@ -201,10 +215,10 @@ import NaturalSuggestUI
         }
     }
 
-    private func dismiss() {
+    private func dismiss(restoreFocus: Bool = true) {
         operation?.cancel()
         panel.close(); model.dismiss()
-        session?.app?.activate()
+        if restoreFocus { session?.app?.activate() }
         session = nil
     }
 
@@ -280,6 +294,9 @@ import NaturalSuggestUI
     }()
     private var anchor: NSRect?
     private var hideTask: Task<Void, Never>?
+    private var outsideClick: (() -> Void)?
+    private var globalClickMonitor: Any?
+    private var localClickMonitor: Any?
     /// Where the user dragged the panel, relative to its automatic position; kept across checks.
     private static let offsetKey = "NaturalKanaHelperPanelOffset"
     private var offset = NSSize(width: UserDefaults.standard.double(forKey: "\(offsetKey).x"), height: UserDefaults.standard.double(forKey: "\(offsetKey).y"))
@@ -312,9 +329,10 @@ import NaturalSuggestUI
             .help(UIText.t("拖动可移动建议框，双击恢复默认位置")))
     }
 
-    func show(model: SuggestionModel, original: String, near anchor: NSRect?, accept: @escaping (Int) -> Void, dismiss: @escaping () -> Void) {
+    func show(model: SuggestionModel, original: String, near anchor: NSRect?, accept: @escaping (Int) -> Void, dismiss: @escaping () -> Void, dismissOnOutsideClick: @escaping () -> Void) {
         hideTask?.cancel()
         window.onCancel = dismiss
+        outsideClick = dismissOnOutsideClick
         window.onKey = { event in
             if event.keyCode == UInt16(kVK_Escape) { dismiss(); return true }
             if let digit = event.charactersIgnoringModifiers.flatMap(Int.init), (1...9).contains(digit), digit <= model.suggestions.count {
@@ -328,6 +346,7 @@ import NaturalSuggestUI
     func show(notice: String, near anchor: NSRect?) {
         hideTask?.cancel()
         window.onCancel = { [weak self] in self?.close() }
+        outsideClick = { [weak self] in self?.close() }
         window.onKey = { [weak self] _ in self?.close(); return true }
         present(NoticeView(text: notice), near: anchor)
         hideTask = Task { [weak self] in
@@ -335,13 +354,33 @@ import NaturalSuggestUI
             if !Task.isCancelled { self?.close() }
         }
     }
-    func close() { hideTask?.cancel(); window.orderOut(nil) }
+    func close() {
+        hideTask?.cancel(); window.orderOut(nil)
+        if let globalClickMonitor { NSEvent.removeMonitor(globalClickMonitor) }
+        if let localClickMonitor { NSEvent.removeMonitor(localClickMonitor) }
+        globalClickMonitor = nil; localClickMonitor = nil; outsideClick = nil
+    }
+
+    private func watchOutsideClicks() {
+        guard globalClickMonitor == nil, localClickMonitor == nil else { return }
+        let clicks: NSEvent.EventTypeMask = [.leftMouseDown, .rightMouseDown, .otherMouseDown]
+        globalClickMonitor = NSEvent.addGlobalMonitorForEvents(matching: clicks) { [weak self] _ in
+            MainActor.assumeIsolated { self?.outsideClick?() }
+        }
+        localClickMonitor = NSEvent.addLocalMonitorForEvents(matching: clicks) { [weak self] event in
+            MainActor.assumeIsolated {
+                if let self, event.window !== self.window { self.outsideClick?() }
+            }
+            return event
+        }
+    }
 
     private func present(_ view: some View, near anchor: NSRect?) {
         self.anchor = anchor ?? NSRect(origin: NSEvent.mouseLocation, size: .zero)
         window.contentView = NSHostingView(rootView: view)
         fit()
         window.makeKeyAndOrderFront(nil)
+        watchOutsideClicks()
     }
     /// Keeps the panel just below the sentence (above it near the bottom of the screen) as its content changes.
     func fit() {

@@ -90,11 +90,12 @@ import Carbon
         }
     }
     static func press(_ key: Int, command: Bool = true) {
-        let source = CGEventSource(stateID: .combinedSessionState)
+        let source = CGEventSource(stateID: .privateState)
         for down in [true, false] {
             let event = CGEvent(keyboardEventSource: source, virtualKey: CGKeyCode(key), keyDown: down)
-            if command { event?.flags = .maskCommand }
-            event?.post(tap: .cghidEventTap)
+            // Do not leave Command held in the session state after a synthetic copy/select.
+            event?.flags = command && down ? .maskCommand : []
+            event?.post(tap: .cgSessionEventTap)
         }
     }
     static func canEdit(_ pid: pid_t?) -> Bool {
