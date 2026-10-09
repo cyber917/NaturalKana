@@ -230,10 +230,10 @@ index 5c970b9..eab426a 100644
          case .fire:
              Text("δ")
 diff --git a/AzooKeyCore/Sources/KeyboardViews/Custard/QwertyCustards.swift b/AzooKeyCore/Sources/KeyboardViews/Custard/QwertyCustards.swift
-index 5478d73..d0a0e0c 100644
+index 5478d73..6c6e5c5 100644
 --- a/AzooKeyCore/Sources/KeyboardViews/Custard/QwertyCustards.swift
 +++ b/AzooKeyCore/Sources/KeyboardViews/Custard/QwertyCustards.swift
-@@ -3,12 +3,18 @@ import CustardKit
+@@ -3,12 +3,19 @@ import CustardKit
  public extension Custard {
      static let qwertyJapanese = DefaultQwertyCustards.japanese
      static let qwertyEnglish = DefaultQwertyCustards.english(
@@ -250,10 +250,11 @@ index 5478d73..d0a0e0c 100644
 +    static let qwertyFrench = DefaultQwertyCustards.french
 +    static let qwertyRussian = DefaultQwertyCustards.russian
 +    static let qwertyChinese = DefaultQwertyCustards.chinese
++    static let qwertyChineseNumbers = DefaultQwertyCustards.chineseNumbers
  
      static func qwertyEnglish(useShiftKey: Bool) -> Custard {
          DefaultQwertyCustards.english(
-@@ -73,42 +79,108 @@ private enum DefaultQwertyCustards {
+@@ -73,42 +80,130 @@ private enum DefaultQwertyCustards {
      }
  
      static func english(shiftKeyPlacement: ShiftKeyPlacement) -> Custard {
@@ -348,20 +349,42 @@ index 5478d73..d0a0e0c 100644
 +                      variants: ["е": "ё", "ь": "ъ"])
 +    }
 +
-+    /// NaturalKana: full pinyin. Keys type lowercase letters; the keyboard converts them into Chinese.
++    /// NaturalKana: full pinyin, laid out like the iOS pinyin keyboard. Keys type lowercase letters;
++    /// the keyboard converts them into Chinese. Punctuation is on the Chinese number page.
 +    static var chinese: Custard {
 +        var keys: [CustardKeyPositionSpecifier: CustardInterfaceKey] = [:]
 +        for (row, letters) in ["qwertyuiop", "asdfghjkl", "zxcvbnm"].enumerated() {
-+            let offset = row == 2 ? 1.5 : 0.0
++            let offset = [0.0, 0.5, 1.5][row]
 +            for (index, letter) in letters.enumerated() {
 +                keys[position(offset + Double(index), row)] = inputKey(String(letter))
 +            }
 +        }
-+        keys[position(9, 1)] = inputKey("，", variations: ["，", "。", "？", "！", "、", "：", "；", "……", "～"])
 +        keys[position(0, 2, width: 1.4)] = .system(.qwertyLanguageSwitch)
 +        keys[position(8.6, 2, width: 1.4)] = deleteKey
 +        addBottomRow(to: &keys, leadingKey: tabKey(label: .systemImage("textformat.123"), destination: .qwerty_numbers))
 +        return custard(identifier: "chinese_qwerty", displayName: "中文", language: .none, inputStyle: .direct, keys: keys)
++    }
++
++    /// NaturalKana: the number page opened from the Chinese layout, with Chinese punctuation as on iOS.
++    static var chineseNumbers: Custard {
++        var keys: [CustardKeyPositionSpecifier: CustardInterfaceKey] = [:]
++        for (index, digit) in "1234567890".enumerated() {
++            keys[position(Double(index), 0)] = inputKey(String(digit))
++        }
++        let secondRow: [(String, String)] = [("-", "—"), ("/", "\\"), ("：", ":"), ("；", ";"), ("（", "("), ("）", ")"),
++                                             ("￥", "$€£¥"), ("@", ""), ("“", "\"「『"), ("”", "\"」』")]
++        for (index, item) in secondRow.enumerated() {
++            let extra = item.1.map(String.init)
++            keys[position(Double(index), 1)] = inputKey(item.0, variations: extra.isEmpty ? [] : [item.0] + extra)
++        }
++        keys[position(0, 2, width: 1.4)] = tabKey(label: .text("#+="), destination: .qwerty_symbols)
++        let punctuation: [(String, [String])] = [("。", ["。", "."]), ("，", ["，", ","]), ("、", []), ("？", ["？", "?"]), ("！", ["！", "!", "……"])]
++        for (item, geometry) in zip(punctuation, punctuationGeometry) {
++            keys[position(geometry.x, 2, width: geometry.width)] = inputKey(item.0, variations: item.1)
++        }
++        keys[position(8.6, 2, width: 1.4)] = deleteKey
++        addBottomRow(to: &keys, leadingKey: .system(.qwertyLanguageSwitch))
++        return custard(identifier: "chinese_numbers_qwerty", displayName: "中文数字", language: .none, inputStyle: .direct, keys: keys)
 +    }
 +
 +    /// Base letter first: long-press then slide right for variants and capitals.
@@ -540,7 +563,7 @@ index 0000000..04edf32
 +    }
 +}
 diff --git a/AzooKeyCore/Sources/KeyboardViews/KeyboardTab.swift b/AzooKeyCore/Sources/KeyboardViews/KeyboardTab.swift
-index da988a8..0d80ebe 100644
+index da988a8..31880c1 100644
 --- a/AzooKeyCore/Sources/KeyboardViews/KeyboardTab.swift
 +++ b/AzooKeyCore/Sources/KeyboardViews/KeyboardTab.swift
 @@ -87,6 +87,28 @@ public enum KeyboardTab: Equatable {
@@ -550,7 +573,7 @@ index da988a8..0d80ebe 100644
 +        public var isQwertyNumberOrSymbol: Bool {
 +            switch self {
 +            case .qwerty_numbers, .qwerty_symbols: true
-+            case let .custard(custard): ["numbers_qwerty", "symbols_qwerty"].contains(custard.identifier)
++            case let .custard(custard): ["numbers_qwerty", "symbols_qwerty", "chinese_numbers_qwerty"].contains(custard.identifier)
 +            default: false
 +            }
 +        }
@@ -591,7 +614,7 @@ index b464ddb..7b10092 100644
      /// - スクリーンそのもののサイズ。キーボードビューの幅は片手モードなどによって変更が生じうるため、`screenWidth`は限定的な場面でのみ使うことが望まし。
      private(set) public var screenWidth: CGFloat = 0
 diff --git a/AzooKeyCore/Sources/KeyboardViews/TabManager.swift b/AzooKeyCore/Sources/KeyboardViews/TabManager.swift
-index 5e244a2..ad3fc56 100644
+index 5e244a2..621273e 100644
 --- a/AzooKeyCore/Sources/KeyboardViews/TabManager.swift
 +++ b/AzooKeyCore/Sources/KeyboardViews/TabManager.swift
 @@ -8,6 +8,7 @@
@@ -636,13 +659,18 @@ index 5e244a2..ad3fc56 100644
  
      public enum ManagerTab {
          case existential(KeyboardTab.ExistentialTab)
-@@ -212,6 +233,10 @@ public struct TabManager {
+@@ -212,6 +233,15 @@ public struct TabManager {
      }
  
      @MainActor mutating func moveTab(to destination: KeyboardTab, variableStates: VariableStates) {
 +        let previous = existentialTab()
 +        if let language = previous.switchLanguage {
 +            lastKeyboardLanguage = language
++        }
++        // NaturalKana: numbers reached from the Chinese layout come with Chinese punctuation.
++        var destination = destination
++        if case .existential(.qwerty_numbers) = destination, lastKeyboardLanguage == .chinese {
++            destination = .existential(.custard(.qwertyChineseNumbers))
 +        }
          switch destination {
          case let .existential(tab):
@@ -1748,10 +1776,10 @@ index f659d9d..fce84cb 100644
      var body: some View {
 diff --git a/AzooKeyCore/Tests/KeyboardViewsTests/ExtraKeyboardLayoutTests.swift b/AzooKeyCore/Tests/KeyboardViewsTests/ExtraKeyboardLayoutTests.swift
 new file mode 100644
-index 0000000..3e43188
+index 0000000..12e0e99
 --- /dev/null
 +++ b/AzooKeyCore/Tests/KeyboardViewsTests/ExtraKeyboardLayoutTests.swift
-@@ -0,0 +1,101 @@
+@@ -0,0 +1,107 @@
 +import CustardKit
 +@testable import KeyboardViews
 +import XCTest
@@ -1813,8 +1841,14 @@ index 0000000..3e43188
 +            }
 +        }
 +        for letter in "abcdefghijklmnopqrstuvwxyz" { XCTAssertTrue(inputs.contains(String(letter)), "Missing \(letter)") }
-+        XCTAssertFalse(inputs.contains("A"))
-+        XCTAssertTrue(inputs.isSuperset(of: ["，", "。", "？", "！"]))
++        XCTAssertEqual(inputs.count, 26, "Only lowercase letters, like the iOS pinyin keyboard")
++        var punctuation: Set<String> = []
++        for key in Custard.qwertyChineseNumbers.interface.keys.values {
++            guard case let .custom(key) = key else { continue }
++            for case let .input(value) in key.press_actions { punctuation.insert(value) }
++        }
++        XCTAssertTrue(punctuation.isSuperset(of: ["，", "。", "、", "？", "！", "：", "；", "1", "0"]))
++        XCTAssertTrue(KeyboardTab.ExistentialTab.custard(.qwertyChineseNumbers).isQwertyNumberOrSymbol)
 +    }
 +
 +    func testLayoutsContainEveryLetterAndVariant() {
@@ -1867,7 +1901,7 @@ index 0a478af..7f39290 100644
      private static let zenzXsmallWeightURL = Bundle.main.bundleURL.appendingPathComponent("zenz-v3.2-xsmall-gguf/ggml-model-Q5_K_M.gguf", isDirectory: false)
  
 diff --git a/Keyboard/Display/KeyboardActionManager.swift b/Keyboard/Display/KeyboardActionManager.swift
-index 5f55651..faee0e8 100644
+index 5f55651..066a0cc 100644
 --- a/Keyboard/Display/KeyboardActionManager.swift
 +++ b/Keyboard/Display/KeyboardActionManager.swift
 @@ -11,7 +11,9 @@ import Foundation
@@ -2162,7 +2196,7 @@ index 5f55651..faee0e8 100644
          handlePrepareReportSuggestion(candidate: candidate, index: index, variableStates: variableStates)
      }
  
-@@ -143,12 +385,98 @@ final class KeyboardActionManager: UserActionManager, @unchecked Sendable {
+@@ -143,12 +385,103 @@ final class KeyboardActionManager: UserActionManager, @unchecked Sendable {
          self.dismissReportInterfacesIfNeeded(variableStates: variableStates)
      }
  
@@ -2223,6 +2257,11 @@ index 5f55651..faee0e8 100644
 +            if let first = pinyinCandidates().first, first.consumed == pinyin.count { commitPinyin(first) }
 +            pinyin = ""
 +            return false
++        case .moveTab where !pinyin.isEmpty:
++            // Leaving the letters, e.g. for the number page: convert all of them first.
++            if let first = pinyinCandidates().first, first.consumed == pinyin.count { commitPinyin(first) }
++            pinyin = ""
++            return false
 +        default:
 +            pinyin = ""
 +            return false
@@ -2261,7 +2300,7 @@ index 5f55651..faee0e8 100644
          var undoAction: ActionType?
          switch action {
          case let .input(text, simpleInsert):
-@@ -784,3 +1112,28 @@ final class KeyboardActionManager: UserActionManager, @unchecked Sendable {
+@@ -784,3 +1117,28 @@ final class KeyboardActionManager: UserActionManager, @unchecked Sendable {
          // TODO: Provide up-to-date implementation
      }
  }
