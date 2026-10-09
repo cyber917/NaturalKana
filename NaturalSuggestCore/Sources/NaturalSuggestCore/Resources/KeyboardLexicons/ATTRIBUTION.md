@@ -187,3 +187,12 @@ The same citation in BibTex format:
 
 
 NaturalKana additionally prepends common Korean polite forms (see the reproducible exporter); the resulting Korean list is also distributed under CC BY-SA 4.0. These supplemental forms need native-speaker review.
+
+## Multilingual conversation supplements
+
+`en-chat.tsv`, `ja-chat.tsv`, `fr-chat.tsv`, `ru-chat.tsv`, and `ko-chat.tsv`
+contain 531 short conversational entries maintained in this repository. They
+are original NaturalKana additions under the root MIT license, independent of
+the wordfreq-derived lists above. Entries include informal language and slang;
+native-speaker review is still needed. File order is editorial, not a measured
+frequency ranking. No chat histories or personal messages were used as a corpus.

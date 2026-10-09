@@ -805,7 +805,7 @@ index b464ddb..fa2ea41 100644
      /// - スクリーンそのもののサイズ。キーボードビューの幅は片手モードなどによって変更が生じうるため、`screenWidth`は限定的な場面でのみ使うことが望まし。
      private(set) public var screenWidth: CGFloat = 0
 diff --git a/AzooKeyCore/Sources/KeyboardViews/TabManager.swift b/AzooKeyCore/Sources/KeyboardViews/TabManager.swift
-index 5e244a2..0bca412 100644
+index 5e244a2..bbfa476 100644
 --- a/AzooKeyCore/Sources/KeyboardViews/TabManager.swift
 +++ b/AzooKeyCore/Sources/KeyboardViews/TabManager.swift
 @@ -8,6 +8,7 @@
@@ -831,7 +831,27 @@ index 5e244a2..0bca412 100644
              case .user_japanese:
                  return .user_dependent(.japanese)
              case .user_english:
-@@ -71,6 +80,18 @@ public struct TabManager {
+@@ -54,6 +63,12 @@ extension TabData {
+ 
+ public struct TabManager {
+     var config: any TabManagerConfiguration
++    public private(set) var keyboardTabBar: TabBarData = .default
++
++    @MainActor public mutating func reloadKeyboardTabBar() {
++        let data = try? config.custardManager.tabbar(identifier: 0)
++        keyboardTabBar = data.flatMap { $0.items.isEmpty ? nil : $0 } ?? .default
++    }
+     public var tab: ManagerTab {
+         if let temporalTab {
+             return temporalTab
+@@ -65,12 +80,25 @@ public struct TabManager {
+     @MainActor init(config: any TabManagerConfiguration) {
+         self.config = config
+         self.currentTab = Self.getDefaultTab(config: config).managerTab
++        self.reloadKeyboardTabBar()
+     }
+     /// メインのタブ。
+     private var currentTab: ManagerTab
      /// 一時的に表示を切り替えるタブ。lastTabに反映されない。
      private var temporalTab: ManagerTab?
      private var lastTab: ManagerTab?
@@ -850,7 +870,7 @@ index 5e244a2..0bca412 100644
  
      public enum ManagerTab {
          case existential(KeyboardTab.ExistentialTab)
-@@ -150,6 +171,10 @@ public struct TabManager {
+@@ -150,6 +178,10 @@ public struct TabManager {
      }
  
      @MainActor mutating func initialize(variableStates: VariableStates) {
@@ -861,7 +881,7 @@ index 5e244a2..0bca412 100644
          switch lastTab {
          case .none:
              self.moveTab(to: .user_dependent(.japanese), variableStates: variableStates)
-@@ -212,6 +237,15 @@ public struct TabManager {
+@@ -212,6 +244,15 @@ public struct TabManager {
      }
  
      @MainActor mutating func moveTab(to destination: KeyboardTab, variableStates: VariableStates) {
@@ -877,7 +897,7 @@ index 5e244a2..0bca412 100644
          switch destination {
          case let .existential(tab):
              self.updateVariableStates(variableStates, inputStyle: tab.inputStyle, language: tab.language)
-@@ -245,11 +279,22 @@ public struct TabManager {
+@@ -245,11 +286,22 @@ public struct TabManager {
              self.lastTab = nil
          }
          self.temporalTab = nil
@@ -901,7 +921,7 @@ index 5e244a2..0bca412 100644
 +    }
 +}
 diff --git a/AzooKeyCore/Sources/KeyboardViews/VariableStates.swift b/AzooKeyCore/Sources/KeyboardViews/VariableStates.swift
-index b3f27f8..78d7027 100644
+index b3f27f8..e7c7024 100644
 --- a/AzooKeyCore/Sources/KeyboardViews/VariableStates.swift
 +++ b/AzooKeyCore/Sources/KeyboardViews/VariableStates.swift
 @@ -66,6 +66,7 @@ public final class VariableStates: ObservableObject {
@@ -912,7 +932,18 @@ index b3f27f8..78d7027 100644
          static let hasUpsideComponentKey = "is_screen_expanded"
          static let hasFullAccessKey = "has_full_access"
          // ビルトインのステートとカスタムのステートの両方を適切に扱いたい
-@@ -157,6 +158,7 @@ public final class VariableStates: ObservableObject {
+@@ -128,6 +129,10 @@ public final class VariableStates: ObservableObject {
+     }
+     @MainActor private(set) public var inputStyle: InputStyle = .direct
+     @Published private(set) public var tabManager: TabManager
++
++    @MainActor public func reloadKeyboardTabBar() {
++        tabManager.reloadKeyboardTabBar()
++    }
+     @Published public var keyboardInternalSettingManager: KeyboardInternalSettingManager
+     @Published public var clipboardHistoryManager: ClipboardHistoryManager
+ 
+@@ -157,6 +162,7 @@ public final class VariableStates: ObservableObject {
      @Published public var interfaceSize: CGSize = .zero
      @Published public var interfacePosition: CGPoint = .zero
      @Published public var interfaceBottomOffset: CGFloat = 0
@@ -920,7 +951,7 @@ index b3f27f8..78d7027 100644
  
      /// 外部では利用しないが、`enterKeyState`の更新時に必要になる
      @MainActor private(set) public var returnKeyType: UIReturnKeyType = .default
-@@ -268,8 +270,6 @@ public final class VariableStates: ObservableObject {
+@@ -268,8 +274,6 @@ public final class VariableStates: ObservableObject {
          self.upsideComponent = nil
          // 変更する
          self.textChangedCount += 1
@@ -1240,10 +1271,10 @@ index 6195c9c..cd63c6a 100644
              if variableStates.resultModel.displayState == .nothing {
                  HStack {
 diff --git a/AzooKeyCore/Sources/KeyboardViews/View/KeyboardBar/TabBar.swift b/AzooKeyCore/Sources/KeyboardViews/View/KeyboardBar/TabBar.swift
-index 7de7119..08b8d60 100644
+index 7de7119..2f7b570 100644
 --- a/AzooKeyCore/Sources/KeyboardViews/View/KeyboardBar/TabBar.swift
 +++ b/AzooKeyCore/Sources/KeyboardViews/View/KeyboardBar/TabBar.swift
-@@ -6,16 +6,30 @@
+@@ -6,16 +6,29 @@
  //  Copyright © 2021 ensan. All rights reserved.
  //
  
@@ -1255,8 +1286,7 @@ index 7de7119..08b8d60 100644
 +extension TabBarData {
 +    /// The bar from “Edit tab bar”, or the default one when it has no items.
 +    @MainActor static func current(_ states: VariableStates) -> TabBarData {
-+        if let data = try? states.tabManager.config.custardManager.tabbar(identifier: 0), !data.items.isEmpty { return data }
-+        return .default
++        states.tabManager.keyboardTabBar
 +    }
 +}
  
@@ -1275,7 +1305,7 @@ index 7de7119..08b8d60 100644
      }
  
      private var pinnedItems: [TabBarItem] {
-@@ -26,20 +40,24 @@ struct TabBarView<Extension: ApplicationSpecificKeyboardViewExtension>: View {
+@@ -26,20 +39,24 @@ struct TabBarView<Extension: ApplicationSpecificKeyboardViewExtension>: View {
          self.data.items.filter {$0.pinned != true}
      }
  
@@ -1307,7 +1337,7 @@ index 7de7119..08b8d60 100644
                      interfaceHeight: variableStates.interfaceSize.height,
                      context: variableStates.layoutContext
                  ) * 0.6
-@@ -47,7 +65,59 @@ struct TabBarView<Extension: ApplicationSpecificKeyboardViewExtension>: View {
+@@ -47,7 +64,59 @@ struct TabBarView<Extension: ApplicationSpecificKeyboardViewExtension>: View {
          )
      }
  
@@ -1368,7 +1398,7 @@ index 7de7119..08b8d60 100644
          HStack {
              if !self.pinnedItems.isEmpty {
                  ForEach(self.pinnedItems.indices, id: \.self) {i in
-@@ -66,7 +136,7 @@ struct TabBarView<Extension: ApplicationSpecificKeyboardViewExtension>: View {
+@@ -66,7 +135,7 @@ struct TabBarView<Extension: ApplicationSpecificKeyboardViewExtension>: View {
              }
          }
          .frame(
@@ -2462,10 +2492,38 @@ index 0000000..12e0e99
 +    }
 +}
 diff --git a/Keyboard/Display/InputManager.swift b/Keyboard/Display/InputManager.swift
-index 0a478af..de1bd7a 100644
+index 0a478af..15255cd 100644
 --- a/Keyboard/Display/InputManager.swift
 +++ b/Keyboard/Display/InputManager.swift
-@@ -101,7 +101,7 @@ final class InputManager {
+@@ -14,6 +14,7 @@ import KanaKanjiConverterModuleWithDefaultDictionary
+ import KeyboardExtensionUtils
+ import KeyboardViews
+ import OrderedCollections
++import NaturalSuggestCore
+ import SwiftUtils
+ import UIKit
+ 
+@@ -31,7 +32,18 @@ final class InputManager {
+     // TODO: isSelectedはdisplayedTextManagerが持っているべき
+     var isSelected = false
+     /// かな漢字変換を受け持つ変換器。
+-    @MainActor private lazy var kanaKanjiConverter = KanaKanjiConverter.withDefaultDictionary()
++    @MainActor private lazy var kanaKanjiConverter: KanaKanjiConverter = {
++        let converter = KanaKanjiConverter.withDefaultDictionary()
++        converter.importDynamicUserDictionary(Self.conversationDictionary)
++        return converter
++    }()
++    private static let japaneseConversation = ConversationLexicon.bundled(.japanese)
++    private static let englishConversation = ConversationLexicon.bundled(.english)
++    private static var conversationDictionary: [DicdataElement] {
++        japaneseConversation.entries.map {
++            DicdataElement(word: $0.text, ruby: $0.reading.toKatakana(), cid: CIDData.固有名詞.cid, mid: MIDData.一般.mid, value: -12)
++        }
++    }
+ 
+     init() {
+         @KeyboardSetting(.liveConversion) var liveConversion
+@@ -101,7 +113,7 @@ final class InputManager {
      }
  
      private static let memoryDirectoryURL = (try? FileManager.default.url(for: .libraryDirectory, in: .userDomainMask, appropriateFor: nil, create: false)) ?? sharedContainerURL
@@ -2474,7 +2532,29 @@ index 0a478af..de1bd7a 100644
      private static let zenzSmallWeightURL = Bundle.main.bundleURL.appendingPathComponent("zenz-v3.2-small-gguf/ggml-model-Q5_K_M.gguf", isDirectory: false)
      private static let zenzXsmallWeightURL = Bundle.main.bundleURL.appendingPathComponent("zenz-v3.2-xsmall-gguf/ggml-model-Q5_K_M.gguf", isDirectory: false)
  
-@@ -520,6 +520,22 @@ final class InputManager {
+@@ -113,8 +125,8 @@ final class InputManager {
+             requireJapanesePrediction = false
+             requireEnglishPrediction = false
+         case (false, .direct):
+-            requireJapanesePrediction = true
+-            requireEnglishPrediction = true
++            requireJapanesePrediction = keyboardLanguage == .ja_JP
++            requireEnglishPrediction = keyboardLanguage == .en_US || keyboardLanguage == .el_GR
+         case (false, .roman2kana):
+             requireJapanesePrediction = keyboardLanguage == .ja_JP
+             requireEnglishPrediction = keyboardLanguage == .en_US
+@@ -152,8 +164,8 @@ final class InputManager {
+ 
+         return ConvertRequestOptions(
+             N_best: 10,
+-            requireJapanesePrediction: .autoMix,
+-            requireEnglishPrediction: .autoMix,
++            requireJapanesePrediction: requireJapanesePrediction ? .autoMix : .disabled,
++            requireEnglishPrediction: requireEnglishPrediction ? .autoMix : .disabled,
+             keyboardLanguage: keyboardLanguage,
+             // KeyboardSettingsを注入
+             englishCandidateInRoman2KanaInput: englishCandidateInRoman2KanaInput,
+@@ -520,6 +532,22 @@ final class InputManager {
          }
      }
  
@@ -2497,8 +2577,45 @@ index 0a478af..de1bd7a 100644
      private func shouldDirectInsert(text: String, simpleInsert: Bool) -> Bool {
          simpleInsert
              || text == "\n"
+@@ -924,7 +952,7 @@ final class InputManager {
+     }
+ 
+     @MainActor func importDynamicUserDictionary(_ userDictionary: [DicdataElement]) {
+-        self.kanaKanjiConverter.importDynamicUserDictionary(userDictionary)
++        self.kanaKanjiConverter.importDynamicUserDictionary(userDictionary + Self.conversationDictionary)
+     }
+ 
+     // Reference: https://teratail.com/questions/57039?link=qa_related_pc
+@@ -1007,9 +1035,26 @@ final class InputManager {
+             }
+         }
+ 
++        var mainResults = results.mainResults
++        let conversation: ConversationLexicon? = switch keyboardLanguage {
++        case .ja_JP: Self.japaneseConversation
++        case .en_US: Self.englishConversation
++        default: nil
++        }
++        // Supplemental phrases never change the live-conversion text automatically.
++        if !isSelected, let conversation {
++            let preceding = keyboardLanguage == .en_US ? getSurroundingText().leftText : ""
++            let phrases = conversation.completions(composing: inputData.convertTarget, preceding: preceding)
++                .filter { phrase in !mainResults.contains { $0.text == phrase } }
++                .map { phrase in
++                    Candidate(text: phrase, value: -12, composingCount: .surfaceCount(inputData.convertTargetCursorPosition), lastMid: MIDData.一般.mid,
++                              data: [DicdataElement(word: phrase, ruby: inputData.convertTarget.toKatakana(), cid: CIDData.固有名詞.cid, mid: MIDData.一般.mid, value: -12)])
++                }
++            mainResults.insert(contentsOf: phrases, at: min(1, mainResults.count))
++        }
+         if let updateResult {
+             updateResult { model in
+-                model.setResults(results.mainResults)
++                model.setResults(mainResults)
+                 model.resetSupplementaryCandidates()
+             }
+             if inputData.convertTarget == "えもじ", #available(iOS 26, *) {
 diff --git a/Keyboard/Display/KeyboardActionManager.swift b/Keyboard/Display/KeyboardActionManager.swift
-index 5f55651..1f48a5b 100644
+index 5f55651..25325d0 100644
 --- a/Keyboard/Display/KeyboardActionManager.swift
 +++ b/Keyboard/Display/KeyboardActionManager.swift
 @@ -11,7 +11,9 @@ import Foundation
@@ -2511,7 +2628,7 @@ index 5f55651..1f48a5b 100644
  import SwiftUtils
  
  /// キーボードへのアクション部門の動作を担う。
-@@ -25,11 +27,288 @@ final class KeyboardActionManager: UserActionManager, @unchecked Sendable {
+@@ -25,11 +27,301 @@ final class KeyboardActionManager: UserActionManager, @unchecked Sendable {
      private var tasks: [(type: LongpressActionType, task: Task<Void, any Error>)] = []
      private var tempTextData: (left: String, center: String, right: String)?
      private var pendingReportDismissTask: Task<Void, Never>?
@@ -2529,6 +2646,7 @@ index 5f55651..1f48a5b 100644
 +    @MainActor var isComposingPinyin: Bool { !pinyin.isEmpty }
 +
 +    private var wordLexicons: [CompletionLanguage: WordCompletionLexicon] = [:]
++    private var conversationLexicons: [CompletionLanguage: ConversationLexicon] = [:]
 +    private var loadingWordLexicons: Set<CompletionLanguage> = []
 +    private var wordMemory = WordCompletionMemory()
 +    private var wordMemoryDirty = false
@@ -2648,9 +2766,12 @@ index 5f55651..1f48a5b 100644
 +        if wordLexicons[language] == nil, !loadingWordLexicons.contains(language) {
 +            loadingWordLexicons.insert(language)
 +            Task { @MainActor [weak self, weak states] in
-+                let lexicon = await Task.detached(priority: .userInitiated) { WordCompletionLexicon.bundled(language) }.value
++                let (lexicon, conversation) = await Task.detached(priority: .userInitiated) {
++                    (WordCompletionLexicon.bundled(language), ConversationLexicon.bundled(language))
++                }.value
 +                guard let self, let states else { return }
 +                self.wordLexicons[language] = lexicon
++                self.conversationLexicons[language] = conversation
 +                self.loadingWordLexicons.remove(language)
 +                self.refreshWordCompletions(states)
 +            }
@@ -2659,20 +2780,29 @@ index 5f55651..1f48a5b 100644
 +        guard fragment.count <= 40 else { states.resultModel.setResults([]); states.resultModel.setPredictionResults([]); return }
 +        let previous = CompletionWords.previous(before: before)
 +        let memory = wordMemory, learning = wordLearning, lexicon = wordLexicons[language]
++        let conversation = conversationLexicons[language]
 +        let field = proxy.documentIdentifier, after = proxy.documentContextAfterInput ?? ""
 +        wordCompletionTask = Task { @MainActor [weak self, weak states] in
-+            let words = await Task.detached(priority: .userInitiated) {
++            // Coalesce the key action and its host echo before starting another lookup.
++            do { try await Task.sleep(for: .milliseconds(12)) } catch { return }
++            let worker = Task.detached(priority: .userInitiated) {
 +                let learned = learning ? memory.suggestions(prefix: fragment, after: previous, language: language) : []
 +                let common = lexicon?.suggestions(prefix: fragment) ?? []
++                let phrases = conversation?.matches(before: before, limit: 2) ?? []
++                var candidates: [(word: String, fragment: String)] = learned.map { ($0, fragment) }
++                candidates += common.prefix(1).map { ($0, fragment) }
++                candidates += phrases.map { ($0.text, $0.fragment) }
++                candidates += common.dropFirst().map { ($0, fragment) }
 +                var seen = Set<String>()
-+                return Array((learned + common).filter { seen.insert($0.lowercased()).inserted }.prefix(8))
-+            }.value
++                return Array(candidates.filter { seen.insert($0.word.lowercased()).inserted }.prefix(8))
++            }
++            let words = await withTaskCancellationHandler { await worker.value } onCancel: { worker.cancel() }
 +            guard !Task.isCancelled, let self, let states, self.wordFieldAllowed,
 +                  self.completionLanguage(states) == language,
 +                  let proxy = self.delegate?.textDocumentProxy, proxy.documentIdentifier == field,
 +                  proxy.documentContextBeforeInput == before, (proxy.documentContextAfterInput ?? "") == after else { return }
 +            let candidates = words.map {
-+                WordCompletionCandidate(word: $0, fragment: fragment, before: before, after: after, field: field, language: language)
++                WordCompletionCandidate(word: $0.word, fragment: $0.fragment, before: before, after: after, field: field, language: language)
 +            }
 +            states.resultModel.setResults([])
 +            states.resultModel.setPredictionResults(candidates)
@@ -2690,7 +2820,7 @@ index 5f55651..1f48a5b 100644
 +        inputManager.stopComposition()
 +        if !candidate.fragment.isEmpty { inputManager.deleteBackward(convertTargetCount: candidate.fragment.count, requireSetResult: false) }
 +        inputManager.input(text: candidate.word + " ", requireSetResult: false, simpleInsert: true, inputStyle: .direct)
-+        learnWord(candidate.word, before: candidate.before, language: candidate.language)
++        learnWord(candidate.word, before: String(candidate.before.dropLast(candidate.fragment.count)), language: candidate.language)
 +        let (left, center, right) = inputManager.getSurroundingText()
 +        states.setSurroundingText(leftSide: left, center: center, rightSide: right)
 +        states.textChangedCount = inputManager.getTextChangedCount()
@@ -2800,7 +2930,7 @@ index 5f55651..1f48a5b 100644
          for (_, task) in self.tasks {
              task.cancel()
          }
-@@ -51,6 +330,7 @@ final class KeyboardActionManager: UserActionManager, @unchecked Sendable {
+@@ -51,6 +343,7 @@ final class KeyboardActionManager: UserActionManager, @unchecked Sendable {
              if let variableStates {
                  update(&variableStates.resultModel)
                  self?.refreshUpsideComponent(for: variableStates)
@@ -2808,7 +2938,7 @@ index 5f55651..1f48a5b 100644
              }
          }
      }
-@@ -68,6 +348,16 @@ final class KeyboardActionManager: UserActionManager, @unchecked Sendable {
+@@ -68,6 +361,16 @@ final class KeyboardActionManager: UserActionManager, @unchecked Sendable {
      ///   - candidate: 確定された候補。
      ///   - variableStates: 状態。
      override func notifyComplete(_ candidate: any ResultViewItemData, variableStates: VariableStates) {
@@ -2825,7 +2955,7 @@ index 5f55651..1f48a5b 100644
          if let candidate = candidate as? Candidate {
              self.inputManager.complete(candidate: candidate)
              self.registerActions(candidate.actions.map(\.action), variableStates: variableStates)
-@@ -107,7 +397,20 @@ final class KeyboardActionManager: UserActionManager, @unchecked Sendable {
+@@ -107,7 +410,20 @@ final class KeyboardActionManager: UserActionManager, @unchecked Sendable {
      }
  
      override func notifyForgetCandidate(_ candidate: any ResultViewItemData, variableStates: VariableStates) {
@@ -2847,7 +2977,7 @@ index 5f55651..1f48a5b 100644
              self.inputManager.forgetMemory(candidate)
              variableStates.temporalMessage = .doneForgetCandidate
          }
-@@ -118,6 +421,7 @@ final class KeyboardActionManager: UserActionManager, @unchecked Sendable {
+@@ -118,6 +434,7 @@ final class KeyboardActionManager: UserActionManager, @unchecked Sendable {
      }
  
      @MainActor override func prepareReportSuggestion(candidate: any ResultViewItemData, index: Int, variableStates: VariableStates) {
@@ -2855,7 +2985,7 @@ index 5f55651..1f48a5b 100644
          handlePrepareReportSuggestion(candidate: candidate, index: index, variableStates: variableStates)
      }
  
-@@ -143,12 +447,135 @@ final class KeyboardActionManager: UserActionManager, @unchecked Sendable {
+@@ -143,12 +460,135 @@ final class KeyboardActionManager: UserActionManager, @unchecked Sendable {
          self.dismissReportInterfacesIfNeeded(variableStates: variableStates)
      }
  
@@ -2991,7 +3121,7 @@ index 5f55651..1f48a5b 100644
          var undoAction: ActionType?
          switch action {
          case let .input(text, simpleInsert):
-@@ -784,3 +1211,28 @@ final class KeyboardActionManager: UserActionManager, @unchecked Sendable {
+@@ -784,3 +1224,28 @@ final class KeyboardActionManager: UserActionManager, @unchecked Sendable {
          // TODO: Provide up-to-date implementation
      }
  }
@@ -3021,7 +3151,7 @@ index 5f55651..1f48a5b 100644
 +    #endif
 +}
 diff --git a/Keyboard/Display/KeyboardViewController.swift b/Keyboard/Display/KeyboardViewController.swift
-index e6038af..8ff495c 100644
+index e6038af..4b5a844 100644
 --- a/Keyboard/Display/KeyboardViewController.swift
 +++ b/Keyboard/Display/KeyboardViewController.swift
 @@ -14,6 +14,8 @@ import KeyboardViews
@@ -3116,10 +3246,11 @@ index e6038af..8ff495c 100644
          KeyboardViewController.variableStates
              .$interfaceSize
              .combineLatest(
-@@ -258,6 +310,16 @@ final class KeyboardViewController: UIInputViewController {
+@@ -258,6 +310,17 @@ final class KeyboardViewController: UIInputViewController {
  
      override func viewWillAppear(_ animated: Bool) {
          super.viewWillAppear(animated)
++        Self.variableStates.reloadKeyboardTabBar()
 +        guard sharedStorageReady else { return }
 +        Self.action.reloadWordCompletionSettings()
 +        // NaturalKana: reload the available layouts and the user's quick switch order.
@@ -3133,7 +3264,7 @@ index e6038af..8ff495c 100644
          // サイズに関する情報はこのタイミングで設定する
          if #available(iOS 26, *) {
              let size = self.currentKeyboardViewSize()
-@@ -276,6 +338,7 @@ final class KeyboardViewController: UIInputViewController {
+@@ -276,6 +339,7 @@ final class KeyboardViewController: UIInputViewController {
  
      override func viewDidAppear(_ animated: Bool) {
          super.viewDidAppear(animated)
@@ -3141,7 +3272,7 @@ index e6038af..8ff495c 100644
          self.updateStates()
  
          // Floating Keyboardなどの一部の処理に限り、このタイミングにならないとウィンドウ幅が不明なケースが存在する
-@@ -306,6 +369,7 @@ final class KeyboardViewController: UIInputViewController {
+@@ -306,6 +370,7 @@ final class KeyboardViewController: UIInputViewController {
  
      override func viewDidLayoutSubviews() {
          super.viewDidLayoutSubviews()
@@ -3149,7 +3280,7 @@ index e6038af..8ff495c 100644
          // iOS 26以上で、レイアウト確定後に向き・サイズを反映
          if #available(iOS 26, *) {
              let size = self.currentKeyboardViewSize()
-@@ -322,10 +386,10 @@ final class KeyboardViewController: UIInputViewController {
+@@ -322,10 +387,10 @@ final class KeyboardViewController: UIInputViewController {
          // キーボードタイプはviewDidAppearのタイミングで取得できる
          KeyboardViewController.variableStates.setKeyboardType(self.textDocumentProxy.keyboardType)
          KeyboardViewController.variableStates.setTextContentType(self.textDocumentProxy.textContentType)
@@ -3161,7 +3292,7 @@ index e6038af..8ff495c 100644
          // ロード済みのインスタンスの数が増えすぎるとパフォーマンスに悪影響があるので、適当なところで強制終了する
          // viewDidAppearで強制終了すると再ロードが自然な形で実行される
          if KeyboardViewController.loadedInstanceCount > 15 {
-@@ -412,15 +476,20 @@ final class KeyboardViewController: UIInputViewController {
+@@ -412,15 +477,20 @@ final class KeyboardViewController: UIInputViewController {
      }
  
      override func viewWillDisappear(_ animated: Bool) {
@@ -3182,7 +3313,7 @@ index e6038af..8ff495c 100644
          if #available(iOS 26, *) {
              // 幅は即時反映しておき、向きは完了時のWindowSceneから決定する
              coordinator.animate(alongsideTransition: nil) { [weak self] _ in
-@@ -480,7 +549,7 @@ final class KeyboardViewController: UIInputViewController {
+@@ -480,7 +550,7 @@ final class KeyboardViewController: UIInputViewController {
  
      private func setKeyboardHeight(to height: CGFloat) {
          self.keyboardHeightConstraint?.isActive = true
@@ -3191,7 +3322,7 @@ index e6038af..8ff495c 100644
          if self.view.window != nil {
              UIView.performWithoutAnimation {
                  self.view.layoutIfNeeded()
-@@ -492,20 +561,12 @@ final class KeyboardViewController: UIInputViewController {
+@@ -492,20 +562,12 @@ final class KeyboardViewController: UIInputViewController {
          }
      }
  
@@ -3215,7 +3346,7 @@ index e6038af..8ff495c 100644
  
          let left = self.textDocumentProxy.documentContextBeforeInput ?? ""
          let center = self.textDocumentProxy.selectedText ?? ""
-@@ -518,6 +579,7 @@ final class KeyboardViewController: UIInputViewController {
+@@ -518,6 +580,7 @@ final class KeyboardViewController: UIInputViewController {
      /// 引数の`textInput`は常に`nil`
      override func textDidChange(_ textInput: (any UITextInput)?) {
          super.textDidChange(textInput)
@@ -3223,7 +3354,7 @@ index e6038af..8ff495c 100644
  
          let left = self.textDocumentProxy.documentContextBeforeInput ?? ""
          let center = self.textDocumentProxy.selectedText ?? ""
-@@ -526,10 +588,10 @@ final class KeyboardViewController: UIInputViewController {
+@@ -526,10 +589,10 @@ final class KeyboardViewController: UIInputViewController {
  
          Self.action.notifySomethingDidChange(a_left: left, a_center: center, a_right: right, variableStates: KeyboardViewController.variableStates)
          Self.action.setTextDocumentProxy(.preference(.main))
@@ -3236,7 +3367,7 @@ index e6038af..8ff495c 100644
      }
  
      /// Reference: https://stackoverflow.com/questions/79077018/unable-to-open-main-app-from-action-extension-in-ios-18-previously-working-met
-@@ -558,4 +620,76 @@ final class KeyboardViewController: UIInputViewController {
+@@ -558,4 +621,76 @@ final class KeyboardViewController: UIInputViewController {
          }
          self.openURL(url)
      }

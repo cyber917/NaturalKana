@@ -1,7 +1,7 @@
 import Foundation
 
 public enum CompletionLanguage: String, Codable, CaseIterable, Sendable {
-    case french = "fr", russian = "ru", korean = "ko", chinese = "zh"
+    case french = "fr", russian = "ru", korean = "ko", chinese = "zh", english = "en", japanese = "ja"
 }
 
 public enum CompletionWords {
@@ -25,12 +25,19 @@ public enum CompletionWords {
         guard (1...40).contains(word.count), word.first?.isLetter == true, word.last?.isLetter == true, word.allSatisfy(isWordCharacter) else { return false }
         return word.unicodeScalars.allSatisfy { scalar in
             switch language {
-            case .french: (0x41...0x5A).contains(scalar.value) || (0x61...0x7A).contains(scalar.value) || (0xC0...0x24F).contains(scalar.value) || [0x27, 0x2019, 0x2D].contains(scalar.value)
+            case .french, .english: (0x41...0x5A).contains(scalar.value) || (0x61...0x7A).contains(scalar.value) || (0xC0...0x24F).contains(scalar.value) || [0x27, 0x2019, 0x2D].contains(scalar.value)
             case .russian: (0x400...0x4FF).contains(scalar.value) || scalar == "-"
             case .korean: (0xAC00...0xD7A3).contains(scalar.value)
             case .chinese: (0x4E00...0x9FFF).contains(scalar.value)
+            case .japanese: (0x3041...0x30FF).contains(scalar.value) || (0x4E00...0x9FFF).contains(scalar.value)
             }
         }
+    }
+
+    public static func validPhrase(_ text: String, language: CompletionLanguage) -> Bool {
+        guard (1...80).contains(text.count), !text.hasPrefix(" "), !text.hasSuffix(" "), !text.contains("  ") else { return false }
+        if language == .korean, (2...6).contains(text.count), text.allSatisfy({ $0 == "ㅋ" || $0 == "ㅎ" }) { return true }
+        return text.split(separator: " ", omittingEmptySubsequences: false).allSatisfy { valid(String($0), language: language) }
     }
 
     public static func key(_ word: String, language: CompletionLanguage) -> String {
@@ -63,19 +70,19 @@ public enum CompletionWords {
 }
 
 public struct WordCompletionLexicon: Sendable {
-    private struct Entry: Sendable { let word: String; let key: String }
+    private struct Entry: Sendable { let word: String; let key: String; let letters: [Character] }
     private let language: CompletionLanguage
-    private let buckets: [Character: [Entry]]
+    private let buckets: [String: [Entry]]
     private let lengths: [Int: [Entry]]
 
     public init(words: [String], language: CompletionLanguage) {
         self.language = language
-        var buckets: [Character: [Entry]] = [:]
+        var buckets: [String: [Entry]] = [:]
         var lengths: [Int: [Entry]] = [:]
         for word in words where CompletionWords.valid(word, language: language) {
             let key = CompletionWords.key(word, language: language)
-            let entry = Entry(word: word, key: key)
-            if let first = key.first { buckets[first, default: []].append(entry) }
+            let entry = Entry(word: word, key: key, letters: Array(key))
+            for count in 1...min(3, key.count) { buckets[String(key.prefix(count)), default: []].append(entry) }
             lengths[key.count, default: []].append(entry)
         }
         self.buckets = buckets
@@ -90,8 +97,8 @@ public struct WordCompletionLexicon: Sendable {
 
     public func suggestions(prefix: String, limit: Int = 8) -> [String] {
         let key = CompletionWords.key(prefix, language: language)
-        guard !key.isEmpty, let first = key.first, limit > 0 else { return [] }
-        let entries = buckets[first] ?? []
+        guard !key.isEmpty, limit > 0, !Task.isCancelled else { return [] }
+        let entries = buckets[String(key.prefix(3))] ?? []
         let exact = Array(entries.lazy.filter { $0.key.hasPrefix(key) && $0.word.lowercased() != prefix.lowercased() }.prefix(limit))
         // Do not "correct" an already valid word or a short, ambiguous fragment.
         guard key.count >= 4, key.count <= 40, !entries.contains(where: { $0.key == key }) else {
@@ -100,8 +107,9 @@ public struct WordCompletionLexicon: Sendable {
         let typed = Array(key)
         var corrections: [Entry] = []
         for length in [typed.count, typed.count + 1, typed.count - 1] {
-            for entry in (lengths[length] ?? []).prefix(5_000)
-                where !entry.key.hasPrefix(key) && Self.oneEdit(typed, Array(entry.key)) {
+            for entry in (lengths[length] ?? []).prefix(5_000) {
+                if Task.isCancelled { return [] }
+                guard !entry.key.hasPrefix(key), Self.oneEdit(typed, entry.letters) else { continue }
                 corrections.append(entry)
                 if corrections.count == 3 { break }
             }
@@ -149,7 +157,7 @@ public struct WordCompletionMemory: Codable, Sendable {
         let decoded = try container.decode([Entry].self, forKey: .entries)
         var seen = Set<String>()
         entries = decoded.sorted { $0.recent > $1.recent }.filter {
-            CompletionWords.valid($0.word, language: $0.language) && seen.insert($0.language.rawValue + ":" + $0.word.lowercased()).inserted
+            CompletionWords.validPhrase($0.word, language: $0.language) && seen.insert($0.language.rawValue + ":" + $0.word.lowercased()).inserted
         }.prefix(Self.maximumEntries).map { entry in
             var entry = entry
             entry.uses = min(max(1, entry.uses), 1_000_000)
@@ -183,7 +191,7 @@ public struct WordCompletionMemory: Codable, Sendable {
     }
 
     public mutating func record(_ word: String, after previous: String?, language: CompletionLanguage) {
-        guard CompletionWords.valid(word, language: language) else { return }
+        guard CompletionWords.validPhrase(word, language: language) else { return }
         clock = min(clock, Int.max - 1) + 1
         let index: Int
         if let existing = entries.firstIndex(where: { $0.language == language && $0.word.lowercased() == word.lowercased() }) {
