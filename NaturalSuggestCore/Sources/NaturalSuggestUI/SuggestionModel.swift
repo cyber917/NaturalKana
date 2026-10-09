@@ -8,7 +8,7 @@ import NaturalSuggestCore
             UIText.language = settings.interfaceLanguage
             if settings.interfaceLanguage != oldValue.interfaceLanguage || settings.extraKeyboardLayouts != oldValue.extraKeyboardLayouts
                 || settings.keyboardSwitchOrder != oldValue.keyboardSwitchOrder || settings.keyboardWordLearning != oldValue.keyboardWordLearning
-                || settings.pinnedKeyboardTools != oldValue.pinnedKeyboardTools {
+                || settings.pinKeyboardTabBar != oldValue.pinKeyboardTabBar {
                 storeImmediateSettings()
             }
         }
@@ -130,7 +130,7 @@ import NaturalSuggestCore
         stored.extraKeyboardLayouts = settings.extraKeyboardLayouts
         stored.keyboardSwitchOrder = settings.keyboardSwitchOrder
         stored.keyboardWordLearning = settings.keyboardWordLearning
-        stored.pinnedKeyboardTools = settings.pinnedKeyboardTools
+        stored.pinKeyboardTabBar = settings.pinKeyboardTabBar
         if let data = try? JSONEncoder().encode(stored) { defaults.set(data, forKey: "nk.settings") }
     }
     public func testSuggestion() {

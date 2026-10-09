@@ -124,18 +124,26 @@ struct ExtraKeyboardLayoutTests {
     }
 }
 
-struct PinnedKeyboardToolTests {
-    @Test func emojiIsPinnedByDefaultAndChoicesRoundTrip() throws {
-        func decode(_ json: String) throws -> SuggestionSettings { try JSONDecoder().decode(SuggestionSettings.self, from: Data(json.utf8)) }
-        #expect(try decode("{}").isPinned(.emoji))
-        #expect(try !decode("{}").isPinned(.clipboard))
+struct PinnedKeyboardTabBarTests {
+    @Test func oldToolChoicesDoNotDiscardSettingsOrEnableTheNewBar() throws {
+        for tools in ["[]", #"["emoji"]"#, #"["emoji","clipboard"]"#] {
+            let data = Data("{\"consent\":true,\"pinnedKeyboardTools\":\(tools),\"extraKeyboardLayouts\":[\"chinese\"]}".utf8)
+            let settings = try JSONDecoder().decode(SuggestionSettings.self, from: data)
+            #expect(settings.consent)
+            #expect(settings.enabledKeyboardLayouts == [.chinese])
+            #expect(!settings.pinKeyboardTabBar)
+        }
+    }
+
+    @Test func pinnedTabBarDefaultsOffAndRoundTrips() throws {
+        let decoder = JSONDecoder()
+        #expect(try !decoder.decode(SuggestionSettings.self, from: Data("{}".utf8)).pinKeyboardTabBar)
         var settings = SuggestionSettings()
-        settings.setPinned(.clipboard, true)
-        settings.setPinned(.clipboard, true)
-        #expect(settings.pinnedKeyboardTools == ["emoji", "clipboard"])
-        settings.setPinned(.emoji, false)
-        let decoded = try JSONDecoder().decode(SuggestionSettings.self, from: JSONEncoder().encode(settings))
-        #expect(decoded.pinnedKeyboardTools == ["clipboard"])
-        #expect(try decode(#"{"pinnedKeyboardTools":[]}"#).pinnedKeyboardTools.isEmpty)
+        settings.pinKeyboardTabBar = true
+        let data = try JSONEncoder().encode(settings)
+        #expect(try decoder.decode(SuggestionSettings.self, from: data).pinKeyboardTabBar)
+        #expect(!String(decoding: data, as: UTF8.self).contains("pinnedKeyboardTools"))
+        let explicit = Data(#"{"pinKeyboardTabBar":false,"pinnedKeyboardTools":["emoji"]}"#.utf8)
+        #expect(try !decoder.decode(SuggestionSettings.self, from: explicit).pinKeyboardTabBar)
     }
 }

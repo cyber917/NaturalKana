@@ -599,10 +599,10 @@ index da988a8..31880c1 100644
              switch self {
              case .special(.emoji):
 diff --git a/AzooKeyCore/Sources/KeyboardViews/SemiStaticStates.swift b/AzooKeyCore/Sources/KeyboardViews/SemiStaticStates.swift
-index b464ddb..dd6c1bb 100644
+index b464ddb..fa2ea41 100644
 --- a/AzooKeyCore/Sources/KeyboardViews/SemiStaticStates.swift
 +++ b/AzooKeyCore/Sources/KeyboardViews/SemiStaticStates.swift
-@@ -40,6 +40,19 @@ public final class SemiStaticStates: @unchecked Sendable {
+@@ -40,6 +40,18 @@ public final class SemiStaticStates: @unchecked Sendable {
          self.hasFullAccess = bool
      }
  
@@ -613,10 +613,9 @@ index b464ddb..dd6c1bb 100644
 +        self.keyboardSwitchLanguages = order.compactMap(KeyboardSwitchLanguage.init(rawValue:))
 +    }
 +
-+    /// NaturalKana: tool buttons kept beside the candidates (`KeyboardTool` raw values, in order).
-+    private(set) public var pinnedKeyboardTools: [String] = ["emoji"]
-+    public func setPinnedKeyboardTools(_ tools: [String]) {
-+        self.pinnedKeyboardTools = tools
++    private(set) public var pinKeyboardTabBar = false
++    public func setPinKeyboardTabBar(_ pinned: Bool) {
++        self.pinKeyboardTabBar = pinned
 +    }
 +
      /// - do not  consider using screenHeight
@@ -717,6 +716,29 @@ index 9e754fd..bbd10fa 100644
              }
          }
      }
+diff --git a/AzooKeyCore/Sources/KeyboardViews/View/Components/ExpandedResultView.swift b/AzooKeyCore/Sources/KeyboardViews/View/Components/ExpandedResultView.swift
+index 194d4bf..4cb0c45 100644
+--- a/AzooKeyCore/Sources/KeyboardViews/View/Components/ExpandedResultView.swift
++++ b/AzooKeyCore/Sources/KeyboardViews/View/Components/ExpandedResultView.swift
+@@ -40,8 +40,16 @@ struct ExpandedResultView<Extension: ApplicationSpecificKeyboardViewExtension>:
+     var body: some View {
+         VStack {
+             HStack(alignment: .center) {
+-                Spacer()
+-                    .frame(height: 18)
++                if SemiStaticStates.shared.pinKeyboardTabBar {
++                    let data = (try? variableStates.tabManager.config.custardManager.tabbar(identifier: 0))
++                        .flatMap { $0.items.isEmpty ? nil : $0 } ?? TabBarData.default
++                    TabBarView<Extension>(data: data, persistent: true)
++                        .frame(height: buttonHeight + 12)
++                        .padding(.leading, 6)
++                        .foregroundStyle(theme.resultTextColor.color)
++                } else {
++                    Spacer().frame(height: 18)
++                }
+                 // 候補をしまうボタン
+                 Button {
+                     self.collapse()
 diff --git a/AzooKeyCore/Sources/KeyboardViews/View/Components/ResizingRect.swift b/AzooKeyCore/Sources/KeyboardViews/View/Components/ResizingRect.swift
 index 3587a1e..04b4709 100644
 --- a/AzooKeyCore/Sources/KeyboardViews/View/Components/ResizingRect.swift
@@ -858,10 +880,40 @@ index 2ff6870..7ef5150 100644
                      ], variableStates: variableStates)
                  }
 diff --git a/AzooKeyCore/Sources/KeyboardViews/View/KeyboardBar/KeyboardBarView.swift b/AzooKeyCore/Sources/KeyboardViews/View/KeyboardBar/KeyboardBarView.swift
-index 201a3b6..b28604f 100644
+index 201a3b6..219d93e 100644
 --- a/AzooKeyCore/Sources/KeyboardViews/View/KeyboardBar/KeyboardBarView.swift
 +++ b/AzooKeyCore/Sources/KeyboardViews/View/KeyboardBar/KeyboardBarView.swift
-@@ -99,6 +99,7 @@ struct KeyboardBarButton<Extension: ApplicationSpecificKeyboardViewExtension>: V
+@@ -66,14 +66,22 @@ struct KeyboardBarView<Extension: ApplicationSpecificKeyboardViewExtension>: Vie
+             } else {
+                 TabBarData.default
+             }
+-            TabBarView<Extension>(data: tabBarData)
+-        case .none:
+-            switch variableStates.tabManager.tab {
+-            case let .existential(.special(tab)) where tab == .emoji:
+-                EmojiTabResultBar<Extension>()
+-            default:
+-                ResultBar<Extension>(isResultViewExpanded: $isResultViewExpanded)
++            if SemiStaticStates.shared.pinKeyboardTabBar {
++                candidateBar
++            } else {
++                TabBarView<Extension>(data: tabBarData)
+             }
++        case .none:
++            candidateBar
++        }
++    }
++
++    @ViewBuilder private var candidateBar: some View {
++        switch variableStates.tabManager.tab {
++        case let .existential(.special(tab)) where tab == .emoji:
++            EmojiTabResultBar<Extension>()
++        default:
++            ResultBar<Extension>(isResultViewExpanded: $isResultViewExpanded)
+         }
+     }
+ 
+@@ -99,6 +107,7 @@ struct KeyboardBarButton<Extension: ApplicationSpecificKeyboardViewExtension>: V
      enum LabelType {
          case azooKeyIcon(AzooKeyIcon.Looks = .normal)
          case systemImage(String)
@@ -869,7 +921,7 @@ index 201a3b6..b28604f 100644
      }
      @Environment(Extension.Theme.self) private var theme
      @EnvironmentObject private var variableStates: VariableStates
-@@ -119,14 +120,14 @@ struct KeyboardBarButton<Extension: ApplicationSpecificKeyboardViewExtension>: V
+@@ -119,14 +128,14 @@ struct KeyboardBarButton<Extension: ApplicationSpecificKeyboardViewExtension>: V
      }
  
      private var circleSize: CGFloat {
@@ -886,7 +938,7 @@ index 201a3b6..b28604f 100644
              interfaceHeight: variableStates.interfaceSize.height,
              context: variableStates.layoutContext
          ) * 0.6
-@@ -135,9 +136,11 @@ struct KeyboardBarButton<Extension: ApplicationSpecificKeyboardViewExtension>: V
+@@ -135,9 +144,11 @@ struct KeyboardBarButton<Extension: ApplicationSpecificKeyboardViewExtension>: V
      var body: some View {
          Button(action: self.action) {
              ZStack {
@@ -901,7 +953,7 @@ index 201a3b6..b28604f 100644
                  switch label {
                  case let .azooKeyIcon(looks):
                      AzooKeyIcon(fixedSize: iconSize, color: .color(buttonLabelColor), looks: looks)
-@@ -145,6 +148,12 @@ struct KeyboardBarButton<Extension: ApplicationSpecificKeyboardViewExtension>: V
+@@ -145,6 +156,12 @@ struct KeyboardBarButton<Extension: ApplicationSpecificKeyboardViewExtension>: V
                      Image(systemName: name)
                          .frame(width: iconSize, height: iconSize)
                          .foregroundStyle(buttonLabelColor)
@@ -915,10 +967,10 @@ index 201a3b6..b28604f 100644
              }
          }
 diff --git a/AzooKeyCore/Sources/KeyboardViews/View/KeyboardBar/ResultBar.swift b/AzooKeyCore/Sources/KeyboardViews/View/KeyboardBar/ResultBar.swift
-index 6195c9c..8e7dadc 100644
+index 6195c9c..cd63c6a 100644
 --- a/AzooKeyCore/Sources/KeyboardViews/View/KeyboardBar/ResultBar.swift
 +++ b/AzooKeyCore/Sources/KeyboardViews/View/KeyboardBar/ResultBar.swift
-@@ -25,6 +25,7 @@ private extension Equatable {
+@@ -25,21 +25,22 @@ private extension Equatable {
  struct ResultBar<Extension: ApplicationSpecificKeyboardViewExtension>: View {
      @Environment(Extension.Theme.self) private var theme
      @Environment(\.userActionManager) private var action
@@ -926,7 +978,9 @@ index 6195c9c..8e7dadc 100644
      @EnvironmentObject private var variableStates: VariableStates
      @Binding private var isResultViewExpanded: Bool
      @State private var undoButtonAction: VariableStates.UndoAction?
-@@ -33,13 +34,13 @@ struct ResultBar<Extension: ApplicationSpecificKeyboardViewExtension>: View {
+     private var displayTabBarButton: Bool {
+-        Extension.SettingProvider.displayTabBarButton
++        Extension.SettingProvider.displayTabBarButton && !SemiStaticStates.shared.pinKeyboardTabBar
      }
  
      private var buttonWidth: CGFloat {
@@ -942,46 +996,7 @@ index 6195c9c..8e7dadc 100644
              interfaceHeight: variableStates.interfaceSize.height,
              context: variableStates.layoutContext
          ) * 0.6
-@@ -49,12 +50,52 @@ struct ResultBar<Extension: ApplicationSpecificKeyboardViewExtension>: View {
-         self._isResultViewExpanded = isResultViewExpanded
-     }
- 
-+    /// NaturalKana: tools the user pinned stay reachable while candidates are shown.
-+    @ViewBuilder private var pinnedTools: some View {
-+        let tools = SemiStaticStates.shared.pinnedKeyboardTools
-+        if !tools.isEmpty {
-+            HStack(spacing: 0) {
-+                ForEach(tools, id: \.self) { tool in
-+                    if tool == "emoji" {
-+                        pinnedToolButton("face.smiling", title: "表情", action: .moveTab(.system(.emoji_tab)))
-+                    } else if tool == "clipboard" {
-+                        pinnedToolButton("doc.on.clipboard", title: "剪贴板", action: .moveTab(.system(.clipboard_history_tab)))
-+                    }
-+                }
-+            }
-+            Divider().frame(height: buttonHeight)
-+        }
-+    }
-+
-+    private func pinnedToolButton(_ icon: String, title: String, action keyAction: ActionType) -> some View {
-+        Button {
-+            KeyboardFeedback<Extension>.click()
-+            self.action.registerAction(keyAction, variableStates: variableStates)
-+        } label: {
-+            Image(systemName: icon)
-+                .font(.system(size: 20))
-+                .frame(width: 40)
-+                .frame(maxHeight: .infinity)
-+                .contentShape(Rectangle())
-+        }
-+        .buttonStyle(.plain)
-+        .foregroundStyle(theme.resultTextColor.color)
-+        .accessibilityLabel(variableStates.tabManager.keyboardText(title))
-+    }
-+
-     private var tabBarButton: some View {
-         TabBarButton<Extension>()
-             .zIndex(10)
+@@ -55,6 +56,13 @@ struct ResultBar<Extension: ApplicationSpecificKeyboardViewExtension>: View {
      }
  
      var body: some View {
@@ -995,19 +1010,26 @@ index 6195c9c..8e7dadc 100644
          Group {
              if variableStates.resultModel.displayState == .nothing {
                  HStack {
-@@ -97,6 +138,7 @@ struct ResultBar<Extension: ApplicationSpecificKeyboardViewExtension>: View {
-                 }
-             } else {
-                 HStack {
-+                    pinnedTools
-                     if variableStates.resultModel.displayState == .predictions && displayTabBarButton {
-                         tabBarButton
-                         Spacer()
 diff --git a/AzooKeyCore/Sources/KeyboardViews/View/KeyboardBar/TabBar.swift b/AzooKeyCore/Sources/KeyboardViews/View/KeyboardBar/TabBar.swift
-index 7de7119..f6ba428 100644
+index 7de7119..5a61b4b 100644
 --- a/AzooKeyCore/Sources/KeyboardViews/View/KeyboardBar/TabBar.swift
 +++ b/AzooKeyCore/Sources/KeyboardViews/View/KeyboardBar/TabBar.swift
-@@ -39,7 +39,7 @@ struct TabBarView<Extension: ApplicationSpecificKeyboardViewExtension>: View {
+@@ -11,11 +11,13 @@ import SwiftUI
+ 
+ struct TabBarView<Extension: ApplicationSpecificKeyboardViewExtension>: View {
+     private let data: TabBarData
++    private let persistent: Bool
+     @Environment(\.userActionManager) private var action
+     @EnvironmentObject private var variableStates: VariableStates
+ 
+-    init(data: TabBarData) {
++    init(data: TabBarData, persistent: Bool = false) {
+         self.data = data
++        self.persistent = persistent
+     }
+ 
+     private var pinnedItems: [TabBarItem] {
+@@ -39,7 +41,7 @@ struct TabBarView<Extension: ApplicationSpecificKeyboardViewExtension>: View {
          }
          .buttonStyle(
              ResultButtonStyle<Extension>(
@@ -1016,7 +1038,55 @@ index 7de7119..f6ba428 100644
                      interfaceHeight: variableStates.interfaceSize.height,
                      context: variableStates.layoutContext
                  ) * 0.6
-@@ -66,7 +66,7 @@ struct TabBarView<Extension: ApplicationSpecificKeyboardViewExtension>: View {
+@@ -47,7 +49,46 @@ struct TabBarView<Extension: ApplicationSpecificKeyboardViewExtension>: View {
+         )
+     }
+ 
+-    var body: some View {
++    private var persistentItems: some View {
++        ScrollView(.horizontal, showsIndicators: false) {
++            HStack(spacing: 2) {
++                ForEach(data.items.indices, id: \.self) { index in
++                    let item = data.items[index]
++                    Button {
++                        self.action.registerActions(item.actions.map { $0.actionType }, variableStates: variableStates)
++                    } label: {
++                        Group {
++                            switch item.label {
++                            case let .text(text): Text(text)
++                            case let .image(image): Image(systemName: image)
++                            }
++                        }
++                        .font(.system(size: 18))
++                        .lineLimit(1)
++                        .padding(.horizontal, 6)
++                        .frame(minWidth: 36)
++                        .frame(maxHeight: .infinity)
++                        .contentShape(Rectangle())
++                    }
++                    .buttonStyle(.plain)
++                }
++            }
++        }
++    }
++
++    @ViewBuilder var body: some View {
++        if persistent {
++            if #available(iOS 26, *) {
++                persistentItems.scrollEdgeEffectHidden()
++            } else {
++                persistentItems
++            }
++        } else {
++            tabItems
++        }
++    }
++
++    private var tabItems: some View {
+         HStack {
+             if !self.pinnedItems.isEmpty {
+                 ForEach(self.pinnedItems.indices, id: \.self) {i in
+@@ -66,7 +107,7 @@ struct TabBarView<Extension: ApplicationSpecificKeyboardViewExtension>: View {
              }
          }
          .frame(
@@ -1075,7 +1145,7 @@ index 407388f..13ee7e7 100644
      typealias Value = ThemeData<Extension>
  
 diff --git a/AzooKeyCore/Sources/KeyboardViews/View/KeyboardView.swift b/AzooKeyCore/Sources/KeyboardViews/View/KeyboardView.swift
-index c0751ed..3a3a941 100644
+index c0751ed..bad3ddd 100644
 --- a/AzooKeyCore/Sources/KeyboardViews/View/KeyboardView.swift
 +++ b/AzooKeyCore/Sources/KeyboardViews/View/KeyboardView.swift
 @@ -8,6 +8,7 @@
@@ -1095,7 +1165,7 @@ index c0751ed..3a3a941 100644
      @EnvironmentObject private var variableStates: VariableStates
  
      private let defaultTab: KeyboardTab.ExistentialTab?
-@@ -25,6 +28,113 @@ public struct KeyboardView<Extension: ApplicationSpecificKeyboardViewExtension>:
+@@ -25,6 +28,136 @@ public struct KeyboardView<Extension: ApplicationSpecificKeyboardViewExtension>:
          self.defaultTab = defaultTab
      }
  
@@ -1112,7 +1182,7 @@ index c0751ed..3a3a941 100644
 +              !variableStates.boolStates.isTextMagnifying,
 +              variableStates.reportDetailState == nil,
 +              !isResultViewExpanded, !isLanguageMenuPresented,
-+              variableStates.barState == .none,
++              (variableStates.barState == .none || (SemiStaticStates.shared.pinKeyboardTabBar && variableStates.barState == .tab)),
 +              variableStates.resultModel.displayState == .nothing else { return false }
 +        if case .special = variableStates.tabManager.existentialTab() { return false }
 +        return true
@@ -1142,6 +1212,29 @@ index c0751ed..3a3a941 100644
 +        }
 +        .padding(.horizontal, 10)
 +        .foregroundStyle(theme.resultTextColor.color)
++    }
++
++    private var persistentTabBar: some View {
++        let data = (try? variableStates.tabManager.config.custardManager.tabbar(identifier: 0))
++            .flatMap { $0.items.isEmpty ? nil : $0 } ?? TabBarData.default
++        return HStack(spacing: 6) {
++            TabBarView<Extension>(data: data, persistent: true)
++                .frame(width: usesCompactTools ? nil : min(144, variableStates.interfaceSize.width * 0.38))
++            if usesCompactTools {
++                if let undo = currentUndo {
++                    toolButton("arrow.uturn.backward", title: variableStates.tabManager.keyboardText("撤销"), action: undo.action)
++                }
++                if let statusAccessory { statusAccessory }
++            } else {
++                Divider().padding(.vertical, 8)
++                KeyboardBarView<Extension>(isResultViewExpanded: $isResultViewExpanded)
++                    .frame(maxWidth: .infinity)
++                    .frame(height: fullTopInset - topInsetReduction - 12)
++            }
++        }
++        .padding(.horizontal, 6)
++        .foregroundStyle(theme.resultTextColor.color)
++        .frame(height: fullTopInset - topInsetReduction)
 +    }
 +
 +    private func toolButton(_ icon: String, title: String, action keyAction: ActionType) -> some View {
@@ -1209,7 +1302,7 @@ index c0751ed..3a3a941 100644
      private var backgroundColor: Color {
          if theme.picture.image != nil {
              Color.white.opacity(0.001)
-@@ -66,7 +176,7 @@ public struct KeyboardView<Extension: ApplicationSpecificKeyboardViewExtension>:
+@@ -66,7 +199,7 @@ public struct KeyboardView<Extension: ApplicationSpecificKeyboardViewExtension>:
          } else {
              currentBodyHeight
          }
@@ -1218,7 +1311,7 @@ index c0751ed..3a3a941 100644
      }
  
      @ViewBuilder
-@@ -83,7 +193,7 @@ public struct KeyboardView<Extension: ApplicationSpecificKeyboardViewExtension>:
+@@ -83,7 +216,7 @@ public struct KeyboardView<Extension: ApplicationSpecificKeyboardViewExtension>:
              }
              .frame(
                  width: variableStates.containerWidth,
@@ -1227,7 +1320,7 @@ index c0751ed..3a3a941 100644
                      + variableStates.interfaceBottomOffset
                      + Design.keyboardScreenBottomPadding
              )
-@@ -140,20 +250,22 @@ public struct KeyboardView<Extension: ApplicationSpecificKeyboardViewExtension>:
+@@ -140,20 +273,24 @@ public struct KeyboardView<Extension: ApplicationSpecificKeyboardViewExtension>:
                      } else if isResultViewExpanded {
                          ExpandedResultView<Extension>(isResultViewExpanded: $isResultViewExpanded)
                      } else {
@@ -1236,7 +1329,9 @@ index c0751ed..3a3a941 100644
 -                                height: Design.keyboardBarHeight(
 -                                    interfaceHeight: variableStates.interfaceSize.height,
 -                                    context: variableStates.layoutContext
-+                        if !usesCompactTools {
++                        if SemiStaticStates.shared.pinKeyboardTabBar {
++                            persistentTabBar
++                        } else if !usesCompactTools {
 +                            KeyboardBarView<Extension>(isResultViewExpanded: $isResultViewExpanded)
 +                                .frame(
 +                                    height: fullTopInset - topInsetReduction - 12
@@ -1259,7 +1354,7 @@ index c0751ed..3a3a941 100644
                  .resizingFrame(
                      size: $variableStates.interfaceSize,
                      position: $variableStates.interfacePosition,
-@@ -172,6 +284,13 @@ public struct KeyboardView<Extension: ApplicationSpecificKeyboardViewExtension>:
+@@ -172,6 +309,13 @@ public struct KeyboardView<Extension: ApplicationSpecificKeyboardViewExtension>:
                  }
              }
  
@@ -1273,7 +1368,7 @@ index c0751ed..3a3a941 100644
              if variableStates.boolStates.isTextMagnifying {
                  LargeTextView(text: variableStates.magnifyingText, isViewOpen: $variableStates.boolStates.isTextMagnifying)
              }
-@@ -191,6 +310,11 @@ public struct KeyboardView<Extension: ApplicationSpecificKeyboardViewExtension>:
+@@ -191,6 +335,11 @@ public struct KeyboardView<Extension: ApplicationSpecificKeyboardViewExtension>:
              }
          }
          .frame(height: totalBackgroundHeight)
@@ -2395,7 +2490,7 @@ index 5f55651..066a0cc 100644
 +    #endif
 +}
 diff --git a/Keyboard/Display/KeyboardViewController.swift b/Keyboard/Display/KeyboardViewController.swift
-index e6038af..00a9c09 100644
+index e6038af..2b11712 100644
 --- a/Keyboard/Display/KeyboardViewController.swift
 +++ b/Keyboard/Display/KeyboardViewController.swift
 @@ -14,6 +14,8 @@ import KeyboardViews
@@ -2501,7 +2596,7 @@ index e6038af..00a9c09 100644
 +            available: Self.naturalModel.settings.availableKeyboardLanguages.map(\.rawValue),
 +            order: Self.naturalModel.settings.keyboardSwitchLanguages.map(\.rawValue)
 +        )
-+        SemiStaticStates.shared.setPinnedKeyboardTools(Self.naturalModel.settings.pinnedKeyboardTools)
++        SemiStaticStates.shared.setPinKeyboardTabBar(Self.naturalModel.settings.pinKeyboardTabBar)
          // サイズに関する情報はこのタイミングで設定する
          if #available(iOS 26, *) {
              let size = self.currentKeyboardViewSize()

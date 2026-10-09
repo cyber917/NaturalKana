@@ -14,18 +14,6 @@ public enum ExtraKeyboardLayout: String, CaseIterable, Sendable {
     }
 }
 
-/// Buttons that can stay at the left of the iPhone candidate bar while candidates are shown.
-public enum KeyboardTool: String, CaseIterable, Sendable {
-    case emoji, clipboard
-
-    public var title: String {
-        switch self {
-        case .emoji: UIText.t("表情")
-        case .clipboard: UIText.t("剪贴板")
-        }
-    }
-}
-
 public enum KeyboardSwitchLanguage: String, CaseIterable, Sendable {
     case japanese, english, korean, french, russian, chinese
 

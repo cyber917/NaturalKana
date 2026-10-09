@@ -1695,12 +1695,12 @@
   "en": ", %@ characters",
   "ja": "、計 %@ 文字"
  },
- "候选栏固定%@按钮": {
-  "en": "Keep the %@ button beside candidates",
-  "ja": "候補バーに%@ボタンを固定"
+ "固定显示“扩展 → 编辑标签栏”里的全部项目。标签在左、候选在右，左右滑动可查看更多，键盘高度不变。": {
+  "en": "Keep all items from Extensions → Edit tab bar visible. Tabs stay on the left and candidates on the right. Swipe horizontally to see more; the keyboard height stays the same.",
+  "ja": "「拡張 → タブバーを編集」のすべての項目を常に表示します。左にタブ、右に候補を表示し、左右にスワイプすると続きを見られます。キーボードの高さは変わりません。"
  },
- "打字出现候选时，固定的按钮仍显示在候选栏最左边；没有候选时表情、剪贴板总会显示。": {
-  "en": "While candidates are shown, pinned buttons stay at the left of the candidate bar. With no candidates, emoji and clipboard always show.",
-  "ja": "候補が出ている間も、固定したボタンは候補バーの左端に表示されます。候補がないときは絵文字とクリップボードが常に表示されます。"
+ "固定键盘顶部标签栏": {
+  "en": "Keep the keyboard tab bar visible",
+  "ja": "キーボード上部のタブバーを常に表示"
  }
 }
