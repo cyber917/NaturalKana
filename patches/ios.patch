@@ -2386,7 +2386,7 @@ index 0a478af..de1bd7a 100644
          simpleInsert
              || text == "\n"
 diff --git a/Keyboard/Display/KeyboardActionManager.swift b/Keyboard/Display/KeyboardActionManager.swift
-index 5f55651..e029d7b 100644
+index 5f55651..b38de76 100644
 --- a/Keyboard/Display/KeyboardActionManager.swift
 +++ b/Keyboard/Display/KeyboardActionManager.swift
 @@ -11,7 +11,9 @@ import Foundation
@@ -2688,7 +2688,7 @@ index 5f55651..e029d7b 100644
          handlePrepareReportSuggestion(candidate: candidate, index: index, variableStates: variableStates)
      }
  
-@@ -143,12 +392,103 @@ final class KeyboardActionManager: UserActionManager, @unchecked Sendable {
+@@ -143,12 +392,104 @@ final class KeyboardActionManager: UserActionManager, @unchecked Sendable {
          self.dismissReportInterfacesIfNeeded(variableStates: variableStates)
      }
  
@@ -2725,7 +2725,8 @@ index 5f55651..e029d7b 100644
 +        switch action {
 +        case let .input(text, _) where text.count == 1 && PinyinLexicon.isLetter(text.first!):
 +            textEditingActionDidBegin(variableStates: variableStates)
-+            if pinyin.isEmpty { inputManager.stopComposition() }
++            // An empty composition must not send unmarkText before the first letter.
++            if pinyin.isEmpty && !inputManager.composingText.isEmpty { inputManager.stopComposition() }
 +            pinyin += text
 +            inputManager.updatePinyinComposition(pinyin)
 +            return true
@@ -2792,7 +2793,7 @@ index 5f55651..e029d7b 100644
          var undoAction: ActionType?
          switch action {
          case let .input(text, simpleInsert):
-@@ -784,3 +1124,28 @@ final class KeyboardActionManager: UserActionManager, @unchecked Sendable {
+@@ -784,3 +1125,28 @@ final class KeyboardActionManager: UserActionManager, @unchecked Sendable {
          // TODO: Provide up-to-date implementation
      }
  }
