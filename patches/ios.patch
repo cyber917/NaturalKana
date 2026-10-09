@@ -1022,7 +1022,7 @@ index 407388f..13ee7e7 100644
      typealias Value = ThemeData<Extension>
  
 diff --git a/AzooKeyCore/Sources/KeyboardViews/View/KeyboardView.swift b/AzooKeyCore/Sources/KeyboardViews/View/KeyboardView.swift
-index c0751ed..07554e5 100644
+index c0751ed..3a3a941 100644
 --- a/AzooKeyCore/Sources/KeyboardViews/View/KeyboardView.swift
 +++ b/AzooKeyCore/Sources/KeyboardViews/View/KeyboardView.swift
 @@ -8,6 +8,7 @@
@@ -1042,7 +1042,7 @@ index c0751ed..07554e5 100644
      @EnvironmentObject private var variableStates: VariableStates
  
      private let defaultTab: KeyboardTab.ExistentialTab?
-@@ -25,6 +28,104 @@ public struct KeyboardView<Extension: ApplicationSpecificKeyboardViewExtension>:
+@@ -25,6 +28,113 @@ public struct KeyboardView<Extension: ApplicationSpecificKeyboardViewExtension>:
          self.defaultTab = defaultTab
      }
  
@@ -1060,22 +1060,31 @@ index c0751ed..07554e5 100644
 +              variableStates.reportDetailState == nil,
 +              !isResultViewExpanded, !isLanguageMenuPresented,
 +              variableStates.barState == .none,
-+              variableStates.resultModel.displayState == .nothing,
-+              statusAccessory == nil else { return false }
++              variableStates.resultModel.displayState == .nothing else { return false }
 +        if case .special = variableStates.tabManager.existentialTab() { return false }
-+        if let undo = variableStates.undoAction, undo.textChangedCount == variableStates.textChangedCount { return false }
 +        return true
++    }
++
++    /// Undo offered right after an edit; shown beside the tools instead of replacing them.
++    private var currentUndo: VariableStates.UndoAction? {
++        guard let undo = variableStates.undoAction, undo.textChangedCount == variableStates.textChangedCount else { return nil }
++        return undo
 +    }
 +
 +    private var topInsetReduction: CGFloat {
 +        variableStates.resizingState == .fullwidth ? fullTopInset * (1 - Design.keyboardTopAreaRatio) : 0
 +    }
 +
++    /// Always shown while there are no candidates, so emoji and clipboard stay within reach.
 +    private var compactTools: some View {
 +        HStack(spacing: 8) {
 +            toolButton("face.smiling", title: variableStates.tabManager.keyboardText("表情"), action: .moveTab(.system(.emoji_tab)))
 +            toolButton("doc.on.clipboard", title: variableStates.tabManager.keyboardText("剪贴板"), action: .moveTab(.system(.clipboard_history_tab)))
 +            Spacer()
++            if let undo = currentUndo {
++                toolButton("arrow.uturn.backward", title: variableStates.tabManager.keyboardText("撤销"), action: undo.action)
++            }
++            if let statusAccessory { statusAccessory }
 +            toolButton("ellipsis", title: variableStates.tabManager.keyboardText("更多工具"), action: .setTabBar(.toggle))
 +        }
 +        .padding(.horizontal, 10)
@@ -1147,7 +1156,7 @@ index c0751ed..07554e5 100644
      private var backgroundColor: Color {
          if theme.picture.image != nil {
              Color.white.opacity(0.001)
-@@ -66,7 +167,7 @@ public struct KeyboardView<Extension: ApplicationSpecificKeyboardViewExtension>:
+@@ -66,7 +176,7 @@ public struct KeyboardView<Extension: ApplicationSpecificKeyboardViewExtension>:
          } else {
              currentBodyHeight
          }
@@ -1156,7 +1165,7 @@ index c0751ed..07554e5 100644
      }
  
      @ViewBuilder
-@@ -83,7 +184,7 @@ public struct KeyboardView<Extension: ApplicationSpecificKeyboardViewExtension>:
+@@ -83,7 +193,7 @@ public struct KeyboardView<Extension: ApplicationSpecificKeyboardViewExtension>:
              }
              .frame(
                  width: variableStates.containerWidth,
@@ -1165,7 +1174,7 @@ index c0751ed..07554e5 100644
                      + variableStates.interfaceBottomOffset
                      + Design.keyboardScreenBottomPadding
              )
-@@ -140,20 +241,22 @@ public struct KeyboardView<Extension: ApplicationSpecificKeyboardViewExtension>:
+@@ -140,20 +250,22 @@ public struct KeyboardView<Extension: ApplicationSpecificKeyboardViewExtension>:
                      } else if isResultViewExpanded {
                          ExpandedResultView<Extension>(isResultViewExpanded: $isResultViewExpanded)
                      } else {
@@ -1197,7 +1206,7 @@ index c0751ed..07554e5 100644
                  .resizingFrame(
                      size: $variableStates.interfaceSize,
                      position: $variableStates.interfacePosition,
-@@ -172,6 +275,13 @@ public struct KeyboardView<Extension: ApplicationSpecificKeyboardViewExtension>:
+@@ -172,6 +284,13 @@ public struct KeyboardView<Extension: ApplicationSpecificKeyboardViewExtension>:
                  }
              }
  
@@ -1211,7 +1220,7 @@ index c0751ed..07554e5 100644
              if variableStates.boolStates.isTextMagnifying {
                  LargeTextView(text: variableStates.magnifyingText, isViewOpen: $variableStates.boolStates.isTextMagnifying)
              }
-@@ -191,6 +301,11 @@ public struct KeyboardView<Extension: ApplicationSpecificKeyboardViewExtension>:
+@@ -191,6 +310,11 @@ public struct KeyboardView<Extension: ApplicationSpecificKeyboardViewExtension>:
              }
          }
          .frame(height: totalBackgroundHeight)
