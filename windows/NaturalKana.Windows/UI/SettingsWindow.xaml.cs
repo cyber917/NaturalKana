@@ -10,35 +10,35 @@ namespace NaturalKana.Windows.UI;
 public partial class SettingsWindow : Window
 {
     readonly AppSettings settings;
-    readonly Func<string, bool> registerHotkey;
+    readonly Func<string, string, string?> registerHotkeys;
     readonly Action<bool> suspendHotkey;
-    string hotkey;
+    string hotkey, selectAllHotkey;
     readonly Dictionary<ProviderKind, ProviderConfig> edits = new();
     readonly Dictionary<ProviderKind, string> pendingKeys = new();
     ProviderKind current;
     bool loading = true; // suppresses SelectionChanged while the form is being filled
     bool filling; // suppresses language SelectionChanged while the choices are (re)filled
 
-    public SettingsWindow(AppSettings settings, Func<string, bool> registerHotkey, Action<bool> suspendHotkey)
+    public SettingsWindow(AppSettings settings, Func<string, string, string?> registerHotkeys, Action<bool> suspendHotkey)
     {
         InitializeComponent();
         // Translate the XAML text before any code sets dynamic text.
         Localizer.Apply(this);
         MaxHeight = SystemParameters.WorkArea.Height - 40;
         this.settings = settings;
-        this.registerHotkey = registerHotkey;
+        this.registerHotkeys = registerHotkeys;
         this.suspendHotkey = suspendHotkey;
         // Older builds allowed everyday shortcuts such as Ctrl+Z; fall back to the default for those.
-        hotkey = Win.HotkeyHost.CommonShortcutName(settings.Hotkey) is null ? settings.Hotkey : HotkeyPreset.Default;
+        (hotkey, selectAllHotkey) = Win.HotkeyHost.SavedShortcuts(settings.Hotkey, settings.SelectAllHotkey);
         foreach (var (kind, config) in settings.ProviderConfigs) edits[kind] = config.Clone();
 
         UIText.Language = settings.Interface;
         FillChoices();
         Fill(CountBox, Enumerable.Range(1, 10).Select(n => (n, n.ToString())), settings.SuggestionLimit);
         HotkeyBox.Text = hotkey;
-        HotkeyBox.GotKeyboardFocus += (_, _) => { suspendHotkey(true); HotkeyHint.Text = UIText.T("请按下组合键（需含 Ctrl / Alt / Win）"); };
-        HotkeyBox.LostKeyboardFocus += (_, _) => { suspendHotkey(false); HotkeyHint.Text = UIText.T("点一下，再按新的组合键"); };
-        HotkeyBox.PreviewKeyDown += OnRecordHotkey;
+        SelectAllHotkeyBox.Text = selectAllHotkey;
+        SetupRecorder(HotkeyBox, HotkeyHint);
+        SetupRecorder(SelectAllHotkeyBox, SelectAllHotkeyHint);
         Closed += (_, _) => suspendHotkey(false);
         AutoBox.IsChecked = settings.AutoMode;
         HighlightBox.IsChecked = settings.HighlightChanges;
@@ -107,23 +107,27 @@ public partial class SettingsWindow : Window
 
     static T Get<T>(ComboBox box) => (T)((ComboBoxItem)box.SelectedItem).Tag;
 
-    void OnRecordHotkey(object sender, System.Windows.Input.KeyEventArgs e)
+    void SetupRecorder(TextBox box, TextBlock hint)
     {
-        e.Handled = true;
-        var key = e.Key == System.Windows.Input.Key.System ? e.SystemKey : e.Key;
-        if (key == System.Windows.Input.Key.Escape) { Keyboard.ClearFocus(); return; }
-        if (Win.HotkeyHost.Format(Keyboard.Modifiers, key) is { } text)
+        box.GotKeyboardFocus += (_, _) => { suspendHotkey(true); hint.Text = UIText.T("请按下组合键（需含 Ctrl / Alt / Win）"); };
+        box.LostKeyboardFocus += (_, _) => { suspendHotkey(false); hint.Text = UIText.T("点一下，再按新的组合键"); };
+        box.PreviewKeyDown += (_, e) =>
         {
+            e.Handled = true;
+            var key = e.Key == Key.System ? e.SystemKey : e.Key;
+            if (key == Key.Escape) { Keyboard.ClearFocus(); return; }
+            if (Win.HotkeyHost.Format(Keyboard.Modifiers, key) is not { } text) return;
             if (Win.HotkeyHost.CommonShortcutName(text) is { } name)
             {
-                HotkeyHint.Text = UIText.T("%@ 是常用的“%@”，会让其他软件里的%@失效，请换一个", $"{text}", $"{name}", $"{name}");
+                hint.Text = UIText.T("%@ 是常用的“%@”，会让其他软件里的%@失效，请换一个", text, name, name);
                 return;
             }
-            hotkey = text;
-            HotkeyBox.Text = text;
-            HotkeyHint.Text = UIText.T("已录制，点“保存”生效");
+            if (box == HotkeyBox) hotkey = text;
+            else selectAllHotkey = text;
+            box.Text = text;
             Keyboard.ClearFocus();
-        }
+            hint.Text = UIText.T("已录制，点“保存”生效");
+        };
     }
 
     ProviderConfig Edit(ProviderKind kind) => edits.TryGetValue(kind, out var c) ? c : edits[kind] = Providers.Default(kind);
@@ -213,12 +217,13 @@ public partial class SettingsWindow : Window
     {
         StoreProvider(current);
         if (!int.TryParse(CapBox.Text.Trim(), out var cap) || cap < 0) { Show(UIText.T("每日请求上限请填写 0 或正整数。"), true); return; }
-        if (!registerHotkey(hotkey)) { Show(UIText.T("快捷键 %@ 已被其他软件占用，请换一个。", $"{hotkey}"), true); return; }
+        if (Win.HotkeyHost.SameCombination(hotkey, selectAllHotkey)) { Show(UIText.T("两个快捷键不能相同。"), true); return; }
+        if (registerHotkeys(hotkey, selectAllHotkey) is { } failed) { Show(UIText.T("快捷键 %@ 已被其他软件占用，请换一个。", failed), true); return; }
         try
         {
             foreach (var (kind, key) in pendingKeys) SecretStore.Write(kind, key);
         }
-        catch (InvalidOperationException ex) { Show(ex.Message, true); return; }
+        catch (InvalidOperationException ex) { registerHotkeys(settings.Hotkey, settings.SelectAllHotkey); Show(ex.Message, true); return; }
         pendingKeys.Clear();
 
         settings.Provider = current;
@@ -232,6 +237,7 @@ public partial class SettingsWindow : Window
         settings.MaximumSuggestions = Get<int>(CountBox);
         settings.HighlightChanges = HighlightBox.IsChecked == true;
         settings.Hotkey = hotkey;
+        settings.SelectAllHotkey = selectAllHotkey;
         settings.NoSelection = Get<NoSelectionScope>(ScopeBox);
         settings.AutoMode = AutoBox.IsChecked == true;
         settings.AutoPauseMilliseconds = Get<int>(PauseBox);

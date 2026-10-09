@@ -104,6 +104,7 @@ public sealed class AppSettings
     public int MaximumSuggestions { get; set; } = 5;
     public int DailyCap { get; set; } = 200;
     public string Hotkey { get; set; } = HotkeyPreset.Default;
+    public string SelectAllHotkey { get; set; } = HotkeyPreset.SelectAll;
     /// What the hotkey checks when nothing is selected.
     public NoSelectionScope NoSelection { get; set; } = NoSelectionScope.WholeField;
     /// Experimental: suggest automatically after a typing pause (UI Automation; not every app exposes its text).
@@ -171,4 +172,5 @@ public sealed class AppSettings
 public static class HotkeyPreset
 {
     public const string Default = "Ctrl+Alt+J";
+    public const string SelectAll = "Ctrl+Alt+K";
 }

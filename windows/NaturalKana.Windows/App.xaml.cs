@@ -12,7 +12,7 @@ namespace NaturalKana.Windows;
 /// Auto mode: read the focused field after a pause → passive card → Ctrl+number replaces the paragraph.
 public partial class App : Application
 {
-    const int MainHotkey = 1;
+    const int MainHotkey = 1, SelectAllHotkey = 2;
     Mutex? single;
     bool ownsMutex;
     Forms.NotifyIcon? tray;
@@ -35,9 +35,14 @@ public partial class App : Application
         if (!ownsMutex) { MessageBox.Show(UIText.T("NaturalKana 已经在运行，请在任务栏右下角的托盘里找到它。"), "NaturalKana"); Shutdown(); return; }
 
         // Never take over everyday shortcuts (e.g. Ctrl+Z) saved by an earlier build.
-        if (HotkeyHost.CommonShortcutName(settings.Hotkey) is not null) { settings.Hotkey = HotkeyPreset.Default; settings.Save(); }
+        var shortcuts = HotkeyHost.SavedShortcuts(settings.Hotkey, settings.SelectAllHotkey);
+        if (shortcuts != (settings.Hotkey, settings.SelectAllHotkey))
+        {
+            (settings.Hotkey, settings.SelectAllHotkey) = shortcuts;
+            settings.Save();
+        }
         hotkeys = new HotkeyHost();
-        var registered = RegisterMainHotkey(settings.Hotkey);
+        var failedShortcut = RegisterHotkeys(settings.Hotkey, settings.SelectAllHotkey);
 
         tray = new Forms.NotifyIcon { Icon = MakeIcon(), Text = "NaturalKana", Visible = true };
         BuildMenu();
@@ -53,8 +58,8 @@ public partial class App : Application
             autoCard.Dismiss(refocus: false);
         });
 
-        if (!registered)
-            tray.ShowBalloonTip(5000, "NaturalKana", UIText.T("快捷键 %@ 被其他软件占用了，请在设置里换一个。", $"{settings.Hotkey}"), Forms.ToolTipIcon.Warning);
+        if (failedShortcut is not null)
+            tray.ShowBalloonTip(5000, "NaturalKana", UIText.T("快捷键 %@ 被其他软件占用了，请在设置里换一个。", failedShortcut), Forms.ToolTipIcon.Warning);
         if (!settings.Consent || !SecretStore.Has(settings.Provider)) OpenSettings();
         else tray.ShowBalloonTip(4000, UIText.T("NaturalKana 已在后台运行"), settings.AutoLanguage
             ? UIText.T("选中一句话，或直接按 %@", settings.Hotkey)
@@ -74,7 +79,21 @@ public partial class App : Application
         old?.Dispose();
     }
 
-    bool RegisterMainHotkey(string keys) => hotkeys!.Register(MainHotkey, keys, OnHotkey);
+    string? RegisterHotkeys(string check, string selectAll)
+    {
+        hotkeys!.Unregister(MainHotkey);
+        hotkeys.Unregister(SelectAllHotkey);
+        var checkRegistered = hotkeys.Register(MainHotkey, check, () => OnHotkey(selectAll: false));
+        var selectRegistered = hotkeys.Register(SelectAllHotkey, selectAll, () => OnHotkey(selectAll: true));
+        return !checkRegistered ? check : !selectRegistered ? selectAll : null;
+    }
+
+    string? TryChangeHotkeys(string check, string selectAll)
+    {
+        var failed = RegisterHotkeys(check, selectAll);
+        if (failed is not null) RegisterHotkeys(settings.Hotkey, settings.SelectAllHotkey);
+        return failed;
+    }
 
     static void Open(string url) =>
         System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo(url) { UseShellExecute = true });
@@ -83,10 +102,10 @@ public partial class App : Application
     {
         if (settingsWindow is { IsLoaded: true }) { settingsWindow.Activate(); return; }
         autoCard?.Dismiss(refocus: false);
-        settingsWindow = new SettingsWindow(settings, RegisterMainHotkey, suspend =>
+        settingsWindow = new SettingsWindow(settings, TryChangeHotkeys, suspend =>
         {
-            if (suspend) hotkeys!.Unregister(MainHotkey);
-            else RegisterMainHotkey(settings.Hotkey);
+            if (suspend) { hotkeys!.Unregister(MainHotkey); hotkeys.Unregister(SelectAllHotkey); }
+            else RegisterHotkeys(settings.Hotkey, settings.SelectAllHotkey);
         });
         settingsWindow.Closed += (_, _) =>
         {
@@ -95,7 +114,7 @@ public partial class App : Application
             UIText.Language = settings.Interface;
             BuildMenu();
             // Saving may have changed the hotkey; closing without saving keeps the old one.
-            RegisterMainHotkey(settings.Hotkey);
+            RegisterHotkeys(settings.Hotkey, settings.SelectAllHotkey);
         };
         settingsWindow.Show();
         settingsWindow.Activate();
@@ -110,24 +129,24 @@ public partial class App : Application
 
     // ---------- hotkey ----------
 
-    async void OnHotkey()
+    async void OnHotkey(bool selectAll)
     {
         if (busy) return;
         busy = true;
         autoCard?.Dismiss(refocus: false);
-        try { if (Ready()) await HotkeyAsync(); }
+        try { if (Ready()) await HotkeyAsync(selectAll); }
         finally { busy = false; }
     }
 
-    async Task HotkeyAsync()
+    async Task HotkeyAsync(bool selectAll)
     {
-        var capture = await TextBridge.CaptureAsync(settings.NoSelection);
+        var capture = await TextBridge.CaptureAsync(settings.NoSelection, selectAll);
         if (capture is null)
         {
             tray?.ShowBalloonTip(3000, "NaturalKana", UIText.T("没有取到文字：请把光标放进输入框，或先选中一句话再按快捷键。"), Forms.ToolTipIcon.None);
             return;
         }
-        var draft = capture.Text;
+        var draft = capture.Text.Trim();
         // With auto language, the draft decides; an unrecognised draft keeps the primary language and is rejected below.
         var effective = settings.ResolvingLanguage(draft) ?? settings;
         var card = new SuggestionWindow(draft.Length > 200 ? draft[^200..] : draft, capture.Anchor, settings.HighlightChanges, effective.Language, passive: false);
@@ -148,7 +167,14 @@ public partial class App : Application
 
         await closed.Task;
         request.Cancel();
-        if (chosen is not null) await TextBridge.PasteAsync(capture.Window, chosen);
+        if (chosen is not null)
+        {
+            if (!await TextBridge.ReplaceAsync(capture, chosen))
+            {
+                TextBridge.Copy(chosen);
+                tray?.ShowBalloonTip(3000, "NaturalKana", UIText.T("原句已经变了或无法自动替换，建议已复制，请手动粘贴。"), Forms.ToolTipIcon.None);
+            }
+        }
         else if (refocus) await TextBridge.RefocusAsync(capture.Window, collapseSelection: capture.AutoSelected);
     }
 
@@ -193,8 +219,7 @@ public partial class App : Application
         busy = true;
         try
         {
-            if (await Task.Run(() => FieldReader.SelectForReplace(snapshot))) await TextBridge.PasteAsync(IntPtr.Zero, chosen);
-            else
+            if (!await Task.Run(() => FieldReader.SelectForReplace(snapshot)) || !await TextBridge.PasteAsync(IntPtr.Zero, chosen))
             {
                 TextBridge.Copy(chosen);
                 tray?.ShowBalloonTip(3000, "NaturalKana", UIText.T("原句已经变了或无法自动替换，建议已复制，请手动粘贴。"), Forms.ToolTipIcon.None);

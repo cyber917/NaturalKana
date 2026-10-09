@@ -69,7 +69,22 @@ public sealed class HotkeyHost : IDisposable
 
     /// Everyday shortcuts that would stop working in every other app if taken over globally.
     /// Names are translated when shown, so they follow the current interface language.
-    public static string? CommonShortcutName(string text) => Common.TryGetValue(text, out var name) ? Core.UIText.T(name) : null;
+    public static string? CommonShortcutName(string text) =>
+        Common.FirstOrDefault(pair => SameCombination(pair.Key, text)).Value is { } name ? Core.UIText.T(name) : null;
+
+    public static bool SameCombination(string first, string second) =>
+        Parse(first) is { } parsed && Parse(second) == parsed;
+
+    public static bool IsUserShortcut(string text) => Parse(text) is { modifiers: not 0, vk: not 0 }
+        && CommonShortcutName(text) is null;
+
+    internal static (string check, string selectAll) SavedShortcuts(string check, string selectAll)
+    {
+        if (!IsUserShortcut(check)) check = Core.HotkeyPreset.Default;
+        if (!IsUserShortcut(selectAll) || SameCombination(check, selectAll))
+            selectAll = SameCombination(check, Core.HotkeyPreset.SelectAll) ? "Ctrl+Alt+Shift+K" : Core.HotkeyPreset.SelectAll;
+        return (check, selectAll);
+    }
     internal static IEnumerable<string> CommonShortcutNames => Common.Values.Distinct();
 
     /// Returns false when another app already owns the combination.

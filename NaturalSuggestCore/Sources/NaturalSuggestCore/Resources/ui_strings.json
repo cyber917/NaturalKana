@@ -1734,5 +1734,9 @@
  "请选择字母或数字，并搭配 Control、Option 或 Command；不要使用常用编辑快捷键。": {
   "en": "Choose a letter or number with Control, Option, or Command. Avoid common editing shortcuts.",
   "ja": "英数字と Control、Option、Command のいずれかを組み合わせてください。一般的な編集ショートカットは使えません。"
+ },
+ "检查当前文字": {
+  "en": "Check current text",
+  "ja": "現在のテキストをチェック"
  }
 }
