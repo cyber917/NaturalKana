@@ -143,6 +143,7 @@ public struct PinyinLexicon: Sendable {
             }
         }
         guard count <= 64 else { return result }
+        let options = steps(input)
         for start in 0..<count {
             struct State {
                 let node: Int
@@ -168,39 +169,61 @@ public struct PinyinLexicon: Sendable {
                     }
                 }
                 guard state.position < count else { continue }
-                for (id, child) in nodes[state.node].edges {
-                    let syllable = syllables[id]
-                    let remaining = count - state.position
-                    func append(_ length: Int, penalty: Double = 0, corrected: Bool = false) {
-                        queue.append(State(node: child, position: state.position + length,
-                                           penalty: state.penalty + penalty,
-                                           corrected: state.corrected || corrected))
-                    }
-                    if remaining >= syllable.count,
-                       input[state.position..<(state.position + syllable.count)].elementsEqual(syllable) {
-                        append(syllable.count)
-                    }
-                    if syllable.count > 1, input[state.position] == syllable[0] {
-                        append(1, penalty: 0.8)
-                        if syllable.count > 2, syllable[1] == 104, remaining >= 2,
-                           input[state.position + 1] == 104, [99, 115, 122].contains(syllable[0]) {
-                            append(2, penalty: 0.8)
-                        }
-                    }
-                    if remaining < syllable.count,
-                       syllable.starts(with: input[state.position...]) {
-                        append(remaining, penalty: 2)
-                    }
-                    guard !state.corrected, count >= 4, syllable.count >= 2, remaining >= syllable.count - 1 else { continue }
-                    for length in max(1, syllable.count - 1)...min(remaining, syllable.count + 1) {
-                        if Self.oneEdit(input[state.position..<(state.position + length)], syllable) {
-                            append(length, penalty: 3, corrected: true)
-                        }
-                    }
+                for step in options[state.position] where !(step.corrected && state.corrected) {
+                    guard let child = child(of: state.node, syllable: step.syllable) else { continue }
+                    queue.append(State(node: child, position: state.position + step.length,
+                                       penalty: state.penalty + step.penalty,
+                                       corrected: state.corrected || step.corrected))
                 }
             }
         }
         return result
+    }
+
+    private struct Step { let syllable: Int; let length: Int; let penalty: Double; let corrected: Bool }
+
+    /// For each input position, the syllables that can be read there and how many letters each takes:
+    /// full spelling, an initial (zh/ch/sh count as one), an unfinished last syllable, or one typo.
+    /// Depends only on the input, so the trie search looks the readings up instead of testing every syllable.
+    private func steps(_ input: [UInt8]) -> [[Step]] {
+        let count = input.count
+        return (0..<count).map { position in
+            let remaining = count - position
+            var steps: [Step] = []
+            for (id, syllable) in syllables.enumerated() {
+                if remaining >= syllable.count,
+                   input[position..<(position + syllable.count)].elementsEqual(syllable) {
+                    steps.append(Step(syllable: id, length: syllable.count, penalty: 0, corrected: false))
+                }
+                if syllable.count > 1, input[position] == syllable[0] {
+                    steps.append(Step(syllable: id, length: 1, penalty: 0.8, corrected: false))
+                    if syllable.count > 2, syllable[1] == 104, remaining >= 2,
+                       input[position + 1] == 104, [99, 115, 122].contains(syllable[0]) {
+                        steps.append(Step(syllable: id, length: 2, penalty: 0.8, corrected: false))
+                    }
+                }
+                if remaining < syllable.count, syllable.starts(with: input[position...]) {
+                    steps.append(Step(syllable: id, length: remaining, penalty: 2, corrected: false))
+                }
+                guard count >= 4, syllable.count >= 2, remaining >= syllable.count - 1 else { continue }
+                for length in max(1, syllable.count - 1)...min(remaining, syllable.count + 1)
+                    where Self.oneEdit(input[position..<(position + length)], syllable) {
+                    steps.append(Step(syllable: id, length: length, penalty: 3, corrected: true))
+                }
+            }
+            return steps
+        }
+    }
+
+    /// The trie child reached by `syllable`; edges are sorted by syllable id.
+    private func child(of node: Int, syllable: Int) -> Int? {
+        let edges = nodes[node].edges
+        var low = 0, high = edges.count
+        while low < high {
+            let middle = (low + high) / 2
+            if edges[middle].id < syllable { low = middle + 1 } else { high = middle }
+        }
+        return low < edges.count && edges[low].id == syllable ? edges[low].child : nil
     }
 
     /// One missing, extra, substituted or transposed letter within a syllable.
@@ -220,35 +243,63 @@ public struct PinyinLexicon: Sendable {
     }
 
     /// Keep several complete paths: initials can represent more than one word or sentence.
+    /// Paths are kept as links to their previous word and spelled out only when ranked, so long input stays cheap.
     private func sentences(_ count: Int, matches: [[Match]], cost: (Int) -> Double, exactOnly: Bool = false) -> [String] {
         guard matches.count == count else { return [] }
-        struct Path { let text: String; let cost: Double }
-        func ranked(_ paths: [Path]) -> [Path] {
-            var seen = Set<String>()
-            return paths.sorted { $0.cost == $1.cost ? $0.text < $1.text : $0.cost < $1.cost }
-                .filter { seen.insert($0.text).inserted }.prefix(24).map { $0 }
+        struct Link { let cost: Double; let parent: Int; let entry: Int }
+        var links: [Link] = []
+        func text(_ link: Int) -> String {
+            var words: [String] = []
+            var index = link
+            while index >= 0 { words.append(entries[links[index].entry].word); index = links[index].parent }
+            return words.reversed().joined()
         }
-        var paths = [[[Path]]](repeating: [[], []], count: count + 1)
-        paths[0][0] = [Path(text: "", cost: 0)]
+        let width = 24
+        func ranked(_ candidates: [Int]) -> [Int] {
+            var seen = Set<String>(), kept: [Int] = []
+            for index in candidates.sorted(by: { links[$0].cost == links[$1].cost ? $0 < $1 : links[$0].cost < links[$1].cost })
+            where seen.insert(text(index)).inserted {
+                kept.append(index)
+                if kept.count == width { break }
+            }
+            return kept
+        }
+        // paths[position][typos]: links ending there; the root (-1) is the empty sentence.
+        var paths = [[[Int]]](repeating: [[], []], count: count + 1)
+        var started = false
         for start in 0..<count {
+            // Only the cheapest few words per end and typo budget can reach the kept paths.
+            var steps: [(match: Match, addition: Double)] = []
+            for match in matches[start] where !exactOnly || match.penalty == 0 {
+                let particle = match.end == count && match.penalty == 0
+                    && Self.finalParticles.contains(entries[match.entry].word)
+                steps.append((match, cost(match.entry) + match.penalty + (particle ? -2.5 : 1)))
+            }
+            steps.sort { $0.addition < $1.addition }
+            var perEnd: [Int: Int] = [:]
+            steps = steps.filter { step in
+                let key = step.match.end * 2 + (step.match.corrected ? 1 : 0)
+                perEnd[key, default: 0] += 1
+                return perEnd[key]! <= width
+            }
             for budget in 0...1 {
-                let previous = ranked(paths[start][budget])
+                let previous: [Int]
+                if start == 0 && budget == 0 && !started { previous = [-1]; started = true }
+                else { previous = ranked(paths[start][budget]) }
                 paths[start][budget] = []
                 guard !previous.isEmpty else { continue }
-                for match in matches[start] where !exactOnly || match.penalty == 0 {
-                    let next = budget + (match.corrected ? 1 : 0)
+                for step in steps {
+                    let next = budget + (step.match.corrected ? 1 : 0)
                     guard next <= 1 else { continue }
-                    let particle = match.end == count && match.penalty == 0
-                        && Self.finalParticles.contains(entries[match.entry].word)
-                    let addition = cost(match.entry) + match.penalty + (particle ? -2.5 : 1)
-                    for path in previous {
-                        paths[match.end][next].append(Path(text: path.text + entries[match.entry].word,
-                                                          cost: path.cost + addition))
+                    for parent in previous {
+                        links.append(Link(cost: (parent < 0 ? 0 : links[parent].cost) + step.addition,
+                                          parent: parent, entry: step.match.entry))
+                        paths[step.match.end][next].append(links.count - 1)
                     }
                 }
             }
         }
-        return ranked(paths[count][0] + paths[count][1]).map(\.text)
+        return ranked(paths[count][0] + paths[count][1]).map(text)
     }
 
     /// Words whose letters start with `prefix` and are longer, cheapest first.
