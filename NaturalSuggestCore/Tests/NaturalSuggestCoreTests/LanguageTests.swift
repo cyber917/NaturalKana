@@ -71,6 +71,13 @@ private actor EnglishTestProvider: SuggestionProvider {
 }
 
 @MainActor struct LanguageEngineTests {
+    private func waitUntil(timeout: Duration = .seconds(5), _ condition: () async -> Bool) async throws {
+        let deadline = ContinuousClock.now + timeout
+        while !(await condition()) {
+            try #require(ContinuousClock.now < deadline, "Condition not met within \(timeout)")
+            try await Task.sleep(for: .milliseconds(10))
+        }
+    }
     private func engine() throws -> SuggestionEngine {
         SuggestionEngine(budget: DailyBudget(defaults: UserDefaults(suiteName: "NaturalKana.language." + UUID().uuidString)!), prompt: try PromptBuilder())
     }
@@ -83,20 +90,13 @@ private actor EnglishTestProvider: SuggestionProvider {
         let engine = try engine(); let provider = EnglishTestProvider(delay: 100)
         let snapshot = DraftSnapshot(text: "Yesterday I go to school.", fieldID: "editor")
         engine.update(snapshot, settings: english, provider: provider, explicit: true)
-        let deadline = ContinuousClock.now + .seconds(2)
-        while engine.status != .requesting {
-            try #require(ContinuousClock.now < deadline)
-            try await Task.sleep(for: .milliseconds(10))
-        }
+        try await waitUntil { await provider.count() == 1 }
         var japanese = english; japanese.language = .japanese
         engine.update(snapshot, settings: japanese, provider: provider, explicit: true)
         try await Task.sleep(for: .milliseconds(150))
         #expect(engine.suggestions.isEmpty && engine.status == .filtered(.language))
         engine.update(snapshot, settings: english, provider: provider, explicit: true)
-        while engine.status == .waiting || engine.status == .requesting {
-            try #require(ContinuousClock.now < deadline)
-            try await Task.sleep(for: .milliseconds(10))
-        }
+        try await waitUntil { engine.status != .waiting && engine.status != .requesting }
         #expect(engine.suggestions.first?.text == "Yesterday I went to school.")
         engine.dismiss()
         engine.update(snapshot, settings: japanese, provider: provider)
