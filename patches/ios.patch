@@ -599,10 +599,10 @@ index da988a8..31880c1 100644
              switch self {
              case .special(.emoji):
 diff --git a/AzooKeyCore/Sources/KeyboardViews/SemiStaticStates.swift b/AzooKeyCore/Sources/KeyboardViews/SemiStaticStates.swift
-index b464ddb..7b10092 100644
+index b464ddb..dd6c1bb 100644
 --- a/AzooKeyCore/Sources/KeyboardViews/SemiStaticStates.swift
 +++ b/AzooKeyCore/Sources/KeyboardViews/SemiStaticStates.swift
-@@ -40,6 +40,13 @@ public final class SemiStaticStates: @unchecked Sendable {
+@@ -40,6 +40,19 @@ public final class SemiStaticStates: @unchecked Sendable {
          self.hasFullAccess = bool
      }
  
@@ -611,6 +611,12 @@ index b464ddb..7b10092 100644
 +    public func setKeyboardLanguages(available: [String], order: [String]) {
 +        self.availableKeyboardLanguages = available.compactMap(KeyboardSwitchLanguage.init(rawValue:))
 +        self.keyboardSwitchLanguages = order.compactMap(KeyboardSwitchLanguage.init(rawValue:))
++    }
++
++    /// NaturalKana: tool buttons kept beside the candidates (`KeyboardTool` raw values, in order).
++    private(set) public var pinnedKeyboardTools: [String] = ["emoji"]
++    public func setPinnedKeyboardTools(_ tools: [String]) {
++        self.pinnedKeyboardTools = tools
 +    }
 +
      /// - do not  consider using screenHeight
@@ -909,7 +915,7 @@ index 201a3b6..b28604f 100644
              }
          }
 diff --git a/AzooKeyCore/Sources/KeyboardViews/View/KeyboardBar/ResultBar.swift b/AzooKeyCore/Sources/KeyboardViews/View/KeyboardBar/ResultBar.swift
-index 6195c9c..6735e15 100644
+index 6195c9c..8e7dadc 100644
 --- a/AzooKeyCore/Sources/KeyboardViews/View/KeyboardBar/ResultBar.swift
 +++ b/AzooKeyCore/Sources/KeyboardViews/View/KeyboardBar/ResultBar.swift
 @@ -25,6 +25,7 @@ private extension Equatable {
@@ -936,7 +942,46 @@ index 6195c9c..6735e15 100644
              interfaceHeight: variableStates.interfaceSize.height,
              context: variableStates.layoutContext
          ) * 0.6
-@@ -55,6 +56,13 @@ struct ResultBar<Extension: ApplicationSpecificKeyboardViewExtension>: View {
+@@ -49,12 +50,52 @@ struct ResultBar<Extension: ApplicationSpecificKeyboardViewExtension>: View {
+         self._isResultViewExpanded = isResultViewExpanded
+     }
+ 
++    /// NaturalKana: tools the user pinned stay reachable while candidates are shown.
++    @ViewBuilder private var pinnedTools: some View {
++        let tools = SemiStaticStates.shared.pinnedKeyboardTools
++        if !tools.isEmpty {
++            HStack(spacing: 0) {
++                ForEach(tools, id: \.self) { tool in
++                    if tool == "emoji" {
++                        pinnedToolButton("face.smiling", title: "表情", action: .moveTab(.system(.emoji_tab)))
++                    } else if tool == "clipboard" {
++                        pinnedToolButton("doc.on.clipboard", title: "剪贴板", action: .moveTab(.system(.clipboard_history_tab)))
++                    }
++                }
++            }
++            Divider().frame(height: buttonHeight)
++        }
++    }
++
++    private func pinnedToolButton(_ icon: String, title: String, action keyAction: ActionType) -> some View {
++        Button {
++            KeyboardFeedback<Extension>.click()
++            self.action.registerAction(keyAction, variableStates: variableStates)
++        } label: {
++            Image(systemName: icon)
++                .font(.system(size: 20))
++                .frame(width: 40)
++                .frame(maxHeight: .infinity)
++                .contentShape(Rectangle())
++        }
++        .buttonStyle(.plain)
++        .foregroundStyle(theme.resultTextColor.color)
++        .accessibilityLabel(variableStates.tabManager.keyboardText(title))
++    }
++
+     private var tabBarButton: some View {
+         TabBarButton<Extension>()
+             .zIndex(10)
      }
  
      var body: some View {
@@ -950,6 +995,14 @@ index 6195c9c..6735e15 100644
          Group {
              if variableStates.resultModel.displayState == .nothing {
                  HStack {
+@@ -97,6 +138,7 @@ struct ResultBar<Extension: ApplicationSpecificKeyboardViewExtension>: View {
+                 }
+             } else {
+                 HStack {
++                    pinnedTools
+                     if variableStates.resultModel.displayState == .predictions && displayTabBarButton {
+                         tabBarButton
+                         Spacer()
 diff --git a/AzooKeyCore/Sources/KeyboardViews/View/KeyboardBar/TabBar.swift b/AzooKeyCore/Sources/KeyboardViews/View/KeyboardBar/TabBar.swift
 index 7de7119..f6ba428 100644
 --- a/AzooKeyCore/Sources/KeyboardViews/View/KeyboardBar/TabBar.swift
@@ -2342,7 +2395,7 @@ index 5f55651..066a0cc 100644
 +    #endif
 +}
 diff --git a/Keyboard/Display/KeyboardViewController.swift b/Keyboard/Display/KeyboardViewController.swift
-index e6038af..008bc2a 100644
+index e6038af..00a9c09 100644
 --- a/Keyboard/Display/KeyboardViewController.swift
 +++ b/Keyboard/Display/KeyboardViewController.swift
 @@ -14,6 +14,8 @@ import KeyboardViews
@@ -2436,7 +2489,7 @@ index e6038af..008bc2a 100644
          KeyboardViewController.variableStates
              .$interfaceSize
              .combineLatest(
-@@ -258,6 +309,14 @@ final class KeyboardViewController: UIInputViewController {
+@@ -258,6 +309,15 @@ final class KeyboardViewController: UIInputViewController {
  
      override func viewWillAppear(_ animated: Bool) {
          super.viewWillAppear(animated)
@@ -2448,10 +2501,11 @@ index e6038af..008bc2a 100644
 +            available: Self.naturalModel.settings.availableKeyboardLanguages.map(\.rawValue),
 +            order: Self.naturalModel.settings.keyboardSwitchLanguages.map(\.rawValue)
 +        )
++        SemiStaticStates.shared.setPinnedKeyboardTools(Self.naturalModel.settings.pinnedKeyboardTools)
          // サイズに関する情報はこのタイミングで設定する
          if #available(iOS 26, *) {
              let size = self.currentKeyboardViewSize()
-@@ -276,6 +335,7 @@ final class KeyboardViewController: UIInputViewController {
+@@ -276,6 +336,7 @@ final class KeyboardViewController: UIInputViewController {
  
      override func viewDidAppear(_ animated: Bool) {
          super.viewDidAppear(animated)
@@ -2459,7 +2513,7 @@ index e6038af..008bc2a 100644
          self.updateStates()
  
          // Floating Keyboardなどの一部の処理に限り、このタイミングにならないとウィンドウ幅が不明なケースが存在する
-@@ -306,6 +366,7 @@ final class KeyboardViewController: UIInputViewController {
+@@ -306,6 +367,7 @@ final class KeyboardViewController: UIInputViewController {
  
      override func viewDidLayoutSubviews() {
          super.viewDidLayoutSubviews()
@@ -2467,7 +2521,7 @@ index e6038af..008bc2a 100644
          // iOS 26以上で、レイアウト確定後に向き・サイズを反映
          if #available(iOS 26, *) {
              let size = self.currentKeyboardViewSize()
-@@ -322,6 +383,7 @@ final class KeyboardViewController: UIInputViewController {
+@@ -322,6 +384,7 @@ final class KeyboardViewController: UIInputViewController {
          // キーボードタイプはviewDidAppearのタイミングで取得できる
          KeyboardViewController.variableStates.setKeyboardType(self.textDocumentProxy.keyboardType)
          KeyboardViewController.variableStates.setTextContentType(self.textDocumentProxy.textContentType)
@@ -2475,7 +2529,7 @@ index e6038af..008bc2a 100644
  
          // クリップボード履歴を更新する
          KeyboardViewController.variableStates.clipboardHistoryManager.reload()
-@@ -412,15 +474,20 @@ final class KeyboardViewController: UIInputViewController {
+@@ -412,15 +475,20 @@ final class KeyboardViewController: UIInputViewController {
      }
  
      override func viewWillDisappear(_ animated: Bool) {
@@ -2496,7 +2550,7 @@ index e6038af..008bc2a 100644
          if #available(iOS 26, *) {
              // 幅は即時反映しておき、向きは完了時のWindowSceneから決定する
              coordinator.animate(alongsideTransition: nil) { [weak self] _ in
-@@ -480,7 +547,7 @@ final class KeyboardViewController: UIInputViewController {
+@@ -480,7 +548,7 @@ final class KeyboardViewController: UIInputViewController {
  
      private func setKeyboardHeight(to height: CGFloat) {
          self.keyboardHeightConstraint?.isActive = true
@@ -2505,7 +2559,7 @@ index e6038af..008bc2a 100644
          if self.view.window != nil {
              UIView.performWithoutAnimation {
                  self.view.layoutIfNeeded()
-@@ -492,20 +559,12 @@ final class KeyboardViewController: UIInputViewController {
+@@ -492,20 +560,12 @@ final class KeyboardViewController: UIInputViewController {
          }
      }
  
@@ -2529,7 +2583,7 @@ index e6038af..008bc2a 100644
  
          let left = self.textDocumentProxy.documentContextBeforeInput ?? ""
          let center = self.textDocumentProxy.selectedText ?? ""
-@@ -518,6 +577,7 @@ final class KeyboardViewController: UIInputViewController {
+@@ -518,6 +578,7 @@ final class KeyboardViewController: UIInputViewController {
      /// 引数の`textInput`は常に`nil`
      override func textDidChange(_ textInput: (any UITextInput)?) {
          super.textDidChange(textInput)
@@ -2537,7 +2591,7 @@ index e6038af..008bc2a 100644
  
          let left = self.textDocumentProxy.documentContextBeforeInput ?? ""
          let center = self.textDocumentProxy.selectedText ?? ""
-@@ -530,6 +590,8 @@ final class KeyboardViewController: UIInputViewController {
+@@ -530,6 +591,8 @@ final class KeyboardViewController: UIInputViewController {
          KeyboardViewController.variableStates.clipboardHistoryManager.checkUpdate()
          KeyboardViewController.variableStates.setUIReturnKeyType(type: self.textDocumentProxy.returnKeyType ?? .default)
          KeyboardViewController.variableStates.setTextContentType(self.textDocumentProxy.textContentType)
@@ -2546,7 +2600,7 @@ index e6038af..008bc2a 100644
      }
  
      /// Reference: https://stackoverflow.com/questions/79077018/unable-to-open-main-app-from-action-extension-in-ios-18-previously-working-met
-@@ -558,4 +620,70 @@ final class KeyboardViewController: UIInputViewController {
+@@ -558,4 +621,70 @@ final class KeyboardViewController: UIInputViewController {
          }
          self.openURL(url)
      }

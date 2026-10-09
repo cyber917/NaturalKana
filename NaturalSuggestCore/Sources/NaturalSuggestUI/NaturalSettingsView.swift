@@ -149,6 +149,13 @@ public struct NaturalSettingsView: View {
                         set: { model.settings.setKeyboardLayout(layout, enabled: $0) }
                     ))
                 }
+                ForEach(KeyboardTool.allCases, id: \.self) { tool in
+                    Toggle(UIText.t("候选栏固定%@按钮", tool.title), isOn: Binding(
+                        get: { model.settings.isPinned(tool) },
+                        set: { model.settings.setPinned(tool, $0) }
+                    ))
+                }
+                Text(UIText.t("打字出现候选时，固定的按钮仍显示在候选栏最左边；没有候选时表情、剪贴板总会显示。")).font(.caption).foregroundStyle(.secondary)
                 Toggle(UIText.t("记住键盘常用词"), isOn: $model.settings.keyboardWordLearning)
                 Text(UIText.t("法语、俄语、韩语可离线补全词语，中文可离线把拼音转成汉字；记忆只保存在本机，关闭后只使用内置词库。")).font(.caption).foregroundStyle(.secondary)
                 Button(UIText.t("清空键盘词语记忆")) { model.clearKeyboardWordMemory(); clearedWordMemory = true }

@@ -123,6 +123,13 @@ public struct SuggestionSettings: Codable, Hashable, Sendable {
     public var interfaceLanguage: InterfaceLanguage = .system
     public var extraKeyboardLayouts: [String] = []
     public var keyboardWordLearning: Bool = true
+    /// `KeyboardTool` raw values kept beside the candidates.
+    public var pinnedKeyboardTools: [String] = [KeyboardTool.emoji.rawValue]
+    public func isPinned(_ tool: KeyboardTool) -> Bool { pinnedKeyboardTools.contains(tool.rawValue) }
+    public mutating func setPinned(_ tool: KeyboardTool, _ pinned: Bool) {
+        pinnedKeyboardTools.removeAll { $0 == tool.rawValue }
+        if pinned { pinnedKeyboardTools = KeyboardTool.allCases.filter { $0 == tool || isPinned($0) }.map(\.rawValue) }
+    }
     /// Nil follows all enabled layouts; a saved list selects and orders the quick switch cycle.
     public var keyboardSwitchOrder: [String]?
     public var availableKeyboardLanguages: [KeyboardSwitchLanguage] {
@@ -213,7 +220,7 @@ public struct SuggestionSettings: Codable, Hashable, Sendable {
         return SHA256.hash(data: (try? encoder.encode(self)) ?? Data()).map { String(format: "%02x", $0) }.joined()
     }
     private enum LegacyCodingKeys: String, CodingKey { case koreanKeyboard }
-    private enum CodingKeys: String, CodingKey { case enabled, consent, language, autoLanguage, interfaceLanguage, extraKeyboardLayouts, keyboardSwitchOrder, keyboardWordLearning, provider, openAI, qwen, additionalProviders, highlightChanges, qualityPartner, registerPreference, slangLevel, dialect, debounceMilliseconds, minimumLength, maximumSuggestions, qualityMode, dailyCap, blockedApps, acceptKeys }
+    private enum CodingKeys: String, CodingKey { case enabled, consent, language, autoLanguage, interfaceLanguage, extraKeyboardLayouts, keyboardSwitchOrder, keyboardWordLearning, pinnedKeyboardTools, provider, openAI, qwen, additionalProviders, highlightChanges, qualityPartner, registerPreference, slangLevel, dialect, debounceMilliseconds, minimumLength, maximumSuggestions, qualityMode, dailyCap, blockedApps, acceptKeys }
     public init(from decoder: Decoder) throws {
         let values = try decoder.container(keyedBy: CodingKeys.self)
         enabled = try values.decodeIfPresent(Bool.self, forKey: .enabled) ?? false
@@ -224,6 +231,7 @@ public struct SuggestionSettings: Codable, Hashable, Sendable {
         interfaceLanguage = (try? values.decodeIfPresent(InterfaceLanguage.self, forKey: .interfaceLanguage)) ?? .system
         let legacy = try decoder.container(keyedBy: LegacyCodingKeys.self)
         keyboardWordLearning = try values.decodeIfPresent(Bool.self, forKey: .keyboardWordLearning) ?? true
+        pinnedKeyboardTools = try values.decodeIfPresent([String].self, forKey: .pinnedKeyboardTools) ?? [KeyboardTool.emoji.rawValue]
         let korean = try legacy.decodeIfPresent(Bool.self, forKey: .koreanKeyboard) ?? false
         extraKeyboardLayouts = try values.decodeIfPresent([String].self, forKey: .extraKeyboardLayouts) ?? (korean ? ["korean"] : [])
         keyboardSwitchOrder = try values.decodeIfPresent([String].self, forKey: .keyboardSwitchOrder)

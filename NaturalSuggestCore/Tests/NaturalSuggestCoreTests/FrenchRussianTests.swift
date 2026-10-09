@@ -123,3 +123,19 @@ struct ExtraKeyboardLayoutTests {
         #expect(settings.keyboardSwitchLanguages == [.japanese, .english])
     }
 }
+
+struct PinnedKeyboardToolTests {
+    @Test func emojiIsPinnedByDefaultAndChoicesRoundTrip() throws {
+        func decode(_ json: String) throws -> SuggestionSettings { try JSONDecoder().decode(SuggestionSettings.self, from: Data(json.utf8)) }
+        #expect(try decode("{}").isPinned(.emoji))
+        #expect(try !decode("{}").isPinned(.clipboard))
+        var settings = SuggestionSettings()
+        settings.setPinned(.clipboard, true)
+        settings.setPinned(.clipboard, true)
+        #expect(settings.pinnedKeyboardTools == ["emoji", "clipboard"])
+        settings.setPinned(.emoji, false)
+        let decoded = try JSONDecoder().decode(SuggestionSettings.self, from: JSONEncoder().encode(settings))
+        #expect(decoded.pinnedKeyboardTools == ["clipboard"])
+        #expect(try decode(#"{"pinnedKeyboardTools":[]}"#).pinnedKeyboardTools.isEmpty)
+    }
+}
