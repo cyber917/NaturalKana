@@ -54,6 +54,50 @@ struct PinyinInputTests {
         #expect(lexicon.candidates(for: "nihao", limit: 3).count == 3)
     }
 
+    @Test func fullAndAbbreviatedSyllablesMixAcrossWords() {
+        let lexicon = Self.bundled
+        for input in ["youdianwt", "ydwenti", "youdwt", "ydwt"] {
+            #expect(lexicon.candidates(for: input).contains(PinyinCandidate(text: "有点问题", consumed: input.count)))
+        }
+        #expect(lexicon.candidates(for: "youdianwt").first?.text == "有点问题")
+        #expect(lexicon.candidates(for: "nh").contains { $0.text == "你好" })
+        #expect(lexicon.candidates(for: "zhg").contains { $0.text == "中国" })
+    }
+
+    @Test func correctsOneTypoWithoutChangingConsumedLetters() {
+        let lexicon = PinyinLexicon(lines: ["有点\tyou dian", "问题\twen ti", "你好\tni hao"])
+        for input in ["youdianwneti", "youdianwennti", "youdianwentj", "youdianwnti", "nihoa", "nihhao", "niho"] {
+            let expected = input.hasPrefix("you") ? "有点问题" : "你好"
+            #expect(lexicon.candidates(for: input).first == PinyinCandidate(text: expected, consumed: input.count))
+        }
+        #expect(lexicon.candidates(for: "youdainwneti").first?.text != "有点问题")
+    }
+
+    @Test func abbreviatedPrefixLeavesUnconvertedSuffix() {
+        let lexicon = PinyinLexicon(lines: ["你好\tni hao"])
+        #expect(lexicon.candidates(for: "nhx").contains(PinyinCandidate(text: "你好", consumed: 2)))
+    }
+
+    @Test func bundledDictionaryOffersTypoCorrections() {
+        for input in ["youdianwneti", "youdianwnti", "youdianwennti", "youdianwentj"] {
+            #expect(Self.bundled.candidates(for: input).prefix(3).contains(PinyinCandidate(text: "有点问题", consumed: input.count)))
+        }
+        #expect(Self.bundled.candidates(for: "nihoa").first?.text == "你好")
+    }
+
+    @Test func longFullPinyinStillConverts() {
+        let lexicon = PinyinLexicon(lines: ["你好\tni hao"])
+        let input = String(repeating: "nihao", count: 14)
+        #expect(lexicon.candidates(for: input).first == PinyinCandidate(text: String(repeating: "你好", count: 14), consumed: input.count))
+    }
+
+    @Test func exactSpellingWinsAndMemoryRanksAbbreviations() {
+        let lexicon = PinyinLexicon(lines: ["呢\tne", "你\tni", "你好\tni hao", "年后\tnian hou"])
+        #expect(lexicon.candidates(for: "ni").first?.text == "你")
+        #expect(lexicon.candidates(for: "nh", uses: { $0 == "年后" ? 10 : 0 }).first?.text == "年后")
+        #expect(lexicon.candidates(for: "nh", limit: 1).count == 1)
+    }
+
     @Test func memoryKeepsChineseWords() {
         var memory = WordCompletionMemory()
         memory.record("事情", after: nil, language: .chinese)
