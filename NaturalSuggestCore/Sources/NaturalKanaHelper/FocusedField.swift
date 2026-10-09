@@ -19,6 +19,10 @@ import Carbon
         var value: CFTypeRef?
         return AXUIElementCopyAttributeValue(element, name as CFString, &value) == .success ? value : nil
     }
+    var isFocused: Bool {
+        guard let current = Self.current() else { return false }
+        return CFEqual(element, current.element) && !current.isSecure
+    }
     var value: String? { attribute(kAXValueAttribute) as? String }
     var selectedText: String? { attribute(kAXSelectedTextAttribute) as? String }
     var selectedRange: NSRange? {
@@ -81,6 +85,7 @@ import Carbon
     static func waitForModifiersReleased() async {
         let held: CGEventFlags = [.maskControl, .maskAlternate, .maskShift, .maskCommand]
         for _ in 0..<100 where !CGEventSource.flagsState(.combinedSessionState).intersection(held).isEmpty {
+            if Task.isCancelled { return }
             try? await Task.sleep(for: .milliseconds(10))
         }
     }
@@ -92,31 +97,51 @@ import Carbon
             event?.post(tap: .cghidEventTap)
         }
     }
+    static func canEdit(_ pid: pid_t?) -> Bool {
+        guard let pid else { return false }
+        let held: CGEventFlags = [.maskControl, .maskAlternate, .maskShift, .maskCommand]
+        return CGEventSource.flagsState(.combinedSessionState).intersection(held).isEmpty
+            && !Task.isCancelled && NSWorkspace.shared.frontmostApplication?.processIdentifier == pid
+            && !IsSecureEventInputEnabled() && FocusedField.current()?.isSecure != true
+    }
+    static func selectAll(in pid: pid_t) async -> Bool {
+        await waitForModifiersReleased()
+        guard canEdit(pid) else { return false }
+        press(kVK_ANSI_A)
+        try? await Task.sleep(for: .milliseconds(100))
+        return canEdit(pid)
+    }
     /// Copies the frontmost app's selection; nil when nothing was selected.
-    static func copySelection() async -> String? {
+    static func copySelection(in pid: pid_t?) async -> String? {
         let board = NSPasteboard.general
         let saved = PasteboardContents(board)
         let before = board.changeCount
         await waitForModifiersReleased()
+        guard canEdit(pid) else { return nil }
         press(kVK_ANSI_C)
         for _ in 0..<12 {
             try? await Task.sleep(for: .milliseconds(40))
-            if board.changeCount != before { break }
+            if board.changeCount != before || Task.isCancelled { break }
         }
-        let text = board.changeCount != before ? board.string(forType: .string) : nil
-        saved.restore(to: board)
+        let text = canEdit(pid) && board.changeCount != before ? board.string(forType: .string) : nil
+        if board.changeCount != before { saved.restore(to: board) }
         return text
     }
     /// Pastes `text` over the frontmost app's selection, then restores the clipboard.
-    static func paste(_ text: String) async {
+    static func paste(_ text: String, in pid: pid_t) async -> Bool {
         let board = NSPasteboard.general
         let saved = PasteboardContents(board)
-        board.clearContents(); board.setString(text, forType: .string)
         await waitForModifiersReleased()
+        guard canEdit(pid) else { return false }
+        board.clearContents(); board.setString(text, forType: .string)
+        let written = board.changeCount
         press(kVK_ANSI_V)
         // The target reads the pasteboard asynchronously.
-        try? await Task.sleep(for: .milliseconds(600))
-        saved.restore(to: board)
+        await withCheckedContinuation { continuation in
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.6) { continuation.resume() }
+        }
+        if board.changeCount == written { saved.restore(to: board) }
+        return true
     }
 }
 

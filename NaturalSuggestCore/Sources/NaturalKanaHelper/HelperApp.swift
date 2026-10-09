@@ -10,7 +10,12 @@ import NaturalSuggestUI
 /// Menu-bar helper: press ⌃⌥J in any app, with any input method, to check the sentence at the cursor.
 /// It shares settings and the daily budget with the NaturalKana input method through the app group.
 @MainActor final class HelperApp: NSObject, NSApplicationDelegate, NSMenuDelegate {
-    static let shortcut = "⌃⌥J"
+    private var checkShortcut = HelperShortcut.check
+    private var selectShortcut = HelperShortcut.selectAndCheck
+    private var shortcut: String { checkShortcut.label }
+    private let shortcutSettings = ShortcutSettings()
+    private var selectHotkey: GlobalHotkey?
+    private var operation: Task<Void, Never>?
     private let model = SuggestionModel()
     private var statusItem: NSStatusItem?
     private var hotkey: GlobalHotkey?
@@ -21,8 +26,8 @@ import NaturalSuggestUI
     /// Where the checked sentence came from, which decides how a suggestion is put back.
     private enum Source {
         case field(FocusedField, NSRange)   // read and replaced through Accessibility
-        case selection(FocusedField?)        // selected text only; replaced by typing over the selection
-        case copied                          // copied with ⌘C; replaced by pasting over the selection
+        case selection(FocusedField?, NSRange?)        // selected text only; replaced by typing over the selection
+        case copied(FocusedField?)           // copied with ⌘C; replaced by pasting over the selection
     }
     private struct Session {
         let app: NSRunningApplication?
@@ -37,9 +42,9 @@ import NaturalSuggestUI
         item.button?.image = NSImage(systemSymbolName: "text.bubble", accessibilityDescription: "NaturalKana")
         let menu = NSMenu(); menu.delegate = self; item.menu = menu
         statusItem = item
-        hotkey = GlobalHotkey(keyCode: UInt32(kVK_ANSI_J), modifiers: UInt32(controlKey | optionKey)) { [weak self] in
-            Task { await self?.check() }
-        }
+        if let data = UserDefaults.standard.data(forKey: "helper.checkShortcut"), let value = try? JSONDecoder().decode(HelperShortcut.self, from: data), value.isValid { checkShortcut = value }
+        if let data = UserDefaults.standard.data(forKey: "helper.selectShortcut"), let value = try? JSONDecoder().decode(HelperShortcut.self, from: data), value.isValid, value != checkShortcut { selectShortcut = value }
+        registerShortcuts()
         changes = model.objectWillChange.sink { [weak self] in
             DispatchQueue.main.async { self?.panel.fit() }
         }
@@ -51,16 +56,16 @@ import NaturalSuggestUI
     func menuNeedsUpdate(_ menu: NSMenu) {
         model.reload()
         menu.removeAllItems()
-        let check = NSMenuItem(title: UIText.t("检查当前句子"), action: #selector(checkFromMenu), keyEquivalent: "j")
-        check.keyEquivalentModifierMask = [.control, .option]
-        menu.addItem(check)
-        if hotkey == nil {
-            menu.addItem(.init(title: UIText.t("快捷键 %@ 被其他软件占用了，只能从这里检查。", Self.shortcut), action: nil, keyEquivalent: ""))
+        menu.addItem(.init(title: UIText.t("检查当前句子") + "  " + checkShortcut.label, action: #selector(checkFromMenu), keyEquivalent: ""))
+        menu.addItem(.init(title: UIText.t("全选输入框并检查") + "  " + selectShortcut.label, action: #selector(selectFromMenu), keyEquivalent: ""))
+        if hotkey == nil || selectHotkey == nil {
+            menu.addItem(.init(title: UIText.t("快捷键 %@ 被其他软件占用了，只能从这里检查。", hotkey == nil ? checkShortcut.label : selectShortcut.label), action: nil, keyEquivalent: ""))
         }
         menu.addItem(.separator())
         if !AXIsProcessTrusted() {
             menu.addItem(.init(title: UIText.t("允许“辅助功能”权限…"), action: #selector(requestAccessibility), keyEquivalent: ""))
         }
+        menu.addItem(.init(title: UIText.t("快捷键…"), action: #selector(openShortcutSettings), keyEquivalent: ""))
         menu.addItem(.init(title: UIText.t("设置…"), action: #selector(openSettings), keyEquivalent: ","))
         let login = NSMenuItem(title: UIText.t("登录时自动启动"), action: #selector(toggleLogin), keyEquivalent: "")
         login.state = SMAppService.mainApp.status == .enabled ? .on : .off
@@ -70,7 +75,45 @@ import NaturalSuggestUI
         menu.addItem(.init(title: UIText.t("退出"), action: #selector(NSApplication.terminate(_:)), keyEquivalent: "q"))
         for item in menu.items where item.action != #selector(NSApplication.terminate(_:)) { item.target = self }
     }
-    @objc private func checkFromMenu() { Task { await check() } }
+    private func runOperation(_ action: @escaping @MainActor () async -> Void) {
+        let previous = operation
+        previous?.cancel()
+        operation = Task {
+            await previous?.value
+            guard !Task.isCancelled else { return }
+            await action()
+        }
+    }
+    private func startCheck(selectAll: Bool = false) {
+        runOperation { [weak self] in await self?.check(selectAll: selectAll) }
+    }
+    private func registerShortcuts() {
+        hotkey = GlobalHotkey(id: 1, keyCode: checkShortcut.keyCode, modifiers: checkShortcut.modifiers) { [weak self] in self?.startCheck() }
+        selectHotkey = GlobalHotkey(id: 2, keyCode: selectShortcut.keyCode, modifiers: selectShortcut.modifiers) { [weak self] in self?.startCheck(selectAll: true) }
+    }
+    private func saveShortcuts(_ check: HelperShortcut, _ select: HelperShortcut) -> String? {
+        guard check.isValid, select.isValid else { return UIText.t("请选择字母或数字，并搭配 Control、Option 或 Command；不要使用常用编辑快捷键。") }
+        guard check != select else { return UIText.t("两个快捷键不能相同。") }
+        hotkey = nil; selectHotkey = nil
+        let oldCheck = checkShortcut, oldSelect = selectShortcut
+        checkShortcut = check; selectShortcut = select
+        registerShortcuts()
+        if hotkey == nil || selectHotkey == nil {
+            let failed = hotkey == nil ? check.label : select.label
+            hotkey = nil; selectHotkey = nil
+            checkShortcut = oldCheck; selectShortcut = oldSelect
+            registerShortcuts()
+            return UIText.t("快捷键 %@ 已被其他软件占用，请换一个。", failed)
+        }
+        UserDefaults.standard.set(try? JSONEncoder().encode(check), forKey: "helper.checkShortcut")
+        UserDefaults.standard.set(try? JSONEncoder().encode(select), forKey: "helper.selectShortcut")
+        return nil
+    }
+    @objc private func openShortcutSettings() {
+        shortcutSettings.show(check: checkShortcut, select: selectShortcut) { [weak self] check, select in self?.saveShortcuts(check, select) }
+    }
+    @objc private func checkFromMenu() { startCheck() }
+    @objc private func selectFromMenu() { startCheck(selectAll: true) }
     @objc private func requestAccessibility() {
         // Shows the system prompt that leads to System Settings > Privacy & Security > Accessibility.
         _ = AXIsProcessTrustedWithOptions(["AXTrustedCheckOptionPrompt": true] as CFDictionary)
@@ -101,11 +144,11 @@ import NaturalSuggestUI
 
     // MARK: - Checking
 
-    func check() async {
+    func check(selectAll: Bool = false) async {
         panel.close(); session = nil; model.invalidate()
         guard AXIsProcessTrusted() else {
             requestAccessibility()
-            panel.show(notice: UIText.t("请先在“系统设置 → 隐私与安全性 → 辅助功能”里允许 NaturalKana Helper，再按 %@。", Self.shortcut), near: nil)
+            panel.show(notice: UIText.t("请先在“系统设置 → 隐私与安全性 → 辅助功能”里允许 NaturalKana Helper，再按 %@。", shortcut), near: nil)
             return
         }
         let app = NSWorkspace.shared.frontmostApplication
@@ -113,6 +156,15 @@ import NaturalSuggestUI
         if field?.isSecure == true || IsSecureEventInputEnabled() {
             panel.show(notice: UIText.t("这是密码输入框，不会检查。"), near: nil); return
         }
+        if selectAll {
+            guard let app else { return }
+            if let field, let value = field.value, field.select(NSRange(location: 0, length: value.utf16.count)) {
+                // Accessibility can select exactly this input field.
+            } else {
+                guard await Keystrokes.selectAll(in: app.processIdentifier) else { return }
+            }
+        }
+        guard !Task.isCancelled, NSWorkspace.shared.frontmostApplication?.processIdentifier == app?.processIdentifier else { return }
         let text: String, source: Source
         var anchor: NSRect?
         if let field, let value = field.value, let selection = field.selectedRange {
@@ -120,25 +172,28 @@ import NaturalSuggestUI
             case .success(let draft):
                 text = draft.text; source = .field(field, draft.range); anchor = field.bounds(for: draft.range)
             case .failure(let problem):
-                panel.show(notice: Self.message(problem), near: field.bounds(for: selection)); return
+                panel.show(notice: message(problem), near: field.bounds(for: selection)); return
             }
         } else if let field, let selected = field.selectedText, !selected.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
-            text = selected; source = .selection(field); anchor = field.selectedRange.flatMap(field.bounds(for:)) ?? field.frame
-        } else if let copied = await Keystrokes.copySelection(), !copied.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
-            text = copied; source = .copied; anchor = field?.frame
+            text = selected; source = .selection(field, field.selectedRange); anchor = field.selectedRange.flatMap(field.bounds(for:)) ?? field.frame
+        } else if let copied = await Keystrokes.copySelection(in: app?.processIdentifier), !copied.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+            text = copied; source = .copied(field); anchor = field?.frame
         } else {
-            panel.show(notice: UIText.t("这个 App 不提供输入框里的文字。请先选中要检查的那一句，再按 %@。", Self.shortcut), near: field?.frame); return
+            panel.show(notice: UIText.t("这个 App 不提供输入框里的文字。请先选中要检查的那一句，再按 %@。", shortcut), near: field?.frame); return
         }
-        guard !text.contains(where: \.isNewline) else { panel.show(notice: Self.message(.multiline), near: anchor); return }
-        guard text.count <= 200 else { panel.show(notice: Self.message(.tooLong), near: anchor); return }
+        guard !Task.isCancelled, NSWorkspace.shared.frontmostApplication?.processIdentifier == app?.processIdentifier else { return }
+        guard !text.contains(where: \.isNewline) else { panel.show(notice: message(.multiline), near: anchor); return }
+        guard text.count <= 200 else { panel.show(notice: message(.tooLong), near: anchor); return }
         let snapshot = DraftSnapshot(text: text, fieldID: "helper-" + UUID().uuidString, appID: app?.bundleIdentifier ?? "")
         session = Session(app: app, source: source, snapshot: snapshot)
-        panel.show(model: model, original: text, near: anchor, accept: { [weak self] index in Task { await self?.accept(index) } },
+        panel.show(model: model, original: text, near: anchor, accept: { [weak self] index in
+                       self?.runOperation { [weak self] in await self?.accept(index) }
+                   },
                    dismiss: { [weak self] in self?.dismiss() })
         model.update(snapshot, explicit: true)
     }
 
-    private static func message(_ problem: FieldDraft.Problem) -> String {
+    private func message(_ problem: FieldDraft.Problem) -> String {
         switch problem {
         case .empty: UIText.t("光标所在的这一行是空的。")
         case .multiline: UIText.t("一次只能检查一句话，请只选中一行。")
@@ -147,6 +202,7 @@ import NaturalSuggestUI
     }
 
     private func dismiss() {
+        operation?.cancel()
         panel.close(); model.dismiss()
         session?.app?.activate()
         session = nil
@@ -157,28 +213,46 @@ import NaturalSuggestUI
         self.session = nil
         panel.close()
         let original = session.snapshot.text
+        guard let app = session.app, !app.isTerminated else { return }
+        app.activate()
+        for _ in 0..<20 {
+            if NSWorkspace.shared.frontmostApplication?.processIdentifier == app.processIdentifier { break }
+            try? await Task.sleep(for: .milliseconds(25))
+        }
+        guard !Task.isCancelled, Keystrokes.canEdit(app.processIdentifier) else { return }
         switch session.source {
         case .field(let field, let range):
-            // Never replace when the field changed while the suggestions were being generated.
-            guard let value = field.value, NSMaxRange(range) <= value.utf16.count, (value as NSString).substring(with: range) == original else {
-                copyInstead(text, UIText.t("原句已经变了，建议已复制，请手动粘贴。")); return
-            }
-            session.app?.activate()
+            guard field.isFocused, let value = field.value, NSMaxRange(range) <= value.utf16.count,
+                  (value as NSString).substring(with: range) == original else { replacementFailed(text); return }
             if field.replace(range, with: text) { return }
-            // Some apps expose their text but refuse edits through Accessibility: select it and paste.
-            guard field.select(range) else { copyInstead(text, UIText.t("此应用不支持这段文字的安全替换；建议已复制，请选中原句后粘贴")); return }
-            await Keystrokes.paste(text)
-        case .selection(let field):
-            session.app?.activate()
-            guard field?.selectedText == original else { copyInstead(text, UIText.t("原句已经变了，建议已复制，请手动粘贴。")); return }
-            try? await Task.sleep(for: .milliseconds(80))
-            await Keystrokes.paste(text)
-        case .copied:
-            // The selection is still in place after ⌘C.
-            session.app?.activate()
-            try? await Task.sleep(for: .milliseconds(80))
-            await Keystrokes.paste(text)
+            // A partially successful Accessibility edit must never be pasted a second time.
+            guard field.value == value, field.select(range) else { replacementFailed(text); return }
+            guard await Keystrokes.copySelection(in: app.processIdentifier) == original else { replacementFailed(text); return }
+            _ = await Keystrokes.paste(text, in: app.processIdentifier)
+        case .selection(let field, let range):
+            guard field?.isFocused != false else { replacementFailed(text); return }
+            if let field, let range { _ = field.select(range) }
+            await replaceSelection(original: original, with: text, app: app, field: field)
+        case .copied(let field):
+            await replaceSelection(original: original, with: text, app: app, field: field)
         }
+    }
+
+    private func replaceSelection(original: String, with text: String, app: NSRunningApplication, field: FocusedField?) async {
+        guard field?.isFocused != false else { replacementFailed(text); return }
+        var selected = await Keystrokes.copySelection(in: app.processIdentifier)
+        if selected != original {
+            // Clicking a suggestion can clear WeChat's selection. Restore it only if the entire draft still matches.
+            guard await Keystrokes.selectAll(in: app.processIdentifier) else { return }
+            selected = await Keystrokes.copySelection(in: app.processIdentifier)
+        }
+        guard !Task.isCancelled else { return }
+        guard selected == original, field?.isFocused != false else { replacementFailed(text); return }
+        _ = await Keystrokes.paste(text, in: app.processIdentifier)
+    }
+    private func replacementFailed(_ text: String) {
+        guard !Task.isCancelled else { return }
+        copyInstead(text, UIText.t("原句或选区已经变了，未替换。建议已复制，请重新选中原句。"))
     }
 
     private func copyInstead(_ text: String, _ notice: String) {
