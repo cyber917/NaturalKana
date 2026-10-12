@@ -233,7 +233,7 @@ public partial class App : Application
     async Task FillAsync(SuggestionWindow card, string draft, AppSettings effective, CancellationToken cancel)
     {
         if (JapaneseText.Length(draft) < 2) { card.ShowMessage(UIText.T("句子太短了。")); return; }
-        if (!Languages.AcceptsDraft(effective.Language, draft))
+        if (!effective.AcceptsDraft(draft))
         {
             card.ShowMessage(effective.AutoLanguage ? UIText.T("没认出这是日语、中文还是英语句子，没有发送。") : Languages.NotThisLanguage(effective.Language));
             return;
@@ -255,7 +255,7 @@ public partial class App : Application
         }
         var config = settings.Config(settings.Provider);
         var key = string.Join("\u0001", draft, effective.Language, settings.Provider, config.BaseUrl, config.Model,
-            settings.RegisterPreference, settings.SlangLevel, effective.ActiveDialect, settings.SuggestionLimit);
+            settings.RegisterPreference, settings.SlangLevel, effective.ActiveDialect, settings.SuggestionLimit, effective.AllowTranslation, config.Protocol, config.ResponseMode, config.TokenParameter, config.DisableThinking);
         if (cache.TryGetValue(key, out var cached)) return cached;
         try
         {

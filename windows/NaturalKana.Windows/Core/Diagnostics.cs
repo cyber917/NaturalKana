@@ -2,7 +2,7 @@ namespace NaturalKana.Windows.Core;
 
 public enum Diagnostic
 {
-    Configuration, MissingKey, InvalidModelId, ModelUnavailable, UnsupportedParameter,
+    TranslationConfiguration, Configuration, MissingKey, InvalidModelId, ModelUnavailable, UnsupportedParameter,
     Network, Timeout, InvalidResponse, Truncated, Refused, ProviderQuota, Quota, HttpStatus, Unavailable,
 }
 
@@ -18,6 +18,7 @@ public sealed class SuggestionException(Diagnostic kind, int status = 0) : Excep
         Diagnostic.MissingKey => UIText.T("请在设置里保存所选服务商的 API 密钥"),
         Diagnostic.InvalidModelId => UIText.T("模型 ID 不能含空格；请填写服务商 API 文档中的 ID"),
         Diagnostic.ModelUnavailable => UIText.T("模型不存在或无访问权限，请核对 API 模型 ID"),
+        Diagnostic.TranslationConfiguration => UIText.T("Qwen-MT 需要打开“允许整句翻译”，并使用 OpenAI Chat Completions 协议"),
         Diagnostic.UnsupportedParameter => UIText.T("模型不支持当前参数；请在设置的“高级”里调整 JSON 格式或输出长度参数"),
         Diagnostic.Network => UIText.T("网络连接失败，请检查网络、代理和接口地址"),
         Diagnostic.Timeout => UIText.T("请求超时（20 秒），请稍后重试；Qwen 可开启非思考模式"),

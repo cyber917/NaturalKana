@@ -44,6 +44,18 @@ public sealed class Provider(ProviderKind kind, ProviderConfig config, string ke
 
     internal JsonObject Body(Prompt prompt, string model)
     {
+        if (Translation.IsModel(model))
+        {
+            if (config.Protocol != ProviderProtocol.ChatCompletions || prompt.Translation is not { } translation)
+                throw new SuggestionException(Diagnostic.TranslationConfiguration);
+            return new JsonObject
+            {
+                ["model"] = model,
+                ["stream"] = false,
+                ["messages"] = new JsonArray(new JsonObject { ["role"] = "user", ["content"] = translation.Draft }),
+                ["translation_options"] = new JsonObject { ["source_lang"] = "auto", ["target_lang"] = Translation.TargetName(translation.Target) },
+            };
+        }
         var native = config.Protocol == ProviderProtocol.AnthropicMessages;
         var tokenLimit = Math.Max(2048, prompt.MaximumSuggestions * 768);
         var body = new JsonObject { ["model"] = model, ["stream"] = false };
@@ -141,6 +153,13 @@ public sealed class Provider(ProviderKind kind, ProviderConfig config, string ke
             if (finish == "content_filter" || message["refusal"] is JsonValue) throw new SuggestionException(Diagnostic.Refused);
             if (finish != "stop" || Str(message["content"]) is not { } body) throw new SuggestionException(Diagnostic.InvalidResponse);
             content = body;
+        }
+        if (Translation.IsModel(model))
+        {
+            if (JapaneseText.Nfkc(content.Trim()) == JapaneseText.Nfkc(prompt.Translation!.Draft.Trim())
+                && Translation.AcceptsCandidate(prompt.Translation.Target, content))
+                return "{\"assessment\":\"natural\",\"suggestions\":[]}";
+            return JsonSerializer.Serialize(new { assessment = "rewrite", suggestions = new[] { new { text = content.Trim(), register = "translation" } } });
         }
         // Accept a single JSON code fence, never extract JSON from explanatory prose.
         var json = content.Trim();

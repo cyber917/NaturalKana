@@ -55,14 +55,15 @@ public static class ResponseValidator
                 if (!Enum.TryParse<Register>(row.GetProperty("register").GetString(), true, out var register)) continue;
                 var text = JapaneseText.Nfkc(row.GetProperty("text").GetString()!).Trim();
                 if (text.Length == 0 || text.Any(c => c is '\n' or '\r' || char.IsControl(c)) || text == original
-                    || JapaneseText.Length(text) > 3 * originalLength
-                    || !Languages.AcceptsCandidate(settings.Language, text, original))
+                    || JapaneseText.Length(text) > (settings.AllowTranslation ? Math.Max(80, 6 * originalLength) : 3 * originalLength)
+                    || !(settings.AllowTranslation ? Translation.AcceptsCandidate(settings.Language, text) : Languages.AcceptsCandidate(settings.Language, text, original)))
                     continue;
+                if (register == Register.Translation && !(settings.AllowTranslation && Translation.IsModel(settings.Config(settings.Provider).Model))) continue;
                 // Dialect rows are their own group: only the selected dialect, never filtered by casual/polite preference.
-                if (Dialects.IsDialect(register)
+                if (register != Register.Translation && (Dialects.IsDialect(register)
                         ? register != Dialects.RegisterOf(settings.ActiveDialect)
                         : (settings.RegisterPreference == RegisterPreference.FriendsCasual && register != Register.Casual)
-                          || (settings.RegisterPreference == RegisterPreference.PoliteCasual && register != Register.Polite))
+                          || (settings.RegisterPreference == RegisterPreference.PoliteCasual && register != Register.Polite)))
                     continue;
                 // Reject newly introduced emoji/symbols.
                 if (text.EnumerateRunes().Where(IsEmoji).Any(r => !original.EnumerateRunes().Contains(r))) continue;

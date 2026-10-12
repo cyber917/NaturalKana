@@ -63,6 +63,7 @@
     <ScrollViewer VerticalScrollBarVisibility="Auto">
         <StackPanel Margin="28,26,28,24">
             <TextBlock Text="NaturalKana" FontSize="26" FontWeight="SemiBold"/>
+            <TextBlock x:Name="VersionText" Margin="0,4,0,0" FontSize="12" Foreground="#6E6E73"/>
             <TextBlock x:Name="Intro" Margin="0,6,0,22" Foreground="#6E6E73" TextWrapping="Wrap"/>
 
             <TextBlock Text="服务商" Style="{StaticResource Caption}"/>
@@ -105,6 +106,14 @@
                         <TextBlock Text="建议语言" Style="{StaticResource Label}"/>
                         <ComboBox x:Name="LanguageBox" SelectionChanged="OnLanguageChanged"/>
                     </DockPanel>
+                    <Border Style="{StaticResource Divider}"/>
+                    <StackPanel Margin="0,9">
+                        <CheckBox x:Name="TranslationBox" Content="允许整句翻译" Checked="OnTranslationChanged" Unchecked="OnTranslationChanged"/>
+                        <TextBlock Margin="0,6,0,0" FontSize="12" Foreground="#6E6E73" TextWrapping="Wrap"
+                                   Text="打开后，整句外语或混合语言也会转成上面选定的建议语言；关闭后只优化原语言。"/>
+                        <TextBlock Margin="0,6,0,0" FontSize="12" Foreground="#6E6E73" TextWrapping="Wrap"
+                                   Text="Qwen-MT：填入 qwen-mt-flash、qwen-mt-plus、qwen-mt-lite 或 qwen-mt-turbo，并打开整句翻译。每次返回一条译文，不使用语体、方言、网络用语和建议上限设置。"/>
+                    </StackPanel>
                     <Expander Header="按语言开启联网建议" Margin="16,8">
                         <StackPanel x:Name="SuggestionLanguages"/>
                     </Expander>

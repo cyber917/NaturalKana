@@ -33,6 +33,7 @@ public partial class SettingsWindow : Window
         foreach (var (kind, config) in settings.ProviderConfigs) edits[kind] = config.Clone();
 
         UIText.Language = settings.Interface;
+        TranslationBox.IsChecked = settings.AllowTranslation;
         FillChoices();
         Fill(CountBox, Enumerable.Range(1, 10).Select(n => (n, n.ToString())), settings.SuggestionLimit);
         HotkeyBox.Text = hotkey;
@@ -54,12 +55,12 @@ public partial class SettingsWindow : Window
     void FillChoices()
     {
         filling = true;
+        VersionText.Text = UIText.T("版本 %@", typeof(AppSettings).Assembly.GetName().Version?.ToString(3) ?? "—");
         Intro.Text = UIText.T("在任何软件里选中一句话（或把光标放在句尾），按 %@ 获取更自然的说法。", $"{settings.Hotkey}");
         Fill(InterfaceBox, Enum.GetValues<InterfaceLanguage>().Select(l => (l, UIText.Title(l))), Pick(InterfaceBox, settings.Interface));
         Fill(ProviderBox, Enum.GetValues<ProviderKind>().Select(k => (k, Providers.Title(k))), Pick(ProviderBox, settings.Provider));
         // null = automatic: detect each sentence; PrimaryBox then holds the language for ambiguous sentences.
-        Fill(LanguageBox, Languages.All.Select(l => ((SuggestionLanguage?)l, Languages.Title(l))).Prepend(((SuggestionLanguage?)null, UIText.T("自动"))),
-            Pick(LanguageBox, settings.AutoLanguage ? null : (SuggestionLanguage?)settings.Language));
+        FillLanguages(Pick(LanguageBox, settings.AutoLanguage && !settings.AllowTranslation ? null : (SuggestionLanguage?)settings.Language));
         Fill(PrimaryBox, Languages.All.Select(l => (l, Languages.Title(l))), Pick(PrimaryBox, settings.Language));
         PrimaryRow.Visibility = Get<SuggestionLanguage?>(LanguageBox) is null ? Visibility.Visible : Visibility.Collapsed;
         Fill(RegisterBox, [(RegisterPreference.Both, UIText.T("口语和敬语都要")), (RegisterPreference.FriendsCasual, UIText.T("只要口语")), (RegisterPreference.PoliteCasual, UIText.T("只要敬语"))], Pick(RegisterBox, settings.RegisterPreference));
@@ -91,6 +92,22 @@ public partial class SettingsWindow : Window
         FillChoices();
         loading = false;
         KeyState.Text = SecretStore.Has(current) ? UIText.T("已保存") : UIText.T("未保存");
+    }
+
+    void FillLanguages(SuggestionLanguage? selected)
+    {
+        var choices = Languages.All.Select(l => ((SuggestionLanguage?)l, Languages.Title(l)));
+        if (TranslationBox.IsChecked != true) choices = choices.Prepend(((SuggestionLanguage?)null, UIText.T("自动")));
+        Fill(LanguageBox, choices, TranslationBox.IsChecked == true ? selected ?? Pick(PrimaryBox, settings.Language) : selected);
+        PrimaryRow.Visibility = Get<SuggestionLanguage?>(LanguageBox) is null ? Visibility.Visible : Visibility.Collapsed;
+    }
+
+    void OnTranslationChanged(object sender, RoutedEventArgs e)
+    {
+        if (loading || filling) return;
+        filling = true;
+        FillLanguages(Get<SuggestionLanguage?>(LanguageBox));
+        filling = false;
     }
 
     void OnLanguageChanged(object sender, SelectionChangedEventArgs e)
@@ -202,14 +219,20 @@ public partial class SettingsWindow : Window
             SlangLevel = Get<SlangLevel>(SlangBox),
             Dialect = Get<Dialect>(DialectBox),
             MaximumSuggestions = Get<int>(CountBox),
+            AllowTranslation = TranslationBox.IsChecked == true,
+            Provider = current,
+            ProviderConfigs = new() { [current] = Edit(current).Clone() },
         };
         TestButton.IsEnabled = false;
         Show(UIText.T("正在发送一条固定例句测试…（可能产生少量费用）"), false);
         var watch = Stopwatch.StartNew();
         try
         {
-            var json = await new Provider(current, Edit(current), key).SuggestAsync(PromptBuilder.Make(Languages.TestDraft(trial.Language), trial), CancellationToken.None);
-            var report = ResponseValidator.Inspect(json, Languages.TestDraft(trial.Language), trial);
+            var draft = trial.AllowTranslation
+                ? (trial.Language == SuggestionLanguage.English ? "明日は友達と映画を見に行きます。" : "I am going to the movies with a friend tomorrow.")
+                : Languages.TestDraft(trial.Language);
+            var json = await new Provider(current, Edit(current), key).SuggestAsync(PromptBuilder.Make(draft, trial), CancellationToken.None);
+            var report = ResponseValidator.Inspect(json, draft, trial);
             var seconds = watch.Elapsed.TotalSeconds.ToString("0.0");
             Show(report.Suggestions.Count > 0
                 ? UIText.T("连接成功：返回 %@ 条建议，用时 %@ 秒。例：%@", $"{report.Suggestions.Count}", $"{seconds}", $"{report.Suggestions[0].Text}")
@@ -222,6 +245,11 @@ public partial class SettingsWindow : Window
     void OnSave(object sender, RoutedEventArgs e)
     {
         StoreProvider(current);
+        if (Translation.IsModel(Edit(current).Model) && (TranslationBox.IsChecked != true || Edit(current).Protocol != ProviderProtocol.ChatCompletions))
+        {
+            Show(new SuggestionException(Diagnostic.TranslationConfiguration).Message, true);
+            return;
+        }
         if (!int.TryParse(CapBox.Text.Trim(), out var cap) || cap < 0) { Show(UIText.T("每日请求上限请填写 0 或正整数。"), true); return; }
         if (Win.HotkeyHost.SameCombination(hotkey, selectAllHotkey)) { Show(UIText.T("两个快捷键不能相同。"), true); return; }
         if (registerHotkeys(hotkey, selectAllHotkey) is { } failed) { Show(UIText.T("快捷键 %@ 已被其他软件占用，请换一个。", failed), true); return; }
@@ -236,6 +264,7 @@ public partial class SettingsWindow : Window
         settings.ProviderConfigs = edits.ToDictionary(p => p.Key, p => p.Value.Clone());
         settings.DisabledSuggestionLanguages = SuggestionLanguages.Children.OfType<CheckBox>()
             .Where(c => c.IsChecked != true).Select(c => (SuggestionLanguage)c.Tag).ToList();
+        settings.AllowTranslation = TranslationBox.IsChecked == true;
         settings.AutoLanguage = Get<SuggestionLanguage?>(LanguageBox) is null;
         settings.Language = Get<SuggestionLanguage?>(LanguageBox) ?? Get<SuggestionLanguage>(PrimaryBox);
         settings.Interface = Get<InterfaceLanguage>(InterfaceBox);
