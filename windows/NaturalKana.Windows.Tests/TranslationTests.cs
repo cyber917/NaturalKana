@@ -144,6 +144,7 @@ public class TranslationTests
 
     [Theory]
     [InlineData("japanese", "Japanese", "こんにちは。")]
+    [InlineData("japanese", "Japanese", "了解。")]
     [InlineData("english", "English", "Thank you for your help.")]
     [InlineData("chinese", "Chinese", "谢谢你的帮助。")]
     [InlineData("korean", "Korean", "도와주셔서 감사합니다.")]

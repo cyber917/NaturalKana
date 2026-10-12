@@ -40,7 +40,6 @@ public static class Translation
             _ => language.Pack.Generic is { } rules && Regex.IsMatch(r.ToString(), rules.Letters),
         };
         return letters.Count(Own) >= letters.Count * 0.6
-            && (language.Id != "japanese" || letters.Any(r => JapaneseText.IsKana(r.Value)))
             && (language.Id != "chinese" || !letters.Any(r => JapaneseText.IsKana(r.Value)));
     }
 }
