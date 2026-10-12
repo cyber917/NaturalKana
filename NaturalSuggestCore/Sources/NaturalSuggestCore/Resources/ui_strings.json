@@ -1757,5 +1757,29 @@
   "fr": "Touchez Coller pour insérer le texte et l’ajouter à l’historique",
   "ru": "Нажмите «Вставить», чтобы ввести текст и добавить его в историю",
   "ko": "붙여넣기를 눌러 입력하고 기록에 추가하세요"
+ },
+ "Qwen-MT 需要打开“允许整句翻译”，并使用 OpenAI Chat Completions 协议": {
+  "en": "Qwen-MT requires “Allow whole-sentence translation” and the OpenAI Chat Completions protocol.",
+  "ja": "Qwen-MT を使うには「文全体の翻訳を許可」をオンにし、OpenAI Chat Completions プロトコルを選んでください。"
+ },
+ "Qwen-MT：填入 qwen-mt-flash、qwen-mt-plus、qwen-mt-lite 或 qwen-mt-turbo，并打开整句翻译。每次返回一条译文，不使用语体、方言、网络用语和建议上限设置。": {
+  "en": "Qwen-MT: enter qwen-mt-flash, qwen-mt-plus, qwen-mt-lite or qwen-mt-turbo and enable whole-sentence translation. Returns one translation; register, dialect, slang and suggestion count settings do not apply.",
+  "ja": "Qwen-MT：qwen-mt-flash、qwen-mt-plus、qwen-mt-lite または qwen-mt-turbo を入力し、文全体の翻訳をオンにしてください。訳文は1件で、文体・方言・ネット用語・候補数の設定は適用されません。"
+ },
+ "允许整句翻译": {
+  "en": "Allow whole-sentence translation",
+  "ja": "文全体の翻訳を許可"
+ },
+ "打开后，整句外语或混合语言也会转成上面选定的建议语言；关闭后只优化原语言。": {
+  "en": "When enabled, foreign or mixed-language sentences are translated into the suggestion language selected above. When disabled, only the original language is polished.",
+  "ja": "オンにすると、他言語や複数言語が混ざった文も上で選んだ提案言語に翻訳します。オフの場合は元の言語の表現だけを改善します。"
+ },
+ "版本 %@": {
+  "en": "Version %@",
+  "ja": "バージョン %@"
+ },
+ "译文": {
+  "en": "Translation",
+  "ja": "訳文"
  }
 }

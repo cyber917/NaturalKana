@@ -13,7 +13,7 @@ public enum SlangLevel { Off, Light, Trendy }
 /// Regional dialect offered as an extra candidate group (Japanese only). Mirrors Dialect in NaturalSuggestCore.
 public enum Dialect { Off, Kansai }
 /// Candidate group: standard registers first, then dialect groups.
-public enum Register { Casual, Polite, Kansai }
+public enum Register { Casual, Polite, Kansai, Translation }
 public enum NoSelectionScope { WholeField, CurrentLine }
 
 public sealed record Suggestion(string Text, Register Register);
@@ -94,6 +94,7 @@ public sealed class AppSettings
     public SuggestionLanguage Language { get; set; } = SuggestionLanguage.Japanese;
     /// Detect each draft's language; Language stays the primary choice for ambiguous drafts.
     public bool AutoLanguage { get; set; }
+    public bool AllowTranslation { get; set; }
     public List<SuggestionLanguage> DisabledSuggestionLanguages { get; set; } = [];
     public bool SuggestionsEnabled(SuggestionLanguage language) => !DisabledSuggestionLanguages.Contains(language);
     public InterfaceLanguage Interface { get; set; } = InterfaceLanguage.System;
@@ -125,13 +126,16 @@ public sealed class AppSettings
     /// The copy is only for building and checking the request; budget and saving stay on the original.
     public AppSettings? ResolvingLanguage(string draft)
     {
-        if (!AutoLanguage) return this;
+        if (!AutoLanguage || AllowTranslation) return this;
         if (Languages.Detect(draft, Language) is not { } detected) return null;
         if (detected == Language) return this;
         var copy = (AppSettings)MemberwiseClone();
         copy.Language = detected;
         return copy;
     }
+
+    public bool AcceptsDraft(string draft) => AllowTranslation
+        ? Translation.IsDraft(draft) : Languages.AcceptsDraft(Language, draft);
 
     public ProviderConfig Config(ProviderKind kind) =>
         ProviderConfigs.TryGetValue(kind, out var config) ? config : Providers.Default(kind);

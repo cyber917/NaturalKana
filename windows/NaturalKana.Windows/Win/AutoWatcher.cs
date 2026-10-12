@@ -58,8 +58,8 @@ public sealed class AutoWatcher : IDisposable
         var language = (config.ResolvingLanguage(text) ?? config).Language;
         if (!config.SuggestionsEnabled(language)) return false;
         // Unfinished romaji or pinyin (e.g. "今日はh", "我想去b") means the IME is still composing.
-        if (language.Pack.RomanizedInput == true && text[^1] is >= 'a' and <= 'z' or >= 'A' and <= 'Z') return false;
-        return Languages.AcceptsDraft(language, text);
+        if (!config.AllowTranslation && language.Pack.RomanizedInput == true && text[^1] is >= 'a' and <= 'z' or >= 'A' and <= 'Z') return false;
+        return (config.ResolvingLanguage(text) ?? config).AcceptsDraft(text);
     }
 
     public void Dispose() => stop.Cancel();

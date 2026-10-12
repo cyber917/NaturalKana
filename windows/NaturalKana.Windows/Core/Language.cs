@@ -37,7 +37,9 @@ public static class Languages
     public static string TestDraft(SuggestionLanguage language) => language.Pack.TestDraft;
 
     /// Group titles are in the suggestion language itself, as on iPhone/Mac.
-    public static string RegisterTitle(SuggestionLanguage language, Register register) => register == Register.Kansai
+    public static string RegisterTitle(SuggestionLanguage language, Register register) => register == Register.Translation
+        ? UIText.T("译文")
+        : register == Register.Kansai
         ? "関西弁"
         : language.Pack.RegisterTitles.GetValueOrDefault(register.ToString().ToLowerInvariant(), register.ToString());
 
