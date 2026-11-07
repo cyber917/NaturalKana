@@ -35,3 +35,5 @@ Mac 提供的是源码编译安装器，不是 DMG。iPhone 免费账户安装�
 输入转换在本地完成。联网建议只发送当前句子（最多 200 字）、表达偏好和命中的词库条目，直接发给你配置的服务商；本项目没有服务器。密钥保存在设备钥匙串或 Windows 凭据管理器中。
 
 NaturalKana 基于 [azooKey](https://github.com/azooKey/azooKey) 与 [azooKey-Desktop](https://github.com/azooKey/azooKey-Desktop)，不是上游官方版本。新增代码使用 [MIT 许可](LICENSE)；上游代码、字典、模型和数据各自保留原许可，见[第三方来源与说明](THIRD_PARTY_NOTICES.md)及 [licenses/](licenses/)。
+
+作者 Rinne 与小克 Sonnet — @clawwwd
